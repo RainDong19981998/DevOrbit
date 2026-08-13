@@ -1,8 +1,8 @@
 {
   "protocolVersion": "1.0",
   "datasetId": "devorbit-public-software-repair-v1",
-  "generatedAt": "2026-08-13T11:23:50.965Z",
-  "disclosure": "The public snapshot is not frozen in this repository. No public case or result is claimed until source snapshots, licenses, base/test/fix commits, and reproducible checkout evidence are recorded.",
+  "generatedAt": "2026-08-13T14:30:25.769Z",
+  "disclosure": "The scored benchmark manifest is not frozen and contains no scored case or method result. One separately declared SWE-bench dev validation pilot has frozen provenance and a reproduced baseline failure; it is not a DevOrbit score or test-set claim.",
   "manifest": {
     "status": "protocol-only",
     "cases": 0,
@@ -15,6 +15,6 @@
   },
   "methods": {},
   "pairwise": [],
-  "manifestDigest": "sha256:7523bd9411ba43a1c87b9af82b31acd95b309dd38882ee6b59f2e587dac4c3d0",
+  "manifestDigest": "sha256:2d1080f2d104597a458f4184469af5d20367f96d2a207d76105e8bad64d07e75",
   "status": "not_run"
 }

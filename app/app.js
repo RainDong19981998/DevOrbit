@@ -60,7 +60,7 @@ function showRelease(data) {
     ? `<div class="approval-box"><small>L2 人工门禁</small><b>测试已通过，等待发布负责人决策</b><div><button class="approve" id="approve-button">✓ 批准 10% 灰度</button><button class="reject" id="reject-button">× 拒绝</button></div></div>`
     : rejected
       ? `<div class="approval-box rejected"><small>发布决策</small><b>已拒绝，发布工具未被调用</b></div>`
-      : `<div class="gate"><div class="good"><small>Red → Green</small><b>${html(data.plan.baselineTests.failed)} failed → ${html(data.tests.passed)} passed</b></div><div><small>审批记录</small><b>${html(data.approval.approvalId)}</b></div><div class="${rolledBack ? '' : 'good'}"><small>灰度前 → 灰度后</small><b>${html(data.release.healthBefore.errorRate)}% → ${html(data.release.healthAfter.errorRate)}%</b></div><div class="${rolledBack ? '' : 'good'}"><small>最终决策</small><b>${rolledBack ? '↶ 阈值越界 · 已自动回滚' : '✓ 确认放量 · 可回滚'}</b></div></div>`;
+      : `<div class="gate"><div class="good"><small>Red → Green</small><b>${html(data.plan.baselineTests.failed)} failed → ${html(data.tests.passed)} passed</b></div><div><small>审批记录</small><b>${html(data.approval.approvalId)}</b></div><div class="${rolledBack ? '' : 'good'}"><small>灰度观测</small><b>${Number.isFinite(data.release.healthBefore?.errorRate) ? `${html(data.release.healthBefore.errorRate)}% → ${html(data.release.healthAfter.errorRate)}%` : html(data.release.observationWindow)}</b></div><div class="${rolledBack ? '' : 'good'}"><small>最终决策</small><b>${rolledBack ? '↶ 阈值越界 · 已自动回滚' : '✓ 确认放量 · 可回滚'}</b></div></div>`;
   $('#release').innerHTML = `<div class="patch">${html(data.plan.patch)}</div>${decision}`;
   if (pending) {
     $('#approve-button').addEventListener('click', () => resolveApproval('approved'));

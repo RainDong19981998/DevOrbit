@@ -1,7 +1,8 @@
 import { DeliveryManager } from './runtime/manager.js';
 import { createHttpProvidersFromEnv } from './adapters/http.js';
+import { createNativePlatformProvidersFromEnv } from './adapters/platforms.js';
 
-const envProviders = createHttpProvidersFromEnv();
+const envProviders = createNativePlatformProvidersFromEnv() || createHttpProvidersFromEnv();
 
 const demoCase = {
   title: '支付页提交后持续转圈，订单偶发重复创建',

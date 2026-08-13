@@ -14,6 +14,7 @@ import { createStreamableHttpHandler } from './src/mcp/http-transport.js';
 import { fileURLToPath as toPath } from 'node:url';
 import { ApprovalAuthority, ToolPolicy } from './src/security/tool-policy.js';
 import { createHttpProvidersFromEnv } from './src/adapters/http.js';
+import { createNativePlatformProvidersFromEnv } from './src/adapters/platforms.js';
 import { DEVORBIT_VERSION, MCP_PROTOCOL_VERSION } from './src/version.js';
 
 const root = fileURLToPath(new URL('.', import.meta.url));
@@ -33,12 +34,14 @@ const publicReports = new Set(['/reports/evaluation.json', '/reports/security-ev
 const sessions = new Map();
 const runtimeKnowledgeStore = new KnowledgeStore();
 const mcpApprovalAuthority = new ApprovalAuthority();
-const externalProviders = createHttpProvidersFromEnv();
+const nativePlatformProviders = createNativePlatformProvidersFromEnv();
+const externalProviders = nativePlatformProviders || createHttpProvidersFromEnv();
+const outboundToken = nativePlatformProviders ? process.env.DEVORBIT_PLATFORM_TOKEN : process.env.DEVORBIT_ADAPTER_TOKEN;
 const loopbackHost = ['127.0.0.1', 'localhost', '::1'].includes(host);
 if (!loopbackHost && !controlToken) throw new Error('DEVORBIT_CONTROL_TOKEN is required when listening on a non-loopback host');
-if (externalProviders && !process.env.DEVORBIT_ADAPTER_TOKEN) throw new Error('DEVORBIT_ADAPTER_TOKEN is required when external adapters are enabled');
+if (externalProviders && !outboundToken) throw new Error('an outbound adapter or platform token is required when external providers are enabled');
 if (externalProviders && !controlToken) throw new Error('DEVORBIT_CONTROL_TOKEN is required when external adapters are enabled');
-if (externalProviders && controlToken === process.env.DEVORBIT_ADAPTER_TOKEN) throw new Error('control-plane and adapter tokens must be different');
+if (externalProviders && controlToken === outboundToken) throw new Error('control-plane and outbound provider tokens must be different');
 const mcpServer = new McpToolServer({ tools: createTools({ fixturePath: toPath(new URL('./fixtures/checkout-service', import.meta.url)), workspaceRegistry: new Map(), knowledgeStore: new KnowledgeStore(), signals: getDemoCase().signals, providers: externalProviders || {} }), policy: new ToolPolicy({ approvalAuthority: mcpApprovalAuthority }) });
 const handleMcp = createStreamableHttpHandler(mcpServer, { maxBodyBytes });
 
@@ -98,7 +101,7 @@ const server = http.createServer(async (req, res) => {
       if (!authorized(req)) return unauthorized(res);
       return await handleMcp(req, res);
     }
-    if (req.method === 'GET' && req.url === '/api/health') return json(res, 200, { status: 'ok', version: DEVORBIT_VERSION, mcpProtocol: MCP_PROTOCOL_VERSION, externalAdapters: Boolean(externalProviders), authRequired: Boolean(controlToken) });
+    if (req.method === 'GET' && req.url === '/api/health') return json(res, 200, { status: 'ok', version: DEVORBIT_VERSION, environment: process.env.DEVORBIT_ENVIRONMENT || 'local', mcpProtocol: MCP_PROTOCOL_VERSION, externalAdapters: Boolean(externalProviders), providerMode: nativePlatformProviders ? 'github-jenkins-argo' : externalProviders ? 'http-spi' : 'fixture', authRequired: Boolean(controlToken) });
     if (req.method === 'GET' && req.url === '/api/case') return json(res, 200, getDemoCase());
     if (req.method === 'GET' && req.url === '/api/meta') return json(res, 200, { skills, adapters, scenarios: ['happy-path', 'low-confidence', 'test-failure', 'canary-regression'] });
     if (req.method === 'POST' && req.url === '/api/runs') {
@@ -174,6 +177,7 @@ async function shutdown(signal) {
   server.close(async () => {
     try {
       await Promise.all([...sessions.values()].map(session => session.manager.disposeWorkspace()));
+      await nativePlatformProviders?.repository?.close?.();
       clearTimeout(force);
       process.exit(0);
     } catch (error) {

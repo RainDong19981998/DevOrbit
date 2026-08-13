@@ -15,7 +15,8 @@ const names = [
   'DevOrbit_威胁模型.pdf',
   'DevOrbit_证据索引.pdf',
   'DevOrbit_对照与消融评测.pdf',
-  'DevOrbit_对抗安全评测.pdf'
+  'DevOrbit_对抗安全评测.pdf',
+  'DevOrbit_公开基准复现试点.pdf'
 ];
 const lines = [];
 for (const name of names) {

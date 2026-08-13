@@ -63,7 +63,7 @@ function requestOperation(client, operation, { body, context, idempotencyKey } =
 }
 
 export class HttpJsonClient {
-  constructor({ baseUrl, token = null, timeoutMs = 8000, maxRetries = 2, maxRequestBytes = 2 * 1024 * 1024, maxResponseBytes = 2 * 1024 * 1024, fetchImpl = globalThis.fetch, sleep = delay } = {}) {
+  constructor({ baseUrl, token = null, authorization = null, timeoutMs = 8000, maxRetries = 2, maxRequestBytes = 2 * 1024 * 1024, maxResponseBytes = 2 * 1024 * 1024, fetchImpl = globalThis.fetch, sleep = delay } = {}) {
     if (!baseUrl) throw new Error('external adapter baseUrl is required');
     if (typeof fetchImpl !== 'function') throw new Error('global fetch is unavailable');
     this.baseUrl = new URL(baseUrl);
@@ -73,7 +73,7 @@ export class HttpJsonClient {
     if (this.baseUrl.username || this.baseUrl.password) throw new Error('external adapter credentials must not be embedded in baseUrl');
     if (this.baseUrl.search || this.baseUrl.hash) throw new Error('external adapter baseUrl cannot contain query or fragment');
     if (this.baseUrl.pathname !== '/' && this.baseUrl.pathname !== '') throw new Error('external adapter baseUrl cannot contain a path prefix');
-    this.token = token;
+    this.authorization = authorization || (token ? `Bearer ${token}` : null);
     this.timeoutMs = boundedInteger(timeoutMs, 8000, { name: 'timeoutMs', minimum: 100, maximum: 120000 });
     this.maxRetries = boundedInteger(maxRetries, 2, { name: 'maxRetries', minimum: 0, maximum: 5 });
     this.maxRequestBytes = boundedInteger(maxRequestBytes, 2 * 1024 * 1024, { name: 'maxRequestBytes', minimum: 1024, maximum: 16 * 1024 * 1024 });
@@ -82,7 +82,7 @@ export class HttpJsonClient {
     this.sleep = sleep;
   }
 
-  async request(path, { method = 'POST', body = undefined, headers = {}, idempotencyKey = null, idempotent = false, operation = path } = {}) {
+  async request(path, { method = 'POST', body = undefined, headers = {}, idempotencyKey = null, idempotent = false, operation = path, returnMeta = false, contentType = null } = {}) {
     const url = new URL(path, this.baseUrl);
     if (url.origin !== this.baseUrl.origin) throw new Error('external adapter path cannot change origin');
     const normalizedMethod = method.toUpperCase();
@@ -104,10 +104,10 @@ export class HttpJsonClient {
       try {
         const requestHeaders = {
           ...headers,
-          accept: 'application/json',
-          ...(body === undefined ? {} : { 'content-type': 'application/json' }),
+          accept: headers.accept || 'application/json',
+          ...(body === undefined ? {} : { 'content-type': contentType || 'application/json' }),
           'x-devorbit-operation': operation,
-          ...(this.token ? { authorization: `Bearer ${this.token}` } : {}),
+          ...(this.authorization ? { authorization: this.authorization } : {}),
           ...(idempotencyKey ? { 'idempotency-key': idempotencyKey } : {})
         };
         const response = await this.fetchImpl(url, {
@@ -126,7 +126,7 @@ export class HttpJsonClient {
           throw new ExternalAdapterError(`external ${operation} returned non-JSON content`, { code: 'external_contract_error', status: response.status, retryable: false, operation });
         }
         const payload = text ? safeJson(text) : null;
-        if (response.ok) return payload;
+        if (response.ok) return returnMeta ? { data: payload, status: response.status, headers: Object.fromEntries(response.headers.entries()) } : payload;
         const retryable = isRetryableStatus(response.status);
         lastError = new ExternalAdapterError(`external ${operation} failed with HTTP ${response.status}`, {
           code: payload?.error?.code || payload?.code || 'external_http_error',

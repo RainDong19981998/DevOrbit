@@ -13,7 +13,7 @@
           {
             "key": "service.version",
             "value": {
-              "stringValue": "0.5.1"
+              "stringValue": "0.6.0"
             }
           },
           {
@@ -28,16 +28,16 @@
         {
           "scope": {
             "name": "devorbit.runtime",
-            "version": "0.5.1"
+            "version": "0.6.0"
           },
           "spans": [
             {
-              "traceId": "f7aa01ad2069bb2cab8b8c5cbacc76f8",
+              "traceId": "52c54986b66f577c8b0b04e9f0a1a07f",
               "spanId": "d6fb01a4172d8870",
               "name": "orchestrate triage",
               "kind": 1,
-              "startTimeUnixNano": "1786620231160000000",
-              "endTimeUnixNano": "1786620231168000000",
+              "startTimeUnixNano": "1786631426161000000",
+              "endTimeUnixNano": "1786631426169000000",
               "attributes": [
                 {
                   "key": "gen_ai.operation.name",
@@ -60,7 +60,7 @@
                 {
                   "key": "devorbit.case.id",
                   "value": {
-                    "stringValue": "CASE-256364DB"
+                    "stringValue": "CASE-69A1008D"
                   }
                 },
                 {
@@ -93,13 +93,13 @@
               }
             },
             {
-              "traceId": "f7aa01ad2069bb2cab8b8c5cbacc76f8",
+              "traceId": "52c54986b66f577c8b0b04e9f0a1a07f",
               "spanId": "377e20e3b4ac3798",
               "parentSpanId": "d6fb01a4172d8870",
               "name": "invoke_agent intake-worker",
               "kind": 1,
-              "startTimeUnixNano": "1786620232162000000",
-              "endTimeUnixNano": "1786620232173000000",
+              "startTimeUnixNano": "1786631427163000000",
+              "endTimeUnixNano": "1786631427174000000",
               "attributes": [
                 {
                   "key": "gen_ai.operation.name",
@@ -122,7 +122,7 @@
                 {
                   "key": "devorbit.case.id",
                   "value": {
-                    "stringValue": "CASE-256364DB"
+                    "stringValue": "CASE-69A1008D"
                   }
                 },
                 {
@@ -140,13 +140,13 @@
                 {
                   "key": "devorbit.input.digest",
                   "value": {
-                    "stringValue": "513e7d6cf8c949a7"
+                    "stringValue": "bf92f8d9b1407f95"
                   }
                 },
                 {
                   "key": "devorbit.output.digest",
                   "value": {
-                    "stringValue": "8094c62e60607746"
+                    "stringValue": "f064de4b7372f43d"
                   }
                 }
               ],
@@ -155,12 +155,12 @@
               }
             },
             {
-              "traceId": "f7aa01ad2069bb2cab8b8c5cbacc76f8",
+              "traceId": "52c54986b66f577c8b0b04e9f0a1a07f",
               "spanId": "38b47dce2a5d66f6",
               "name": "orchestrate impact",
               "kind": 1,
-              "startTimeUnixNano": "1786620233162000000",
-              "endTimeUnixNano": "1786620233176000000",
+              "startTimeUnixNano": "1786631428163000000",
+              "endTimeUnixNano": "1786631428177000000",
               "attributes": [
                 {
                   "key": "gen_ai.operation.name",
@@ -183,7 +183,7 @@
                 {
                   "key": "devorbit.case.id",
                   "value": {
-                    "stringValue": "CASE-256364DB"
+                    "stringValue": "CASE-69A1008D"
                   }
                 },
                 {
@@ -201,7 +201,7 @@
                 {
                   "key": "devorbit.input.digest",
                   "value": {
-                    "stringValue": "a7e320bcf10a3464"
+                    "stringValue": "a52217569ffc69ee"
                   }
                 },
                 {
@@ -216,13 +216,13 @@
               }
             },
             {
-              "traceId": "f7aa01ad2069bb2cab8b8c5cbacc76f8",
+              "traceId": "52c54986b66f577c8b0b04e9f0a1a07f",
               "spanId": "f7149e496d2c951c",
               "parentSpanId": "38b47dce2a5d66f6",
               "name": "invoke_agent impact-worker",
               "kind": 1,
-              "startTimeUnixNano": "1786620234164000000",
-              "endTimeUnixNano": "1786620234181000000",
+              "startTimeUnixNano": "1786631429165000000",
+              "endTimeUnixNano": "1786631429182000000",
               "attributes": [
                 {
                   "key": "gen_ai.operation.name",
@@ -245,7 +245,7 @@
                 {
                   "key": "devorbit.case.id",
                   "value": {
-                    "stringValue": "CASE-256364DB"
+                    "stringValue": "CASE-69A1008D"
                   }
                 },
                 {
@@ -263,13 +263,13 @@
                 {
                   "key": "devorbit.input.digest",
                   "value": {
-                    "stringValue": "8094c62e60607746"
+                    "stringValue": "f064de4b7372f43d"
                   }
                 },
                 {
                   "key": "devorbit.output.digest",
                   "value": {
-                    "stringValue": "e6525f33328a5578"
+                    "stringValue": "4d40cd33c3c36ca8"
                   }
                 }
               ],
@@ -278,12 +278,12 @@
               }
             },
             {
-              "traceId": "f7aa01ad2069bb2cab8b8c5cbacc76f8",
+              "traceId": "52c54986b66f577c8b0b04e9f0a1a07f",
               "spanId": "135d14b4b4d305ec",
               "name": "orchestrate rca",
               "kind": 1,
-              "startTimeUnixNano": "1786620235164000000",
-              "endTimeUnixNano": "1786620235184000000",
+              "startTimeUnixNano": "1786631430165000000",
+              "endTimeUnixNano": "1786631430185000000",
               "attributes": [
                 {
                   "key": "gen_ai.operation.name",
@@ -306,7 +306,7 @@
                 {
                   "key": "devorbit.case.id",
                   "value": {
-                    "stringValue": "CASE-256364DB"
+                    "stringValue": "CASE-69A1008D"
                   }
                 },
                 {
@@ -324,7 +324,7 @@
                 {
                   "key": "devorbit.input.digest",
                   "value": {
-                    "stringValue": "e645b9460d00c688"
+                    "stringValue": "e57ce5c677ccf3c7"
                   }
                 },
                 {
@@ -339,13 +339,13 @@
               }
             },
             {
-              "traceId": "f7aa01ad2069bb2cab8b8c5cbacc76f8",
+              "traceId": "52c54986b66f577c8b0b04e9f0a1a07f",
               "spanId": "ad283660f806710f",
               "parentSpanId": "135d14b4b4d305ec",
               "name": "invoke_agent rca-worker",
               "kind": 1,
-              "startTimeUnixNano": "1786620236175000000",
-              "endTimeUnixNano": "1786620236198000000",
+              "startTimeUnixNano": "1786631431176000000",
+              "endTimeUnixNano": "1786631431199000000",
               "attributes": [
                 {
                   "key": "gen_ai.operation.name",
@@ -368,7 +368,7 @@
                 {
                   "key": "devorbit.case.id",
                   "value": {
-                    "stringValue": "CASE-256364DB"
+                    "stringValue": "CASE-69A1008D"
                   }
                 },
                 {
@@ -386,7 +386,7 @@
                 {
                   "key": "devorbit.input.digest",
                   "value": {
-                    "stringValue": "af0be174569327a4"
+                    "stringValue": "8e5a859d8aec4ba8"
                   }
                 },
                 {
@@ -401,12 +401,12 @@
               }
             },
             {
-              "traceId": "f7aa01ad2069bb2cab8b8c5cbacc76f8",
+              "traceId": "52c54986b66f577c8b0b04e9f0a1a07f",
               "spanId": "9d0ce1f69c4b8b9e",
               "name": "orchestrate patch",
               "kind": 1,
-              "startTimeUnixNano": "1786620237175000000",
-              "endTimeUnixNano": "1786620237201000000",
+              "startTimeUnixNano": "1786631432176000000",
+              "endTimeUnixNano": "1786631432202000000",
               "attributes": [
                 {
                   "key": "gen_ai.operation.name",
@@ -429,7 +429,7 @@
                 {
                   "key": "devorbit.case.id",
                   "value": {
-                    "stringValue": "CASE-256364DB"
+                    "stringValue": "CASE-69A1008D"
                   }
                 },
                 {
@@ -447,7 +447,7 @@
                 {
                   "key": "devorbit.input.digest",
                   "value": {
-                    "stringValue": "66b8c5a41d19a61b"
+                    "stringValue": "aacb2a5961b513fa"
                   }
                 },
                 {
@@ -462,13 +462,13 @@
               }
             },
             {
-              "traceId": "f7aa01ad2069bb2cab8b8c5cbacc76f8",
+              "traceId": "52c54986b66f577c8b0b04e9f0a1a07f",
               "spanId": "1e0c3ecbb3e87848",
               "parentSpanId": "9d0ce1f69c4b8b9e",
               "name": "invoke_agent patch-worker",
               "kind": 1,
-              "startTimeUnixNano": "1786620238340000000",
-              "endTimeUnixNano": "1786620238369000000",
+              "startTimeUnixNano": "1786631433342000000",
+              "endTimeUnixNano": "1786631433371000000",
               "attributes": [
                 {
                   "key": "gen_ai.operation.name",
@@ -491,7 +491,7 @@
                 {
                   "key": "devorbit.case.id",
                   "value": {
-                    "stringValue": "CASE-256364DB"
+                    "stringValue": "CASE-69A1008D"
                   }
                 },
                 {
@@ -515,7 +515,7 @@
                 {
                   "key": "devorbit.output.digest",
                   "value": {
-                    "stringValue": "f6c40da3fa68b141"
+                    "stringValue": "ef6972de99fb4a0d"
                   }
                 }
               ],
@@ -524,12 +524,12 @@
               }
             },
             {
-              "traceId": "f7aa01ad2069bb2cab8b8c5cbacc76f8",
+              "traceId": "52c54986b66f577c8b0b04e9f0a1a07f",
               "spanId": "babfb2d27c2ed798",
               "name": "orchestrate verify",
               "kind": 1,
-              "startTimeUnixNano": "1786620239340000000",
-              "endTimeUnixNano": "1786620239372000000",
+              "startTimeUnixNano": "1786631434342000000",
+              "endTimeUnixNano": "1786631434374000000",
               "attributes": [
                 {
                   "key": "gen_ai.operation.name",
@@ -552,7 +552,7 @@
                 {
                   "key": "devorbit.case.id",
                   "value": {
-                    "stringValue": "CASE-256364DB"
+                    "stringValue": "CASE-69A1008D"
                   }
                 },
                 {
@@ -570,7 +570,7 @@
                 {
                   "key": "devorbit.input.digest",
                   "value": {
-                    "stringValue": "6d206d77edf45a97"
+                    "stringValue": "ddc9b74b23c95944"
                   }
                 },
                 {
@@ -585,13 +585,13 @@
               }
             },
             {
-              "traceId": "f7aa01ad2069bb2cab8b8c5cbacc76f8",
+              "traceId": "52c54986b66f577c8b0b04e9f0a1a07f",
               "spanId": "e1b6b9c84612174d",
               "parentSpanId": "babfb2d27c2ed798",
               "name": "invoke_agent verify-worker",
               "kind": 1,
-              "startTimeUnixNano": "1786620240480000000",
-              "endTimeUnixNano": "1786620240515000000",
+              "startTimeUnixNano": "1786631435483000000",
+              "endTimeUnixNano": "1786631435518000000",
               "attributes": [
                 {
                   "key": "gen_ai.operation.name",
@@ -614,7 +614,7 @@
                 {
                   "key": "devorbit.case.id",
                   "value": {
-                    "stringValue": "CASE-256364DB"
+                    "stringValue": "CASE-69A1008D"
                   }
                 },
                 {
@@ -638,7 +638,7 @@
                 {
                   "key": "devorbit.output.digest",
                   "value": {
-                    "stringValue": "d48907a522ab82b7"
+                    "stringValue": "705fd5d2eeb29515"
                   }
                 }
               ],
@@ -647,12 +647,12 @@
               }
             },
             {
-              "traceId": "f7aa01ad2069bb2cab8b8c5cbacc76f8",
+              "traceId": "52c54986b66f577c8b0b04e9f0a1a07f",
               "spanId": "afa0b4a4b3052d56",
               "name": "orchestrate release",
               "kind": 1,
-              "startTimeUnixNano": "1786620241481000000",
-              "endTimeUnixNano": "1786620241519000000",
+              "startTimeUnixNano": "1786631436484000000",
+              "endTimeUnixNano": "1786631436522000000",
               "attributes": [
                 {
                   "key": "gen_ai.operation.name",
@@ -675,7 +675,7 @@
                 {
                   "key": "devorbit.case.id",
                   "value": {
-                    "stringValue": "CASE-256364DB"
+                    "stringValue": "CASE-69A1008D"
                   }
                 },
                 {
@@ -693,7 +693,7 @@
                 {
                   "key": "devorbit.input.digest",
                   "value": {
-                    "stringValue": "d3c9c003ab22f468"
+                    "stringValue": "afbb8d26eb01fe67"
                   }
                 },
                 {
@@ -708,13 +708,13 @@
               }
             },
             {
-              "traceId": "f7aa01ad2069bb2cab8b8c5cbacc76f8",
+              "traceId": "52c54986b66f577c8b0b04e9f0a1a07f",
               "spanId": "955ad2593146be57",
               "parentSpanId": "afa0b4a4b3052d56",
               "name": "invoke_agent release-worker",
               "kind": 1,
-              "startTimeUnixNano": "1786620242483000000",
-              "endTimeUnixNano": "1786620242524000000",
+              "startTimeUnixNano": "1786631437485000000",
+              "endTimeUnixNano": "1786631437526000000",
               "attributes": [
                 {
                   "key": "gen_ai.operation.name",
@@ -737,7 +737,7 @@
                 {
                   "key": "devorbit.case.id",
                   "value": {
-                    "stringValue": "CASE-256364DB"
+                    "stringValue": "CASE-69A1008D"
                   }
                 },
                 {
@@ -755,13 +755,13 @@
                 {
                   "key": "devorbit.input.digest",
                   "value": {
-                    "stringValue": "ee801df7d398e8a2"
+                    "stringValue": "6c645acc49a6d69e"
                   }
                 },
                 {
                   "key": "devorbit.output.digest",
                   "value": {
-                    "stringValue": "25af92ad3e9a1fb3"
+                    "stringValue": "ecca588953b03ead"
                   }
                 }
               ],
@@ -770,12 +770,12 @@
               }
             },
             {
-              "traceId": "f7aa01ad2069bb2cab8b8c5cbacc76f8",
+              "traceId": "52c54986b66f577c8b0b04e9f0a1a07f",
               "spanId": "eaa75170c9865b6e",
               "name": "orchestrate learn",
               "kind": 1,
-              "startTimeUnixNano": "1786620243483000000",
-              "endTimeUnixNano": "1786620243527000000",
+              "startTimeUnixNano": "1786631438485000000",
+              "endTimeUnixNano": "1786631438529000000",
               "attributes": [
                 {
                   "key": "gen_ai.operation.name",
@@ -798,7 +798,7 @@
                 {
                   "key": "devorbit.case.id",
                   "value": {
-                    "stringValue": "CASE-256364DB"
+                    "stringValue": "CASE-69A1008D"
                   }
                 },
                 {
@@ -816,7 +816,7 @@
                 {
                   "key": "devorbit.input.digest",
                   "value": {
-                    "stringValue": "d2f737223e89abf8"
+                    "stringValue": "d5bf5cf67af28556"
                   }
                 },
                 {
@@ -831,13 +831,13 @@
               }
             },
             {
-              "traceId": "f7aa01ad2069bb2cab8b8c5cbacc76f8",
+              "traceId": "52c54986b66f577c8b0b04e9f0a1a07f",
               "spanId": "3b2b0d03e0dde756",
               "parentSpanId": "eaa75170c9865b6e",
               "name": "invoke_agent learning-worker",
               "kind": 1,
-              "startTimeUnixNano": "1786620244483000000",
-              "endTimeUnixNano": "1786620244530000000",
+              "startTimeUnixNano": "1786631439486000000",
+              "endTimeUnixNano": "1786631439533000000",
               "attributes": [
                 {
                   "key": "gen_ai.operation.name",
@@ -860,7 +860,7 @@
                 {
                   "key": "devorbit.case.id",
                   "value": {
-                    "stringValue": "CASE-256364DB"
+                    "stringValue": "CASE-69A1008D"
                   }
                 },
                 {
@@ -878,13 +878,13 @@
                 {
                   "key": "devorbit.input.digest",
                   "value": {
-                    "stringValue": "b583f3fa55013d51"
+                    "stringValue": "bc24430b1e56f4bf"
                   }
                 },
                 {
                   "key": "devorbit.output.digest",
                   "value": {
-                    "stringValue": "855a6c37c1c0f220"
+                    "stringValue": "c4e5c13df5c37815"
                   }
                 }
               ],
@@ -893,13 +893,13 @@
               }
             },
             {
-              "traceId": "f7aa01ad2069bb2cab8b8c5cbacc76f8",
-              "spanId": "9df3806ec5dcf35a",
+              "traceId": "52c54986b66f577c8b0b04e9f0a1a07f",
+              "spanId": "bdb3f37065fbfefd",
               "parentSpanId": "d6fb01a4172d8870",
               "name": "execute_tool issue.fetch_signals",
               "kind": 1,
-              "startTimeUnixNano": "1786620231161000000",
-              "endTimeUnixNano": "1786620231162000000",
+              "startTimeUnixNano": "1786631426162000000",
+              "endTimeUnixNano": "1786631426163000000",
               "attributes": [
                 {
                   "key": "gen_ai.operation.name",
@@ -922,7 +922,7 @@
                 {
                   "key": "devorbit.case.id",
                   "value": {
-                    "stringValue": "CASE-256364DB"
+                    "stringValue": "CASE-69A1008D"
                   }
                 },
                 {
@@ -940,13 +940,13 @@
                 {
                   "key": "devorbit.audit.ref",
                   "value": {
-                    "stringValue": "audit://ffceaf57-8517-4a5d-86af-404f89ca2f09"
+                    "stringValue": "audit://a4eb1148-86ad-47a0-a6e6-7bd68f2b7c57"
                   }
                 },
                 {
                   "key": "devorbit.input.digest",
                   "value": {
-                    "stringValue": "c02fdab89f2b8313"
+                    "stringValue": "a46786ae8a05cffb"
                   }
                 },
                 {
@@ -967,13 +967,13 @@
               }
             },
             {
-              "traceId": "f7aa01ad2069bb2cab8b8c5cbacc76f8",
-              "spanId": "310193c213e44e77",
+              "traceId": "52c54986b66f577c8b0b04e9f0a1a07f",
+              "spanId": "46435e00b066e978",
               "parentSpanId": "d6fb01a4172d8870",
               "name": "execute_tool observability.fetch_signals",
               "kind": 1,
-              "startTimeUnixNano": "1786620231162000000",
-              "endTimeUnixNano": "1786620231163000000",
+              "startTimeUnixNano": "1786631426163000000",
+              "endTimeUnixNano": "1786631426164000000",
               "attributes": [
                 {
                   "key": "gen_ai.operation.name",
@@ -996,7 +996,7 @@
                 {
                   "key": "devorbit.case.id",
                   "value": {
-                    "stringValue": "CASE-256364DB"
+                    "stringValue": "CASE-69A1008D"
                   }
                 },
                 {
@@ -1014,13 +1014,13 @@
                 {
                   "key": "devorbit.audit.ref",
                   "value": {
-                    "stringValue": "audit://b2b270af-51ca-4b69-b7af-15d2750c5f31"
+                    "stringValue": "audit://9b33ac4a-48e8-4cc1-bfa0-947eb5afd0b0"
                   }
                 },
                 {
                   "key": "devorbit.input.digest",
                   "value": {
-                    "stringValue": "c02fdab89f2b8313"
+                    "stringValue": "a46786ae8a05cffb"
                   }
                 },
                 {
@@ -1041,13 +1041,13 @@
               }
             },
             {
-              "traceId": "f7aa01ad2069bb2cab8b8c5cbacc76f8",
-              "spanId": "aa1b7e3ca9cbc053",
+              "traceId": "52c54986b66f577c8b0b04e9f0a1a07f",
+              "spanId": "532cff8e6b7aa9bc",
               "parentSpanId": "38b47dce2a5d66f6",
               "name": "execute_tool repository.read_file",
               "kind": 1,
-              "startTimeUnixNano": "1786620231162000000",
-              "endTimeUnixNano": "1786620231164000000",
+              "startTimeUnixNano": "1786631426163000000",
+              "endTimeUnixNano": "1786631426164000000",
               "attributes": [
                 {
                   "key": "gen_ai.operation.name",
@@ -1070,7 +1070,7 @@
                 {
                   "key": "devorbit.case.id",
                   "value": {
-                    "stringValue": "CASE-256364DB"
+                    "stringValue": "CASE-69A1008D"
                   }
                 },
                 {
@@ -1088,7 +1088,7 @@
                 {
                   "key": "devorbit.audit.ref",
                   "value": {
-                    "stringValue": "audit://bf26fc14-97ae-4b62-89bb-f41c1b2bfb0c"
+                    "stringValue": "audit://530f1542-8c71-4dff-8d4d-49b69ae7141c"
                   }
                 },
                 {
@@ -1115,13 +1115,13 @@
               }
             },
             {
-              "traceId": "f7aa01ad2069bb2cab8b8c5cbacc76f8",
-              "spanId": "85c768b8bcd5add5",
+              "traceId": "52c54986b66f577c8b0b04e9f0a1a07f",
+              "spanId": "f59dc3dd64b446f0",
               "parentSpanId": "38b47dce2a5d66f6",
               "name": "execute_tool repository.read_file",
               "kind": 1,
-              "startTimeUnixNano": "1786620231164000000",
-              "endTimeUnixNano": "1786620231165000000",
+              "startTimeUnixNano": "1786631426165000000",
+              "endTimeUnixNano": "1786631426166000000",
               "attributes": [
                 {
                   "key": "gen_ai.operation.name",
@@ -1144,7 +1144,7 @@
                 {
                   "key": "devorbit.case.id",
                   "value": {
-                    "stringValue": "CASE-256364DB"
+                    "stringValue": "CASE-69A1008D"
                   }
                 },
                 {
@@ -1162,7 +1162,7 @@
                 {
                   "key": "devorbit.audit.ref",
                   "value": {
-                    "stringValue": "audit://9f288239-d494-4154-b936-e4d97d833498"
+                    "stringValue": "audit://413b269f-c4df-4c02-bbe3-5430d4232895"
                   }
                 },
                 {
@@ -1189,13 +1189,13 @@
               }
             },
             {
-              "traceId": "f7aa01ad2069bb2cab8b8c5cbacc76f8",
-              "spanId": "8e64b43b2854408e",
+              "traceId": "52c54986b66f577c8b0b04e9f0a1a07f",
+              "spanId": "e9574c29c8711fe4",
               "parentSpanId": "135d14b4b4d305ec",
               "name": "execute_tool knowledge.search_cases",
               "kind": 1,
-              "startTimeUnixNano": "1786620231164000000",
-              "endTimeUnixNano": "1786620231175000000",
+              "startTimeUnixNano": "1786631426165000000",
+              "endTimeUnixNano": "1786631426176000000",
               "attributes": [
                 {
                   "key": "gen_ai.operation.name",
@@ -1218,7 +1218,7 @@
                 {
                   "key": "devorbit.case.id",
                   "value": {
-                    "stringValue": "CASE-256364DB"
+                    "stringValue": "CASE-69A1008D"
                   }
                 },
                 {
@@ -1236,7 +1236,7 @@
                 {
                   "key": "devorbit.audit.ref",
                   "value": {
-                    "stringValue": "audit://66767fe8-a02b-4fe5-8713-6b01c8121466"
+                    "stringValue": "audit://2207cb65-6fe1-4aef-be19-309183511959"
                   }
                 },
                 {
@@ -1263,13 +1263,13 @@
               }
             },
             {
-              "traceId": "f7aa01ad2069bb2cab8b8c5cbacc76f8",
-              "spanId": "cdac9a64641ad298",
+              "traceId": "52c54986b66f577c8b0b04e9f0a1a07f",
+              "spanId": "e94fe56cce38b192",
               "parentSpanId": "9d0ce1f69c4b8b9e",
               "name": "execute_tool repository.create_workspace",
               "kind": 1,
-              "startTimeUnixNano": "1786620231176000000",
-              "endTimeUnixNano": "1786620231184000000",
+              "startTimeUnixNano": "1786631426176000000",
+              "endTimeUnixNano": "1786631426184000000",
               "attributes": [
                 {
                   "key": "gen_ai.operation.name",
@@ -1292,7 +1292,7 @@
                 {
                   "key": "devorbit.case.id",
                   "value": {
-                    "stringValue": "CASE-256364DB"
+                    "stringValue": "CASE-69A1008D"
                   }
                 },
                 {
@@ -1310,19 +1310,19 @@
                 {
                   "key": "devorbit.audit.ref",
                   "value": {
-                    "stringValue": "audit://f3938c52-a89e-49ae-a600-df960497ed4e"
+                    "stringValue": "audit://aae26ade-a528-4906-bd09-18a946c9b5d8"
                   }
                 },
                 {
                   "key": "devorbit.input.digest",
                   "value": {
-                    "stringValue": "fe05bd45d9564dcf"
+                    "stringValue": "dd5e44c33c6f2219"
                   }
                 },
                 {
                   "key": "devorbit.output.digest",
                   "value": {
-                    "stringValue": "d38ba489ddc1da9e"
+                    "stringValue": "4f3d226c62b45283"
                   }
                 },
                 {
@@ -1337,13 +1337,13 @@
               }
             },
             {
-              "traceId": "f7aa01ad2069bb2cab8b8c5cbacc76f8",
-              "spanId": "2ae8665484e0111a",
+              "traceId": "52c54986b66f577c8b0b04e9f0a1a07f",
+              "spanId": "d3a6845105f342f9",
               "parentSpanId": "9d0ce1f69c4b8b9e",
               "name": "execute_tool repository.read_file",
               "kind": 1,
-              "startTimeUnixNano": "1786620231184000000",
-              "endTimeUnixNano": "1786620231185000000",
+              "startTimeUnixNano": "1786631426184000000",
+              "endTimeUnixNano": "1786631426185000000",
               "attributes": [
                 {
                   "key": "gen_ai.operation.name",
@@ -1366,7 +1366,7 @@
                 {
                   "key": "devorbit.case.id",
                   "value": {
-                    "stringValue": "CASE-256364DB"
+                    "stringValue": "CASE-69A1008D"
                   }
                 },
                 {
@@ -1384,13 +1384,13 @@
                 {
                   "key": "devorbit.audit.ref",
                   "value": {
-                    "stringValue": "audit://618b950b-37e8-49a0-8956-52ad5d5a0786"
+                    "stringValue": "audit://3fb19f29-2303-43b1-b68e-030dbbc534a2"
                   }
                 },
                 {
                   "key": "devorbit.input.digest",
                   "value": {
-                    "stringValue": "edea4e8a1b101b89"
+                    "stringValue": "648105a12379d966"
                   }
                 },
                 {
@@ -1411,13 +1411,13 @@
               }
             },
             {
-              "traceId": "f7aa01ad2069bb2cab8b8c5cbacc76f8",
-              "spanId": "16f5e225784c7d1d",
+              "traceId": "52c54986b66f577c8b0b04e9f0a1a07f",
+              "spanId": "fc1fdd24f39a1184",
               "parentSpanId": "9d0ce1f69c4b8b9e",
               "name": "execute_tool repository.read_file",
               "kind": 1,
-              "startTimeUnixNano": "1786620231185000000",
-              "endTimeUnixNano": "1786620231186000000",
+              "startTimeUnixNano": "1786631426184000000",
+              "endTimeUnixNano": "1786631426185000000",
               "attributes": [
                 {
                   "key": "gen_ai.operation.name",
@@ -1440,7 +1440,7 @@
                 {
                   "key": "devorbit.case.id",
                   "value": {
-                    "stringValue": "CASE-256364DB"
+                    "stringValue": "CASE-69A1008D"
                   }
                 },
                 {
@@ -1458,13 +1458,13 @@
                 {
                   "key": "devorbit.audit.ref",
                   "value": {
-                    "stringValue": "audit://bdb291d0-812b-40db-b45e-be003290218e"
+                    "stringValue": "audit://af873e74-2175-4c8f-8276-c02cfc727feb"
                   }
                 },
                 {
                   "key": "devorbit.input.digest",
                   "value": {
-                    "stringValue": "eca2e24a06eaff40"
+                    "stringValue": "18c4d225b79462a3"
                   }
                 },
                 {
@@ -1485,13 +1485,13 @@
               }
             },
             {
-              "traceId": "f7aa01ad2069bb2cab8b8c5cbacc76f8",
-              "spanId": "5b1856878b911a04",
+              "traceId": "52c54986b66f577c8b0b04e9f0a1a07f",
+              "spanId": "bf69cc1a47617092",
               "parentSpanId": "9d0ce1f69c4b8b9e",
               "name": "execute_tool ci.run_tests",
               "kind": 1,
-              "startTimeUnixNano": "1786620231185000000",
-              "endTimeUnixNano": "1786620231337000000",
+              "startTimeUnixNano": "1786631426185000000",
+              "endTimeUnixNano": "1786631426339000000",
               "attributes": [
                 {
                   "key": "gen_ai.operation.name",
@@ -1514,7 +1514,7 @@
                 {
                   "key": "devorbit.case.id",
                   "value": {
-                    "stringValue": "CASE-256364DB"
+                    "stringValue": "CASE-69A1008D"
                   }
                 },
                 {
@@ -1532,19 +1532,19 @@
                 {
                   "key": "devorbit.audit.ref",
                   "value": {
-                    "stringValue": "audit://96cb4b8f-f31b-49b9-999e-aa717c1a4659"
+                    "stringValue": "audit://0b0bf70b-3c31-46f8-a1ab-2b35380ffe79"
                   }
                 },
                 {
                   "key": "devorbit.input.digest",
                   "value": {
-                    "stringValue": "09680b61f11d98ba"
+                    "stringValue": "8f20dca6ef78b904"
                   }
                 },
                 {
                   "key": "devorbit.output.digest",
                   "value": {
-                    "stringValue": "bc52151d31328ee2"
+                    "stringValue": "b7ee85c36b21726a"
                   }
                 },
                 {
@@ -1559,13 +1559,13 @@
               }
             },
             {
-              "traceId": "f7aa01ad2069bb2cab8b8c5cbacc76f8",
-              "spanId": "ef8d0e8934546a84",
+              "traceId": "52c54986b66f577c8b0b04e9f0a1a07f",
+              "spanId": "4dedcd537897c305",
               "parentSpanId": "9d0ce1f69c4b8b9e",
               "name": "execute_tool repository.write_file",
               "kind": 1,
-              "startTimeUnixNano": "1786620231338000000",
-              "endTimeUnixNano": "1786620231339000000",
+              "startTimeUnixNano": "1786631426339000000",
+              "endTimeUnixNano": "1786631426341000000",
               "attributes": [
                 {
                   "key": "gen_ai.operation.name",
@@ -1588,7 +1588,7 @@
                 {
                   "key": "devorbit.case.id",
                   "value": {
-                    "stringValue": "CASE-256364DB"
+                    "stringValue": "CASE-69A1008D"
                   }
                 },
                 {
@@ -1606,13 +1606,13 @@
                 {
                   "key": "devorbit.audit.ref",
                   "value": {
-                    "stringValue": "audit://4b695348-2160-4bc0-8361-240050507d86"
+                    "stringValue": "audit://2f7a8bf0-bf24-4224-a88b-79ca8b46cb26"
                   }
                 },
                 {
                   "key": "devorbit.input.digest",
                   "value": {
-                    "stringValue": "c6ee4e7506dbf860"
+                    "stringValue": "972f51c57c5f525b"
                   }
                 },
                 {
@@ -1633,13 +1633,13 @@
               }
             },
             {
-              "traceId": "f7aa01ad2069bb2cab8b8c5cbacc76f8",
-              "spanId": "fd90a72304dd4dcf",
+              "traceId": "52c54986b66f577c8b0b04e9f0a1a07f",
+              "spanId": "718f11ca1c5c8014",
               "parentSpanId": "9d0ce1f69c4b8b9e",
               "name": "execute_tool repository.write_file",
               "kind": 1,
-              "startTimeUnixNano": "1786620231339000000",
-              "endTimeUnixNano": "1786620231340000000",
+              "startTimeUnixNano": "1786631426341000000",
+              "endTimeUnixNano": "1786631426342000000",
               "attributes": [
                 {
                   "key": "gen_ai.operation.name",
@@ -1662,7 +1662,7 @@
                 {
                   "key": "devorbit.case.id",
                   "value": {
-                    "stringValue": "CASE-256364DB"
+                    "stringValue": "CASE-69A1008D"
                   }
                 },
                 {
@@ -1680,13 +1680,13 @@
                 {
                   "key": "devorbit.audit.ref",
                   "value": {
-                    "stringValue": "audit://f49916e3-af0f-4f4c-9773-cedb3229fdc5"
+                    "stringValue": "audit://c7f8a8c1-85fa-4651-8a0a-5806900f48cb"
                   }
                 },
                 {
                   "key": "devorbit.input.digest",
                   "value": {
-                    "stringValue": "def30026ac6ecd96"
+                    "stringValue": "99c7f94cf8dac67e"
                   }
                 },
                 {
@@ -1707,13 +1707,13 @@
               }
             },
             {
-              "traceId": "f7aa01ad2069bb2cab8b8c5cbacc76f8",
-              "spanId": "7cb99548b79ff3ed",
+              "traceId": "52c54986b66f577c8b0b04e9f0a1a07f",
+              "spanId": "5caffbdfac128365",
               "parentSpanId": "babfb2d27c2ed798",
               "name": "execute_tool ci.run_tests",
               "kind": 1,
-              "startTimeUnixNano": "1786620231341000000",
-              "endTimeUnixNano": "1786620231480000000",
+              "startTimeUnixNano": "1786631426343000000",
+              "endTimeUnixNano": "1786631426483000000",
               "attributes": [
                 {
                   "key": "gen_ai.operation.name",
@@ -1736,7 +1736,7 @@
                 {
                   "key": "devorbit.case.id",
                   "value": {
-                    "stringValue": "CASE-256364DB"
+                    "stringValue": "CASE-69A1008D"
                   }
                 },
                 {
@@ -1754,19 +1754,19 @@
                 {
                   "key": "devorbit.audit.ref",
                   "value": {
-                    "stringValue": "audit://aea15ddd-a585-4069-8d69-69c0f41b04d7"
+                    "stringValue": "audit://e3fe2c3d-bb7f-424f-b056-450846d6cb8c"
                   }
                 },
                 {
                   "key": "devorbit.input.digest",
                   "value": {
-                    "stringValue": "831e5e1576e3dca3"
+                    "stringValue": "1d8656e5e3ebb886"
                   }
                 },
                 {
                   "key": "devorbit.output.digest",
                   "value": {
-                    "stringValue": "826b5ec8e1806f6e"
+                    "stringValue": "a59fbd558b51d8b7"
                   }
                 },
                 {
@@ -1781,13 +1781,13 @@
               }
             },
             {
-              "traceId": "f7aa01ad2069bb2cab8b8c5cbacc76f8",
-              "spanId": "57cdb63278127ced",
+              "traceId": "52c54986b66f577c8b0b04e9f0a1a07f",
+              "spanId": "16902958b44aa352",
               "parentSpanId": "afa0b4a4b3052d56",
               "name": "execute_tool release.canary",
               "kind": 1,
-              "startTimeUnixNano": "1786620231482000000",
-              "endTimeUnixNano": "1786620231483000000",
+              "startTimeUnixNano": "1786631426485000000",
+              "endTimeUnixNano": "1786631426486000000",
               "attributes": [
                 {
                   "key": "gen_ai.operation.name",
@@ -1810,7 +1810,7 @@
                 {
                   "key": "devorbit.case.id",
                   "value": {
-                    "stringValue": "CASE-256364DB"
+                    "stringValue": "CASE-69A1008D"
                   }
                 },
                 {
@@ -1828,13 +1828,13 @@
                 {
                   "key": "devorbit.audit.ref",
                   "value": {
-                    "stringValue": "audit://addc9940-5da2-4c99-922e-4f9ba2f67810"
+                    "stringValue": "audit://d8bfcba5-8fd7-4f89-bbb7-6cada4ffb259"
                   }
                 },
                 {
                   "key": "devorbit.input.digest",
                   "value": {
-                    "stringValue": "5a7504c09dfee2c4"
+                    "stringValue": "7cb61dc8d9513f8a"
                   }
                 },
                 {
@@ -1855,13 +1855,13 @@
               }
             },
             {
-              "traceId": "f7aa01ad2069bb2cab8b8c5cbacc76f8",
-              "spanId": "6617467fecaa32bb",
+              "traceId": "52c54986b66f577c8b0b04e9f0a1a07f",
+              "spanId": "a0bc816112dde7c7",
               "parentSpanId": "eaa75170c9865b6e",
               "name": "execute_tool knowledge.write_case",
               "kind": 1,
-              "startTimeUnixNano": "1786620231483000000",
-              "endTimeUnixNano": "1786620231484000000",
+              "startTimeUnixNano": "1786631426486000000",
+              "endTimeUnixNano": "1786631426487000000",
               "attributes": [
                 {
                   "key": "gen_ai.operation.name",
@@ -1884,7 +1884,7 @@
                 {
                   "key": "devorbit.case.id",
                   "value": {
-                    "stringValue": "CASE-256364DB"
+                    "stringValue": "CASE-69A1008D"
                   }
                 },
                 {
@@ -1902,19 +1902,19 @@
                 {
                   "key": "devorbit.audit.ref",
                   "value": {
-                    "stringValue": "audit://9770d00b-c850-48cb-9403-3d04de08bd8e"
+                    "stringValue": "audit://32fa7a15-2f91-4d46-9484-7935390fc548"
                   }
                 },
                 {
                   "key": "devorbit.input.digest",
                   "value": {
-                    "stringValue": "b335a938027540f3"
+                    "stringValue": "c8662fded41851fa"
                   }
                 },
                 {
                   "key": "devorbit.output.digest",
                   "value": {
-                    "stringValue": "8e0363ed9be08c0e"
+                    "stringValue": "18772fe24d1ba8b7"
                   }
                 },
                 {
@@ -1929,12 +1929,12 @@
               }
             },
             {
-              "traceId": "f7aa01ad2069bb2cab8b8c5cbacc76f8",
-              "spanId": "a3f034604e4ab019",
+              "traceId": "52c54986b66f577c8b0b04e9f0a1a07f",
+              "spanId": "b164b3aaf92de732",
               "name": "execute_tool repository.dispose_workspace",
               "kind": 1,
-              "startTimeUnixNano": "1786620231484000000",
-              "endTimeUnixNano": "1786620231493000000",
+              "startTimeUnixNano": "1786631426486000000",
+              "endTimeUnixNano": "1786631426490000000",
               "attributes": [
                 {
                   "key": "gen_ai.operation.name",
@@ -1957,7 +1957,7 @@
                 {
                   "key": "devorbit.case.id",
                   "value": {
-                    "stringValue": "CASE-256364DB"
+                    "stringValue": "CASE-69A1008D"
                   }
                 },
                 {
@@ -1975,19 +1975,19 @@
                 {
                   "key": "devorbit.audit.ref",
                   "value": {
-                    "stringValue": "audit://f1f4b0c4-3145-4236-ba0c-b7ec03f58d1f"
+                    "stringValue": "audit://f5867867-b5ad-47b7-8d02-5d81ac5ea391"
                   }
                 },
                 {
                   "key": "devorbit.input.digest",
                   "value": {
-                    "stringValue": "37aa6e00a6f4a201"
+                    "stringValue": "4c789781a79a6394"
                   }
                 },
                 {
                   "key": "devorbit.output.digest",
                   "value": {
-                    "stringValue": "21cb140f4973b333"
+                    "stringValue": "c916bbe86dee3c0a"
                   }
                 },
                 {
@@ -2019,7 +2019,7 @@
           {
             "key": "service.version",
             "value": {
-              "stringValue": "0.5.1"
+              "stringValue": "0.6.0"
             }
           },
           {
@@ -2034,7 +2034,7 @@
         {
           "scope": {
             "name": "devorbit.runtime",
-            "version": "0.5.1"
+            "version": "0.6.0"
           },
           "metrics": [
             {
@@ -2044,7 +2044,7 @@
                 "dataPoints": [
                   {
                     "asInt": "7",
-                    "timeUnixNano": "1786620231497000000"
+                    "timeUnixNano": "1786631426493000000"
                   }
                 ]
               }
@@ -2056,7 +2056,7 @@
                 "dataPoints": [
                   {
                     "asInt": "15",
-                    "timeUnixNano": "1786620231497000000"
+                    "timeUnixNano": "1786631426493000000"
                   }
                 ]
               }
@@ -2068,7 +2068,7 @@
                 "dataPoints": [
                   {
                     "asInt": "0",
-                    "timeUnixNano": "1786620231497000000"
+                    "timeUnixNano": "1786631426493000000"
                   }
                 ]
               }
@@ -2080,7 +2080,7 @@
                 "dataPoints": [
                   {
                     "asInt": "30",
-                    "timeUnixNano": "1786620231497000000"
+                    "timeUnixNano": "1786631426493000000"
                   }
                 ]
               }
@@ -2092,7 +2092,7 @@
                 "dataPoints": [
                   {
                     "asInt": "1",
-                    "timeUnixNano": "1786620231497000000"
+                    "timeUnixNano": "1786631426493000000"
                   }
                 ]
               }

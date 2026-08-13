@@ -3,7 +3,7 @@ FROM ${NODE_IMAGE}
 
 LABEL org.opencontainers.image.title="DevOrbit" \
       org.opencontainers.image.description="Auditable multi-agent software delivery control plane" \
-      org.opencontainers.image.version="0.5.1" \
+      org.opencontainers.image.version="0.6.0" \
       org.opencontainers.image.licenses="Apache-2.0"
 
 RUN groupadd --gid 10001 devorbit \

@@ -1,0 +1,80 @@
+{
+  "version": "1.0.0",
+  "mode": "github-jenkins-argo",
+  "description": "Native provider configuration for real GitHub Issues, Git repositories, Jenkins builds and Argo Rollouts/Kubernetes APIs.",
+  "requiredEnvironment": [
+    "DEVORBIT_PLATFORM=github-jenkins-argo",
+    "DEVORBIT_PLATFORM_TOKEN",
+    "DEVORBIT_GITHUB_OWNER",
+    "DEVORBIT_GITHUB_REPO",
+    "DEVORBIT_GIT_REPOSITORY_URL",
+    "DEVORBIT_JENKINS_BASE_URL",
+    "DEVORBIT_JENKINS_JOB_PATH",
+    "DEVORBIT_ARGO_BASE_URL",
+    "DEVORBIT_ARGO_NAMESPACE",
+    "DEVORBIT_ARGO_ROLLOUT",
+    "DEVORBIT_IDEMPOTENCY_DIR",
+    "DEVORBIT_OBSERVABILITY_BASE_URL",
+    "DEVORBIT_KNOWLEDGE_BASE_URL",
+    "DEVORBIT_CONTROL_TOKEN"
+  ],
+  "optionalEnvironment": [
+    "DEVORBIT_GITHUB_API_BASE_URL",
+    "DEVORBIT_GITHUB_TOKEN",
+    "DEVORBIT_GIT_BRANCH",
+    "DEVORBIT_GIT_AUTHORIZATION",
+    "DEVORBIT_GIT_PUSH_BRANCHES",
+    "DEVORBIT_JENKINS_TOKEN",
+    "DEVORBIT_JENKINS_USERNAME",
+    "DEVORBIT_ARGO_TOKEN",
+    "DEVORBIT_ARGO_CONTAINER",
+    "DEVORBIT_OBSERVABILITY_BASE_URL",
+    "DEVORBIT_KNOWLEDGE_BASE_URL"
+  ],
+  "security": {
+    "controlAndOutboundTokensMustDiffer": true,
+    "nonLocalOriginsRequireHttps": true,
+    "gitDefaultBranchWrite": false,
+    "gitTemporaryBranchPrefix": "devorbit/",
+    "gitPushOptIn": true,
+    "jenkinsJobAllowlist": true,
+    "argoNamespaceAllowlist": true,
+    "argoCanarySetWeight": 10,
+    "approvalTokenCrossesBoundary": false,
+    "idempotencyRequiredForWrites": true,
+    "idempotencyPersistentForExternalWrites": true,
+    "idempotencyUnknownOutcomeFailsClosed": true,
+    "reconciliationEvidenceRequired": true,
+    "repositorySymlinkTraversalDenied": true,
+    "argoPatchMediaType": "application/json-patch+json",
+    "argoObservedGenerationRequired": true,
+    "rollbackMustBeVerified": true
+  },
+  "operations": {
+    "github.issue.list": "GET /repos/{owner}/{repo}/issues?state=all",
+    "git.clone": "git clone --single-branch --branch {branch}",
+    "git.commit": "git add + git commit in isolated workspace",
+    "git.push": "git push HEAD:refs/heads/devorbit/{case}",
+    "jenkins.build.trigger": "POST {jobPath}/buildWithParameters",
+    "jenkins.queue.poll": "GET {queueLocation}",
+    "jenkins.build.poll": "GET {jobPath}/{number}/api/json",
+    "jenkins.test-report": "GET {jobPath}/{number}/testReport/api/json",
+    "argo.rollout.get": "GET /apis/argoproj.io/v1alpha1/namespaces/{namespace}/rollouts/{name}",
+    "argo.rollout.patch": "RFC 6902 replace only the selected container image, then require current observedGeneration",
+    "argo.rollout.rollback": "RFC 6902 restore previous image and verify the rollback generation is healthy",
+    "idempotency.reconcile": "Operator-only CLI records a provider-verified result and evidence reference; never exposed as an Agent or MCP tool"
+  },
+  "evidence": {
+    "command": "npm run native-platform-smoke",
+    "report": "reports/native-platform-smoke.json",
+    "scope": "local protocol endpoints emulate vendor APIs; Git clone/commit/push/checkout and node --test are real local operations",
+    "notClaimed": ["vendor account invocation", "production cluster execution", "public benchmark score"],
+    "nativeRunner": {
+      "dockerfile": "Dockerfile.native",
+      "command": "npm run native-runner-smoke",
+      "report": "reports/native-runner-smoke.json",
+      "gitVersion": "2.39.5",
+      "idempotencyMount": "/var/lib/devorbit/idempotency"
+    }
+  }
+}

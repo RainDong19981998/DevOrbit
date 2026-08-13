@@ -2,7 +2,7 @@
 
 DevOrbit 面向“线上缺陷从发现到确认发布平均需要跨多个系统、多个角色人工接力”的真实研发问题，把缺陷聚合、代码根因定位、修复执行、测试验证、灰度确认和复盘沉淀编排为一条可回放的多 Agent 证据链。
 
-V0.4 是已审计的初赛提交基线：提供无外部密钥、无云资源依赖的确定性 Demo，以锁定 AgentTeams v1.2.2（commit `849182a`）契约的独立 Worker、状态、消息和 Skill 包证明角色编排。当前源码已推进到 V0.5.1 工程里程碑：六类外部 Provider 可经真实 HTTP Adapter SPI 替换 Fixture，而不修改 Agent、Skill、MCP Tool 和 Case State；新增 OpenAPI 3.1 契约、控制面鉴权、信任域令牌隔离、非 root/只读容器门禁和可审计公开基准协议。该 HTTP 证据使用本地契约服务，不声称已连接真实 GitHub、CI、Kubernetes、云账号或官方 AgentTeams 集群。
+V0.4 是已审计的初赛提交基线：提供无外部密钥、无云资源依赖的确定性 Demo，以锁定 AgentTeams v1.2.2（commit `849182a`）契约的独立 Worker、状态、消息和 Skill 包证明角色编排。当前源码已推进到 V0.6.0 工程里程碑：六类外部 Provider 可经 HTTP Adapter SPI 替换 Fixture，并新增 GitHub Issue、Git、Jenkins、Argo Rollouts/Kubernetes 原生连接器；连接器不修改 Agent、Skill、MCP Tool 和 Case State，同时保留控制面鉴权、信任域令牌隔离、非 root/只读容器门禁和可审计公开基准协议。原生连接器已有本地协议端点和真实 Git/测试命令的 8/8 证据，但不声称已使用厂商账号、生产集群或官方 AgentTeams 集群。
 
 ## 一分钟运行
 
@@ -103,14 +103,15 @@ src/orchestrator.js        可复现的端到端运行器
 src/skills.js              核心 Skill 注册表
 src/adapters.js            外部系统适配器注册表
 src/adapters/http.js       可注入的生产 HTTP Provider、重试和安全边界
-Dockerfile                 非 root、只读兼容的生产镜像
+Dockerfile                 非 root、只读兼容的 Fixture/HTTP 控制面镜像
+Dockerfile.native          固定 Git 2.39.5、持久幂等挂载的原生平台镜像
 ```
 
 ## Skill、MCP 与上下文
 
 Skill 是稳定能力抽象，MCP 负责连接工具。当前实现提供 7 个自定义 Skill，并锁定官方门户 `alibabacloud-sls-query` v0.0.2 的可审计合规裁剪快照供 Intake/RCA 真实日志接入；核心 `SKILL.md` 未修改，唯一移除路径和原包/分发包摘要均已披露。默认 Demo 无云凭据，走相同语义的 Fixture-backed Observability MCP，不声称发生云调用。一个 MCP 2025-06-18 服务支持 `initialize`、会话 ID、`tools/list`、`tools/call`、结构化结果、协议版本头、Origin 校验、幂等重放和会话销毁。10 个工具覆盖信号拉取、仓库读取/写入/隔离/销毁、CI 测试、案例检索/写入和灰度决策；完整成功路径产生 15 次调用，每次记录 Agent、Trace、Case、时延、输入输出摘要、幂等键和审计引用。`/mcp` 是可外部验证的 Streamable HTTP 端点，Worker 内部通过同一 JSON-RPC 调度器运行。
 
-V0.5 的外部 Provider 契约见 [`docs/Adapter生产契约.md`](docs/Adapter生产契约.md) 与 [`schemas/http-adapter.openapi.json`](schemas/http-adapter.openapi.json)。应用版本为 V0.5.1；Adapter OpenAPI 独立保持 v0.5.0，因为本次补丁未改变其接口。烟测让 Issue、Observability、Repository、CI、Knowledge 和 Release 全部经过真实本地 HTTP Server，验证 17 个请求、两次幂等语义重试、Bearer 与 Case/Trace/Agent 关联、全部写操作幂等键，以及内部审批令牌不越过信任边界；MCP 的 15 条审计仍是上层权威证据。该结果证明替换边界，不等于真实供应商平台接入。
+V0.5 的 HTTP Provider 契约见 [`docs/Adapter生产契约.md`](docs/Adapter生产契约.md) 与 [`schemas/http-adapter.openapi.json`](schemas/http-adapter.openapi.json)，应用版本现在为 V0.6.0；Adapter OpenAPI 独立保持 v0.5.0，因为接口兼容。新增原生平台连接器与配置契约见 [`docs/原生平台连接器.md`](docs/原生平台连接器.md) 和 [`config/platform-native.contract.json`](config/platform-native.contract.json)。`npm run native-platform-smoke` 在本地协议端点上实际执行 Git clone/commit/push/checkout 与 `node --test`，并验证 GitHub Issue 归一化、Jenkins 异步构建、Argo JSON Patch/generation gate、回滚确认、临时分支清理和持久幂等；已完成结果可跨重启重放，外部结果未知则进入 `in_doubt`、禁止自动重做，只能由运维携 Provider 证据对账。`npm run native-runner-smoke` 验证含 Git 的最小权限原生镜像与持久幂等挂载。两者证明连接器工程边界，不等于厂商账号或生产系统实测。
 
 上下文机制已实现赛事要求中的两项：
 
@@ -145,13 +146,13 @@ MCP_URL=https://gateway.example.com/devorbit/mcp npm run deploy-agentteams
 
 ## 验证与诚实边界
 
-`npm test` 验证独立 Worker 协作、真实样例仓补丁/测试、同 Case 审批续跑、低置信停止、测试失败阻断和灰度回滚。`npm run evaluate` 执行 7 个团队构造的 Golden Cases，目前 7/7 通过，5/5 安全分支正确，Worker 证据覆盖率 100%。这些指标验证工作流和策略行为，不代表生产业务收益；复赛将扩展为公开缺陷仓库评测集，报告 Top-3 根因命中率、Patch 可编译率和人工介入率。
+`npm test` 验证独立 Worker 协作、真实样例仓补丁/测试、同 Case 审批续跑、低置信停止、测试失败阻断、灰度回滚和原生平台连接器协议。`npm run evaluate` 执行 7 个团队构造的 Golden Cases，目前 7/7 通过，5/5 安全分支正确，Worker 证据覆盖率 100%。这些指标验证工作流和策略行为，不代表生产业务收益；正式公开基准冻结后统一报告 Top-3 根因命中率、Patch 可编译率和人工介入率。
 
 `npm run capture-runs` 生成 4 份可回放运行报告；`npm run api-smoke` 从独立端口启动服务并验证会话续跑、真实测试、安全门禁和评测报告 API。AgentTeams 契约证据见 [`reports/agentteams-contract.md`](reports/agentteams-contract.md)。
 
-`npm run api-security-smoke` 验证控制面鉴权、外部模式禁止一键批准、MCP 鉴权、静态资源白名单和请求体限制。`npm run container-smoke` 在非 root、只读根文件系统、无 Linux capabilities 和 `no-new-privileges` 条件下运行同一审批闭环，要求 3→4 Red→Green、同 Case/Trace 续跑、知识写回、15 条 MCP 审计和 31 个交互闭环 OTLP Span。
+`npm run api-security-smoke` 验证控制面鉴权、外部模式禁止一键批准、MCP 鉴权、静态资源白名单和请求体限制。`npm run container-smoke` 在非 root、只读根文件系统、无 Linux capabilities 和 `no-new-privileges` 条件下运行同一审批闭环，要求 3→4 Red→Green、同 Case/Trace 续跑、知识写回、15 条 MCP 审计和 31 个交互闭环 OTLP Span。`npm run native-runner-smoke` 对含 Git 的原生镜像执行同等级硬化检查和真实仓库 clone。
 
-公开基准方法见 [`docs/公开基准协议.md`](docs/公开基准协议.md)、[`evaluation/public-benchmark.manifest.json`](evaluation/public-benchmark.manifest.json) 和 [`schemas/public-benchmark.schema.json`](schemas/public-benchmark.schema.json)。当前状态严格为 `not_run`：外部公开数据未冻结，仓库不伪造 SWE-bench/BugsInPy 分数；冻结后统一比较人工、单 Agent 和 DevOrbit，并输出可审计的 Wilson/Bootstrap/McNemar 结果。
+公开基准方法见 [`docs/公开基准协议.md`](docs/公开基准协议.md)、[`evaluation/public-benchmark.manifest.json`](evaluation/public-benchmark.manifest.json) 和 [`schemas/public-benchmark.schema.json`](schemas/public-benchmark.schema.json)。正式计分状态严格为 `not_run`：计分 manifest 为 0 案例、方法结果为 0，不伪造 SWE-bench/BugsInPy 分数。另有 1 个 SWE-bench dev validation pilot 已冻结 provenance，并在固定 base + test patch 上三次命中同一业务断言失败；evaluator-only 金修复验证 1/1 和所在文件 43/43 通过。它只证明评测 harness 能复现真实缺陷，不是 DevOrbit 分数、test split 或排名结论。见 [`evaluation/public-benchmark-pilot.manifest.json`](evaluation/public-benchmark-pilot.manifest.json) 与 [`docs/公开基准复现试点.md`](docs/公开基准复现试点.md)。
 
 ## 开放与依赖披露
 
@@ -168,12 +169,16 @@ MCP_URL=https://gateway.example.com/devorbit/mcp npm run deploy-agentteams
 - [`docs/参赛方案.md`](docs/参赛方案.md)：与评分项逐项对应的完整方案。
 - [`docs/Agent-Identity清单.md`](docs/Agent-Identity清单.md)：7 个 Worker 与 Manager 的边界。
 - [`docs/Skill清单.md`](docs/Skill清单.md)：核心 Skill 的 I/O、失败处理、安全和复用价值。
-- [`deliverables/DevOrbit_初赛方案.pdf`](deliverables/DevOrbit_初赛方案.pdf)：17 页 V0.5.1 初赛主方案；源文件为同目录 PPTX。
+- [`deliverables/DevOrbit_初赛方案.pdf`](deliverables/DevOrbit_初赛方案.pdf)：17 页 V0.6.0 初赛主方案；源文件为同目录 PPTX。
 - [`docs/演示脚本.md`](docs/演示脚本.md)：3 分钟 Demo 与问答口径。
 - [`docs/评委90秒验收.md`](docs/评委90秒验收.md)：最短可复核路径与评分证据索引。
 - [`docs/威胁模型.md`](docs/威胁模型.md)：信任边界、攻击路径、控制和剩余风险。
 - [`docs/复赛冲刺路线图.md`](docs/复赛冲刺路线图.md)：官方环境、真实工具链与公开基准的 10 天执行计划。
+- [`docs/原生平台连接器.md`](docs/原生平台连接器.md)：GitHub/Git/Jenkins/Argo Rollouts 连接器配置、权限边界和 8/8 本地证据。
 - [`reports/benchmark.md`](reports/benchmark.md)：7 组对照/消融与 95% Wilson 区间。
 - [`reports/security-evaluation.md`](reports/security-evaluation.md)：6 个对抗安全案例。
 - [`reports/release-audit.md`](reports/release-audit.md)：二进制材料、嵌套 ZIP、视频已复核摘要、简介字数和敏感词的发布审计。
 - [`docs/第三方依赖与合规清单.md`](docs/第三方依赖与合规清单.md)：版本、许可证、费用、数据和诚实边界。
+- [`reports/native-platform-smoke.json`](reports/native-platform-smoke.json)：GitHub/Git/Jenkins/Argo 原生连接器 8/8 本地证据与边界说明。
+- [`reports/native-runner-smoke.json`](reports/native-runner-smoke.json)：原生 runner 镜像 Git/clone/最小权限/持久挂载 6/6 运行证据。
+- [`evaluation/public-benchmark-pilot.manifest.json`](evaluation/public-benchmark-pilot.manifest.json)：1 个 SWE-bench dev validation pilot 的来源、摘要、失败与金修复隔离证据；0 个 DevOrbit 分数。

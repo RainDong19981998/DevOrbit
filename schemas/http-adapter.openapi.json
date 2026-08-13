@@ -245,7 +245,7 @@
         "properties": { "workspaceId": { "type": "string", "minLength": 1 }, "idempotencyKey": { "type": "string", "minLength": 1 } },
         "additionalProperties": false
       },
-      "WorkspaceResponse": { "type": "object", "required": ["workspaceId"], "properties": { "workspaceId": { "type": "string" } }, "additionalProperties": false },
+      "WorkspaceResponse": { "type": "object", "required": ["workspaceId"], "properties": { "workspaceId": { "type": "string" }, "baseCommit": { "type": "string", "pattern": "^[0-9a-f]{7,64}$" }, "branch": { "type": "string" } }, "additionalProperties": false },
       "ReadFileRequest": {
         "type": "object",
         "required": ["path"],

@@ -24,6 +24,7 @@ zip -qj "$out" \
   deliverables/DevOrbit_证据索引.pdf \
   deliverables/DevOrbit_对照与消融评测.pdf \
   deliverables/DevOrbit_对抗安全评测.pdf \
+  deliverables/DevOrbit_公开基准复现试点.pdf \
   deliverables/交付物_SHA256.txt \
   docs/作品简介.md \
   docs/官网提交粘贴稿.md \
@@ -45,7 +46,19 @@ zip -qj "$out" \
   schemas/public-benchmark.schema.json \
   schemas/public-benchmark-results.schema.json \
   schemas/public-benchmark-report.schema.json \
-  docs/公开基准协议.md
+  docs/公开基准协议.md \
+  evaluation/public-benchmark-pilot.manifest.json \
+  schemas/public-benchmark-pilot.schema.json \
+  docs/公开基准复现试点.md \
+  reports/public-benchmark-pilot.json \
+  config/platform-native.contract.json \
+  schemas/platform-native.contract.schema.json \
+  docs/原生平台连接器.md \
+  reports/native-platform-smoke.json \
+  Dockerfile.native \
+  scripts/native-runner-smoke.sh \
+  scripts/write-native-runner-report.mjs \
+  reports/native-runner-smoke.json
 
 unzip -tq "$out"
 echo 'PASS built initial submission bundle'

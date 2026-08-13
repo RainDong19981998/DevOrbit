@@ -49,6 +49,7 @@ JOBS = [
     ("docs/证据索引.md", "DevOrbit_证据索引.pdf"),
     ("reports/benchmark.md", "DevOrbit_对照与消融评测.pdf"),
     ("reports/security-evaluation.md", "DevOrbit_对抗安全评测.pdf"),
+    ("docs/公开基准复现试点.md", "DevOrbit_公开基准复现试点.pdf"),
 ]
 
 
@@ -175,8 +176,8 @@ def render(source: Path, destination: Path):
         canvas.line(margin_x, height - 8 * mm, width - margin_x, height - 8 * mm)
         canvas.setFont(FONT_NAME, 7.5)
         canvas.setFillColor(MUTED)
-        canvas.drawString(margin_x, 7 * mm, f"DevOrbit V0.4 | {title}")
-        canvas.drawRightString(width - margin_x, 7 * mm, f"{doc.page} | 仿真证据，不外推生产收益")
+        canvas.drawString(margin_x, 7 * mm, f"DevOrbit V0.6.0 | {title}")
+        canvas.drawRightString(width - margin_x, 7 * mm, f"{doc.page} | 证据边界见正文")
         canvas.restoreState()
 
     doc = BaseDocTemplate(str(destination), pagesize=page_size, leftMargin=margin_x, rightMargin=margin_x, topMargin=margin_top, bottomMargin=margin_bottom, title=title, author="DevOrbit")

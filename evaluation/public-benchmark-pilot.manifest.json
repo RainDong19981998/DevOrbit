@@ -1,0 +1,67 @@
+{
+  "protocolVersion": "1.0",
+  "pilotId": "devorbit-public-reproduction-pilot-v1",
+  "status": "frozen-reproduced-not-scored",
+  "disclosure": "One SWE-bench dev case has immutable provenance and a reproduced baseline failure. It is a validation pilot for the evaluation harness, not a DevOrbit benchmark run, test-set score, or ranking claim.",
+  "dataset": {
+    "name": "princeton-nlp/SWE-bench",
+    "url": "https://huggingface.co/datasets/princeton-nlp/SWE-bench",
+    "snapshot": "e48e2bd1e9fecd5bbd641e9414ac59da9f2e69f6",
+    "split": "dev",
+    "parquetSha256": "sha256:d758d54540aa4140d0274ed0cc93b8288aa6f323c3c603e2557e7666a47fc41b",
+    "parquetBytes": 1382594,
+    "splitCases": 225,
+    "retrievedAt": "2026-08-13T13:31:50Z",
+    "licenseEvidence": "The pinned dataset card does not declare a dataset license. This pilot does not redistribute the parquet; the SWE-bench software repository currently declares MIT."
+  },
+  "case": {
+    "instanceId": "sqlfluff__sqlfluff-884",
+    "repository": "sqlfluff/sqlfluff",
+    "repositoryUrl": "https://github.com/sqlfluff/sqlfluff",
+    "pullRequestUrl": "https://github.com/sqlfluff/sqlfluff/pull/884",
+    "resolvedIssueUrl": "https://github.com/sqlfluff/sqlfluff/issues/847",
+    "baseCommit": "c0bad78f3fa9549591738c77f869724f721e6830",
+    "sourceArchiveUrl": "https://codeload.github.com/sqlfluff/sqlfluff/tar.gz/c0bad78f3fa9549591738c77f869724f721e6830",
+    "sourceArchiveSha256": "sha256:8484d90c290fc06b8c331991605300a692266a6f71536d1cf1612e4dca8c4fbb",
+    "sourceArchiveBytes": 531625,
+    "sourceLicense": "MIT",
+    "sourceLicenseSha256": "sha256:6d1e394d2e68a47106733103e9ed87c9d1573d9b7a43f5d05989424fce6dae39",
+    "problemStatementSha256": "sha256:39a9656b3d9d11eab532a60eb47dabe32a070461fc469f44a964e1ed9143102c",
+    "testPatchPath": "evaluation/public-pilot/sqlfluff__sqlfluff-884/test.patch",
+    "testPatchSha256": "sha256:3e799cc71e656fffdd8d6215dd5561cbdbe0808cfac7352f69b2e86067d8de50",
+    "failToPass": [
+      "test/core/dialects/ansi_test.py::test__dialect__ansi_is_whitespace"
+    ],
+    "passToPassCount": 37,
+    "pullRequestHeadCommit": "5dcf226dd09f54993daf53eff052b03ef25c4260",
+    "expectedFixCommit": "ed4e0561feb754ed984b3ca2ca6cf77331b0edaf",
+    "goldPatchSha256": "sha256:f292031cc0382ddf04104a56bd34fd966aa37e021442326641450cfec7d5cfe2",
+    "goldPatchStored": false,
+    "split": "validation-pilot"
+  },
+  "environment": {
+    "os": "Ubuntu 22.04 host",
+    "python": "3.10.12",
+    "projectVersion": "0.4.1",
+    "pytest": "6.2.5",
+    "packaging": "21.3",
+    "requirementsPath": "evaluation/public-pilot/sqlfluff__sqlfluff-884/requirements.lock",
+    "requirementsSha256": "sha256:2e191255cf33bc6cac4ed36302eb7ad8df33d0fd4f1440922f46a0fe20f20587",
+    "knownDeviation": "The upstream 0.4.1 classifiers list Python through 3.9. Python 3.10.12 reproduced the exact defect assertion; this pilot is not claimed as the official SWE-bench harness image."
+  },
+  "evidence": {
+    "baselineExitCode": 1,
+    "baselineAssertion": "assert raw_seg.is_whitespace",
+    "baselineLogPath": "evaluation/public-pilot/sqlfluff__sqlfluff-884/evidence/baseline-normalized.log",
+    "baselineLogSha256": "sha256:dfb589f8ebdcf854814c686cb4b55da1915b47313d89e3bbcdf0e0f28f3c99f7",
+    "goldFailToPassExitCode": 0,
+    "goldFailToPassPassed": 1,
+    "goldFailToPassLogPath": "evaluation/public-pilot/sqlfluff__sqlfluff-884/evidence/gold-fail-to-pass-normalized.log",
+    "goldFailToPassLogSha256": "sha256:34228c18c2ad807c4dc2316187c1808588cb8b6f2a2d28ea340165807c5fc6b3",
+    "goldAnsiFileExitCode": 0,
+    "goldAnsiFilePassed": 43,
+    "goldAnsiFileLogPath": "evaluation/public-pilot/sqlfluff__sqlfluff-884/evidence/gold-ansi-file-normalized.log",
+    "goldAnsiFileLogSha256": "sha256:74a59d197ca02c0d414913d74fe94daabcdbed69ec24c99f27b7297bbfea95d3",
+    "goldVerification": "Evaluator-only: the gold patch was isolated from every Agent/Skill/RAG input and was used only after baseline reproduction."
+  }
+}

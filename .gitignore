@@ -4,6 +4,7 @@ node_modules/
 __pycache__/
 *.pyc
 *.log
+!evaluation/public-pilot/**/evidence/*.log
 deliverables/*.zip
 .firefox-*-profile/
 灵畿β流程操作手册_20260518.pdf

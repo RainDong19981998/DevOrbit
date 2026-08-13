@@ -63,7 +63,7 @@ export function createTools({ fixturePath, workspaceRegistry, knowledgeStore, si
       title: 'Create isolated repository workspace',
       description: 'Copy the defect fixture into an isolated writable workspace.',
       inputSchema: schema({ workspaceId: { type: 'string' }, idempotencyKey: { type: 'string' } }, ['workspaceId', 'idempotencyKey']),
-      outputSchema: schema({ workspaceId: { type: 'string' } }, ['workspaceId']),
+      outputSchema: schema({ workspaceId: { type: 'string' }, baseCommit: { type: 'string' }, branch: { type: 'string' } }, ['workspaceId']),
       annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true },
       handler: async ({ workspaceId, idempotencyKey }, context) => {
         if (providers.repository) return providers.repository.createWorkspace({ workspaceId, idempotencyKey }, context);

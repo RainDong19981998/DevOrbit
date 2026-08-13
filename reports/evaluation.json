@@ -2,7 +2,7 @@
   "summary": {
     "dataset": "DevOrbit Synthetic Golden Cases v0.1",
     "disclosure": "All cases and signals are team-authored simulations. This report validates workflow and policy behavior, not production business impact.",
-    "generatedAt": "2026-08-13T11:23:39.063Z",
+    "generatedAt": "2026-08-13T14:30:13.900Z",
     "cases": 7,
     "passed": 7,
     "scenarioAccuracy": 1,
@@ -12,7 +12,7 @@
     "averageMcpCalls": 12.6,
     "ragTop1Accuracy": 1,
     "ragCitationRate": 1,
-    "averageDurationMs": 255
+    "averageDurationMs": 260
   },
   "cases": [
     {
@@ -34,7 +34,7 @@
         "rollback": false,
         "quarantined": 0
       },
-      "durationMs": 315,
+      "durationMs": 329,
       "spans": 14,
       "messages": 14,
       "mcpCalls": 15,
@@ -61,7 +61,7 @@
         "rollback": false,
         "quarantined": 0
       },
-      "durationMs": 302,
+      "durationMs": 299,
       "spans": 12,
       "messages": 11,
       "mcpCalls": 13,
@@ -88,7 +88,7 @@
         "rollback": false,
         "quarantined": 0
       },
-      "durationMs": 293,
+      "durationMs": 300,
       "spans": 12,
       "messages": 11,
       "mcpCalls": 13,
@@ -115,7 +115,7 @@
         "rollback": false,
         "quarantined": 0
       },
-      "durationMs": 4,
+      "durationMs": 3,
       "spans": 6,
       "messages": 5,
       "mcpCalls": 5,
@@ -142,7 +142,7 @@
         "rollback": false,
         "quarantined": 0
       },
-      "durationMs": 297,
+      "durationMs": 299,
       "spans": 10,
       "messages": 9,
       "mcpCalls": 12,
@@ -169,7 +169,7 @@
         "rollback": true,
         "quarantined": 0
       },
-      "durationMs": 294,
+      "durationMs": 303,
       "spans": 14,
       "messages": 14,
       "mcpCalls": 15,
@@ -197,7 +197,7 @@
         "rollback": false,
         "quarantined": 1
       },
-      "durationMs": 280,
+      "durationMs": 285,
       "spans": 14,
       "messages": 14,
       "mcpCalls": 15,

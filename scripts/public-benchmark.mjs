@@ -58,7 +58,7 @@ if (!resultsPath) {
   const reportErrors = validateJsonSchema(report, reportSchema);
   if (reportErrors.length) throw new Error(`generated report schema failed: ${reportErrors.join('; ')}`);
   await writeFile(outputPath, JSON.stringify(report, null, 2) + '\n');
-  await writeFile(markdownPath, `# 公开软件修复基准\n\n> 状态：\`not_run\`。没有冻结公开快照或真实运行结果；本文件不是分数。\n\n- Manifest 状态：\`${manifest.status}\`\n- 案例数：${manifest.cases.length}\n- 真实方法结果：0\n\n运行真实结果时使用：\`npm run public-benchmark -- --manifest evaluation/public-benchmark.manifest.json --results path/to/results.json\`\n`);
+  await writeFile(markdownPath, `# 公开软件修复基准\n\n> 状态：\`not_run\`。正式计分 manifest 尚未冻结，案例数和真实方法结果均为 0；本文件不是分数。\n\n- Manifest 状态：\`${manifest.status}\`\n- 正式计分案例：${manifest.cases.length}\n- 真实方法结果：0\n- 独立 validation pilot：1 个 SWE-bench dev 案例已冻结并复现基线失败，不计入本报告\n\nPilot 证据：\`npm run validate-public-pilot\`；联网重放：\`npm run reproduce-public-pilot\`。\n\n运行正式结果时使用：\`npm run public-benchmark -- --manifest evaluation/public-benchmark.manifest.json --results path/to/results.json\`\n`);
   console.log(`PASS public benchmark protocol: not_run, ${manifest.cases.length} cases declared`);
   process.exit(0);
 }

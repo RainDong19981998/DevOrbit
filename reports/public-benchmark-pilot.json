@@ -1,0 +1,60 @@
+{
+  "generatedAt": "2026-08-13T14:36:48.498Z",
+  "status": "passed",
+  "boundary": "One SWE-bench dev validation pilot reproduced. This report contains no DevOrbit run, score, test-set result, or ranking claim.",
+  "manifestDigest": "sha256:6345b4250bc59c4ac1f0a166ca25c58d5f7eebc70e98844e6ead730b5df2cfd9",
+  "case": {
+    "instanceId": "sqlfluff__sqlfluff-884",
+    "split": "validation-pilot",
+    "baselineExitCode": 1,
+    "goldFailToPassPassed": 1,
+    "goldAnsiFilePassed": 43
+  },
+  "summary": {
+    "checks": 8,
+    "passed": 8,
+    "failed": 0
+  },
+  "checks": [
+    {
+      "label": "pilot manifest schema",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "label": "digest evaluation/public-pilot/sqlfluff__sqlfluff-884/test.patch",
+      "ok": true,
+      "detail": "sha256:3e799cc71e656fffdd8d6215dd5561cbdbe0808cfac7352f69b2e86067d8de50"
+    },
+    {
+      "label": "digest evaluation/public-pilot/sqlfluff__sqlfluff-884/requirements.lock",
+      "ok": true,
+      "detail": "sha256:2e191255cf33bc6cac4ed36302eb7ad8df33d0fd4f1440922f46a0fe20f20587"
+    },
+    {
+      "label": "digest evaluation/public-pilot/sqlfluff__sqlfluff-884/evidence/baseline-normalized.log",
+      "ok": true,
+      "detail": "sha256:dfb589f8ebdcf854814c686cb4b55da1915b47313d89e3bbcdf0e0f28f3c99f7"
+    },
+    {
+      "label": "digest evaluation/public-pilot/sqlfluff__sqlfluff-884/evidence/gold-fail-to-pass-normalized.log",
+      "ok": true,
+      "detail": "sha256:34228c18c2ad807c4dc2316187c1808588cb8b6f2a2d28ea340165807c5fc6b3"
+    },
+    {
+      "label": "digest evaluation/public-pilot/sqlfluff__sqlfluff-884/evidence/gold-ansi-file-normalized.log",
+      "ok": true,
+      "detail": "sha256:74a59d197ca02c0d414913d74fe94daabcdbed69ec24c99f27b7297bbfea95d3"
+    },
+    {
+      "label": "baseline proves expected defect assertion",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "label": "gold remains evaluator-only",
+      "ok": true,
+      "detail": null
+    }
+  ]
+}

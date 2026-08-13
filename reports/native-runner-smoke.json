@@ -1,0 +1,56 @@
+{
+  "generatedAt": "2026-08-13T14:16:25.606Z",
+  "status": "passed",
+  "boundary": "Build and runtime evidence for the native connector image. Vendor credentials and production cluster execution are not claimed.",
+  "image": "devorbit:0.6.0-native-smoke",
+  "imageId": "sha256:5a6db879900fd7238a92ac589b0f9b93bcb9f6066f690857f6220fba41650f79",
+  "baseImage": "devorbit-node:22.18.0-bookworm-offline",
+  "gitVersion": "git version 2.39.5",
+  "cloneCommit": "bc9c278c373bf76ba991033990bc8389e19e8543",
+  "hardening": {
+    "uid": 10001,
+    "readOnlyRootfs": true,
+    "capDrop": "[ALL]",
+    "noNewPrivileges": true
+  },
+  "persistence": {
+    "path": "/var/lib/devorbit/idempotency",
+    "externalWrites": [
+      "jenkins.build.trigger",
+      "argo.rollout.patch",
+      "argo.rollout.rollback"
+    ],
+    "workspaceLifecycle": "process-scoped"
+  },
+  "summary": {
+    "checks": 6,
+    "passed": 6,
+    "failed": 0
+  },
+  "checks": [
+    {
+      "label": "non-root runtime",
+      "ok": true
+    },
+    {
+      "label": "Git runtime pinned",
+      "ok": true
+    },
+    {
+      "label": "real repository clone in hardened container",
+      "ok": true
+    },
+    {
+      "label": "native container environment",
+      "ok": true
+    },
+    {
+      "label": "read-only and least-privilege invocation",
+      "ok": true
+    },
+    {
+      "label": "durable idempotency mount configured",
+      "ok": true
+    }
+  ]
+}

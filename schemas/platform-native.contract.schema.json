@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devorbit.example/schemas/platform-native.contract.schema.json",
+  "title": "DevOrbit Native Platform Contract",
+  "type": "object",
+  "required": ["version", "mode", "requiredEnvironment", "optionalEnvironment", "security", "operations", "evidence"],
+  "properties": {
+    "version": { "type": "string" },
+    "mode": { "const": "github-jenkins-argo" },
+    "description": { "type": "string" },
+    "requiredEnvironment": { "type": "array", "items": { "type": "string" }, "minItems": 14 },
+    "optionalEnvironment": { "type": "array", "items": { "type": "string" } },
+    "security": { "type": "object", "required": ["controlAndOutboundTokensMustDiffer", "nonLocalOriginsRequireHttps", "gitPushOptIn", "argoCanarySetWeight", "approvalTokenCrossesBoundary", "idempotencyPersistentForExternalWrites", "idempotencyUnknownOutcomeFailsClosed", "reconciliationEvidenceRequired", "repositorySymlinkTraversalDenied", "argoPatchMediaType", "argoObservedGenerationRequired", "rollbackMustBeVerified"], "properties": { "controlAndOutboundTokensMustDiffer": { "const": true }, "nonLocalOriginsRequireHttps": { "const": true }, "gitPushOptIn": { "const": true }, "argoCanarySetWeight": { "const": 10 }, "approvalTokenCrossesBoundary": { "const": false }, "idempotencyPersistentForExternalWrites": { "const": true }, "idempotencyUnknownOutcomeFailsClosed": { "const": true }, "reconciliationEvidenceRequired": { "const": true }, "repositorySymlinkTraversalDenied": { "const": true }, "argoPatchMediaType": { "const": "application/json-patch+json" }, "argoObservedGenerationRequired": { "const": true }, "rollbackMustBeVerified": { "const": true } }, "additionalProperties": true },
+    "operations": { "type": "object", "minProperties": 10 },
+    "evidence": { "type": "object", "required": ["command", "report", "scope", "notClaimed", "nativeRunner"], "properties": { "command": { "const": "npm run native-platform-smoke" }, "report": { "const": "reports/native-platform-smoke.json" }, "scope": { "type": "string" }, "notClaimed": { "type": "array", "items": { "type": "string" }, "minItems": 3 }, "nativeRunner": { "type": "object", "required": ["dockerfile", "command", "report", "gitVersion", "idempotencyMount"], "properties": { "dockerfile": { "const": "Dockerfile.native" }, "command": { "const": "npm run native-runner-smoke" }, "report": { "const": "reports/native-runner-smoke.json" }, "gitVersion": { "const": "2.39.5" }, "idempotencyMount": { "const": "/var/lib/devorbit/idempotency" } }, "additionalProperties": false } }, "additionalProperties": false }
+  },
+  "additionalProperties": false
+}

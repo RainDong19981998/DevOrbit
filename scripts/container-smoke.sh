@@ -4,7 +4,7 @@ set -euo pipefail
 root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 cd "$root"
 
-image=${DEVORBIT_IMAGE:-devorbit:0.5.1-smoke}
+image=${DEVORBIT_IMAGE:-devorbit:0.6.0-smoke}
 node_image=${DEVORBIT_NODE_IMAGE:-node:22.18.0-bookworm-slim}
 report=${DEVORBIT_CONTAINER_REPORT:-reports/container-smoke.json}
 container="devorbit-smoke-$$"

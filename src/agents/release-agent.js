@@ -29,7 +29,7 @@ export const releaseAgent = {
     const regressed = state.scenario === 'canary-regression' && context.controls.canaryGuard !== false;
     const toolResult = await context.mcp.callTool('release.canary', {
       caseId: state.case_id,
-      version: 'checkout-service@2026.08.12-rc3',
+      version: context.releaseVersion || 'checkout-service@2026.08.12-rc3',
       approvalId: approval.approvalId,
       approvalToken: approvalReceipt.token,
       idempotencyKey: `${state.case_id}:promote:rc3`,
@@ -37,15 +37,21 @@ export const releaseAgent = {
     });
     const release = {
       ...toolResult.data,
-      version: 'checkout-service@2026.08.12-rc3',
+      version: context.releaseVersion || 'checkout-service@2026.08.12-rc3',
       idempotencyKey: `${state.case_id}:promote:rc3`,
       rollbackReady: true,
       toolCalled: true,
       mcpCall: toolResult.call
     };
+    if (!['promoted', 'rolled_back'].includes(release.decision)) throw new Error(`release provider returned unsupported decision: ${release.decision}`);
     mergeArtifact(state, 'release', release);
-    transition(state, regressed ? 'rolled_back' : 'confirmed', regressed ? 'canary thresholds breached; deterministic rollback executed' : 'canary health verified');
-    recordTrace(state, { agent: this.id, skill: this.skill, stage: 'release', parentSpanId: context.parentSpanId, status: release.decision, message: regressed ? '通过 MCP 灰度工具发现错误率升至 9.1%，超过阈值；策略引擎直接执行回滚。' : '通过 MCP 灰度工具完成 10% 健康检查，错误率降至 0.3%，确认放量。', evidence: [`approval://${approval.approvalId}`, 'rollout://rc3', `metric://error-rate/${release.healthAfter.errorRate}`, 'mcp://release.canary'], input: { tests: state.artifacts.tests, approval }, output: release });
+    const rolledBack = release.decision === 'rolled_back';
+    transition(state, rolledBack ? 'rolled_back' : 'confirmed', rolledBack ? 'release provider reported degradation; verified rollback executed' : 'release provider reported canary healthy');
+    const metricEvidence = Number.isFinite(release.healthAfter?.errorRate) ? `metric://error-rate/${release.healthAfter.errorRate}` : `rollout-status://${release.decision}`;
+    const message = rolledBack
+      ? `MCP 发布工具返回退化结论并完成可验证回滚（${release.observationWindow}）。`
+      : `MCP 发布工具确认 ${release.canary} 灰度健康（${release.observationWindow}），允许放量。`;
+    recordTrace(state, { agent: this.id, skill: this.skill, stage: 'release', parentSpanId: context.parentSpanId, status: release.decision, message, evidence: [`approval://${approval.approvalId}`, `rollout://${release.version}`, metricEvidence, 'mcp://release.canary'], input: { tests: state.artifacts.tests, approval }, output: release });
     return release;
   }
 };

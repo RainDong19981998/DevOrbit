@@ -1,0 +1,63 @@
+{
+  "generatedAt": "2026-08-13T14:30:38.220Z",
+  "status": "passed",
+  "boundary": "Local protocol endpoints emulate GitHub, Jenkins and Kubernetes APIs; Git clone/commit/push/checkout and node --test are real local executions. This is native connector evidence, not vendor-account or production-cluster evidence.",
+  "summary": {
+    "checks": 8,
+    "passed": 8,
+    "failed": 0
+  },
+  "evidence": {
+    "baseCommit": "d30ef2f070e1dd195319c5a2492f45476837a6d6",
+    "baselineFailed": 3,
+    "patchedPassed": 4,
+    "releaseDecision": "promoted",
+    "mcpCalls": 15,
+    "platformRequests": 14,
+    "operations": {
+      "argo.rollout.get": 1,
+      "argo.rollout.patch": 1,
+      "argo.rollout.status": 1,
+      "github.issue.list": 1,
+      "jenkins.build.poll": 2,
+      "jenkins.build.trigger": 2,
+      "jenkins.crumb": 2,
+      "jenkins.queue.poll": 2,
+      "jenkins.test-report": 2
+    }
+  },
+  "checks": [
+    {
+      "label": "closed loop from native connectors",
+      "ok": true
+    },
+    {
+      "label": "GitHub Issue normalized",
+      "ok": true
+    },
+    {
+      "label": "real remote Git baseline and patch",
+      "ok": true
+    },
+    {
+      "label": "Jenkins checked out patched commit",
+      "ok": true
+    },
+    {
+      "label": "Argo JSON Patch and generation-bound 10% canary",
+      "ok": true
+    },
+    {
+      "label": "temporary Git branch cleaned",
+      "ok": true
+    },
+    {
+      "label": "outbound writes idempotent",
+      "ok": true
+    },
+    {
+      "label": "MCP audit remains authoritative",
+      "ok": true
+    }
+  ]
+}

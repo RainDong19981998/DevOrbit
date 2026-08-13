@@ -20,6 +20,8 @@ export const patchAgent = {
     const baselineTests = baseline.data;
     const patch = {
       workspaceId,
+      baseCommit: created.data.baseCommit || null,
+      branch: created.data.branch || state.incident.branch || null,
       summary: '恢复连接池容量、延长排队超时并在重试路径复用原订单。',
       files: ['src/redisPool.js', 'src/order.js'],
       patch: '- poolSize: 8\n+ poolSize: 80\n- queueTimeoutMs: 250\n+ queueTimeoutMs: 800\n+ duplicate request → 409 + original order',
@@ -32,7 +34,7 @@ export const patchAgent = {
     mergeArtifact(state, 'plan', patch);
     state.risk_level = 'L2';
     transition(state, 'planned', 'minimal patch applied to isolated workspace');
-    recordTrace(state, { agent: this.id, skill: this.skill, stage: 'patch', parentSpanId: context.parentSpanId, message: `经 MCP 工具在隔离工作区复现 ${baselineTests.failed} 个失败，并应用最小补丁。`, evidence: [`baseline-ci://${baselineTests.artifact}`, `patch://${patch.patchDigest}`, `rollback://${patch.rollbackRef}`, `mcp://workspace/${workspaceId}`], input: state.artifacts.rca, output: patch });
+    recordTrace(state, { agent: this.id, skill: this.skill, stage: 'patch', parentSpanId: context.parentSpanId, message: `经 MCP 工具在隔离工作区复现 ${baselineTests.failed} 个失败，并应用最小补丁。`, evidence: [`baseline-ci://${baselineTests.artifact}`, `patch://${patch.patchDigest}`, `rollback://${patch.rollbackRef}`, `mcp://workspace/${workspaceId}`, ...(patch.baseCommit ? [`git://${patch.baseCommit}`] : [])], input: state.artifacts.rca, output: patch });
     return patch;
   }
 };

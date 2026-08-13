@@ -2,7 +2,7 @@
   "protocolVersion": "1.0",
   "datasetId": "devorbit-public-software-repair-v1",
   "status": "protocol-only",
-  "disclosure": "The public snapshot is not frozen in this repository. No public case or result is claimed until source snapshots, licenses, base/test/fix commits, and reproducible checkout evidence are recorded.",
+  "disclosure": "The scored benchmark manifest is not frozen and contains no scored case or method result. One separately declared SWE-bench dev validation pilot has frozen provenance and a reproduced baseline failure; it is not a DevOrbit score or test-set claim.",
   "selectionPolicy": {
     "eligibility": [
       "Public repository and issue provenance are available under a redistributable research-compatible license",
@@ -28,8 +28,8 @@
     {
       "id": "swe-bench",
       "name": "SWE-bench",
-      "url": "https://github.com/princeton-nlp/SWE-bench",
-      "license": "Apache-2.0 (verify against the pinned snapshot before use)",
+      "url": "https://huggingface.co/datasets/princeton-nlp/SWE-bench",
+      "license": "Pinned dataset card does not declare a dataset license; SWE-bench software repository currently declares MIT",
       "snapshot": null,
       "retrievedAt": null
     },

@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devorbit.example/schemas/public-benchmark-pilot.schema.json",
+  "title": "DevOrbit Frozen Public Reproduction Pilot",
+  "type": "object",
+  "required": ["protocolVersion", "pilotId", "status", "disclosure", "dataset", "case", "environment", "evidence"],
+  "properties": {
+    "protocolVersion": { "const": "1.0" },
+    "pilotId": { "const": "devorbit-public-reproduction-pilot-v1" },
+    "status": { "const": "frozen-reproduced-not-scored" },
+    "disclosure": { "type": "string", "minLength": 40 },
+    "dataset": {
+      "type": "object",
+      "required": ["name", "url", "snapshot", "split", "parquetSha256", "parquetBytes", "splitCases", "retrievedAt", "licenseEvidence"],
+      "properties": {
+        "name": { "const": "princeton-nlp/SWE-bench" },
+        "url": { "type": "string", "pattern": "^https://" },
+        "snapshot": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "split": { "const": "dev" },
+        "parquetSha256": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+        "parquetBytes": { "type": "integer", "minimum": 1 },
+        "splitCases": { "type": "integer", "minimum": 1 },
+        "retrievedAt": { "type": "string", "minLength": 1 },
+        "licenseEvidence": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    },
+    "case": {
+      "type": "object",
+      "required": ["instanceId", "repository", "repositoryUrl", "pullRequestUrl", "resolvedIssueUrl", "baseCommit", "sourceArchiveUrl", "sourceArchiveSha256", "sourceArchiveBytes", "sourceLicense", "sourceLicenseSha256", "problemStatementSha256", "testPatchPath", "testPatchSha256", "failToPass", "passToPassCount", "pullRequestHeadCommit", "expectedFixCommit", "goldPatchSha256", "goldPatchStored", "split"],
+      "properties": {
+        "instanceId": { "const": "sqlfluff__sqlfluff-884" },
+        "repository": { "const": "sqlfluff/sqlfluff" },
+        "repositoryUrl": { "type": "string", "pattern": "^https://" },
+        "pullRequestUrl": { "type": "string", "pattern": "^https://" },
+        "resolvedIssueUrl": { "type": "string", "pattern": "^https://" },
+        "baseCommit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "sourceArchiveUrl": { "type": "string", "pattern": "^https://" },
+        "sourceArchiveSha256": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+        "sourceArchiveBytes": { "type": "integer", "minimum": 1 },
+        "sourceLicense": { "const": "MIT" },
+        "sourceLicenseSha256": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+        "problemStatementSha256": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+        "testPatchPath": { "type": "string", "minLength": 1 },
+        "testPatchSha256": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+        "failToPass": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "passToPassCount": { "type": "integer", "minimum": 1 },
+        "pullRequestHeadCommit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "expectedFixCommit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "goldPatchSha256": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+        "goldPatchStored": { "const": false },
+        "split": { "const": "validation-pilot" }
+      },
+      "additionalProperties": false
+    },
+    "environment": {
+      "type": "object",
+      "required": ["os", "python", "projectVersion", "pytest", "packaging", "requirementsPath", "requirementsSha256", "knownDeviation"],
+      "properties": {
+        "os": { "type": "string" }, "python": { "type": "string" }, "projectVersion": { "type": "string" }, "pytest": { "type": "string" }, "packaging": { "type": "string" },
+        "requirementsPath": { "type": "string" }, "requirementsSha256": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }, "knownDeviation": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["baselineExitCode", "baselineAssertion", "baselineLogPath", "baselineLogSha256", "goldFailToPassExitCode", "goldFailToPassPassed", "goldFailToPassLogPath", "goldFailToPassLogSha256", "goldAnsiFileExitCode", "goldAnsiFilePassed", "goldAnsiFileLogPath", "goldAnsiFileLogSha256", "goldVerification"],
+      "properties": {
+        "baselineExitCode": { "const": 1 }, "baselineAssertion": { "const": "assert raw_seg.is_whitespace" }, "baselineLogPath": { "type": "string" }, "baselineLogSha256": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+        "goldFailToPassExitCode": { "const": 0 }, "goldFailToPassPassed": { "const": 1 }, "goldFailToPassLogPath": { "type": "string" }, "goldFailToPassLogSha256": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+        "goldAnsiFileExitCode": { "const": 0 }, "goldAnsiFilePassed": { "const": 43 }, "goldAnsiFileLogPath": { "type": "string" }, "goldAnsiFileLogSha256": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }, "goldVerification": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

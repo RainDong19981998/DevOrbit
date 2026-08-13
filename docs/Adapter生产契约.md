@@ -4,7 +4,7 @@
 
 DevOrbit 的 Skill 是能力抽象层，MCP 2025-06-18 是 Agent 可调用的工具层，HTTP Adapter SPI 是外部平台替换层。V0.5 已证明六类 Provider 可在不修改 Agent、Skill、Case State 和审批状态机的情况下替换本地 Fixture：Issue、Observability、Repository、CI、Knowledge、Release 的完整成功路径经过真实本地 HTTP Server，产生 17 个 HTTP 请求（含两次受控重试）和 15 条 MCP 审计。
 
-这份证据证明协议适配和端到端编排可运行，不等同于已经调用 GitHub、GitLab、Jenkins、Argo Rollouts、Kubernetes 或企业生产账号。真实平台接入完成前不得使用“已接入生产”表述。
+这份证据证明协议适配和端到端编排可运行，不等同于已经调用厂商生产账号。V0.6 已提供原生平台连接器和本地协议端点证据，具体见 `docs/原生平台连接器.md`；仍不得把本地协议端点报告写成 GitHub/Jenkins/Kubernetes 生产实测。
 
 机器可读规范位于 `schemas/http-adapter.openapi.json`，与代码注册表 `HTTP_ADAPTER_OPERATIONS` 逐项校验：
 
