@@ -77,13 +77,24 @@ const codeZipPath = fileURLToPath(new URL('DevOrbit_初赛可执行代码包.zip
 command('unzip', ['-tq', codeZipPath]);
 const codeEntries = archiveEntries(codeZipPath);
 for (const required of [
-  'README.md', 'LICENSE', 'package.json', 'config/agentteams.yaml',
+  'README.md', 'LICENSE', 'package.json', 'Dockerfile', '.dockerignore', 'config/agentteams.yaml',
   'config/tool-policy.json', 'docs/威胁模型.md', 'docs/证据索引.md',
+  'docs/Adapter生产契约.md', 'schemas/http-adapter.openapi.json', 'src/adapters/http.js',
+  'scripts/adapter-contract-smoke.mjs', 'scripts/api-security-smoke.mjs', 'scripts/container-smoke.sh',
   'config/aliyun-official-skill.contract.json',
   'third_party/aliyun/alibabacloud-sls-query-0.0.2-devorbit-curated.zip',
-  'reports/agentteams-contract.md', 'reports/benchmark.json', 'reports/security-evaluation.json', 'reports/otel-happy-path.json', 'scripts/release-audit.mjs'
+  'reports/agentteams-contract.md', 'reports/benchmark.json', 'reports/security-evaluation.json', 'reports/otel-happy-path.json', 'reports/container-smoke.json', 'scripts/release-audit.mjs'
 ]) check(`code ZIP ${required}`, codeEntries.includes(required));
 check('code ZIP cache free', !codeEntries.some(entry => entry.includes('__pycache__') || entry.endsWith('.pyc')));
+const codePackage = JSON.parse(archiveFile(codeZipPath, 'package.json', 'utf8'));
+check('code ZIP V0.5 version', codePackage.version === '0.5.0' && codePackage.scripts?.['validate-adapters'] && codePackage.scripts?.['container-smoke']);
+const adapterOpenApi = JSON.parse(archiveFile(codeZipPath, 'schemas/http-adapter.openapi.json', 'utf8'));
+const adapterOperations = Object.values(adapterOpenApi.paths || {}).flatMap(pathItem => Object.values(pathItem).filter(value => value?.operationId));
+check('code ZIP HTTP Adapter contract', adapterOpenApi.openapi === '3.1.0' && adapterOpenApi.info?.version === '0.5.0' && adapterOperations.length === 10);
+check('code ZIP idempotency boundaries', adapterOperations.filter(operation => operation['x-devorbit-idempotency-required']).length === 6);
+const containerEvidence = JSON.parse(archiveFile(codeZipPath, 'reports/container-smoke.json', 'utf8'));
+check('code ZIP hardened container evidence', containerEvidence.summary?.passed === 14 && containerEvidence.summary?.failed === 0 && containerEvidence.hardening?.uid === 10001 && containerEvidence.hardening?.readOnlyRootfs === true && containerEvidence.hardening?.noNewPrivileges === true);
+check('code ZIP intended base image digest', containerEvidence.intendedNodeImage === 'node:22.18.0-bookworm-slim' && containerEvidence.intendedNodeImageIndexDigest === 'sha256:752ea8a2f758c34002a0461bd9f1cee4f9a3c36d48494586f60ffce1fc708e0e');
 
 const officialContract = JSON.parse(archiveFile(codeZipPath, 'config/aliyun-official-skill.contract.json', 'utf8'));
 const officialZip = archiveFile(codeZipPath, officialContract.artifact.path);
@@ -115,7 +126,8 @@ for (const required of [
   'DevOrbit_初赛方案.pdf', 'DevOrbit_初赛方案.pptx', 'DevOrbit_初赛可执行代码包.zip',
   'DevOrbit_演示视频.mp4', 'DevOrbit_演示视频封面.png', '作品简介.md', '官网提交粘贴稿.md',
   '提交清单.md', '评委90秒验收.md', '第三方依赖与合规清单.md', '演示脚本.md',
-  '威胁模型.md', '证据索引.md', 'agentteams-contract.md', 'benchmark.md', 'security-evaluation.md',
+  '威胁模型.md', '证据索引.md', 'Adapter生产契约.md', 'agentteams-contract.md', 'benchmark.md', 'security-evaluation.md',
+  'container-smoke.json', 'http-adapter.openapi.json',
   '交付物_SHA256.txt', 'DevOrbit_初赛讲解视频_自动语音版.mp4', 'DevOrbit_Agent-Identity清单.pdf',
   'DevOrbit_Skill清单.pdf', 'DevOrbit_工具与云产品清单.pdf', 'DevOrbit_威胁模型.pdf', 'DevOrbit_证据索引.pdf',
   'DevOrbit_对照与消融评测.pdf', 'DevOrbit_对抗安全评测.pdf'
@@ -144,6 +156,7 @@ const markdown = [
   `- PDF：17 页；官方 Skill 与 140/140 契约证据已进入二进制材料`,
   `- 视频：演示片 H.264 1280×800，26 秒；讲解片 H.264 1280×720，已检查格式与元数据`,
   `- V0.4 工程证据：Agent×Tool 策略、6/6 对抗安全、7 组对照/消融、OTLP JSON 导出均已纳入总包`,
+  `- V0.5 工程证据：10 操作 OpenAPI、六类 HTTP Provider、控制面安全与 14/14 加固容器证据已纳入总包`,
   `- 云能力边界：官方 Skill 已锁定并随 Intake/RCA 分发；当前默认 Demo 未调用云账号`,
   '', '| Artifact | SHA-256 |', '|---|---|',
   ...Object.entries(digests).map(([name, digest]) => `| ${name} | \`${digest}\` |`),

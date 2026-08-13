@@ -2,7 +2,7 @@ import { readdir, readFile } from 'node:fs/promises';
 import { extname, join, relative } from 'node:path';
 
 const root = new URL('../', import.meta.url);
-const roots = ['README.md', 'LICENSE', 'app', 'config', 'docs', 'schemas', 'scripts', 'skills', 'third_party', 'worker-packages', 'src', 'fixtures', 'knowledge', 'evaluation', 'reports', 'server.js', 'package.json'];
+const roots = ['README.md', 'LICENSE', 'Dockerfile', '.dockerignore', 'app', 'config', 'docs', 'schemas', 'scripts', 'skills', 'third_party', 'worker-packages', 'src', 'fixtures', 'knowledge', 'evaluation', 'reports', 'server.js', 'package.json'];
 const forbidden = [String.fromCodePoint(20013, 22269, 31227, 21160), String.fromCodePoint(28789, 30079)];
 const readable = new Set(['', '.md', '.html', '.css', '.js', '.mjs', '.json', '.yaml', '.yml', '.txt']);
 let failed = false;

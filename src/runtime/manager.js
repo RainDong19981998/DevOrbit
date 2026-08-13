@@ -15,13 +15,13 @@ import { buildOpenTelemetry } from '../observability/otel.js';
 const fixturePath = fileURLToPath(new URL('../../fixtures/checkout-service', import.meta.url));
 
 export class DeliveryManager {
-  constructor({ incident, scenario = 'happy-path', approvalState = 'approved', knowledgeStore, controls = {} } = {}) {
+  constructor({ incident, scenario = 'happy-path', approvalState = 'approved', knowledgeStore, controls = {}, providers = {} } = {}) {
     this.state = createCaseState(incident, scenario);
     this.knowledgeStore = knowledgeStore || new KnowledgeStore();
     this.workspaceRegistry = new Map();
     this.approvalAuthority = new ApprovalAuthority();
     this.toolPolicy = new ToolPolicy({ approvalAuthority: this.approvalAuthority });
-    this.toolServer = new McpToolServer({ tools: createTools({ fixturePath, workspaceRegistry: this.workspaceRegistry, knowledgeStore: this.knowledgeStore, signals: incident.signals }), policy: this.toolPolicy });
+    this.toolServer = new McpToolServer({ tools: createTools({ fixturePath, workspaceRegistry: this.workspaceRegistry, knowledgeStore: this.knowledgeStore, signals: incident.signals, providers }), policy: this.toolPolicy });
     this.mcp = new EmbeddedMcpClient(this.toolServer);
     this.context = { approvalState, approvalReceipt: null, controls, fixturePath, repositoryRevision: `sha256:${digest('checkout-service@broken-v1')}`, mcpServer: this.toolServer };
   }

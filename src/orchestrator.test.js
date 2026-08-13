@@ -36,6 +36,7 @@ test('pending and rejected approval never call the release tool', async () => {
     assert.equal(result.approval.state, approvalState);
     assert.equal(result.release.toolCalled, false);
     assert.equal(result.knowledge, null);
+    assert.equal(result.plan.workspaceDisposed, true);
   }
 });
 

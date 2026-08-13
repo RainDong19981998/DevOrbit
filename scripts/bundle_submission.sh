@@ -33,9 +33,12 @@ zip -qj "$out" \
   docs/演示脚本.md \
   docs/威胁模型.md \
   docs/证据索引.md \
+  docs/Adapter生产契约.md \
   reports/agentteams-contract.md \
   reports/benchmark.md \
-  reports/security-evaluation.md
+  reports/security-evaluation.md \
+  reports/container-smoke.json \
+  schemas/http-adapter.openapi.json
 
 unzip -tq "$out"
 echo 'PASS built initial submission bundle'

@@ -51,6 +51,12 @@ const toolPolicy = JSON.parse(await readFile(new URL('../config/tool-policy.json
 checks.push(['server-side tool policy contract', Object.keys(toolPolicy.rules).length === 10 && toolPolicy.rules['release.canary'].approval === true]);
 const replay = JSON.parse(await readFile(new URL('../reports/runs/happy-path.json', import.meta.url), 'utf8'));
 checks.push(['replayable run report', replay.release.decision === 'promoted' && replay.plan.baselineTests.failed === 3 && replay.tests.passed === 4]);
+const adapterOpenApi = JSON.parse(await readFile(new URL('../schemas/http-adapter.openapi.json', import.meta.url), 'utf8'));
+const adapterOperations = Object.values(adapterOpenApi.paths || {}).flatMap(pathItem => Object.values(pathItem).filter(value => value?.operationId));
+checks.push(['HTTP Adapter OpenAPI', adapterOpenApi.openapi === '3.1.0' && adapterOpenApi.info?.version === '0.5.0' && adapterOperations.length === 10]);
+checks.push(['HTTP Adapter idempotency contract', adapterOperations.filter(operation => operation['x-devorbit-idempotency-required']).length === 6]);
+const containerEvidence = JSON.parse(await readFile(new URL('../reports/container-smoke.json', import.meta.url), 'utf8'));
+checks.push(['hardened container evidence', containerEvidence.summary.passed === 14 && containerEvidence.summary.failed === 0 && containerEvidence.hardening.uid === 10001 && containerEvidence.hardening.readOnlyRootfs === true && containerEvidence.hardening.noNewPrivileges === true]);
 const complianceDisclosure = await readFile(new URL('../docs/第三方依赖与合规清单.md', import.meta.url), 'utf8');
 checks.push(['dependency disclosure', complianceDisclosure.includes('AgentTeams') && complianceDisclosure.includes('alibabacloud-sls-query') && complianceDisclosure.includes('无第三方 npm 包')]);
 for (const [label, ok] of checks) console.log(`${ok ? 'PASS' : 'FAIL'} ${label}`);

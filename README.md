@@ -2,7 +2,7 @@
 
 DevOrbit 面向“线上缺陷从发现到确认发布平均需要跨多个系统、多个角色人工接力”的真实研发问题，把缺陷聚合、代码根因定位、修复执行、测试验证、灰度确认和复盘沉淀编排为一条可回放的多 Agent 证据链。
 
-当前 V0.4 提供一个无外部密钥、无云资源依赖的确定性 Demo。它不是声称已接入真实生产系统或官方 AgentTeams 集群，而是用锁定 AgentTeams v1.2.2（commit `849182a`）契约的独立 Worker、状态、消息和 Skill 包证明角色编排；Issue、观测、仓库、CI、发布和知识库六类适配器都通过 MCP 2025-06-18 `tools/call` 接入，底层外部平台行为由本地 Fixture/Mock 提供。V0.4 新增服务端 Agent×Tool 策略、签名审批回执、运行时 Schema 校验、OTLP JSON 导出、对照/消融评测和对抗安全评测。
+V0.4 是已审计的初赛提交基线：提供无外部密钥、无云资源依赖的确定性 Demo，以锁定 AgentTeams v1.2.2（commit `849182a`）契约的独立 Worker、状态、消息和 Skill 包证明角色编排。当前源码已推进到 V0.5 工程里程碑：六类外部 Provider 可经真实 HTTP Adapter SPI 替换 Fixture，而不修改 Agent、Skill、MCP Tool 和 Case State；新增 OpenAPI 3.1 契约、控制面鉴权、信任域令牌隔离以及非 root/只读容器门禁。该 HTTP 证据使用本地契约服务，不声称已连接真实 GitHub、CI、Kubernetes、云账号或官方 AgentTeams 集群。
 
 ## 一分钟运行
 
@@ -27,11 +27,20 @@ npm test
 npm run evaluate
 npm run api-smoke
 npm run mcp-smoke
+npm run validate-adapters
+npm run adapter-smoke
+npm run api-security-smoke
 npm run evaluate-benchmark
 npm run evaluate-security
 npm run export-otel
 npm run validate
 npm run compliance
+```
+
+生产容器门禁（需要 Docker）：
+
+```bash
+npm run container-smoke
 ```
 
 评审可直接按 [`docs/评委90秒验收.md`](docs/评委90秒验收.md) 快速复核评分证据。
@@ -76,7 +85,7 @@ config/*.contract.json     锁定版本、字段枚举与官方证据哈希
 config/case-lifecycle.yaml 业务状态机和失败分支
 config/policy.yaml         风险等级、发布门禁、回滚和密钥策略
 docs/                      参赛简介、清单、架构与路演材料
-schemas/                   共享状态和 MCP 工具契约
+schemas/                   共享状态、MCP 与 HTTP Adapter 契约
 skills/                    7 个自定义、可分发且已校验的 Skill 包
 third_party/aliyun/        锁定的官方云 Skill 合规裁剪快照与来源/差异说明
 worker-packages/           AgentTeams Worker package 源码与构建 ZIP
@@ -92,11 +101,15 @@ src/runtime/               Team Leader、共享状态、Trace 和测试执行器
 src/orchestrator.js        可复现的端到端运行器
 src/skills.js              核心 Skill 注册表
 src/adapters.js            外部系统适配器注册表
+src/adapters/http.js       可注入的生产 HTTP Provider、重试和安全边界
+Dockerfile                 非 root、只读兼容的生产镜像
 ```
 
 ## Skill、MCP 与上下文
 
 Skill 是稳定能力抽象，MCP 负责连接工具。当前实现提供 7 个自定义 Skill，并锁定官方门户 `alibabacloud-sls-query` v0.0.2 的可审计合规裁剪快照供 Intake/RCA 真实日志接入；核心 `SKILL.md` 未修改，唯一移除路径和原包/分发包摘要均已披露。默认 Demo 无云凭据，走相同语义的 Fixture-backed Observability MCP，不声称发生云调用。一个 MCP 2025-06-18 服务支持 `initialize`、会话 ID、`tools/list`、`tools/call`、结构化结果、协议版本头、Origin 校验、幂等重放和会话销毁。10 个工具覆盖信号拉取、仓库读取/写入/隔离/销毁、CI 测试、案例检索/写入和灰度决策；完整成功路径产生 15 次调用，每次记录 Agent、Trace、Case、时延、输入输出摘要、幂等键和审计引用。`/mcp` 是可外部验证的 Streamable HTTP 端点，Worker 内部通过同一 JSON-RPC 调度器运行。
+
+V0.5 的外部 Provider 契约见 [`docs/Adapter生产契约.md`](docs/Adapter生产契约.md) 与 [`schemas/http-adapter.openapi.json`](schemas/http-adapter.openapi.json)。烟测让 Issue、Observability、Repository、CI、Knowledge 和 Release 全部经过真实本地 HTTP Server，验证 17 个请求、两次幂等语义重试、Bearer 与 Case/Trace/Agent 关联、全部写操作幂等键，以及内部审批令牌不越过信任边界；MCP 的 15 条审计仍是上层权威证据。该结果证明替换边界，不等于真实供应商平台接入。
 
 上下文机制已实现赛事要求中的两项：
 
@@ -134,6 +147,8 @@ MCP_URL=https://gateway.example.com/devorbit/mcp npm run deploy-agentteams
 `npm test` 验证独立 Worker 协作、真实样例仓补丁/测试、同 Case 审批续跑、低置信停止、测试失败阻断和灰度回滚。`npm run evaluate` 执行 7 个团队构造的 Golden Cases，目前 7/7 通过，5/5 安全分支正确，Worker 证据覆盖率 100%。这些指标验证工作流和策略行为，不代表生产业务收益；复赛将扩展为公开缺陷仓库评测集，报告 Top-3 根因命中率、Patch 可编译率和人工介入率。
 
 `npm run capture-runs` 生成 4 份可回放运行报告；`npm run api-smoke` 从独立端口启动服务并验证会话续跑、真实测试、安全门禁和评测报告 API。AgentTeams 契约证据见 [`reports/agentteams-contract.md`](reports/agentteams-contract.md)。
+
+`npm run api-security-smoke` 验证控制面鉴权、外部模式禁止一键批准、MCP 鉴权、静态资源白名单和请求体限制。`npm run container-smoke` 在非 root、只读根文件系统、无 Linux capabilities 和 `no-new-privileges` 条件下运行同一审批闭环，要求 3→4 Red→Green、同 Case/Trace 续跑、知识写回、15 条 MCP 审计和 31 个交互闭环 OTLP Span。
 
 ## 开放与依赖披露
 

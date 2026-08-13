@@ -1,4 +1,7 @@
 import { DeliveryManager } from './runtime/manager.js';
+import { createHttpProvidersFromEnv } from './adapters/http.js';
+
+const envProviders = createHttpProvidersFromEnv();
 
 const demoCase = {
   title: '支付页提交后持续转圈，订单偶发重复创建',
@@ -20,6 +23,14 @@ export function getDemoCase() {
 export async function runPipeline(input = {}) {
   const { scenario = 'happy-path', approvalState = 'approved', controls = {}, signals, ...incidentOverrides } = input;
   const incident = { ...demoCase, ...incidentOverrides, signals: signals || demoCase.signals };
-  const manager = new DeliveryManager({ incident, scenario, approvalState, controls });
-  return manager.run();
+  const manager = new DeliveryManager({ incident, scenario, approvalState, controls, providers: envProviders || {} });
+  try {
+    const result = await manager.run();
+    if (result.state.status !== 'approval_pending') return result;
+    await manager.disposeWorkspace();
+    return manager.result();
+  } catch (error) {
+    await manager.disposeWorkspace().catch(() => {});
+    throw error;
+  }
 }

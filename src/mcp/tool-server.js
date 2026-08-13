@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { digest } from '../runtime/digest.js';
 import { MCP_PROTOCOL_VERSION, rpcError, rpcResult } from './protocol.js';
+import { DEVORBIT_VERSION } from '../version.js';
 
 function typeMatches(value, type) {
   if (type === 'null') return value === null;
@@ -38,7 +39,7 @@ function validateSchema(value, schema, path = '$') {
 }
 
 export class McpToolServer {
-  constructor({ name = 'devorbit-tools', version = '0.4.0', tools = [], policy = null } = {}) {
+  constructor({ name = 'devorbit-tools', version = DEVORBIT_VERSION, tools = [], policy = null } = {}) {
     this.name = name;
     this.version = version;
     this.tools = new Map(tools.map(tool => [tool.name, tool]));

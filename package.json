@@ -1,6 +1,6 @@
 {
   "name": "devorbit-rd-loop",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "private": true,
   "description": "DevOrbit - a reproducible multi-agent software delivery loop demo",
   "type": "module",
@@ -16,6 +16,10 @@
     "export-otel": "node scripts/export-otel.mjs",
     "api-smoke": "node scripts/api-smoke.mjs",
     "mcp-smoke": "node scripts/mcp-smoke.mjs",
+    "adapter-smoke": "node scripts/adapter-contract-smoke.mjs",
+    "validate-adapters": "node scripts/validate-adapter-contract.mjs",
+    "api-security-smoke": "node scripts/api-security-smoke.mjs",
+    "container-smoke": "bash scripts/container-smoke.sh",
     "render-agentteams": "node scripts/render-agentteams-config.mjs",
     "validate-agentteams": "node scripts/validate-agentteams.mjs",
     "deploy-agentteams-smoke": "bash scripts/deploy-agentteams-smoke.sh",
@@ -24,13 +28,14 @@
     "bundle-submission": "bash scripts/bundle_submission.sh",
     "finalize-submission": "bash scripts/finalize_submission.sh",
     "capture-runs": "node scripts/capture-run.mjs",
-    "verify-all": "npm run package-workers && npm run render-agentteams && npm run validate-agentteams && npm run deploy-agentteams-smoke && npm run capture-runs && npm run evaluate && npm run evaluate-rag && npm run evaluate-benchmark && npm run evaluate-security && npm run export-otel && npm test && npm run api-smoke && npm run mcp-smoke && npm run validate && npm run compliance",
+    "verify-all": "npm run package-workers && npm run render-agentteams && npm run validate-agentteams && npm run deploy-agentteams-smoke && npm run capture-runs && npm run evaluate && npm run evaluate-rag && npm run evaluate-benchmark && npm run evaluate-security && npm run export-otel && npm test && npm run api-smoke && npm run api-security-smoke && npm run mcp-smoke && npm run validate-adapters && npm run adapter-smoke && npm run validate && npm run compliance",
+    "verify-production": "npm run verify-all && npm run container-smoke",
     "package-workers": "bash scripts/package_workers.sh",
     "record-demo": "bash scripts/record_demo.sh",
     "build-explainer": "bash scripts/build_explainer_video.sh",
     "build-slides": "/usr/bin/python3 scripts/build_slides.py",
     "build-supporting-pdfs": "bash scripts/build_supporting_pdfs.sh",
     "deploy-agentteams": "bash scripts/deploy_agentteams.sh",
-    "bundle": "rm -f deliverables/DevOrbit_初赛可执行代码包.zip && zip -qr deliverables/DevOrbit_初赛可执行代码包.zip README.md LICENSE package.json server.js app config docs schemas skills scripts src fixtures knowledge evaluation reports worker-packages third_party --exclude 'deliverables/*' '*/__pycache__/*' '*.pyc' 'reports/release-audit.*'"
+    "bundle": "rm -f deliverables/DevOrbit_初赛可执行代码包.zip && zip -qr deliverables/DevOrbit_初赛可执行代码包.zip README.md LICENSE package.json server.js Dockerfile .dockerignore app config docs schemas skills scripts src fixtures knowledge evaluation reports worker-packages third_party --exclude 'deliverables/*' '*/__pycache__/*' '*.pyc' 'reports/release-audit.*'"
   }
 }

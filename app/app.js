@@ -1,5 +1,6 @@
 const $ = selector => document.querySelector(selector);
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+const html = value => String(value ?? '').replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]);
 const demoParams = new URLSearchParams(window.location.search);
 const demoMode = demoParams.get('demo');
 const demoDelay = Math.max(3000, Math.min(15000, Number(demoParams.get('delay')) || 6000));
@@ -8,12 +9,12 @@ let renderedTraceCount = 0;
 const stageIndex = { triage: 0, impact: 1, rca: 2, patch: 3, verify: 4, release: 5, learn: 6 };
 
 function showSignals(signals) {
-  $('#signals').innerHTML = signals.map(s => `<div class="signal-row"><b>${s.source}</b><time>${s.time}</time><span>${s.text}</span></div>`).join('');
+  $('#signals').innerHTML = signals.map(s => `<div class="signal-row"><b>${html(s.source)}</b><time>${html(s.time)}</time><span>${html(s.text)}</span></div>`).join('');
 }
 
 function showTrace(item, index, total) {
   if (index === 0) $('#trace').innerHTML = '';
-  $('#trace').insertAdjacentHTML('beforeend', `<div class="trace-row"><span class="node"></span><div><b>${item.agent}<code>${item.skill}</code></b><p>${item.message}</p></div></div>`);
+  $('#trace').insertAdjacentHTML('beforeend', `<div class="trace-row"><span class="node"></span><div><b>${html(item.agent)}<code>${html(item.skill)}</code></b><p>${html(item.message)}</p></div></div>`);
   $('#trace').scrollTop = $('#trace').scrollHeight;
   $('#trace-count').textContent = `${index + 1} / ${total}`;
 }
@@ -39,8 +40,8 @@ function showFinding(data) {
     return;
   }
   $('#confidence').textContent = `置信度 ${Math.round(data.causes[0].score * 100)}%`;
-  const stop = data.rca?.decision === 'needs_human' ? `<div class="safety-stop">置信度低于 0.80，自动修复已停止。待补证：${data.rca.missingEvidence.join('、')}</div>` : '';
-  $('#finding').innerHTML = `<div class="cause"><b>首要根因</b><p>${data.causes[0].statement}</p><div class="chips">${data.causes[0].evidence.map(x => `<span>${x}</span>`).join('')}</div></div>${stop}<p class="impact-line"><b>影响服务：</b>${data.impact.services.join(' → ')}<br><b>影响接口：</b>${data.impact.endpoints.join('、')}<br><b>影响用户：</b>${data.impact.users}<br><b>代码位置：</b>${data.impact.files.join('、')}</p>`;
+  const stop = data.rca?.decision === 'needs_human' ? `<div class="safety-stop">置信度低于 0.80，自动修复已停止。待补证：${data.rca.missingEvidence.map(html).join('、')}</div>` : '';
+  $('#finding').innerHTML = `<div class="cause"><b>首要根因</b><p>${html(data.causes[0].statement)}</p><div class="chips">${data.causes[0].evidence.map(x => `<span>${html(x)}</span>`).join('')}</div></div>${stop}<p class="impact-line"><b>影响服务：</b>${data.impact.services.map(html).join(' → ')}<br><b>影响接口：</b>${data.impact.endpoints.map(html).join('、')}<br><b>影响用户：</b>${html(data.impact.users)}<br><b>代码位置：</b>${data.impact.files.map(html).join('、')}</p>`;
 }
 
 function showRelease(data) {
@@ -49,7 +50,7 @@ function showRelease(data) {
     return;
   }
   if (data.tests?.gate === 'failed') {
-    $('#release').innerHTML = `<div class="patch">${data.plan.patch}</div><div class="approval-box rejected"><small>真实测试门禁</small><b>${data.tests.passed} passed · <span class="test-failed">${data.tests.failed} failed</span></b><div class="impact-line">制品 ${data.tests.artifact}<br>发布工具未调用，状态转为 needs_human。</div></div>`;
+    $('#release').innerHTML = `<div class="patch">${html(data.plan.patch)}</div><div class="approval-box rejected"><small>真实测试门禁</small><b>${html(data.tests.passed)} passed · <span class="test-failed">${html(data.tests.failed)} failed</span></b><div class="impact-line">制品 ${html(data.tests.artifact)}<br>发布工具未调用，状态转为 needs_human。</div></div>`;
     return;
   }
   const pending = data.approval.state === 'pending';
@@ -59,8 +60,8 @@ function showRelease(data) {
     ? `<div class="approval-box"><small>L2 人工门禁</small><b>测试已通过，等待发布负责人决策</b><div><button class="approve" id="approve-button">✓ 批准 10% 灰度</button><button class="reject" id="reject-button">× 拒绝</button></div></div>`
     : rejected
       ? `<div class="approval-box rejected"><small>发布决策</small><b>已拒绝，发布工具未被调用</b></div>`
-      : `<div class="gate"><div class="good"><small>Red → Green</small><b>${data.plan.baselineTests.failed} failed → ${data.tests.passed} passed</b></div><div><small>审批记录</small><b>${data.approval.approvalId}</b></div><div class="${rolledBack ? '' : 'good'}"><small>灰度前 → 灰度后</small><b>${data.release.healthBefore.errorRate}% → ${data.release.healthAfter.errorRate}%</b></div><div class="${rolledBack ? '' : 'good'}"><small>最终决策</small><b>${rolledBack ? '↶ 阈值越界 · 已自动回滚' : '✓ 确认放量 · 可回滚'}</b></div></div>`;
-  $('#release').innerHTML = `<div class="patch">${data.plan.patch}</div>${decision}`;
+      : `<div class="gate"><div class="good"><small>Red → Green</small><b>${html(data.plan.baselineTests.failed)} failed → ${html(data.tests.passed)} passed</b></div><div><small>审批记录</small><b>${html(data.approval.approvalId)}</b></div><div class="${rolledBack ? '' : 'good'}"><small>灰度前 → 灰度后</small><b>${html(data.release.healthBefore.errorRate)}% → ${html(data.release.healthAfter.errorRate)}%</b></div><div class="${rolledBack ? '' : 'good'}"><small>最终决策</small><b>${rolledBack ? '↶ 阈值越界 · 已自动回滚' : '✓ 确认放量 · 可回滚'}</b></div></div>`;
+  $('#release').innerHTML = `<div class="patch">${html(data.plan.patch)}</div>${decision}`;
   if (pending) {
     $('#approve-button').addEventListener('click', () => resolveApproval('approved'));
     $('#reject-button').addEventListener('click', () => resolveApproval('rejected'));
@@ -68,7 +69,7 @@ function showRelease(data) {
 }
 
 function showSkills(skills) {
-  $('#skill-grid').innerHTML = skills.map((s, i) => `<article class="skill-card"><code>${s.official ? 'OFFICIAL CLOUD' : 'CUSTOM'} / 0${i + 1}</code><h3>${s.name}</h3><p>${s.purpose}</p><footer><span>${s.risk}</span><span>v${s.version || '1.0.0'}</span></footer></article>`).join('');
+  $('#skill-grid').innerHTML = skills.map((s, i) => `<article class="skill-card"><code>${s.official ? 'OFFICIAL CLOUD' : 'CUSTOM'} / 0${i + 1}</code><h3>${html(s.name)}</h3><p>${html(s.purpose)}</p><footer><span>${html(s.risk)}</span><span>v${html(s.version || '1.0.0')}</span></footer></article>`).join('');
 }
 
 async function run() {
@@ -112,7 +113,7 @@ async function resolveApproval(state) {
   $('#metric-mcp').textContent = data.metrics.mcpCalls;
   $('#metric-otel').textContent = data.observability?.summary?.spans || '--';
   $('#run-state').className = data.release.decision === 'rolled_back' ? 'run-state rejected' : 'run-state done';
-  $('#run-state').innerHTML = data.release.decision === 'rolled_back' ? '<span></span>闭环完成 · 灰度已回滚并沉淀' : '<span></span>闭环完成 · 知识卡 ' + data.knowledge.cardId;
+  $('#run-state').innerHTML = data.release.decision === 'rolled_back' ? '<span></span>闭环完成 · 灰度已回滚并沉淀' : '<span></span>闭环完成 · 知识卡 ' + html(data.knowledge.cardId);
   button.disabled = false; button.innerHTML = '<span>↻</span> 重新运行案例';
   if (demoMode) {
     $('#release').closest('.panel').scrollIntoView({ behavior: 'smooth', block: 'center' });

@@ -1,0 +1,94 @@
+{
+  "generatedAt": "2026-08-13T10:51:58.658Z",
+  "version": "0.5.0",
+  "intendedNodeImage": "node:22.18.0-bookworm-slim",
+  "intendedNodeImageIndexDigest": "sha256:752ea8a2f758c34002a0461bd9f1cee4f9a3c36d48494586f60ffce1fc708e0e",
+  "intendedNodeImageAmd64ManifestDigest": "sha256:0d130e2ee18e88e1561375276daced6bff032539200173f2daf48c2e33f38ff5",
+  "nodeImage": "devorbit-node:22.18.0-bookworm-offline",
+  "applicationImage": "devorbit:0.5.0-smoke",
+  "imageId": "sha256:803efc28ff3d8e4253f4a03e6980487e16371e822758bcebc88f35b99adc2b9a",
+  "hardening": {
+    "uid": 10001,
+    "readOnlyRootfs": true,
+    "capDrop": "[ALL]",
+    "noNewPrivileges": true,
+    "health": "healthy"
+  },
+  "summary": {
+    "checks": 14,
+    "passed": 14,
+    "failed": 0
+  },
+  "checks": [
+    {
+      "label": "health endpoint",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "runtime version",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "control-plane auth advertised",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "unauthorized mutation rejected",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "web UI served",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "pending approval gate",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "red-green evidence before approval",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "same-case approval resume",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "closed release loop",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "knowledge writeback",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "workspace disposed",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "MCP audit evidence",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "OTLP approval-resume evidence",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "container OTLP resource",
+      "ok": true,
+      "detail": ""
+    }
+  ]
+}

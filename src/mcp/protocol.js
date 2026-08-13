@@ -1,4 +1,4 @@
-export const MCP_PROTOCOL_VERSION = '2025-06-18';
+export { MCP_PROTOCOL_VERSION } from '../version.js';
 
 export function rpcResult(id, result) {
   return { jsonrpc: '2.0', id, result };

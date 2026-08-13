@@ -39,7 +39,9 @@ try {
   await post({ jsonrpc: '2.0', method: 'notifications/initialized' }, impactSessionId, { 'x-devorbit-agent': 'impact-worker' });
   const traversal = await post({ jsonrpc: '2.0', id: 8, method: 'tools/call', params: { name: 'repository.read_file', arguments: { path: '../../etc/passwd' } } }, impactSessionId, { 'x-devorbit-agent': 'impact-worker' });
   if (!traversal.data.result.isError || !traversal.data.result.structuredContent.error.includes('escapes workspace')) throw new Error('workspace traversal guard failed');
-  const deleted = await fetch(url, { method: 'DELETE', headers: { 'mcp-session-id': sessionId } });
+  const foreignDelete = await fetch(url, { method: 'DELETE', headers: { 'mcp-session-id': sessionId, 'mcp-protocol-version': '2025-06-18', 'x-devorbit-agent': 'release-worker' } });
+  if (foreignDelete.status !== 403) throw new Error('session deletion identity binding failed');
+  const deleted = await fetch(url, { method: 'DELETE', headers: { 'mcp-session-id': sessionId, 'mcp-protocol-version': '2025-06-18', 'x-devorbit-agent': 'rca-worker' } });
   if (deleted.status !== 204) throw new Error('session deletion failed');
   console.log('PASS MCP 2025-06-18 Streamable HTTP: origin, bound identity, discovery, policy denial, errors');
 } finally {

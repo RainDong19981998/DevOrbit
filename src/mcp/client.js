@@ -1,5 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { MCP_PROTOCOL_VERSION } from './protocol.js';
+import { DEVORBIT_VERSION } from '../version.js';
 
 export class EmbeddedMcpClient {
   constructor(server, context = {}) {
@@ -23,7 +24,7 @@ export class EmbeddedMcpClient {
 
   async initialize() {
     if (this.initialized) return;
-    const result = await this.request('initialize', { protocolVersion: MCP_PROTOCOL_VERSION, capabilities: {}, clientInfo: { name: 'devorbit-worker-client', version: '0.4.0' } });
+    const result = await this.request('initialize', { protocolVersion: MCP_PROTOCOL_VERSION, capabilities: {}, clientInfo: { name: 'devorbit-worker-client', version: DEVORBIT_VERSION } });
     if (result.protocolVersion !== MCP_PROTOCOL_VERSION) throw new Error('MCP protocol negotiation failed');
     await this.server.dispatch({ jsonrpc: '2.0', method: 'notifications/initialized' }, this.context);
     this.initialized = true;

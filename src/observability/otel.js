@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto';
+import { DEVORBIT_VERSION } from '../version.js';
 
 const SCHEMA_URL = 'https://opentelemetry.io/schemas/1.37.0';
 
@@ -32,7 +33,7 @@ function span({ traceId, spanId, parentSpanId, name, start, durationMs, status, 
   };
 }
 
-export function buildOpenTelemetry(state, audit = []) {
+export function buildOpenTelemetry(state, audit = [], { environment = process.env.DEVORBIT_ENVIRONMENT || 'local-fixture' } = {}) {
   const agentSpans = state.trace.map(item => span({
     traceId: item.traceId,
     spanId: item.spanId,
@@ -74,7 +75,7 @@ export function buildOpenTelemetry(state, audit = []) {
     }
   }));
   const allSpans = [...agentSpans, ...toolSpans];
-  const resourceAttributes = attributes({ 'service.name': 'devorbit', 'service.version': '0.4.0', 'deployment.environment.name': 'local-fixture' });
+  const resourceAttributes = attributes({ 'service.name': 'devorbit', 'service.version': DEVORBIT_VERSION, 'deployment.environment.name': environment });
   const metricValues = {
     'devorbit.agent.invocations': agentSpans.filter(item => item.attributes.some(attribute => attribute.key === 'gen_ai.operation.name' && attribute.value.stringValue === 'invoke_agent')).length,
     'devorbit.tool.calls': toolSpans.length,
@@ -84,8 +85,8 @@ export function buildOpenTelemetry(state, audit = []) {
   };
   return {
     schemaUrl: SCHEMA_URL,
-    resourceSpans: [{ resource: { attributes: resourceAttributes }, scopeSpans: [{ scope: { name: 'devorbit.runtime', version: '0.4.0' }, spans: allSpans }] }],
-    resourceMetrics: [{ resource: { attributes: resourceAttributes }, scopeMetrics: [{ scope: { name: 'devorbit.runtime', version: '0.4.0' }, metrics: Object.entries(metricValues).map(([name, value]) => ({ name, unit: '1', gauge: { dataPoints: [{ asInt: String(value), timeUnixNano: unixNano(new Date()) }] } })) }] }],
+    resourceSpans: [{ resource: { attributes: resourceAttributes }, scopeSpans: [{ scope: { name: 'devorbit.runtime', version: DEVORBIT_VERSION }, spans: allSpans }] }],
+    resourceMetrics: [{ resource: { attributes: resourceAttributes }, scopeMetrics: [{ scope: { name: 'devorbit.runtime', version: DEVORBIT_VERSION }, metrics: Object.entries(metricValues).map(([name, value]) => ({ name, unit: '1', gauge: { dataPoints: [{ asInt: String(value), timeUnixNano: unixNano(new Date()) }] } })) }] }],
     summary: { spans: allSpans.length, agentSpans: agentSpans.length, toolSpans: toolSpans.length, metrics: metricValues }
   };
 }

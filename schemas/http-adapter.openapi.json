@@ -1,0 +1,335 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "DevOrbit External Adapter SPI",
+    "version": "0.5.0",
+    "description": "Stable HTTP boundary beneath MCP tools. Bearer authentication, correlation headers, bounded JSON payloads, and idempotency are enforced by the DevOrbit client."
+  },
+  "servers": [{ "url": "https://adapter.example.com" }],
+  "security": [{ "bearerAuth": [] }],
+  "paths": {
+    "/v1/issue/signals": {
+      "post": {
+        "operationId": "issue.fetch_signals",
+        "x-devorbit-tool": "issue.fetch_signals",
+        "x-devorbit-read-only": true,
+        "x-devorbit-idempotency-required": false,
+        "parameters": [
+          { "$ref": "#/components/parameters/TraceId" },
+          { "$ref": "#/components/parameters/CaseId" },
+          { "$ref": "#/components/parameters/Agent" },
+          { "$ref": "#/components/parameters/Operation" }
+        ],
+        "requestBody": { "$ref": "#/components/requestBodies/CaseRequest" },
+        "responses": {
+          "200": { "description": "Issue and feedback signals", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/SignalsResponse" } } } },
+          "default": { "$ref": "#/components/responses/Error" }
+        }
+      }
+    },
+    "/v1/observability/signals": {
+      "post": {
+        "operationId": "observability.fetch_signals",
+        "x-devorbit-tool": "observability.fetch_signals",
+        "x-devorbit-read-only": true,
+        "x-devorbit-idempotency-required": false,
+        "parameters": [
+          { "$ref": "#/components/parameters/TraceId" },
+          { "$ref": "#/components/parameters/CaseId" },
+          { "$ref": "#/components/parameters/Agent" },
+          { "$ref": "#/components/parameters/Operation" }
+        ],
+        "requestBody": { "$ref": "#/components/requestBodies/CaseRequest" },
+        "responses": {
+          "200": { "description": "Logs, metrics, traces, and change signals", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/SignalsResponse" } } } },
+          "default": { "$ref": "#/components/responses/Error" }
+        }
+      }
+    },
+    "/v1/repository/workspaces": {
+      "post": {
+        "operationId": "repository.create_workspace",
+        "x-devorbit-tool": "repository.create_workspace",
+        "x-devorbit-read-only": false,
+        "x-devorbit-idempotency-required": true,
+        "parameters": [
+          { "$ref": "#/components/parameters/TraceId" },
+          { "$ref": "#/components/parameters/CaseId" },
+          { "$ref": "#/components/parameters/Agent" },
+          { "$ref": "#/components/parameters/Operation" },
+          { "$ref": "#/components/parameters/IdempotencyKey" }
+        ],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/WorkspaceRequest" } } } },
+        "responses": {
+          "200": { "description": "Isolated workspace created or replayed", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/WorkspaceResponse" } } } },
+          "default": { "$ref": "#/components/responses/Error" }
+        }
+      }
+    },
+    "/v1/repository/file": {
+      "post": {
+        "operationId": "repository.read_file",
+        "x-devorbit-tool": "repository.read_file",
+        "x-devorbit-read-only": true,
+        "x-devorbit-idempotency-required": false,
+        "parameters": [
+          { "$ref": "#/components/parameters/TraceId" },
+          { "$ref": "#/components/parameters/CaseId" },
+          { "$ref": "#/components/parameters/Agent" },
+          { "$ref": "#/components/parameters/Operation" }
+        ],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ReadFileRequest" } } } },
+        "responses": {
+          "200": { "description": "UTF-8 file and digest", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/FileResponse" } } } },
+          "default": { "$ref": "#/components/responses/Error" }
+        }
+      },
+      "put": {
+        "operationId": "repository.write_file",
+        "x-devorbit-tool": "repository.write_file",
+        "x-devorbit-read-only": false,
+        "x-devorbit-idempotency-required": true,
+        "parameters": [
+          { "$ref": "#/components/parameters/TraceId" },
+          { "$ref": "#/components/parameters/CaseId" },
+          { "$ref": "#/components/parameters/Agent" },
+          { "$ref": "#/components/parameters/Operation" },
+          { "$ref": "#/components/parameters/IdempotencyKey" }
+        ],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/WriteFileRequest" } } } },
+        "responses": {
+          "200": { "description": "File write result", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/FileWriteResponse" } } } },
+          "default": { "$ref": "#/components/responses/Error" }
+        }
+      }
+    },
+    "/v1/repository/workspaces/dispose": {
+      "post": {
+        "operationId": "repository.dispose_workspace",
+        "x-devorbit-tool": "repository.dispose_workspace",
+        "x-devorbit-read-only": false,
+        "x-devorbit-idempotency-required": true,
+        "parameters": [
+          { "$ref": "#/components/parameters/TraceId" },
+          { "$ref": "#/components/parameters/CaseId" },
+          { "$ref": "#/components/parameters/Agent" },
+          { "$ref": "#/components/parameters/Operation" },
+          { "$ref": "#/components/parameters/IdempotencyKey" }
+        ],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/WorkspaceRequest" } } } },
+        "responses": {
+          "200": { "description": "Workspace disposal is idempotent", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/DisposeResponse" } } } },
+          "default": { "$ref": "#/components/responses/Error" }
+        }
+      }
+    },
+    "/v1/ci/tests": {
+      "post": {
+        "operationId": "ci.run_tests",
+        "x-devorbit-tool": "ci.run_tests",
+        "x-devorbit-read-only": false,
+        "x-devorbit-idempotency-required": true,
+        "parameters": [
+          { "$ref": "#/components/parameters/TraceId" },
+          { "$ref": "#/components/parameters/CaseId" },
+          { "$ref": "#/components/parameters/Agent" },
+          { "$ref": "#/components/parameters/Operation" },
+          { "$ref": "#/components/parameters/IdempotencyKey" }
+        ],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/WorkspaceRequest" } } } },
+        "responses": {
+          "200": { "description": "Allowlisted test execution result", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/TestResponse" } } } },
+          "default": { "$ref": "#/components/responses/Error" }
+        }
+      }
+    },
+    "/v1/knowledge/search": {
+      "post": {
+        "operationId": "knowledge.search_cases",
+        "x-devorbit-tool": "knowledge.search_cases",
+        "x-devorbit-read-only": true,
+        "x-devorbit-idempotency-required": false,
+        "parameters": [
+          { "$ref": "#/components/parameters/TraceId" },
+          { "$ref": "#/components/parameters/CaseId" },
+          { "$ref": "#/components/parameters/Agent" },
+          { "$ref": "#/components/parameters/Operation" }
+        ],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/KnowledgeSearchRequest" } } } },
+        "responses": {
+          "200": { "description": "Evidence-linked historical cases", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/KnowledgeSearchResponse" } } } },
+          "default": { "$ref": "#/components/responses/Error" }
+        }
+      }
+    },
+    "/v1/knowledge/cases": {
+      "post": {
+        "operationId": "knowledge.write_case",
+        "x-devorbit-tool": "knowledge.write_case",
+        "x-devorbit-read-only": false,
+        "x-devorbit-idempotency-required": true,
+        "parameters": [
+          { "$ref": "#/components/parameters/TraceId" },
+          { "$ref": "#/components/parameters/CaseId" },
+          { "$ref": "#/components/parameters/Agent" },
+          { "$ref": "#/components/parameters/Operation" },
+          { "$ref": "#/components/parameters/IdempotencyKey" }
+        ],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/KnowledgeWriteRequest" } } } },
+        "responses": {
+          "200": { "description": "Knowledge card persisted or replayed", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/KnowledgeWriteResponse" } } } },
+          "default": { "$ref": "#/components/responses/Error" }
+        }
+      }
+    },
+    "/v1/release/canary": {
+      "post": {
+        "operationId": "release.canary",
+        "x-devorbit-tool": "release.canary",
+        "x-devorbit-read-only": false,
+        "x-devorbit-idempotency-required": true,
+        "description": "The internal signed approval token is verified before this boundary and MUST NOT be forwarded. Only approvalId crosses the trust boundary.",
+        "parameters": [
+          { "$ref": "#/components/parameters/TraceId" },
+          { "$ref": "#/components/parameters/CaseId" },
+          { "$ref": "#/components/parameters/Agent" },
+          { "$ref": "#/components/parameters/Operation" },
+          { "$ref": "#/components/parameters/IdempotencyKey" }
+        ],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CanaryRequest" } } } },
+        "responses": {
+          "200": { "description": "Promote or rollback decision with health evidence", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CanaryResponse" } } } },
+          "default": { "$ref": "#/components/responses/Error" }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": { "type": "http", "scheme": "bearer", "bearerFormat": "opaque workload token" }
+    },
+    "parameters": {
+      "TraceId": { "name": "X-DevOrbit-Trace-Id", "in": "header", "required": true, "schema": { "type": "string", "minLength": 1 } },
+      "CaseId": { "name": "X-DevOrbit-Case-Id", "in": "header", "required": true, "schema": { "type": "string", "pattern": "^CASE-" } },
+      "Agent": { "name": "X-DevOrbit-Agent", "in": "header", "required": true, "schema": { "type": "string", "minLength": 1 } },
+      "Operation": { "name": "X-DevOrbit-Operation", "in": "header", "required": true, "schema": { "type": "string", "minLength": 1 } },
+      "IdempotencyKey": { "name": "Idempotency-Key", "in": "header", "required": true, "schema": { "type": "string", "minLength": 1, "maxLength": 256 } }
+    },
+    "requestBodies": {
+      "CaseRequest": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CaseRequest" } } } }
+    },
+    "responses": {
+      "Error": {
+        "description": "Structured adapter failure",
+        "headers": { "X-Request-Id": { "schema": { "type": "string" } } },
+        "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+      }
+    },
+    "schemas": {
+      "CaseRequest": { "type": "object", "required": ["caseId"], "properties": { "caseId": { "type": "string", "pattern": "^CASE-" } }, "additionalProperties": false },
+      "Signal": {
+        "type": "object",
+        "required": ["source", "id", "time", "text"],
+        "properties": { "source": { "type": "string" }, "id": { "type": "string" }, "time": { "type": "string" }, "text": { "type": "string" } },
+        "additionalProperties": true
+      },
+      "SignalsResponse": {
+        "type": "object",
+        "required": ["signals", "sourceCount"],
+        "properties": { "signals": { "type": "array", "items": { "$ref": "#/components/schemas/Signal" } }, "sourceCount": { "type": "integer", "minimum": 0 } },
+        "additionalProperties": false
+      },
+      "WorkspaceRequest": {
+        "type": "object",
+        "required": ["workspaceId", "idempotencyKey"],
+        "properties": { "workspaceId": { "type": "string", "minLength": 1 }, "idempotencyKey": { "type": "string", "minLength": 1 } },
+        "additionalProperties": false
+      },
+      "WorkspaceResponse": { "type": "object", "required": ["workspaceId"], "properties": { "workspaceId": { "type": "string" } }, "additionalProperties": false },
+      "ReadFileRequest": {
+        "type": "object",
+        "required": ["path"],
+        "properties": { "workspaceId": { "type": ["string", "null"] }, "path": { "type": "string", "minLength": 1 } },
+        "additionalProperties": false
+      },
+      "WriteFileRequest": {
+        "type": "object",
+        "required": ["workspaceId", "path", "content", "idempotencyKey"],
+        "properties": {
+          "workspaceId": { "type": "string" }, "path": { "type": "string", "minLength": 1 }, "content": { "type": "string" },
+          "approvalId": { "type": ["string", "null"] }, "idempotencyKey": { "type": "string", "minLength": 1 }
+        },
+        "additionalProperties": false
+      },
+      "FileResponse": {
+        "type": "object", "required": ["path", "content", "digest"],
+        "properties": { "path": { "type": "string" }, "content": { "type": "string" }, "digest": { "type": "string", "pattern": "^sha256:" } }, "additionalProperties": false
+      },
+      "FileWriteResponse": {
+        "type": "object", "required": ["path", "digest"],
+        "properties": { "path": { "type": "string" }, "digest": { "type": "string", "pattern": "^sha256:" } }, "additionalProperties": false
+      },
+      "DisposeResponse": {
+        "type": "object", "required": ["workspaceId", "disposed"],
+        "properties": { "workspaceId": { "type": "string" }, "disposed": { "type": "boolean" } }, "additionalProperties": false
+      },
+      "TestResponse": {
+        "type": "object",
+        "required": ["command", "exitCode", "passed", "failed", "skipped", "durationMs", "artifact", "outputTail"],
+        "properties": {
+          "command": { "type": "string" }, "exitCode": { "type": "integer" }, "passed": { "type": "integer", "minimum": 0 },
+          "failed": { "type": "integer", "minimum": 0 }, "skipped": { "type": "integer", "minimum": 0 }, "durationMs": { "type": "integer", "minimum": 0 },
+          "artifact": { "type": "string", "pattern": "^sha256:" }, "outputTail": { "type": "string" }
+        },
+        "additionalProperties": false
+      },
+      "KnowledgeSearchRequest": {
+        "type": "object", "required": ["query"],
+        "properties": { "query": { "type": "string" }, "tags": { "type": "array", "items": { "type": "string" } }, "topK": { "type": "integer", "minimum": 1, "maximum": 10 } },
+        "additionalProperties": false
+      },
+      "KnowledgeSearchResponse": {
+        "type": "object", "required": ["results", "count", "indexSize"],
+        "properties": { "results": { "type": "array", "items": { "type": "object" } }, "count": { "type": "integer", "minimum": 0 }, "indexSize": { "type": "integer", "minimum": 0 } },
+        "additionalProperties": false
+      },
+      "KnowledgeWriteRequest": {
+        "type": "object", "required": ["card", "idempotencyKey"],
+        "properties": { "card": { "type": "object" }, "idempotencyKey": { "type": "string", "minLength": 1 } }, "additionalProperties": false
+      },
+      "KnowledgeWriteResponse": {
+        "type": "object", "required": ["stored", "indexSize"],
+        "properties": { "stored": { "type": "object" }, "indexSize": { "type": "integer", "minimum": 0 } }, "additionalProperties": false
+      },
+      "CanaryRequest": {
+        "type": "object",
+        "required": ["caseId", "version", "approvalId", "idempotencyKey", "regressed"],
+        "properties": {
+          "caseId": { "type": "string", "pattern": "^CASE-" }, "version": { "type": "string" }, "approvalId": { "type": "string" },
+          "idempotencyKey": { "type": "string", "minLength": 1 }, "regressed": { "type": "boolean" }
+        },
+        "additionalProperties": false
+      },
+      "HealthMetrics": {
+        "type": "object", "required": ["errorRate", "p95Ms"],
+        "properties": { "errorRate": { "type": "number", "minimum": 0 }, "p95Ms": { "type": "number", "minimum": 0 } }, "additionalProperties": true
+      },
+      "CanaryResponse": {
+        "type": "object",
+        "required": ["decision", "rollbackExecuted", "healthBefore", "healthAfter", "canary", "observationWindow"],
+        "properties": {
+          "decision": { "type": "string", "enum": ["promoted", "rolled_back"] }, "rollbackExecuted": { "type": "boolean" },
+          "healthBefore": { "$ref": "#/components/schemas/HealthMetrics" }, "healthAfter": { "$ref": "#/components/schemas/HealthMetrics" },
+          "canary": { "type": "string" }, "observationWindow": { "type": "string" }
+        },
+        "additionalProperties": false
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "required": ["error"],
+        "properties": { "error": { "type": "object", "required": ["code"], "properties": { "code": { "type": "string" }, "message": { "type": "string" } }, "additionalProperties": true } },
+        "additionalProperties": true
+      }
+    }
+  }
+}

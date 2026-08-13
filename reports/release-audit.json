@@ -1,21 +1,21 @@
 {
-  "generatedAt": "2026-08-13T09:16:07.722Z",
+  "generatedAt": "2026-08-13T10:53:02.111Z",
   "summary": {
-    "checks": 349,
-    "passed": 349,
+    "checks": 377,
+    "passed": 377,
     "failed": 0
   },
   "artifacts": {
     "DevOrbit_初赛方案.pdf": "3f9e2b10e3e199aa32a04948a544eee382815a287a121001d8f70fb961171fd4",
     "DevOrbit_初赛方案.pptx": "89ee37aab42cd76c466fc04eab9ed2574b0a5d593832ad43b6db7164c060cc68",
-    "DevOrbit_初赛可执行代码包.zip": "afcb6d43f64f6922a618e9a9213d70d53a287b7904e54353cf69113e9a044019",
+    "DevOrbit_初赛可执行代码包.zip": "9e909736af6565ef69cdf31814dbdc651bb2dff3aa66e41c23bdbc8fccbb7010",
     "DevOrbit_演示视频.mp4": "f01f4bef22e5a7501c4aa89fa5341aa133e80c9a4d7c9ec518e827c1299b18fa",
     "DevOrbit_演示视频封面.png": "05787d13fb6591abafb83a3088a931a415ec07786025cc541db90263a2d7482e",
     "DevOrbit_初赛讲解视频_自动语音版.mp4": "eed873e8ce9e857f35e18f375c3d701214f4135292a65fbf7f5c0ee017eb4dc7",
-    "DevOrbit_威胁模型.pdf": "77b297c70306a7f1e6c7807dacb301586c7bf93aa2ac77f76258cc1fd7c61eb7",
-    "DevOrbit_证据索引.pdf": "0c864dd46ee84fab8c1e33e4c076f2c8ba3ae6db7ea94fcc4cad6fca0e7cd49f",
-    "DevOrbit_对照与消融评测.pdf": "008a5a72535cb37e8f046bc0609017409115e13c99b9e777a40570c536568e68",
-    "DevOrbit_对抗安全评测.pdf": "e158efbfca7a27b21bf5ad0817f54ed7deaa6e99400d9eeec43ff0cf27bb706d"
+    "DevOrbit_威胁模型.pdf": "8da321f83478fee886d499c072f6707111206c8c068a3e2d84395ef5a75f8336",
+    "DevOrbit_证据索引.pdf": "cc11595b288a872a3af8e6899ab94004a366586f23e234d1dc3daaab14e61be8",
+    "DevOrbit_对照与消融评测.pdf": "67bb927e5345ebf0a3706bed6d076c6e2f3211b85bb78710e2c229dfae9b246d",
+    "DevOrbit_对抗安全评测.pdf": "6fc3e9c5cf1cbcbeeb84ac4bf730b8090991d5b7c1d7ac755135e5a579f19b3a"
   },
   "videoReviewBoundary": "The video digest is locked to the previously visually reviewed recording. Any video change requires a new pixel-level review.",
   "cloudBoundary": "The official cloud Skill is source-locked and packaged for Intake/RCA. The default Demo does not claim a cloud-account invocation.",
@@ -156,6 +156,16 @@
       "detail": ""
     },
     {
+      "label": "code ZIP Dockerfile",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP .dockerignore",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code ZIP config/agentteams.yaml",
       "ok": true,
       "detail": ""
@@ -172,6 +182,36 @@
     },
     {
       "label": "code ZIP docs/证据索引.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP docs/Adapter生产契约.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP schemas/http-adapter.openapi.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP src/adapters/http.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP scripts/adapter-contract-smoke.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP scripts/api-security-smoke.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP scripts/container-smoke.sh",
       "ok": true,
       "detail": ""
     },
@@ -206,12 +246,42 @@
       "detail": ""
     },
     {
+      "label": "code ZIP reports/container-smoke.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code ZIP scripts/release-audit.mjs",
       "ok": true,
       "detail": ""
     },
     {
       "label": "code ZIP cache free",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP V0.5 version",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP HTTP Adapter contract",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP idempotency boundaries",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP hardened container evidence",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP intended base image digest",
       "ok": true,
       "detail": ""
     },
@@ -351,6 +421,11 @@
       "detail": ""
     },
     {
+      "label": "code compliance docs/Adapter生产契约.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance docs/复赛冲刺路线图.md",
       "ok": true,
       "detail": ""
@@ -387,6 +462,11 @@
     },
     {
       "label": "code compliance schemas/tool-contract.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance schemas/http-adapter.openapi.json",
       "ok": true,
       "detail": ""
     },
@@ -466,6 +546,11 @@
       "detail": ""
     },
     {
+      "label": "code compliance scripts/adapter-contract-smoke.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance scripts/evaluate-security.mjs",
       "ok": true,
       "detail": ""
@@ -506,7 +591,22 @@
       "detail": ""
     },
     {
+      "label": "code compliance scripts/container-smoke.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/validate-adapter-contract.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance scripts/api-smoke.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/api-security-smoke.mjs",
       "ok": true,
       "detail": ""
     },
@@ -541,12 +641,22 @@
       "detail": ""
     },
     {
+      "label": "code compliance src/adapters/http.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance src/security/tool-policy.js",
       "ok": true,
       "detail": ""
     },
     {
       "label": "code compliance src/orchestrator.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/adapter-http.test.js",
       "ok": true,
       "detail": ""
     },
@@ -666,6 +776,11 @@
       "detail": ""
     },
     {
+      "label": "code compliance src/version.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance src/security-policy.test.js",
       "ok": true,
       "detail": ""
@@ -717,6 +832,11 @@
     },
     {
       "label": "code compliance reports/agentteams-contract.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/container-smoke.json",
       "ok": true,
       "detail": ""
     },
@@ -1641,6 +1761,11 @@
       "detail": ""
     },
     {
+      "label": "total ZIP Adapter生产契约.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "total ZIP agentteams-contract.md",
       "ok": true,
       "detail": ""
@@ -1652,6 +1777,16 @@
     },
     {
       "label": "total ZIP security-evaluation.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP container-smoke.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP http-adapter.openapi.json",
       "ok": true,
       "detail": ""
     },
@@ -1747,6 +1882,11 @@
     },
     {
       "label": "total compliance 证据索引.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total compliance Adapter生产契约.md",
       "ok": true,
       "detail": ""
     },
