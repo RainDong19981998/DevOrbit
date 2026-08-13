@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devorbit.example/schemas/public-benchmark-report.schema.json",
+  "title": "DevOrbit Public Benchmark Aggregate Report",
+  "type": "object",
+  "required": ["protocolVersion", "datasetId", "generatedAt", "disclosure", "manifestDigest", "manifest", "methods", "pairwise", "status"],
+  "properties": {
+    "protocolVersion": { "type": "string", "const": "1.0" },
+    "datasetId": { "type": "string" },
+    "generatedAt": { "type": "string", "minLength": 1 },
+    "disclosure": { "type": "string", "minLength": 1 },
+    "manifestDigest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "manifest": {
+      "type": "object",
+      "required": ["status", "cases", "sources", "splits"],
+      "properties": {
+        "status": { "type": "string" },
+        "cases": { "type": "integer", "minimum": 0 },
+        "sources": { "type": "integer", "minimum": 0 },
+        "splits": {
+          "type": "object",
+          "required": ["train", "validation", "test"],
+          "properties": { "train": { "type": "integer", "minimum": 0 }, "validation": { "type": "integer", "minimum": 0 }, "test": { "type": "integer", "minimum": 0 } },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "methods": { "type": "object" },
+    "pairwise": { "type": "array" },
+    "methodsMetadata": { "type": "array" },
+    "runs": { "type": "array" },
+    "status": { "type": "string", "enum": ["not_run", "completed"] }
+  },
+  "additionalProperties": false
+}

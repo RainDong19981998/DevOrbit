@@ -38,7 +38,14 @@ zip -qj "$out" \
   reports/benchmark.md \
   reports/security-evaluation.md \
   reports/container-smoke.json \
-  schemas/http-adapter.openapi.json
+  schemas/http-adapter.openapi.json \
+  evaluation/public-benchmark.manifest.json \
+  reports/public-benchmark.json \
+  reports/public-benchmark.md \
+  schemas/public-benchmark.schema.json \
+  schemas/public-benchmark-results.schema.json \
+  schemas/public-benchmark-report.schema.json \
+  docs/公开基准协议.md
 
 unzip -tq "$out"
 echo 'PASS built initial submission bundle'

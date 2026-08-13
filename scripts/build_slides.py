@@ -20,7 +20,7 @@ ORANGE = 0xF06A3A
 LINE = 0xD6D9CF
 
 slides = [
-    ('DevOrbit', '多 Agent 软件研发闭环引擎', '从缺陷信号到修复确认，把研发协作变成一条可验证、可回放、可复用的证据链。', '初赛方案 · V0.4'),
+    ('DevOrbit', '多 Agent 软件研发闭环引擎', '从缺陷信号到修复确认，把研发协作变成一条可验证、可回放、可复用的证据链。', '初赛方案 · V0.5.1'),
     ('研发缺陷的真正成本，不在写补丁', '事实散落在多个系统，人工反复对齐；修复、测试、审批、灰度和复盘由不同角色接力，证据在交接中丢失。', '5+ 异构信息源\n7 个职能环节\n1 条统一证据链', '场景价值与行业可复制性 · 25%'),
     ('一次支付下单异常的完整案例', '用户反馈：“10:15 后支付页一直转圈，刷新后出现两笔订单。”', '10:02 配置 80 → 8\n10:15 错误率抬升\n10:15 幂等存储超时', '输出：Case · 影响图 · 根因证据 · 补丁/回滚 · 测试/灰度 · 知识卡'),
     ('判断、能力、连接、证据四层解耦', 'Team Leader 统一委派，Worker 通过 Skill 调用 MCP Tool。', '输入 → Team → Skill\n→ MCP 2025-06-18 → Tool', '10 Tools · 15 Calls · Case/Trace/Audit · 人类介入'),
@@ -31,7 +31,7 @@ slides = [
     ('上线不是终点，经验要回到下一次任务', 'KB-20260812-014 · 连接池缩容 + 幂等重试放大', '容量策略校验\n幂等存储水位告警\n重复提交回归纳入门禁', '复盘绑定 Case、代码、测试、审批、灰度和最终结果。'),
     ('把专家经验变成可复用工程资产', '7 自定义 Skill + 1 官方日志 Skill + 6 类 MCP Adapter', '输入输出 Schema\n调用条件与失败处理\n安全边界与证据引用\nGolden Case 评估与版本回滚', '官方 SLS Query v0.0.2 合规快照锁定\n核心 SKILL.md 未修改；来源/差异/摘要可审计\nIntake / RCA 只读接入；默认 Demo 不调用云账号'),
     ('一键运行，现场可复现', 'verify-all / AgentTeams contract / POST /mcp', '7 Worker · OTLP Agent/Tool Span\n10 MCP Tools · 运行时 Schema\n7/7 Golden Cases · 6/6 Security\n7 组对照/消融', 'AgentTeams v1.2.2 · 140/140 契约检查\n完整策略 100% 决策/安全；朴素基线 28.6%\n结果为团队构造仿真，不外推生产收益。'),
-    ('从可复现 Demo 到开放研发基础设施', '初赛 V0.4 → 复赛 V0.5 → 决赛 V1.0', '真实样例/MCP/RAG/策略 → 公开缺陷集 → 真实平台现场闭环', '开放 Agent/Skill、MCP Server、Schema、策略契约、案例集和评测脚本。'),
+    ('从可复现 Demo 到开放研发基础设施', '初赛 V0.5.1 → 复赛 V0.5 → 决赛 V1.0', '真实样例/MCP/RAG/策略 → 公开缺陷集 → 真实平台现场闭环', '开放 Agent/Skill、MCP Server、Schema、策略契约、案例集和评测脚本。'),
     ('让每个研发团队，都有一支可验证的交付小队', 'DevOrbit 不替代专家判断，而是把判断所需的证据、动作的边界和结果的验证组织起来。', '可运行 · 可审计 · 可复用', '谢谢'),
     ('附录 A1 · Agent Identity 清单', '官方字段：Name · Role · Capabilities · Inputs / Outputs · Dependencies · Decision Boundary · Trace', 'DEVORBIT-LEAD｜主控编排\n能：拆解 / 路由 / 状态推进；禁：改代码 / 发布\nI/O：原始任务 + Case → 子任务 / 状态 / 升级\n依赖：7 Worker｜边界：L2/L3 人审\nTrace：父 Span / 状态版本 / 消息 / 升级原因\n\nINTAKE-WORKER｜信号接入\n能：聚合 / 去重 / 定级；禁：推断代码根因\nI/O：5 类信号 → Canonical Case / 时间线\n依赖：SignalFusion + 官方 SLS Query + MCP\n边界：云日志只读；冲突升级｜Trace：信号 / I/O 摘要', 'IMPACT-WORKER｜影响分析\n能：代码检索 / 影响图；禁：写仓库\nI/O：Case + Repo → Impact Graph / 关键文件\n依赖：ImpactMap + Repository Tool\n边界：只读｜Trace：文件摘要 / 工具审计\n\nRCA-WORKER｜根因诊断\n能：候选排序 / 证据评分；禁：无证据下结论\nI/O：时间线 + 影响 + 历史 → 根因 / 证据缺口\n依赖：EvidenceRCA + 官方 SLS Query + KB\n边界：置信度 < 0.80 停止｜Trace：分数 / 引用'),
     ('附录 A2 · Agent Identity 清单', '所有 Worker 共享 Case / Trace；凭据不进入 Worker 上下文，写动作由工具网关按最小权限执行。', 'PATCH-WORKER｜修复计划\n能：沙箱补丁 / 回滚；禁：合并主干\nI/O：根因 + 代码 → 补丁 / 变更计划 / 回滚点\n依赖：PatchPlan + Repository Tool\n边界：仅沙箱；越界升级｜Trace：补丁 / 基线制品\n\nVERIFY-WORKER｜质量门禁\n能：选测 / 测试 / 归档；禁：绕过失败\nI/O：补丁 + 影响 → Test Report / 制品\n依赖：TestGate + CI Tool\n边界：必选测试失败即阻断｜Trace：命令 / 退出码', 'RELEASE-WORKER｜发布治理\n能：审批 / 灰度 / 回滚；禁：L3 自动执行\nI/O：补丁 + 测试 + 审批 + 指标 → 发布决策\n依赖：ReleaseGuard + Release Tool\n边界：L2 人审；退化回滚｜Trace：审批 / 幂等 / 指标\n\nLEARNING-WORKER｜知识沉淀\n能：复盘 / 知识卡；禁：改变生产状态\nI/O：完整 Trace + 结果 → Case Card / 预防规则\n依赖：KnowledgeCard + Knowledge Tool\n边界：脱敏后写入｜Trace：知识引用 / 关联证据'),

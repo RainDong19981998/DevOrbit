@@ -1,0 +1,51 @@
+{
+  "protocolVersion": "1.0",
+  "datasetId": "devorbit-public-software-repair-v1",
+  "status": "protocol-only",
+  "disclosure": "The public snapshot is not frozen in this repository. No public case or result is claimed until source snapshots, licenses, base/test/fix commits, and reproducible checkout evidence are recorded.",
+  "selectionPolicy": {
+    "eligibility": [
+      "Public repository and issue provenance are available under a redistributable research-compatible license",
+      "The defect reproduces from an immutable base commit with a deterministic test patch",
+      "The expected fix commit is available to the evaluator but hidden from every evaluated method"
+    ],
+    "exclusions": [
+      "Cases requiring unavailable proprietary services or personal data",
+      "Cases that do not reproduce in the pinned container after three independent attempts"
+    ],
+    "splitSeed": "devorbit-public-v1-split",
+    "splitAlgorithm": "repository-grouped deterministic SHA-256 ordering; no repository may cross train/validation/test"
+  },
+  "evaluationPolicy": {
+    "goldFixAccess": "evaluator-only",
+    "networkAccess": "disabled",
+    "maxAttemptsPerCase": 1,
+    "timeoutSeconds": 1800,
+    "primarySplit": "test",
+    "primaryMetric": "closedLoopRate"
+  },
+  "sources": [
+    {
+      "id": "swe-bench",
+      "name": "SWE-bench",
+      "url": "https://github.com/princeton-nlp/SWE-bench",
+      "license": "Apache-2.0 (verify against the pinned snapshot before use)",
+      "snapshot": null,
+      "retrievedAt": null
+    },
+    {
+      "id": "bugs-in-py",
+      "name": "BugsInPy",
+      "url": "https://github.com/sohah/bugsInPy",
+      "license": "See upstream repository license at the pinned snapshot",
+      "snapshot": null,
+      "retrievedAt": null
+    }
+  ],
+  "splits": {
+    "train": [],
+    "validation": [],
+    "test": []
+  },
+  "cases": []
+}

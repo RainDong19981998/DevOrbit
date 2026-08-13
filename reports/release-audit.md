@@ -1,25 +1,25 @@
 # 提交发布审计
 
-- 结果：377/377 checks passed
+- 结果：408/408 checks passed
 - 作品简介：458/500 字符
-- PDF：17 页；官方 Skill 与 140/140 契约证据已进入二进制材料
+- PDF：17 页 V0.5.1；官方 Skill 与 140/140 契约证据已进入二进制材料
 - 视频：演示片 H.264 1280×800，26 秒；讲解片 H.264 1280×720，已检查格式与元数据
 - V0.4 工程证据：Agent×Tool 策略、6/6 对抗安全、7 组对照/消融、OTLP JSON 导出均已纳入总包
-- V0.5 工程证据：10 操作 OpenAPI、六类 HTTP Provider、控制面安全与 14/14 加固容器证据已纳入总包
+- V0.5.1 工程证据：10 操作 OpenAPI、六类 HTTP Provider、控制面安全、14/14 加固容器证据与公开基准协议已纳入总包
 - 云能力边界：官方 Skill 已锁定并随 Intake/RCA 分发；当前默认 Demo 未调用云账号
 
 | Artifact | SHA-256 |
 |---|---|
-| DevOrbit_初赛方案.pdf | `3f9e2b10e3e199aa32a04948a544eee382815a287a121001d8f70fb961171fd4` |
-| DevOrbit_初赛方案.pptx | `89ee37aab42cd76c466fc04eab9ed2574b0a5d593832ad43b6db7164c060cc68` |
-| DevOrbit_初赛可执行代码包.zip | `9e909736af6565ef69cdf31814dbdc651bb2dff3aa66e41c23bdbc8fccbb7010` |
+| DevOrbit_初赛方案.pdf | `e7b47c14829520f310fba78f789057ed69374959402b91917d7c5cc7cc2ecebb` |
+| DevOrbit_初赛方案.pptx | `bf8f5941a1c225746c730e6066d5382376d00994d9278d9fa5ae9508b2a7c853` |
+| DevOrbit_初赛可执行代码包.zip | `82502860d55b09f455df2e6745eca5e611c003a4058ab2d90b7245a0d62db501` |
 | DevOrbit_演示视频.mp4 | `f01f4bef22e5a7501c4aa89fa5341aa133e80c9a4d7c9ec518e827c1299b18fa` |
 | DevOrbit_演示视频封面.png | `05787d13fb6591abafb83a3088a931a415ec07786025cc541db90263a2d7482e` |
 | DevOrbit_初赛讲解视频_自动语音版.mp4 | `eed873e8ce9e857f35e18f375c3d701214f4135292a65fbf7f5c0ee017eb4dc7` |
-| DevOrbit_威胁模型.pdf | `8da321f83478fee886d499c072f6707111206c8c068a3e2d84395ef5a75f8336` |
-| DevOrbit_证据索引.pdf | `cc11595b288a872a3af8e6899ab94004a366586f23e234d1dc3daaab14e61be8` |
-| DevOrbit_对照与消融评测.pdf | `67bb927e5345ebf0a3706bed6d076c6e2f3211b85bb78710e2c229dfae9b246d` |
-| DevOrbit_对抗安全评测.pdf | `6fc3e9c5cf1cbcbeeb84ac4bf730b8090991d5b7c1d7ac755135e5a579f19b3a` |
+| DevOrbit_威胁模型.pdf | `85c6d241df9383bd8b235033e0e056f9fa0c8df45e2b258667fb11ce81420df3` |
+| DevOrbit_证据索引.pdf | `12edf1476490e36dc189204f7013afad7139e11f2b89bd4b79d9784e48410df9` |
+| DevOrbit_对照与消融评测.pdf | `d200901f5e3d93e60251fcd933662f5a5c81e8da3d398be33dd6edafc24d729e` |
+| DevOrbit_对抗安全评测.pdf | `a5e390798dc4ca51f5ec74498a2942e028b4ec3c6890707feb4935b032263c47` |
 
 | Check | Result | Detail |
 |---|---|---|
@@ -28,10 +28,10 @@
 | intro compliance | PASS |  |
 | PDF page count | PASS |  |
 | PDF official Skill evidence | PASS |  |
-| PDF V0.4 evidence | PASS |  |
+| PDF V0.5.1 cover and evidence | PASS |  |
 | PDF compliance | PASS |  |
 | PPTX official Skill evidence | PASS |  |
-| PPTX V0.4 evidence | PASS |  |
+| PPTX V0.5.1 cover and evidence | PASS |  |
 | PPTX compliance | PASS |  |
 | video format | PASS |  |
 | video duration | PASS | 26.000000s |
@@ -69,13 +69,25 @@
 | code ZIP reports/security-evaluation.json | PASS |  |
 | code ZIP reports/otel-happy-path.json | PASS |  |
 | code ZIP reports/container-smoke.json | PASS |  |
+| code ZIP evaluation/public-benchmark.manifest.json | PASS |  |
+| code ZIP reports/public-benchmark.json | PASS |  |
+| code ZIP reports/public-benchmark.md | PASS |  |
+| code ZIP schemas/public-benchmark.schema.json | PASS |  |
+| code ZIP schemas/public-benchmark-results.schema.json | PASS |  |
+| code ZIP schemas/public-benchmark-report.schema.json | PASS |  |
+| code ZIP scripts/public-benchmark.mjs | PASS |  |
+| code ZIP src/evaluation/public-benchmark.js | PASS |  |
+| code ZIP src/evaluation/public-benchmark.test.js | PASS |  |
+| code ZIP docs/公开基准协议.md | PASS |  |
 | code ZIP scripts/release-audit.mjs | PASS |  |
 | code ZIP cache free | PASS |  |
-| code ZIP V0.5 version | PASS |  |
+| code ZIP V0.5.1 version | PASS |  |
 | code ZIP HTTP Adapter contract | PASS |  |
 | code ZIP idempotency boundaries | PASS |  |
 | code ZIP hardened container evidence | PASS |  |
 | code ZIP intended base image digest | PASS |  |
+| code ZIP public benchmark is protocol-only | PASS |  |
+| code ZIP public benchmark digest binding | PASS |  |
 | nested official Skill digest | PASS |  |
 | nested official Skill compliance | PASS |  |
 | official Skill curation disclosed | PASS |  |
@@ -106,11 +118,15 @@
 | code compliance docs/Adapter生产契约.md | PASS |  |
 | code compliance docs/复赛冲刺路线图.md | PASS |  |
 | code compliance docs/评委90秒验收.md | PASS |  |
+| code compliance docs/公开基准协议.md | PASS |  |
 | code compliance docs/作品简介.md | PASS |  |
 | code compliance docs/官网提交粘贴稿.md | PASS |  |
 | code compliance docs/Skill清单.md | PASS |  |
 | code compliance docs/Agent-Identity清单.md | PASS |  |
 | code compliance docs/演示脚本.md | PASS |  |
+| code compliance schemas/public-benchmark.schema.json | PASS |  |
+| code compliance schemas/public-benchmark-results.schema.json | PASS |  |
+| code compliance schemas/public-benchmark-report.schema.json | PASS |  |
 | code compliance schemas/tool-contract.schema.json | PASS |  |
 | code compliance schemas/http-adapter.openapi.json | PASS |  |
 | code compliance schemas/case-state.schema.json | PASS |  |
@@ -144,6 +160,7 @@
 | code compliance scripts/validate-agentteams.mjs | PASS |  |
 | code compliance scripts/firefox-demo-user.js | PASS |  |
 | code compliance scripts/write-deliverable-checksums.mjs | PASS |  |
+| code compliance scripts/public-benchmark.mjs | PASS |  |
 | code compliance scripts/evaluate-benchmark.mjs | PASS |  |
 | code compliance scripts/evaluate-rag.mjs | PASS |  |
 | code compliance scripts/render-agentteams-config.mjs | PASS |  |
@@ -173,6 +190,8 @@
 | code compliance src/mcp/protocol.js | PASS |  |
 | code compliance src/mcp/tool-server.js | PASS |  |
 | code compliance src/mcp/tools.js | PASS |  |
+| code compliance src/evaluation/public-benchmark.js | PASS |  |
+| code compliance src/evaluation/public-benchmark.test.js | PASS |  |
 | code compliance src/orchestrator.js | PASS |  |
 | code compliance src/version.js | PASS |  |
 | code compliance src/security-policy.test.js | PASS |  |
@@ -184,10 +203,12 @@
 | code compliance knowledge/cases.json | PASS |  |
 | code compliance evaluation/golden-cases.json | PASS |  |
 | code compliance evaluation/rag-cases.json | PASS |  |
+| code compliance evaluation/public-benchmark.manifest.json | PASS |  |
 | code compliance reports/rag-evaluation.json | PASS |  |
 | code compliance reports/agentteams-contract.json | PASS |  |
 | code compliance reports/container-smoke.json | PASS |  |
 | code compliance reports/otel-happy-path.json | PASS |  |
+| code compliance reports/public-benchmark.json | PASS |  |
 | code compliance reports/evaluation.json | PASS |  |
 | code compliance reports/security-evaluation.md | PASS |  |
 | code compliance reports/benchmark.json | PASS |  |
@@ -197,6 +218,7 @@
 | code compliance reports/runs/happy-path.json | PASS |  |
 | code compliance reports/runs/canary-regression.json | PASS |  |
 | code compliance reports/runs/low-confidence.json | PASS |  |
+| code compliance reports/public-benchmark.md | PASS |  |
 | code compliance reports/security-evaluation.json | PASS |  |
 | code compliance reports/rag-evaluation.md | PASS |  |
 | code compliance reports/evaluation.md | PASS |  |
@@ -377,6 +399,13 @@
 | total ZIP security-evaluation.md | PASS |  |
 | total ZIP container-smoke.json | PASS |  |
 | total ZIP http-adapter.openapi.json | PASS |  |
+| total ZIP public-benchmark.manifest.json | PASS |  |
+| total ZIP public-benchmark.json | PASS |  |
+| total ZIP public-benchmark.md | PASS |  |
+| total ZIP public-benchmark.schema.json | PASS |  |
+| total ZIP public-benchmark-results.schema.json | PASS |  |
+| total ZIP public-benchmark-report.schema.json | PASS |  |
+| total ZIP 公开基准协议.md | PASS |  |
 | total ZIP 交付物_SHA256.txt | PASS |  |
 | total ZIP DevOrbit_初赛讲解视频_自动语音版.mp4 | PASS |  |
 | total ZIP DevOrbit_Agent-Identity清单.pdf | PASS |  |
@@ -400,3 +429,5 @@
 | total compliance agentteams-contract.md | PASS |  |
 | total compliance benchmark.md | PASS |  |
 | total compliance security-evaluation.md | PASS |  |
+| total compliance public-benchmark.md | PASS |  |
+| total compliance 公开基准协议.md | PASS |  |

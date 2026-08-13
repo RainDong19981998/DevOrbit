@@ -1,0 +1,20 @@
+{
+  "protocolVersion": "1.0",
+  "datasetId": "devorbit-public-software-repair-v1",
+  "generatedAt": "2026-08-13T11:23:50.965Z",
+  "disclosure": "The public snapshot is not frozen in this repository. No public case or result is claimed until source snapshots, licenses, base/test/fix commits, and reproducible checkout evidence are recorded.",
+  "manifest": {
+    "status": "protocol-only",
+    "cases": 0,
+    "sources": 2,
+    "splits": {
+      "train": 0,
+      "validation": 0,
+      "test": 0
+    }
+  },
+  "methods": {},
+  "pairwise": [],
+  "manifestDigest": "sha256:7523bd9411ba43a1c87b9af82b31acd95b309dd38882ee6b59f2e587dac4c3d0",
+  "status": "not_run"
+}

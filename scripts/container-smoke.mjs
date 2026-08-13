@@ -23,7 +23,7 @@ const check = (label, ok, detail = '') => checks.push({ label, ok: Boolean(ok), 
 
 const health = await request('/api/health', { authenticated: false });
 check('health endpoint', health.response.status === 200 && health.data?.status === 'ok');
-check('runtime version', health.data?.version === '0.5.0' && health.data?.mcpProtocol === '2025-06-18');
+check('runtime version', health.data?.version === '0.5.1' && health.data?.mcpProtocol === '2025-06-18');
 check('control-plane auth advertised', health.data?.authRequired === true && health.data?.externalAdapters === false);
 
 const unauthorized = await request('/api/runs', { method: 'POST', body: {}, authenticated: false });
@@ -48,7 +48,7 @@ check('OTLP approval-resume evidence', approved.data?.observability?.summary?.sp
 
 const resourceAttributes = approved.data?.observability?.resourceSpans?.[0]?.resource?.attributes || [];
 const attribute = key => resourceAttributes.find(item => item.key === key)?.value?.stringValue;
-check('container OTLP resource', attribute('service.version') === '0.5.0' && attribute('deployment.environment.name') === 'container');
+check('container OTLP resource', attribute('service.version') === '0.5.1' && attribute('deployment.environment.name') === 'container');
 
 for (const item of checks) console.log(`${item.ok ? 'PASS' : 'FAIL'} ${item.label}${item.detail ? ` (${item.detail})` : ''}`);
 const passed = checks.filter(item => item.ok).length;

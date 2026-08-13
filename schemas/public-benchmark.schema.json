@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devorbit.example/schemas/public-benchmark.schema.json",
+  "title": "DevOrbit Public Software Repair Benchmark Protocol",
+  "type": "object",
+  "required": ["protocolVersion", "datasetId", "status", "disclosure", "selectionPolicy", "evaluationPolicy", "sources", "splits", "cases"],
+  "properties": {
+    "protocolVersion": { "type": "string", "const": "1.0" },
+    "datasetId": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]+$" },
+    "status": { "type": "string", "enum": ["protocol-only", "frozen", "deprecated"] },
+    "disclosure": { "type": "string", "minLength": 1 },
+    "selectionPolicy": {
+      "type": "object",
+      "required": ["eligibility", "exclusions", "splitSeed", "splitAlgorithm"],
+      "properties": {
+        "eligibility": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+        "exclusions": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "splitSeed": { "type": "string", "minLength": 1 },
+        "splitAlgorithm": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    },
+    "evaluationPolicy": {
+      "type": "object",
+      "required": ["goldFixAccess", "networkAccess", "maxAttemptsPerCase", "timeoutSeconds", "primarySplit", "primaryMetric"],
+      "properties": {
+        "goldFixAccess": { "type": "string", "const": "evaluator-only" },
+        "networkAccess": { "type": "string", "enum": ["disabled", "allowlisted"] },
+        "maxAttemptsPerCase": { "type": "integer", "minimum": 1, "maximum": 10 },
+        "timeoutSeconds": { "type": "integer", "minimum": 60, "maximum": 86400 },
+        "primarySplit": { "type": "string", "const": "test" },
+        "primaryMetric": { "type": "string", "const": "closedLoopRate" }
+      },
+      "additionalProperties": false
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "url", "license", "snapshot"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]+$" },
+          "name": { "type": "string", "minLength": 1 },
+          "url": { "type": "string", "pattern": "^https://" },
+          "license": { "type": "string", "minLength": 1 },
+          "snapshot": { "type": ["string", "null"], "pattern": "^(sha256:)?[0-9a-f]{7,64}$" },
+          "retrievedAt": { "type": ["string", "null"] }
+        },
+        "additionalProperties": false
+      }
+    },
+    "splits": {
+      "type": "object",
+      "required": ["train", "validation", "test"],
+      "properties": {
+        "train": { "type": "array", "items": { "type": "string" } },
+        "validation": { "type": "array", "items": { "type": "string" } },
+        "test": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    "cases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["caseId", "sourceId", "repository", "baseCommit", "testPatchDigest", "expectedFixCommit", "reproductionCommand", "split", "license"] ,
+        "properties": {
+          "caseId": { "type": "string", "pattern": "^[A-Z0-9][A-Z0-9._:-]+$" },
+          "sourceId": { "type": "string" },
+          "repository": { "type": "string", "pattern": "^[^/ ]+/[^/ ]+$" },
+          "issueUrl": { "type": "string", "pattern": "^https://" },
+          "baseCommit": { "type": "string", "pattern": "^[0-9a-f]{7,64}$" },
+          "testPatchDigest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+          "expectedFixCommit": { "type": "string", "pattern": "^[0-9a-f]{7,64}$" },
+          "reproductionCommand": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+          "split": { "type": "string", "enum": ["train", "validation", "test"] },
+          "license": { "type": "string", "minLength": 1 },
+          "language": { "type": "string" },
+          "tags": { "type": "array", "items": { "type": "string" } }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

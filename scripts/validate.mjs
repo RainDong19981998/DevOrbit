@@ -57,6 +57,11 @@ checks.push(['HTTP Adapter OpenAPI', adapterOpenApi.openapi === '3.1.0' && adapt
 checks.push(['HTTP Adapter idempotency contract', adapterOperations.filter(operation => operation['x-devorbit-idempotency-required']).length === 6]);
 const containerEvidence = JSON.parse(await readFile(new URL('../reports/container-smoke.json', import.meta.url), 'utf8'));
 checks.push(['hardened container evidence', containerEvidence.summary.passed === 14 && containerEvidence.summary.failed === 0 && containerEvidence.hardening.uid === 10001 && containerEvidence.hardening.readOnlyRootfs === true && containerEvidence.hardening.noNewPrivileges === true]);
+const publicManifest = JSON.parse(await readFile(new URL('../evaluation/public-benchmark.manifest.json', import.meta.url), 'utf8'));
+const publicReport = JSON.parse(await readFile(new URL('../reports/public-benchmark.json', import.meta.url), 'utf8'));
+checks.push(['public benchmark is honest when unfrozen', publicManifest.status === 'protocol-only' && publicReport.status === 'not_run' && publicReport.manifest.cases === 0 && Object.keys(publicReport.methods).length === 0 && /^sha256:[0-9a-f]{64}$/.test(publicReport.manifestDigest || '')]);
+checks.push(['public benchmark sources are HTTPS', publicManifest.sources.length >= 1 && publicManifest.sources.every(source => source.url.startsWith('https://') && source.snapshot === null)]);
+checks.push(['public benchmark policy is explicit', publicManifest.selectionPolicy?.splitSeed && publicManifest.evaluationPolicy?.goldFixAccess === 'evaluator-only' && publicManifest.evaluationPolicy?.primarySplit === 'test']);
 const complianceDisclosure = await readFile(new URL('../docs/第三方依赖与合规清单.md', import.meta.url), 'utf8');
 checks.push(['dependency disclosure', complianceDisclosure.includes('AgentTeams') && complianceDisclosure.includes('alibabacloud-sls-query') && complianceDisclosure.includes('无第三方 npm 包')]);
 for (const [label, ok] of checks) console.log(`${ok ? 'PASS' : 'FAIL'} ${label}`);

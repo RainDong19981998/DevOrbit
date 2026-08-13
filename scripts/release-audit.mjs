@@ -26,7 +26,7 @@ const pdfInfo = command('pdfinfo', [pdfPath]);
 const pdfText = command('pdftotext', ['-layout', pdfPath, '-']);
 check('PDF page count', /^Pages:\s+17$/m.test(pdfInfo));
 check('PDF official Skill evidence', pdfText.includes('SLS Query v0.0.2') && pdfText.includes('140/140'));
-check('PDF V0.4 evidence', pdfText.includes('V0.4') && pdfText.includes('6/6 Security') && pdfText.includes('28.6%') && pdfText.includes('OTLP'));
+check('PDF V0.5.1 cover and evidence', pdfText.includes('V0.5.1') && pdfText.includes('6/6 Security') && pdfText.includes('28.6%') && pdfText.includes('OTLP'));
 check('PDF compliance', !hasForbidden(pdfText));
 
 const pptxPath = fileURLToPath(new URL('DevOrbit_初赛方案.pptx', deliverables));
@@ -37,7 +37,7 @@ const pptxText = archiveEntries(pptxPath)
   .replace(/<[^>]+>/g, ' ')
   .replace(/&gt;/g, '>').replace(/&lt;/g, '<').replace(/&amp;/g, '&');
 check('PPTX official Skill evidence', pptxText.includes('SLS Query v0.0.2') && pptxText.includes('140/140'));
-check('PPTX V0.4 evidence', pptxText.includes('V0.4') && pptxText.includes('6/6 Security') && pptxText.includes('28.6%') && pptxText.includes('HMAC'));
+check('PPTX V0.5.1 cover and evidence', pptxText.includes('V0.5.1') && pptxText.includes('6/6 Security') && pptxText.includes('28.6%') && pptxText.includes('HMAC'));
 check('PPTX compliance', !hasForbidden(pptxText));
 
 const videoPath = fileURLToPath(new URL('DevOrbit_演示视频.mp4', deliverables));
@@ -83,11 +83,14 @@ for (const required of [
   'scripts/adapter-contract-smoke.mjs', 'scripts/api-security-smoke.mjs', 'scripts/container-smoke.sh',
   'config/aliyun-official-skill.contract.json',
   'third_party/aliyun/alibabacloud-sls-query-0.0.2-devorbit-curated.zip',
-  'reports/agentteams-contract.md', 'reports/benchmark.json', 'reports/security-evaluation.json', 'reports/otel-happy-path.json', 'reports/container-smoke.json', 'scripts/release-audit.mjs'
+  'reports/agentteams-contract.md', 'reports/benchmark.json', 'reports/security-evaluation.json', 'reports/otel-happy-path.json', 'reports/container-smoke.json',
+  'evaluation/public-benchmark.manifest.json', 'reports/public-benchmark.json', 'reports/public-benchmark.md',
+  'schemas/public-benchmark.schema.json', 'schemas/public-benchmark-results.schema.json', 'schemas/public-benchmark-report.schema.json',
+  'scripts/public-benchmark.mjs', 'src/evaluation/public-benchmark.js', 'src/evaluation/public-benchmark.test.js', 'docs/公开基准协议.md', 'scripts/release-audit.mjs'
 ]) check(`code ZIP ${required}`, codeEntries.includes(required));
 check('code ZIP cache free', !codeEntries.some(entry => entry.includes('__pycache__') || entry.endsWith('.pyc')));
 const codePackage = JSON.parse(archiveFile(codeZipPath, 'package.json', 'utf8'));
-check('code ZIP V0.5 version', codePackage.version === '0.5.0' && codePackage.scripts?.['validate-adapters'] && codePackage.scripts?.['container-smoke']);
+check('code ZIP V0.5.1 version', codePackage.version === '0.5.1' && codePackage.scripts?.['validate-adapters'] && codePackage.scripts?.['container-smoke']);
 const adapterOpenApi = JSON.parse(archiveFile(codeZipPath, 'schemas/http-adapter.openapi.json', 'utf8'));
 const adapterOperations = Object.values(adapterOpenApi.paths || {}).flatMap(pathItem => Object.values(pathItem).filter(value => value?.operationId));
 check('code ZIP HTTP Adapter contract', adapterOpenApi.openapi === '3.1.0' && adapterOpenApi.info?.version === '0.5.0' && adapterOperations.length === 10);
@@ -95,6 +98,11 @@ check('code ZIP idempotency boundaries', adapterOperations.filter(operation => o
 const containerEvidence = JSON.parse(archiveFile(codeZipPath, 'reports/container-smoke.json', 'utf8'));
 check('code ZIP hardened container evidence', containerEvidence.summary?.passed === 14 && containerEvidence.summary?.failed === 0 && containerEvidence.hardening?.uid === 10001 && containerEvidence.hardening?.readOnlyRootfs === true && containerEvidence.hardening?.noNewPrivileges === true);
 check('code ZIP intended base image digest', containerEvidence.intendedNodeImage === 'node:22.18.0-bookworm-slim' && containerEvidence.intendedNodeImageIndexDigest === 'sha256:752ea8a2f758c34002a0461bd9f1cee4f9a3c36d48494586f60ffce1fc708e0e');
+const publicManifestBytes = archiveFile(codeZipPath, 'evaluation/public-benchmark.manifest.json');
+const publicManifest = JSON.parse(publicManifestBytes.toString('utf8'));
+const publicReport = JSON.parse(archiveFile(codeZipPath, 'reports/public-benchmark.json', 'utf8'));
+check('code ZIP public benchmark is protocol-only', publicManifest.status === 'protocol-only' && publicManifest.cases.length === 0 && publicReport.status === 'not_run' && publicReport.manifest.cases === 0 && Object.keys(publicReport.methods).length === 0);
+check('code ZIP public benchmark digest binding', publicReport.manifestDigest === `sha256:${sha256(publicManifestBytes)}`);
 
 const officialContract = JSON.parse(archiveFile(codeZipPath, 'config/aliyun-official-skill.contract.json', 'utf8'));
 const officialZip = archiveFile(codeZipPath, officialContract.artifact.path);
@@ -128,6 +136,7 @@ for (const required of [
   '提交清单.md', '评委90秒验收.md', '第三方依赖与合规清单.md', '演示脚本.md',
   '威胁模型.md', '证据索引.md', 'Adapter生产契约.md', 'agentteams-contract.md', 'benchmark.md', 'security-evaluation.md',
   'container-smoke.json', 'http-adapter.openapi.json',
+  'public-benchmark.manifest.json', 'public-benchmark.json', 'public-benchmark.md', 'public-benchmark.schema.json', 'public-benchmark-results.schema.json', 'public-benchmark-report.schema.json', '公开基准协议.md',
   '交付物_SHA256.txt', 'DevOrbit_初赛讲解视频_自动语音版.mp4', 'DevOrbit_Agent-Identity清单.pdf',
   'DevOrbit_Skill清单.pdf', 'DevOrbit_工具与云产品清单.pdf', 'DevOrbit_威胁模型.pdf', 'DevOrbit_证据索引.pdf',
   'DevOrbit_对照与消融评测.pdf', 'DevOrbit_对抗安全评测.pdf'
@@ -153,10 +162,10 @@ const markdown = [
   '# 提交发布审计', '',
   `- 结果：${report.summary.passed}/${report.summary.checks} checks passed`,
   `- 作品简介：${introBody.length}/500 字符`,
-  `- PDF：17 页；官方 Skill 与 140/140 契约证据已进入二进制材料`,
+  `- PDF：17 页 V0.5.1；官方 Skill 与 140/140 契约证据已进入二进制材料`,
   `- 视频：演示片 H.264 1280×800，26 秒；讲解片 H.264 1280×720，已检查格式与元数据`,
   `- V0.4 工程证据：Agent×Tool 策略、6/6 对抗安全、7 组对照/消融、OTLP JSON 导出均已纳入总包`,
-  `- V0.5 工程证据：10 操作 OpenAPI、六类 HTTP Provider、控制面安全与 14/14 加固容器证据已纳入总包`,
+  `- V0.5.1 工程证据：10 操作 OpenAPI、六类 HTTP Provider、控制面安全、14/14 加固容器证据与公开基准协议已纳入总包`,
   `- 云能力边界：官方 Skill 已锁定并随 Intake/RCA 分发；当前默认 Demo 未调用云账号`,
   '', '| Artifact | SHA-256 |', '|---|---|',
   ...Object.entries(digests).map(([name, digest]) => `| ${name} | \`${digest}\` |`),

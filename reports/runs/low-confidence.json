@@ -37,7 +37,7 @@
     ]
   },
   "canonical": {
-    "id": "CASE-7A719A2D",
+    "id": "CASE-BBDA7C7A",
     "title": "支付页提交后持续转圈，订单偶发重复创建",
     "severity": "S2",
     "confidence": 0.94,
@@ -108,7 +108,7 @@
         "protocolVersion": "2025-06-18",
         "transport": "embedded-jsonrpc",
         "tool": "repository.read_file",
-        "durationMs": 0,
+        "durationMs": 1,
         "isError": false
       },
       {
@@ -116,7 +116,7 @@
         "protocolVersion": "2025-06-18",
         "transport": "embedded-jsonrpc",
         "tool": "repository.read_file",
-        "durationMs": 1,
+        "durationMs": 0,
         "isError": false
       }
     ]
@@ -274,8 +274,8 @@
   "release": null,
   "knowledge": null,
   "state": {
-    "caseId": "CASE-7A719A2D",
-    "traceId": "TRACE-7914a1ed-789c-453b-8281-61149d5373b6",
+    "caseId": "CASE-BBDA7C7A",
+    "traceId": "TRACE-d19ff9fe-45a2-4622-830b-a007b38d33ef",
     "status": "needs_human",
     "revision": 3,
     "scenario": "low-confidence",
@@ -283,27 +283,27 @@
   },
   "trace": [
     {
-      "traceId": "TRACE-7914a1ed-789c-453b-8281-61149d5373b6",
+      "traceId": "TRACE-d19ff9fe-45a2-4622-830b-a007b38d33ef",
       "spanId": "SPAN-001",
       "parentSpanId": null,
-      "at": "2026-08-13T10:51:24.700Z",
+      "at": "2026-08-13T11:23:36.461Z",
       "agent": "devorbit-lead",
       "skill": "case-orchestration",
       "stage": "triage",
       "status": "dispatched",
       "message": "委派 triage 任务给 intake-worker，共享 Case State 版本 1。",
       "evidence": [
-        "state://CASE-7A719A2D/received"
+        "state://CASE-BBDA7C7A/received"
       ],
       "durationMs": 8,
       "inputDigest": "1acbc1c47da92b68",
       "outputDigest": "48da602835f7e498"
     },
     {
-      "traceId": "TRACE-7914a1ed-789c-453b-8281-61149d5373b6",
+      "traceId": "TRACE-d19ff9fe-45a2-4622-830b-a007b38d33ef",
       "spanId": "SPAN-002",
       "parentSpanId": "SPAN-001",
-      "at": "2026-08-13T10:51:25.700Z",
+      "at": "2026-08-13T11:23:37.461Z",
       "agent": "intake-worker",
       "skill": "SignalFusion",
       "stage": "triage",
@@ -317,31 +317,31 @@
         "CHG-402"
       ],
       "durationMs": 11,
-      "inputDigest": "2d1505be91a2cb82",
-      "outputDigest": "cac108f431facb26"
+      "inputDigest": "68d578aadc9d6b7e",
+      "outputDigest": "1f3bd88a86178e97"
     },
     {
-      "traceId": "TRACE-7914a1ed-789c-453b-8281-61149d5373b6",
+      "traceId": "TRACE-d19ff9fe-45a2-4622-830b-a007b38d33ef",
       "spanId": "SPAN-003",
       "parentSpanId": null,
-      "at": "2026-08-13T10:51:26.700Z",
+      "at": "2026-08-13T11:23:38.461Z",
       "agent": "devorbit-lead",
       "skill": "case-orchestration",
       "stage": "impact",
       "status": "dispatched",
       "message": "委派 impact 任务给 impact-worker，共享 Case State 版本 3。",
       "evidence": [
-        "state://CASE-7A719A2D/triaged"
+        "state://CASE-BBDA7C7A/triaged"
       ],
       "durationMs": 14,
-      "inputDigest": "ddd9234bd4e33f82",
+      "inputDigest": "3f15184e508d7f6f",
       "outputDigest": "fa2a6e96d73fa112"
     },
     {
-      "traceId": "TRACE-7914a1ed-789c-453b-8281-61149d5373b6",
+      "traceId": "TRACE-d19ff9fe-45a2-4622-830b-a007b38d33ef",
       "spanId": "SPAN-004",
       "parentSpanId": "SPAN-003",
-      "at": "2026-08-13T10:51:27.702Z",
+      "at": "2026-08-13T11:23:39.462Z",
       "agent": "impact-worker",
       "skill": "ImpactMap",
       "stage": "impact",
@@ -356,31 +356,31 @@
         "mcp://sha256:6169a3e590b472cb"
       ],
       "durationMs": 17,
-      "inputDigest": "cac108f431facb26",
-      "outputDigest": "9ca58f518b0ab474"
+      "inputDigest": "1f3bd88a86178e97",
+      "outputDigest": "4d40cd33c3c36ca8"
     },
     {
-      "traceId": "TRACE-7914a1ed-789c-453b-8281-61149d5373b6",
+      "traceId": "TRACE-d19ff9fe-45a2-4622-830b-a007b38d33ef",
       "spanId": "SPAN-005",
       "parentSpanId": null,
-      "at": "2026-08-13T10:51:28.702Z",
+      "at": "2026-08-13T11:23:40.462Z",
       "agent": "devorbit-lead",
       "skill": "case-orchestration",
       "stage": "rca",
       "status": "dispatched",
       "message": "委派 rca 任务给 rca-worker，共享 Case State 版本 4。",
       "evidence": [
-        "state://CASE-7A719A2D/triaged"
+        "state://CASE-BBDA7C7A/triaged"
       ],
       "durationMs": 20,
-      "inputDigest": "c1fb2666374b0b0e",
+      "inputDigest": "6be76445c26c6125",
       "outputDigest": "1ef0f8abb234dd13"
     },
     {
-      "traceId": "TRACE-7914a1ed-789c-453b-8281-61149d5373b6",
+      "traceId": "TRACE-d19ff9fe-45a2-4622-830b-a007b38d33ef",
       "spanId": "SPAN-006",
       "parentSpanId": "SPAN-005",
-      "at": "2026-08-13T10:51:29.703Z",
+      "at": "2026-08-13T11:23:41.463Z",
       "agent": "rca-worker",
       "skill": "EvidenceRCA",
       "stage": "rca",
@@ -390,7 +390,7 @@
         "LOG-10A"
       ],
       "durationMs": 23,
-      "inputDigest": "a8a89164844936b9",
+      "inputDigest": "0e4eb34767d9602b",
       "outputDigest": "bff5eaa5d26e5266"
     }
   ],
@@ -641,7 +641,7 @@
             {
               "key": "service.version",
               "value": {
-                "stringValue": "0.5.0"
+                "stringValue": "0.5.1"
               }
             },
             {
@@ -656,16 +656,16 @@
           {
             "scope": {
               "name": "devorbit.runtime",
-              "version": "0.5.0"
+              "version": "0.5.1"
             },
             "spans": [
               {
-                "traceId": "84f32b0ca2a438f40dc54922b8de8ccb",
+                "traceId": "cf44a3806144cc483d46eb01b0a030a2",
                 "spanId": "d6fb01a4172d8870",
                 "name": "orchestrate triage",
                 "kind": 1,
-                "startTimeUnixNano": "1786618284700000000",
-                "endTimeUnixNano": "1786618284708000000",
+                "startTimeUnixNano": "1786620216461000000",
+                "endTimeUnixNano": "1786620216469000000",
                 "attributes": [
                   {
                     "key": "gen_ai.operation.name",
@@ -688,7 +688,7 @@
                   {
                     "key": "devorbit.case.id",
                     "value": {
-                      "stringValue": "CASE-7A719A2D"
+                      "stringValue": "CASE-BBDA7C7A"
                     }
                   },
                   {
@@ -721,13 +721,13 @@
                 }
               },
               {
-                "traceId": "84f32b0ca2a438f40dc54922b8de8ccb",
+                "traceId": "cf44a3806144cc483d46eb01b0a030a2",
                 "spanId": "377e20e3b4ac3798",
                 "parentSpanId": "d6fb01a4172d8870",
                 "name": "invoke_agent intake-worker",
                 "kind": 1,
-                "startTimeUnixNano": "1786618285700000000",
-                "endTimeUnixNano": "1786618285711000000",
+                "startTimeUnixNano": "1786620217461000000",
+                "endTimeUnixNano": "1786620217472000000",
                 "attributes": [
                   {
                     "key": "gen_ai.operation.name",
@@ -750,7 +750,7 @@
                   {
                     "key": "devorbit.case.id",
                     "value": {
-                      "stringValue": "CASE-7A719A2D"
+                      "stringValue": "CASE-BBDA7C7A"
                     }
                   },
                   {
@@ -768,13 +768,13 @@
                   {
                     "key": "devorbit.input.digest",
                     "value": {
-                      "stringValue": "2d1505be91a2cb82"
+                      "stringValue": "68d578aadc9d6b7e"
                     }
                   },
                   {
                     "key": "devorbit.output.digest",
                     "value": {
-                      "stringValue": "cac108f431facb26"
+                      "stringValue": "1f3bd88a86178e97"
                     }
                   }
                 ],
@@ -783,12 +783,12 @@
                 }
               },
               {
-                "traceId": "84f32b0ca2a438f40dc54922b8de8ccb",
+                "traceId": "cf44a3806144cc483d46eb01b0a030a2",
                 "spanId": "38b47dce2a5d66f6",
                 "name": "orchestrate impact",
                 "kind": 1,
-                "startTimeUnixNano": "1786618286700000000",
-                "endTimeUnixNano": "1786618286714000000",
+                "startTimeUnixNano": "1786620218461000000",
+                "endTimeUnixNano": "1786620218475000000",
                 "attributes": [
                   {
                     "key": "gen_ai.operation.name",
@@ -811,7 +811,7 @@
                   {
                     "key": "devorbit.case.id",
                     "value": {
-                      "stringValue": "CASE-7A719A2D"
+                      "stringValue": "CASE-BBDA7C7A"
                     }
                   },
                   {
@@ -829,7 +829,7 @@
                   {
                     "key": "devorbit.input.digest",
                     "value": {
-                      "stringValue": "ddd9234bd4e33f82"
+                      "stringValue": "3f15184e508d7f6f"
                     }
                   },
                   {
@@ -844,13 +844,13 @@
                 }
               },
               {
-                "traceId": "84f32b0ca2a438f40dc54922b8de8ccb",
+                "traceId": "cf44a3806144cc483d46eb01b0a030a2",
                 "spanId": "f7149e496d2c951c",
                 "parentSpanId": "38b47dce2a5d66f6",
                 "name": "invoke_agent impact-worker",
                 "kind": 1,
-                "startTimeUnixNano": "1786618287702000000",
-                "endTimeUnixNano": "1786618287719000000",
+                "startTimeUnixNano": "1786620219462000000",
+                "endTimeUnixNano": "1786620219479000000",
                 "attributes": [
                   {
                     "key": "gen_ai.operation.name",
@@ -873,7 +873,7 @@
                   {
                     "key": "devorbit.case.id",
                     "value": {
-                      "stringValue": "CASE-7A719A2D"
+                      "stringValue": "CASE-BBDA7C7A"
                     }
                   },
                   {
@@ -891,13 +891,13 @@
                   {
                     "key": "devorbit.input.digest",
                     "value": {
-                      "stringValue": "cac108f431facb26"
+                      "stringValue": "1f3bd88a86178e97"
                     }
                   },
                   {
                     "key": "devorbit.output.digest",
                     "value": {
-                      "stringValue": "9ca58f518b0ab474"
+                      "stringValue": "4d40cd33c3c36ca8"
                     }
                   }
                 ],
@@ -906,12 +906,12 @@
                 }
               },
               {
-                "traceId": "84f32b0ca2a438f40dc54922b8de8ccb",
+                "traceId": "cf44a3806144cc483d46eb01b0a030a2",
                 "spanId": "135d14b4b4d305ec",
                 "name": "orchestrate rca",
                 "kind": 1,
-                "startTimeUnixNano": "1786618288702000000",
-                "endTimeUnixNano": "1786618288722000000",
+                "startTimeUnixNano": "1786620220462000000",
+                "endTimeUnixNano": "1786620220482000000",
                 "attributes": [
                   {
                     "key": "gen_ai.operation.name",
@@ -934,7 +934,7 @@
                   {
                     "key": "devorbit.case.id",
                     "value": {
-                      "stringValue": "CASE-7A719A2D"
+                      "stringValue": "CASE-BBDA7C7A"
                     }
                   },
                   {
@@ -952,7 +952,7 @@
                   {
                     "key": "devorbit.input.digest",
                     "value": {
-                      "stringValue": "c1fb2666374b0b0e"
+                      "stringValue": "6be76445c26c6125"
                     }
                   },
                   {
@@ -967,13 +967,13 @@
                 }
               },
               {
-                "traceId": "84f32b0ca2a438f40dc54922b8de8ccb",
+                "traceId": "cf44a3806144cc483d46eb01b0a030a2",
                 "spanId": "ad283660f806710f",
                 "parentSpanId": "135d14b4b4d305ec",
                 "name": "invoke_agent rca-worker",
                 "kind": 1,
-                "startTimeUnixNano": "1786618289703000000",
-                "endTimeUnixNano": "1786618289726000000",
+                "startTimeUnixNano": "1786620221463000000",
+                "endTimeUnixNano": "1786620221486000000",
                 "attributes": [
                   {
                     "key": "gen_ai.operation.name",
@@ -996,7 +996,7 @@
                   {
                     "key": "devorbit.case.id",
                     "value": {
-                      "stringValue": "CASE-7A719A2D"
+                      "stringValue": "CASE-BBDA7C7A"
                     }
                   },
                   {
@@ -1014,7 +1014,7 @@
                   {
                     "key": "devorbit.input.digest",
                     "value": {
-                      "stringValue": "a8a89164844936b9"
+                      "stringValue": "0e4eb34767d9602b"
                     }
                   },
                   {
@@ -1029,13 +1029,13 @@
                 }
               },
               {
-                "traceId": "84f32b0ca2a438f40dc54922b8de8ccb",
-                "spanId": "2d2a3ac6b8885cfe",
+                "traceId": "cf44a3806144cc483d46eb01b0a030a2",
+                "spanId": "25bbc356870f4a3c",
                 "parentSpanId": "d6fb01a4172d8870",
                 "name": "execute_tool issue.fetch_signals",
                 "kind": 1,
-                "startTimeUnixNano": "1786618284700000000",
-                "endTimeUnixNano": "1786618284701000000",
+                "startTimeUnixNano": "1786620216461000000",
+                "endTimeUnixNano": "1786620216462000000",
                 "attributes": [
                   {
                     "key": "gen_ai.operation.name",
@@ -1058,7 +1058,7 @@
                   {
                     "key": "devorbit.case.id",
                     "value": {
-                      "stringValue": "CASE-7A719A2D"
+                      "stringValue": "CASE-BBDA7C7A"
                     }
                   },
                   {
@@ -1076,13 +1076,13 @@
                   {
                     "key": "devorbit.audit.ref",
                     "value": {
-                      "stringValue": "audit://08744680-6172-4c38-810a-3b6b43e233a6"
+                      "stringValue": "audit://12e0b1ea-97fc-4b4a-a344-88e2ebaff8aa"
                     }
                   },
                   {
                     "key": "devorbit.input.digest",
                     "value": {
-                      "stringValue": "c3ac2fb36bb6a728"
+                      "stringValue": "994330fe256f90b7"
                     }
                   },
                   {
@@ -1103,13 +1103,13 @@
                 }
               },
               {
-                "traceId": "84f32b0ca2a438f40dc54922b8de8ccb",
-                "spanId": "bd12a55bfe9c3d4b",
+                "traceId": "cf44a3806144cc483d46eb01b0a030a2",
+                "spanId": "840d74c798187a6f",
                 "parentSpanId": "d6fb01a4172d8870",
                 "name": "execute_tool observability.fetch_signals",
                 "kind": 1,
-                "startTimeUnixNano": "1786618284700000000",
-                "endTimeUnixNano": "1786618284701000000",
+                "startTimeUnixNano": "1786620216461000000",
+                "endTimeUnixNano": "1786620216462000000",
                 "attributes": [
                   {
                     "key": "gen_ai.operation.name",
@@ -1132,7 +1132,7 @@
                   {
                     "key": "devorbit.case.id",
                     "value": {
-                      "stringValue": "CASE-7A719A2D"
+                      "stringValue": "CASE-BBDA7C7A"
                     }
                   },
                   {
@@ -1150,13 +1150,13 @@
                   {
                     "key": "devorbit.audit.ref",
                     "value": {
-                      "stringValue": "audit://762526eb-4364-45fd-9cc6-9943dea164bc"
+                      "stringValue": "audit://b7e108d0-4928-4a0b-a735-b88aab3c5746"
                     }
                   },
                   {
                     "key": "devorbit.input.digest",
                     "value": {
-                      "stringValue": "c3ac2fb36bb6a728"
+                      "stringValue": "994330fe256f90b7"
                     }
                   },
                   {
@@ -1177,13 +1177,13 @@
                 }
               },
               {
-                "traceId": "84f32b0ca2a438f40dc54922b8de8ccb",
-                "spanId": "8d3cb71236490832",
+                "traceId": "cf44a3806144cc483d46eb01b0a030a2",
+                "spanId": "f955c1ca6cd6631c",
                 "parentSpanId": "38b47dce2a5d66f6",
                 "name": "execute_tool repository.read_file",
                 "kind": 1,
-                "startTimeUnixNano": "1786618284701000000",
-                "endTimeUnixNano": "1786618284702000000",
+                "startTimeUnixNano": "1786620216461000000",
+                "endTimeUnixNano": "1786620216462000000",
                 "attributes": [
                   {
                     "key": "gen_ai.operation.name",
@@ -1206,7 +1206,7 @@
                   {
                     "key": "devorbit.case.id",
                     "value": {
-                      "stringValue": "CASE-7A719A2D"
+                      "stringValue": "CASE-BBDA7C7A"
                     }
                   },
                   {
@@ -1224,7 +1224,7 @@
                   {
                     "key": "devorbit.audit.ref",
                     "value": {
-                      "stringValue": "audit://82d42a3e-ab8e-4887-9999-aed7c54b0f43"
+                      "stringValue": "audit://e7db78a4-4362-41be-90d5-afa15520147f"
                     }
                   },
                   {
@@ -1251,13 +1251,13 @@
                 }
               },
               {
-                "traceId": "84f32b0ca2a438f40dc54922b8de8ccb",
-                "spanId": "5617ce6d6ef8ea22",
+                "traceId": "cf44a3806144cc483d46eb01b0a030a2",
+                "spanId": "791aaae695eed474",
                 "parentSpanId": "38b47dce2a5d66f6",
                 "name": "execute_tool repository.read_file",
                 "kind": 1,
-                "startTimeUnixNano": "1786618284701000000",
-                "endTimeUnixNano": "1786618284702000000",
+                "startTimeUnixNano": "1786620216462000000",
+                "endTimeUnixNano": "1786620216463000000",
                 "attributes": [
                   {
                     "key": "gen_ai.operation.name",
@@ -1280,7 +1280,7 @@
                   {
                     "key": "devorbit.case.id",
                     "value": {
-                      "stringValue": "CASE-7A719A2D"
+                      "stringValue": "CASE-BBDA7C7A"
                     }
                   },
                   {
@@ -1298,7 +1298,7 @@
                   {
                     "key": "devorbit.audit.ref",
                     "value": {
-                      "stringValue": "audit://dd537825-d947-4db8-a64d-a9084b3978a0"
+                      "stringValue": "audit://95f09483-75a1-4ccd-834d-a648c01d5d6d"
                     }
                   },
                   {
@@ -1325,13 +1325,13 @@
                 }
               },
               {
-                "traceId": "84f32b0ca2a438f40dc54922b8de8ccb",
-                "spanId": "6204200407a4a0a1",
+                "traceId": "cf44a3806144cc483d46eb01b0a030a2",
+                "spanId": "317108064890fe0d",
                 "parentSpanId": "135d14b4b4d305ec",
                 "name": "execute_tool knowledge.search_cases",
                 "kind": 1,
-                "startTimeUnixNano": "1786618284702000000",
-                "endTimeUnixNano": "1786618284703000000",
+                "startTimeUnixNano": "1786620216463000000",
+                "endTimeUnixNano": "1786620216464000000",
                 "attributes": [
                   {
                     "key": "gen_ai.operation.name",
@@ -1354,7 +1354,7 @@
                   {
                     "key": "devorbit.case.id",
                     "value": {
-                      "stringValue": "CASE-7A719A2D"
+                      "stringValue": "CASE-BBDA7C7A"
                     }
                   },
                   {
@@ -1372,7 +1372,7 @@
                   {
                     "key": "devorbit.audit.ref",
                     "value": {
-                      "stringValue": "audit://f1ccf556-7dca-4d0b-b285-6e5598c4dd24"
+                      "stringValue": "audit://5b2f08ca-126d-413f-89a9-a8008870a7ea"
                     }
                   },
                   {
@@ -1416,7 +1416,7 @@
             {
               "key": "service.version",
               "value": {
-                "stringValue": "0.5.0"
+                "stringValue": "0.5.1"
               }
             },
             {
@@ -1431,7 +1431,7 @@
           {
             "scope": {
               "name": "devorbit.runtime",
-              "version": "0.5.0"
+              "version": "0.5.1"
             },
             "metrics": [
               {
@@ -1441,7 +1441,7 @@
                   "dataPoints": [
                     {
                       "asInt": "3",
-                      "timeUnixNano": "1786618284703000000"
+                      "timeUnixNano": "1786620216464000000"
                     }
                   ]
                 }
@@ -1453,7 +1453,7 @@
                   "dataPoints": [
                     {
                       "asInt": "5",
-                      "timeUnixNano": "1786618284703000000"
+                      "timeUnixNano": "1786620216464000000"
                     }
                   ]
                 }
@@ -1465,7 +1465,7 @@
                   "dataPoints": [
                     {
                       "asInt": "0",
-                      "timeUnixNano": "1786618284703000000"
+                      "timeUnixNano": "1786620216464000000"
                     }
                   ]
                 }
@@ -1477,7 +1477,7 @@
                   "dataPoints": [
                     {
                       "asInt": "13",
-                      "timeUnixNano": "1786618284703000000"
+                      "timeUnixNano": "1786620216464000000"
                     }
                   ]
                 }
@@ -1489,7 +1489,7 @@
                   "dataPoints": [
                     {
                       "asInt": "0",
-                      "timeUnixNano": "1786618284703000000"
+                      "timeUnixNano": "1786620216464000000"
                     }
                   ]
                 }
@@ -1529,17 +1529,17 @@
     "calls": 5,
     "audit": [
       {
-        "auditRef": "audit://08744680-6172-4c38-810a-3b6b43e233a6",
-        "at": "2026-08-13T10:51:24.700Z",
+        "auditRef": "audit://12e0b1ea-97fc-4b4a-a344-88e2ebaff8aa",
+        "at": "2026-08-13T11:23:36.461Z",
         "parentSpanId": "SPAN-001",
         "protocolVersion": "2025-06-18",
         "method": "tools/call",
         "tool": "issue.fetch_signals",
         "caller": "intake-worker",
-        "traceId": "TRACE-7914a1ed-789c-453b-8281-61149d5373b6",
-        "caseId": "CASE-7A719A2D",
+        "traceId": "TRACE-d19ff9fe-45a2-4622-830b-a007b38d33ef",
+        "caseId": "CASE-BBDA7C7A",
         "durationMs": 0,
-        "inputDigest": "c3ac2fb36bb6a728",
+        "inputDigest": "994330fe256f90b7",
         "outputDigest": "156eb4a248a14ca5",
         "idempotencyKey": null,
         "risk": "L0",
@@ -1548,17 +1548,17 @@
         "status": "ok"
       },
       {
-        "auditRef": "audit://762526eb-4364-45fd-9cc6-9943dea164bc",
-        "at": "2026-08-13T10:51:24.700Z",
+        "auditRef": "audit://b7e108d0-4928-4a0b-a735-b88aab3c5746",
+        "at": "2026-08-13T11:23:36.461Z",
         "parentSpanId": "SPAN-001",
         "protocolVersion": "2025-06-18",
         "method": "tools/call",
         "tool": "observability.fetch_signals",
         "caller": "intake-worker",
-        "traceId": "TRACE-7914a1ed-789c-453b-8281-61149d5373b6",
-        "caseId": "CASE-7A719A2D",
+        "traceId": "TRACE-d19ff9fe-45a2-4622-830b-a007b38d33ef",
+        "caseId": "CASE-BBDA7C7A",
         "durationMs": 0,
-        "inputDigest": "c3ac2fb36bb6a728",
+        "inputDigest": "994330fe256f90b7",
         "outputDigest": "b77f7460980392c8",
         "idempotencyKey": null,
         "risk": "L0",
@@ -1567,16 +1567,16 @@
         "status": "ok"
       },
       {
-        "auditRef": "audit://82d42a3e-ab8e-4887-9999-aed7c54b0f43",
-        "at": "2026-08-13T10:51:24.701Z",
+        "auditRef": "audit://e7db78a4-4362-41be-90d5-afa15520147f",
+        "at": "2026-08-13T11:23:36.461Z",
         "parentSpanId": "SPAN-003",
         "protocolVersion": "2025-06-18",
         "method": "tools/call",
         "tool": "repository.read_file",
         "caller": "impact-worker",
-        "traceId": "TRACE-7914a1ed-789c-453b-8281-61149d5373b6",
-        "caseId": "CASE-7A719A2D",
-        "durationMs": 0,
+        "traceId": "TRACE-d19ff9fe-45a2-4622-830b-a007b38d33ef",
+        "caseId": "CASE-BBDA7C7A",
+        "durationMs": 1,
         "inputDigest": "52ddff3c37df9013",
         "outputDigest": "78e5780144ed281e",
         "idempotencyKey": null,
@@ -1586,16 +1586,16 @@
         "status": "ok"
       },
       {
-        "auditRef": "audit://dd537825-d947-4db8-a64d-a9084b3978a0",
-        "at": "2026-08-13T10:51:24.701Z",
+        "auditRef": "audit://95f09483-75a1-4ccd-834d-a648c01d5d6d",
+        "at": "2026-08-13T11:23:36.462Z",
         "parentSpanId": "SPAN-003",
         "protocolVersion": "2025-06-18",
         "method": "tools/call",
         "tool": "repository.read_file",
         "caller": "impact-worker",
-        "traceId": "TRACE-7914a1ed-789c-453b-8281-61149d5373b6",
-        "caseId": "CASE-7A719A2D",
-        "durationMs": 1,
+        "traceId": "TRACE-d19ff9fe-45a2-4622-830b-a007b38d33ef",
+        "caseId": "CASE-BBDA7C7A",
+        "durationMs": 0,
         "inputDigest": "5673a87146b22d4b",
         "outputDigest": "8438022557690dc8",
         "idempotencyKey": null,
@@ -1605,15 +1605,15 @@
         "status": "ok"
       },
       {
-        "auditRef": "audit://f1ccf556-7dca-4d0b-b285-6e5598c4dd24",
-        "at": "2026-08-13T10:51:24.702Z",
+        "auditRef": "audit://5b2f08ca-126d-413f-89a9-a8008870a7ea",
+        "at": "2026-08-13T11:23:36.463Z",
         "parentSpanId": "SPAN-005",
         "protocolVersion": "2025-06-18",
         "method": "tools/call",
         "tool": "knowledge.search_cases",
         "caller": "rca-worker",
-        "traceId": "TRACE-7914a1ed-789c-453b-8281-61149d5373b6",
-        "caseId": "CASE-7A719A2D",
+        "traceId": "TRACE-d19ff9fe-45a2-4622-830b-a007b38d33ef",
+        "caseId": "CASE-BBDA7C7A",
         "durationMs": 0,
         "inputDigest": "022049b34087b3b3",
         "outputDigest": "1bdb181ca6a080a6",
