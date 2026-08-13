@@ -1,0 +1,36 @@
+{
+  "skill": {
+    "name": "alibabacloud-sls-query",
+    "displayName": "SLS Query & Analysis",
+    "version": "0.0.2",
+    "portalContentHash": "b39f6632943b56aaf41dab20bc040f0711f7f2d0",
+    "portalDetailUrl": "https://skills.aliyun.com/api/public/skills/alibabacloud-sls-query",
+    "portalDownloadUrl": "https://skills.aliyun.com/api/public/skills/alibabacloud-sls-query/download",
+    "sourceRepository": "https://github.com/aliyun/alibabacloud-aiops-skills",
+    "repositorySnapshot": "bba5e8f03e8d570d74312848dd3c7303e5975ab4",
+    "downloadedAt": "2026-08-13T02:45:46Z"
+  },
+  "artifact": {
+    "portalArchiveSha256": "04baaf21ed9f7fad3924e22567b868010fa0e436ba9a78b50545b0b346f37d64",
+    "path": "third_party/aliyun/alibabacloud-sls-query-0.0.2-devorbit-curated.zip",
+    "sha256": "0ac29b58e60a10ca67bc900f447daa962683e9986f14a35a90d198daa9aa21e7",
+    "skillMdSha256": "2fd654d2a748f15716f2702f59164de43ff87342af7cdb7560f8b741d3c50324",
+    "curation": {
+      "reason": "Submission content policy compliance; the removed reference is unrelated to SLS log query integration.",
+      "removedPaths": ["references/functions/mobile.yaml"],
+      "coreSkillModified": false
+    }
+  },
+  "integration": {
+    "workers": ["intake-worker", "rca-worker"],
+    "cloudOperations": ["log:GetIndex", "log:GetLogStoreLogs"],
+    "minimumCli": "3.3.8",
+    "defaultDemoMode": "fixture-backed observability MCP; no cloud API call",
+    "configuredMode": "read-only SLS query with runtime role or explicitly configured CLI profile"
+  },
+  "licenseDisclosure": {
+    "repositoryReadmeHeading": "Apache-2.0",
+    "repositoryLegalSection": "MIT",
+    "note": "The upstream README contains both declarations; retain both references until upstream clarifies the package-level license."
+  }
+}

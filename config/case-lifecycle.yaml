@@ -1,0 +1,20 @@
+name: devorbit-case-lifecycle
+version: 0.1.0
+shared_state: case-state
+states: [received, triaged, diagnosed, planned, verified, approval_pending, canary, confirmed, learned]
+terminal_states: [confirmed, rolled_back, needs_human]
+idempotency_key: case_id+action+target_version
+transitions:
+  - { from: received, to: triaged, owner: intake-worker }
+  - { from: triaged, to: diagnosed, owner: rca-worker, collaborators: [impact-worker] }
+  - { from: diagnosed, to: planned, owner: patch-worker, guard: rca.confidence >= 0.80 }
+  - { from: planned, to: verified, owner: verify-worker, guard: tests.failed == 0 }
+  - { from: verified, to: approval_pending, owner: release-worker, guard: rollback.ready == true }
+  - { from: approval_pending, to: canary, owner: release-worker, guard: approval.state == approved }
+  - { from: canary, to: confirmed, owner: release-worker, guard: canary.healthy == true }
+  - { from: confirmed, to: learned, owner: learning-worker }
+failure_policy:
+  tool_timeout: retry_twice_then_needs_human
+  evidence_conflict: route_to_rca_worker_and_human
+  test_failure: return_to_patch_worker
+  canary_regression: automatic_rollback

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devorbit.example/schemas/case-state.schema.json",
+  "title": "DevOrbit Case State",
+  "type": "object",
+  "required": ["case_id", "state", "signals", "evidence", "risk_level", "revision", "trace_id"],
+  "properties": {
+    "case_id": { "type": "string", "pattern": "^CASE-" },
+    "state": { "enum": ["received", "triaged", "diagnosed", "planned", "verified", "approval_pending", "canary", "confirmed", "rolled_back", "learned", "needs_human"] },
+    "signals": { "type": "array", "items": { "type": "object", "required": ["source", "id", "time"] } },
+    "evidence": { "type": "array", "items": { "type": "string" } },
+    "risk_level": { "enum": ["L0", "L1", "L2", "L3"] },
+    "revision": { "type": "integer", "minimum": 1 },
+    "approval_id": { "type": ["string", "null"] },
+    "rollback_ref": { "type": ["string", "null"] },
+    "trace_id": { "type": "string" }
+  }
+}

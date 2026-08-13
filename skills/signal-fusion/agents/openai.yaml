@@ -1,0 +1,4 @@
+interface:
+  display_name: "Signal Fusion"
+  short_description: "Aggregate and deduplicate multi-source defect signals"
+  default_prompt: "Use $signal-fusion to normalize and deduplicate the incoming defect signals."

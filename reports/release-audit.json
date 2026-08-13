@@ -1,0 +1,1769 @@
+{
+  "generatedAt": "2026-08-13T09:16:07.722Z",
+  "summary": {
+    "checks": 349,
+    "passed": 349,
+    "failed": 0
+  },
+  "artifacts": {
+    "DevOrbit_初赛方案.pdf": "3f9e2b10e3e199aa32a04948a544eee382815a287a121001d8f70fb961171fd4",
+    "DevOrbit_初赛方案.pptx": "89ee37aab42cd76c466fc04eab9ed2574b0a5d593832ad43b6db7164c060cc68",
+    "DevOrbit_初赛可执行代码包.zip": "afcb6d43f64f6922a618e9a9213d70d53a287b7904e54353cf69113e9a044019",
+    "DevOrbit_演示视频.mp4": "f01f4bef22e5a7501c4aa89fa5341aa133e80c9a4d7c9ec518e827c1299b18fa",
+    "DevOrbit_演示视频封面.png": "05787d13fb6591abafb83a3088a931a415ec07786025cc541db90263a2d7482e",
+    "DevOrbit_初赛讲解视频_自动语音版.mp4": "eed873e8ce9e857f35e18f375c3d701214f4135292a65fbf7f5c0ee017eb4dc7",
+    "DevOrbit_威胁模型.pdf": "77b297c70306a7f1e6c7807dacb301586c7bf93aa2ac77f76258cc1fd7c61eb7",
+    "DevOrbit_证据索引.pdf": "0c864dd46ee84fab8c1e33e4c076f2c8ba3ae6db7ea94fcc4cad6fca0e7cd49f",
+    "DevOrbit_对照与消融评测.pdf": "008a5a72535cb37e8f046bc0609017409115e13c99b9e777a40570c536568e68",
+    "DevOrbit_对抗安全评测.pdf": "e158efbfca7a27b21bf5ad0817f54ed7deaa6e99400d9eeec43ff0cf27bb706d"
+  },
+  "videoReviewBoundary": "The video digest is locked to the previously visually reviewed recording. Any video change requires a new pixel-level review.",
+  "cloudBoundary": "The official cloud Skill is source-locked and packaged for Intake/RCA. The default Demo does not claim a cloud-account invocation.",
+  "checks": [
+    {
+      "label": "intro length",
+      "ok": true,
+      "detail": "458/500 chars"
+    },
+    {
+      "label": "intro required claims",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "intro compliance",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "PDF page count",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "PDF official Skill evidence",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "PDF V0.4 evidence",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "PDF compliance",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "PPTX official Skill evidence",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "PPTX V0.4 evidence",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "PPTX compliance",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "video format",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "video duration",
+      "ok": true,
+      "detail": "26.000000s"
+    },
+    {
+      "label": "video reviewed digest unchanged",
+      "ok": true,
+      "detail": "f01f4bef22e5a750"
+    },
+    {
+      "label": "video metadata compliance",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "explainer video format",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "explainer video duration",
+      "ok": true,
+      "detail": "183.367000s"
+    },
+    {
+      "label": "explainer metadata compliance",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "supporting PDF DevOrbit_Agent-Identity清单.pdf",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "supporting PDF DevOrbit_Skill清单.pdf",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "supporting PDF DevOrbit_工具与云产品清单.pdf",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "supporting PDF DevOrbit_威胁模型.pdf",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "supporting PDF DevOrbit_证据索引.pdf",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "supporting PDF DevOrbit_对照与消融评测.pdf",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "supporting PDF DevOrbit_对抗安全评测.pdf",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP README.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP LICENSE",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP package.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP config/agentteams.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP config/tool-policy.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP docs/威胁模型.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP docs/证据索引.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP config/aliyun-official-skill.contract.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP third_party/aliyun/alibabacloud-sls-query-0.0.2-devorbit-curated.zip",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP reports/agentteams-contract.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP reports/benchmark.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP reports/security-evaluation.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP reports/otel-happy-path.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP scripts/release-audit.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP cache free",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "nested official Skill digest",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "nested official Skill compliance",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "official Skill curation disclosed",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "intake-worker contains official Skill",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "rca-worker contains official Skill",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance README.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance package.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance server.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance app/approval.css",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance app/style.css",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance app/app.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance app/index.html",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance config/agentteams.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance config/case-lifecycle.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance config/aliyun-official-skill.contract.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance config/agentteams.resources.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance config/agentteams-v1.2.2.contract.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance config/policy.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance config/tool-policy.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance docs/提交清单.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance docs/路演PPT.html",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance docs/工具与云产品清单.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance docs/参赛方案.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance docs/第三方依赖与合规清单.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance docs/威胁模型.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance docs/证据索引.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance docs/自动解说视频说明.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance docs/复赛冲刺路线图.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance docs/评委90秒验收.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance docs/作品简介.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance docs/官网提交粘贴稿.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance docs/Skill清单.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance docs/Agent-Identity清单.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance docs/演示脚本.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance schemas/tool-contract.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance schemas/case-state.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance skills/signal-fusion/SKILL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance skills/signal-fusion/agents/openai.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance skills/evidence-rca/SKILL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance skills/evidence-rca/agents/openai.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance skills/patch-plan/SKILL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance skills/patch-plan/agents/openai.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance skills/knowledge-card/SKILL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance skills/knowledge-card/agents/openai.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance skills/test-gate/SKILL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance skills/test-gate/agents/openai.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance skills/impact-map/SKILL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance skills/impact-map/agents/openai.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance skills/release-guard/SKILL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance skills/release-guard/agents/openai.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/evaluate-security.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/evaluate.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/mcp-smoke.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/release-audit.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/validate.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/capture-run.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/export-otel.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/compliance.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/api-smoke.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/validate-agentteams.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/firefox-demo-user.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/write-deliverable-checksums.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/evaluate-benchmark.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/evaluate-rag.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/render-agentteams-config.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/security/tool-policy.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/orchestrator.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/agents/learning-agent.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/agents/impact-agent.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/agents/release-agent.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/agents/rca-agent.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/agents/patch-agent.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/agents/verify-agent.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/agents/intake-agent.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/agents/index.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/runtime/test-runner.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/runtime/case-state.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/runtime/digest.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/runtime/trace.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/runtime/manager.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/adapters.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/knowledge/store.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/skills.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/observability/otel.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/mcp/http-transport.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/mcp/client.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/mcp/protocol.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/mcp/tool-server.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/mcp/tools.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/orchestrator.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/security-policy.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance fixtures/checkout-service/src/redisPool.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance fixtures/checkout-service/src/order.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance fixtures/checkout-service/test/order.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance fixtures/checkout-service/test/redisPool.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance fixtures/checkout-service/package.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance knowledge/cases.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/golden-cases.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/rag-cases.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/rag-evaluation.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/agentteams-contract.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/otel-happy-path.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/evaluation.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/security-evaluation.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/benchmark.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/agentteams-contract.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/benchmark.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/runs/test-failure.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/runs/happy-path.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/runs/canary-regression.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/runs/low-confidence.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/security-evaluation.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/rag-evaluation.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/evaluation.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/patch-worker/manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/patch-worker/config/SOUL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/patch-worker/config/AGENTS.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/patch-worker/skills/patch-plan/SKILL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/patch-worker/skills/patch-plan/openai.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/impact-worker/manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/impact-worker/config/SOUL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/impact-worker/config/AGENTS.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/impact-worker/skills/impact-map/SKILL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/impact-worker/skills/impact-map/openai.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/release-worker/manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/release-worker/config/SOUL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/release-worker/config/AGENTS.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/release-worker/skills/release-guard/SKILL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/release-worker/skills/release-guard/openai.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/README.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/templates/manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/templates/SOUL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/templates/AGENTS.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/learning-worker/manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/learning-worker/config/SOUL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/learning-worker/config/AGENTS.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/learning-worker/skills/knowledge-card/SKILL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/learning-worker/skills/knowledge-card/openai.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/config/SOUL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/config/AGENTS.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/signal-fusion/SKILL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/signal-fusion/openai.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/SKILL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/cli-installation-guide.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/ram-policies.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/query_analysis/indexConfig.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/query_analysis/sql.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/query_analysis/indexSearch.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/query_analysis/overview.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/conversion.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/array.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/hash.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/geospatial.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/bitwise.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/math.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/url.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/README.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/operators.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/binary.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/conditional.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/aggregate.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/lambda.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/ip_geo.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/window_funnel.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/datetime.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/map.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/approximate.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/json.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/statistical.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/encoding.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/color.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/type_conversion.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/comparison.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/string.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/regex.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/geo.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/overview.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/window.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/hyperloglog.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/regions.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions-guide.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/query-analysis.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/acceptance-criteria.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/spl-guide.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/troubleshooting.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/related-apis.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/spl/limit.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/spl/where.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/spl/stats.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/spl/project.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/spl/parse-json.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/spl/project-away.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/spl/json_string_process.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/spl/parse-csv.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/spl/parse-kv.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/spl/parse-regexp.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/spl/sort.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/spl/pack-fields.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/spl/extend.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/spl/project-rename.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/spl/overview.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/config/SOUL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/config/AGENTS.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/evidence-rca/SKILL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/evidence-rca/openai.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/SKILL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/cli-installation-guide.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/ram-policies.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/query_analysis/indexConfig.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/query_analysis/sql.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/query_analysis/indexSearch.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/query_analysis/overview.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/conversion.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/array.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/hash.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/geospatial.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/bitwise.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/math.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/url.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/README.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/operators.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/binary.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/conditional.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/aggregate.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/lambda.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/ip_geo.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/window_funnel.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/datetime.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/map.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/approximate.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/json.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/statistical.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/encoding.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/color.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/type_conversion.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/comparison.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/string.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/regex.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/geo.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/overview.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/window.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/hyperloglog.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/regions.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions-guide.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/query-analysis.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/acceptance-criteria.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/spl-guide.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/troubleshooting.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/related-apis.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/spl/limit.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/spl/where.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/spl/stats.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/spl/project.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/spl/parse-json.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/spl/project-away.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/spl/json_string_process.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/spl/parse-csv.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/spl/parse-kv.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/spl/parse-regexp.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/spl/sort.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/spl/pack-fields.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/spl/extend.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/spl/project-rename.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/spl/overview.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/verify-worker/manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/verify-worker/config/SOUL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/verify-worker/config/AGENTS.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/verify-worker/skills/test-gate/SKILL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance worker-packages/verify-worker/skills/test-gate/openai.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance third_party/aliyun/README.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP DevOrbit_初赛方案.pdf",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP DevOrbit_初赛方案.pptx",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP DevOrbit_初赛可执行代码包.zip",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP DevOrbit_演示视频.mp4",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP DevOrbit_演示视频封面.png",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP 作品简介.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP 官网提交粘贴稿.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP 提交清单.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP 评委90秒验收.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP 第三方依赖与合规清单.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP 演示脚本.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP 威胁模型.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP 证据索引.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP agentteams-contract.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP benchmark.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP security-evaluation.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP 交付物_SHA256.txt",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP DevOrbit_初赛讲解视频_自动语音版.mp4",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP DevOrbit_Agent-Identity清单.pdf",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP DevOrbit_Skill清单.pdf",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP DevOrbit_工具与云产品清单.pdf",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP DevOrbit_威胁模型.pdf",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP DevOrbit_证据索引.pdf",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP DevOrbit_对照与消融评测.pdf",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP DevOrbit_对抗安全评测.pdf",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP embeds current code ZIP",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total compliance 交付物_SHA256.txt",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total compliance 作品简介.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total compliance 官网提交粘贴稿.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total compliance 提交清单.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total compliance 评委90秒验收.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total compliance 第三方依赖与合规清单.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total compliance 演示脚本.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total compliance 威胁模型.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total compliance 证据索引.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total compliance agentteams-contract.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total compliance benchmark.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total compliance security-evaluation.md",
+      "ok": true,
+      "detail": ""
+    }
+  ]
+}

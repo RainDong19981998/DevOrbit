@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devorbit.example/schemas/tool-contract.schema.json",
+  "title": "MCP Tool Contract",
+  "type": "object",
+  "required": ["tool", "operation", "input", "idempotency_key", "trace_id"],
+  "properties": {
+    "tool": { "type": "string" },
+    "operation": { "type": "string" },
+    "input": { "type": "object" },
+    "idempotency_key": { "type": "string" },
+    "trace_id": { "type": "string" },
+    "dry_run": { "type": "boolean", "default": true },
+    "approval_id": { "type": ["string", "null"] }
+  }
+}

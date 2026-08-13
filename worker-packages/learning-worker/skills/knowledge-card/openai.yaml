@@ -1,0 +1,4 @@
+interface:
+  display_name: "Knowledge Card"
+  short_description: "Turn execution evidence into reusable case knowledge"
+  default_prompt: "Use $knowledge-card to create a reusable postmortem card from this completed case."

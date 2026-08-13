@@ -1,0 +1,720 @@
+{
+  "generatedAt": "2026-08-13T09:10:39.299Z",
+  "source": {
+    "repository": "https://github.com/agentscope-ai/AgentTeams",
+    "version": "v1.2.2",
+    "commit": "849182af8e017168a5a200a87b1062142caf462d",
+    "license": "Apache-2.0",
+    "releasedAt": "2026-08-08T09:14:14Z"
+  },
+  "resourceDigest": "373955b277ea84a75130636114942fcc3b36b76fcb23aae57f2d6115458624d0",
+  "summary": {
+    "workers": 8,
+    "teams": 1,
+    "checks": 140,
+    "passed": 140,
+    "failed": 0
+  },
+  "checks": [
+    {
+      "label": "version lock",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "resource count",
+      "ok": true,
+      "detail": "8 workers, 1 teams"
+    },
+    {
+      "label": "unique resource names",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "all expected workers",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "devorbit-lead apiVersion",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "devorbit-lead spec fields",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "intake-worker apiVersion",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "intake-worker spec fields",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "impact-worker apiVersion",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "impact-worker spec fields",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "rca-worker apiVersion",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "rca-worker spec fields",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "patch-worker apiVersion",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "patch-worker spec fields",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "verify-worker apiVersion",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "verify-worker spec fields",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "release-worker apiVersion",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "release-worker spec fields",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "learning-worker apiVersion",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "learning-worker spec fields",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "devorbit-delivery-team apiVersion",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "devorbit-delivery-team spec fields",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "devorbit-lead model",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "devorbit-lead runtime",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "devorbit-lead custom skill not duplicated",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "devorbit-lead package uploaded separately",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "intake-worker model",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "intake-worker runtime",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "intake-worker custom skill not duplicated",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "intake-worker package uploaded separately",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "intake-worker MCP issue",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "intake-worker MCP observability",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "impact-worker model",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "impact-worker runtime",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "impact-worker custom skill not duplicated",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "impact-worker package uploaded separately",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "impact-worker MCP repository",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "rca-worker model",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "rca-worker runtime",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "rca-worker custom skill not duplicated",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "rca-worker package uploaded separately",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "rca-worker MCP observability",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "rca-worker MCP knowledge",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "patch-worker model",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "patch-worker runtime",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "patch-worker custom skill not duplicated",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "patch-worker package uploaded separately",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "patch-worker MCP repository",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "patch-worker MCP ci",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "verify-worker model",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "verify-worker runtime",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "verify-worker custom skill not duplicated",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "verify-worker package uploaded separately",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "verify-worker MCP ci",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "release-worker model",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "release-worker runtime",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "release-worker custom skill not duplicated",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "release-worker package uploaded separately",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "release-worker MCP release",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "learning-worker model",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "learning-worker runtime",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "learning-worker custom skill not duplicated",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "learning-worker package uploaded separately",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "learning-worker MCP knowledge",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "team member count",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "team members reference workers",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "team roles valid",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "exactly one team leader",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "single logical MCP endpoint",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "intake-worker package manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "intake-worker package config/SOUL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "intake-worker package config/AGENTS.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "intake-worker bundled skill",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "intake-worker manifest fields",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "intake-worker manifest worker fields",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "intake-worker manifest identity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "intake-worker skill frontmatter",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "intake-worker official cloud skill assignment",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "intake-worker official cloud skill digest",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "impact-worker package manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "impact-worker package config/SOUL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "impact-worker package config/AGENTS.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "impact-worker bundled skill",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "impact-worker manifest fields",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "impact-worker manifest worker fields",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "impact-worker manifest identity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "impact-worker skill frontmatter",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "impact-worker official cloud skill assignment",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "rca-worker package manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "rca-worker package config/SOUL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "rca-worker package config/AGENTS.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "rca-worker bundled skill",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "rca-worker manifest fields",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "rca-worker manifest worker fields",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "rca-worker manifest identity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "rca-worker skill frontmatter",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "rca-worker official cloud skill assignment",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "rca-worker official cloud skill digest",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "patch-worker package manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "patch-worker package config/SOUL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "patch-worker package config/AGENTS.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "patch-worker bundled skill",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "patch-worker manifest fields",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "patch-worker manifest worker fields",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "patch-worker manifest identity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "patch-worker skill frontmatter",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "patch-worker official cloud skill assignment",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "verify-worker package manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "verify-worker package config/SOUL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "verify-worker package config/AGENTS.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "verify-worker bundled skill",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "verify-worker manifest fields",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "verify-worker manifest worker fields",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "verify-worker manifest identity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "verify-worker skill frontmatter",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "verify-worker official cloud skill assignment",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "release-worker package manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "release-worker package config/SOUL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "release-worker package config/AGENTS.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "release-worker bundled skill",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "release-worker manifest fields",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "release-worker manifest worker fields",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "release-worker manifest identity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "release-worker skill frontmatter",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "release-worker official cloud skill assignment",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "learning-worker package manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "learning-worker package config/SOUL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "learning-worker package config/AGENTS.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "learning-worker bundled skill",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "learning-worker manifest fields",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "learning-worker manifest worker fields",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "learning-worker manifest identity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "learning-worker skill frontmatter",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "learning-worker official cloud skill assignment",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "official cloud skill archive digest",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "official cloud skill version lock",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "rendered manifest version annotation",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "rendered manifest has nine documents",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "rendered manifest round trip",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "deploy script uses official ZIP path",
+      "ok": true,
+      "detail": ""
+    }
+  ]
+}

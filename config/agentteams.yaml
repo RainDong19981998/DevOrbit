@@ -1,0 +1,218 @@
+# Generated from config/agentteams.resources.json.
+# Contract: AgentTeams v1.2.2, commit 849182af8e017168a5a200a87b1062142caf462d.
+# Package ZIPs are uploaded separately with scripts/deploy_agentteams.sh.
+{
+  "apiVersion": "agentteams.io/v1beta1",
+  "kind": "Worker",
+  "metadata": {
+    "name": "devorbit-lead"
+  },
+  "spec": {
+    "model": "qwen3.6-plus",
+    "runtime": "openclaw",
+    "identity": "Name: DevOrbit Lead\nSpecialization: software-delivery orchestration and evidence governance",
+    "soul": "You are the evidence-first Team Leader for the DevOrbit software delivery loop.",
+    "agents": "Decompose each case through the declared lifecycle.\nKeep Case State as the source of truth and attach evidence references.\nNever bypass test, approval, canary, or rollback gates."
+  }
+}
+---
+{
+  "apiVersion": "agentteams.io/v1beta1",
+  "kind": "Worker",
+  "metadata": {
+    "name": "intake-worker"
+  },
+  "spec": {
+    "model": "qwen3.6-plus",
+    "runtime": "openclaw",
+    "identity": "Name: Intake Worker\nSpecialization: multi-source signal normalization",
+    "mcpServers": [
+      {
+        "name": "issue",
+        "url": "https://devorbit.example/mcp",
+        "transport": "http"
+      },
+      {
+        "name": "observability",
+        "url": "https://devorbit.example/mcp",
+        "transport": "http"
+      }
+    ]
+  }
+}
+---
+{
+  "apiVersion": "agentteams.io/v1beta1",
+  "kind": "Worker",
+  "metadata": {
+    "name": "impact-worker"
+  },
+  "spec": {
+    "model": "qwen3.6-plus",
+    "runtime": "openclaw",
+    "identity": "Name: Impact Worker\nSpecialization: repository and dependency impact analysis",
+    "mcpServers": [
+      {
+        "name": "repository",
+        "url": "https://devorbit.example/mcp",
+        "transport": "http"
+      }
+    ]
+  }
+}
+---
+{
+  "apiVersion": "agentteams.io/v1beta1",
+  "kind": "Worker",
+  "metadata": {
+    "name": "rca-worker"
+  },
+  "spec": {
+    "model": "qwen3.6-plus",
+    "runtime": "openclaw",
+    "identity": "Name: RCA Worker\nSpecialization: evidence-grounded root cause analysis",
+    "mcpServers": [
+      {
+        "name": "observability",
+        "url": "https://devorbit.example/mcp",
+        "transport": "http"
+      },
+      {
+        "name": "knowledge",
+        "url": "https://devorbit.example/mcp",
+        "transport": "http"
+      }
+    ]
+  }
+}
+---
+{
+  "apiVersion": "agentteams.io/v1beta1",
+  "kind": "Worker",
+  "metadata": {
+    "name": "patch-worker"
+  },
+  "spec": {
+    "model": "qwen3.6-plus",
+    "runtime": "openclaw",
+    "identity": "Name: Patch Worker\nSpecialization: minimal code changes and rollback planning",
+    "mcpServers": [
+      {
+        "name": "repository",
+        "url": "https://devorbit.example/mcp",
+        "transport": "http"
+      },
+      {
+        "name": "ci",
+        "url": "https://devorbit.example/mcp",
+        "transport": "http"
+      }
+    ]
+  }
+}
+---
+{
+  "apiVersion": "agentteams.io/v1beta1",
+  "kind": "Worker",
+  "metadata": {
+    "name": "verify-worker"
+  },
+  "spec": {
+    "model": "qwen3.6-plus",
+    "runtime": "openclaw",
+    "identity": "Name: Verify Worker\nSpecialization: regression selection and quality gates",
+    "mcpServers": [
+      {
+        "name": "ci",
+        "url": "https://devorbit.example/mcp",
+        "transport": "http"
+      }
+    ]
+  }
+}
+---
+{
+  "apiVersion": "agentteams.io/v1beta1",
+  "kind": "Worker",
+  "metadata": {
+    "name": "release-worker"
+  },
+  "spec": {
+    "model": "qwen3.6-plus",
+    "runtime": "openclaw",
+    "identity": "Name: Release Worker\nSpecialization: approval, canary verification, and rollback",
+    "mcpServers": [
+      {
+        "name": "release",
+        "url": "https://devorbit.example/mcp",
+        "transport": "http"
+      }
+    ]
+  }
+}
+---
+{
+  "apiVersion": "agentteams.io/v1beta1",
+  "kind": "Worker",
+  "metadata": {
+    "name": "learning-worker"
+  },
+  "spec": {
+    "model": "qwen3.6-plus",
+    "runtime": "openclaw",
+    "identity": "Name: Learning Worker\nSpecialization: postmortem and reusable knowledge assets",
+    "mcpServers": [
+      {
+        "name": "knowledge",
+        "url": "https://devorbit.example/mcp",
+        "transport": "http"
+      }
+    ]
+  }
+}
+---
+{
+  "apiVersion": "agentteams.io/v1beta1",
+  "kind": "Team",
+  "metadata": {
+    "name": "devorbit-delivery-team"
+  },
+  "spec": {
+    "description": "Evidence-driven software defect remediation and release confirmation team",
+    "heartbeatEvery": "10m",
+    "workerMembers": [
+      {
+        "name": "devorbit-lead",
+        "role": "team_leader"
+      },
+      {
+        "name": "intake-worker",
+        "role": "worker"
+      },
+      {
+        "name": "impact-worker",
+        "role": "worker"
+      },
+      {
+        "name": "rca-worker",
+        "role": "worker"
+      },
+      {
+        "name": "patch-worker",
+        "role": "worker"
+      },
+      {
+        "name": "verify-worker",
+        "role": "worker"
+      },
+      {
+        "name": "release-worker",
+        "role": "worker"
+      },
+      {
+        "name": "learning-worker",
+        "role": "worker"
+      }
+    ]
+  }
+}

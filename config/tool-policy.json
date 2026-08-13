@@ -1,0 +1,16 @@
+{
+  "version": "1.0.0",
+  "identityBoundary": "Local HTTP sessions bind an asserted worker header. Production authentication must be provided by Higress or an equivalent workload-identity gateway.",
+  "rules": {
+    "issue.fetch_signals": { "risk": "L0", "agents": ["intake-worker"] },
+    "observability.fetch_signals": { "risk": "L0", "agents": ["intake-worker", "rca-worker"] },
+    "repository.read_file": { "risk": "L0", "agents": ["impact-worker", "patch-worker"] },
+    "repository.create_workspace": { "risk": "L1", "agents": ["patch-worker"] },
+    "repository.write_file": { "risk": "L1", "agents": ["patch-worker"] },
+    "repository.dispose_workspace": { "risk": "L1", "agents": ["devorbit-lead"] },
+    "ci.run_tests": { "risk": "L1", "agents": ["patch-worker", "verify-worker"] },
+    "knowledge.search_cases": { "risk": "L0", "agents": ["rca-worker"] },
+    "knowledge.write_case": { "risk": "L1", "agents": ["learning-worker"] },
+    "release.canary": { "risk": "L2", "agents": ["release-worker"], "approval": true }
+  }
+}

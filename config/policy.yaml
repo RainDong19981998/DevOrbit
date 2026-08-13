@@ -1,0 +1,22 @@
+version: 1
+risk_levels:
+  L0: { description: 只读检索与分析, approval: false }
+  L1: { description: 沙箱内代码与测试, approval: false }
+  L2: { description: 非生产灰度或可逆配置, approval: true, canary_required: true }
+  L3: { description: 生产数据写入或不可逆动作, approval: true, automatic_execution: false }
+release_gate:
+  required:
+    - tests.failed == 0
+    - rca.confidence >= 0.80
+    - rollback.ready == true
+    - approval.state == approved
+  canary_abort:
+    - error_rate_delta > 1%
+    - p95_delta > 20%
+    - business_kpi_regression == true
+secrets:
+  workers_hold_real_credentials: false
+  gateway_injects_scoped_credentials: true
+audit:
+  append_only: true
+  redact: [token, password, personal_data]

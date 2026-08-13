@@ -1,0 +1,38 @@
+[
+  {
+    "id": "KB-HIST-001",
+    "title": "连接池缩容导致幂等存储超时与重复订单",
+    "summary": "结算服务的 Redis 连接池被从 96 缩减为 12，峰值期间幂等键查询排队。客户端在超时后重试，而旧实现没有复用已创建订单。恢复容量、延长排队超时并增加重复提交保护后恢复。",
+    "pattern": "连接池缩容 + 幂等重试放大",
+    "tags": ["redis", "idempotency", "checkout", "pool", "timeout", "duplicate-order"],
+    "evidence": ["配置变更", "连接池超时日志", "接口错误率", "重复提交测试"],
+    "prevention": ["容量策略校验", "连接池水位告警", "幂等回归门禁"]
+  },
+  {
+    "id": "KB-HIST-002",
+    "title": "支付回调签名密钥轮换不一致",
+    "summary": "支付回调方已切换新密钥，但部分实例仍缓存旧版本，造成间歇性签名验证失败。通过双密钥过渡与缓存版本检查修复。",
+    "pattern": "密钥轮换 + 实例缓存不一致",
+    "tags": ["payment", "signature", "cache", "key-rotation"],
+    "evidence": ["签名失败日志", "实例配置版本"],
+    "prevention": ["双密钥窗口", "配置版本一致性检查"]
+  },
+  {
+    "id": "KB-HIST-003",
+    "title": "库存查询慢 SQL 导致下单尾延迟",
+    "summary": "库存表新增过滤条件后未命中联合索引，订单链路 p99 上升。增加索引并限制查询扫描行数后恢复。",
+    "pattern": "索引缺失 + 下游尾延迟",
+    "tags": ["mysql", "inventory", "slow-sql", "checkout"],
+    "evidence": ["慢查询日志", "执行计划", "调用链"],
+    "prevention": ["SQL 执行计划门禁", "扫描行数告警"]
+  },
+  {
+    "id": "KB-HIST-004",
+    "title": "网关重试放大下游限流",
+    "summary": "网关对可重试错误使用固定间隔重试，在下游容量降低时形成同步重试峰值。增加指数退避和重试预算后恢复。",
+    "pattern": "同步重试 + 下游容量下降",
+    "tags": ["gateway", "retry", "rate-limit", "backoff"],
+    "evidence": ["网关指标", "下游限流日志"],
+    "prevention": ["重试预算", "指数退避", "熔断门禁"]
+  }
+]

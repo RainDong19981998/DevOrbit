@@ -1,0 +1,4 @@
+interface:
+  display_name: "Test Gate"
+  short_description: "Select regression tests and enforce quality gates"
+  default_prompt: "Use $test-gate to select and evaluate regression tests for this patch."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Evidence RCA"
+  short_description: "Rank root causes with explicit evidence references"
+  default_prompt: "Use $evidence-rca to rank root-cause candidates from the available evidence."

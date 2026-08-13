@@ -1,0 +1,12 @@
+.run-state.waiting span{background:#e6a036}
+.run-state.rejected span{background:var(--orange)}
+.approval-box{border:1px solid #e6a036;background:#fff7dc;padding:13px;margin-top:12px}
+.approval-box small{display:block;color:#8c691e;font-size:9px}
+.approval-box>b{display:block;font-size:12px;margin:5px 0 12px}
+.approval-box button{box-shadow:none;padding:8px 11px;font-size:10px;margin-right:7px}
+.approval-box .approve{background:var(--green)}
+.approval-box .reject{background:transparent;color:var(--orange);border:1px solid var(--orange)}
+.approval-box.rejected{border-color:var(--orange);background:#fff0e9;color:var(--orange)}
+.hero-actions select{height:47px;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:0 34px 0 12px;border-radius:6px;font:12px inherit}
+.safety-stop{border-left:3px solid var(--orange);background:#fff0e9;padding:13px;color:#8c3e25;font-size:12px;line-height:1.6}
+.test-failed{color:var(--orange)!important}

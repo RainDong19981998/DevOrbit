@@ -1,0 +1,54 @@
+{
+  "dataset": "DevOrbit Adversarial Policy Cases v0.1",
+  "disclosure": "Deterministic local attack simulations. Identity authentication remains a production gateway responsibility; this benchmark validates authorization, approval integrity, scope, expiry, and schema enforcement.",
+  "generatedAt": "2026-08-13T09:10:54.854Z",
+  "summary": {
+    "cases": 6,
+    "passed": 6,
+    "deniedAuditRecords": 5
+  },
+  "cases": [
+    {
+      "id": "SEC-001",
+      "attack": "unauthorized agent invokes release",
+      "expected": "agent rca-worker is not allowed to call release.canary",
+      "observed": "agent rca-worker is not allowed to call release.canary",
+      "passed": true
+    },
+    {
+      "id": "SEC-002",
+      "attack": "forged approval receipt",
+      "expected": "invalid approval signature",
+      "observed": "invalid approval signature",
+      "passed": true
+    },
+    {
+      "id": "SEC-003",
+      "attack": "approval replay across cases",
+      "expected": "case scope mismatch",
+      "observed": "case scope mismatch",
+      "passed": true
+    },
+    {
+      "id": "SEC-004",
+      "attack": "approval scope tampering",
+      "expected": "approval scope mismatch",
+      "observed": "approval scope mismatch",
+      "passed": true
+    },
+    {
+      "id": "SEC-005",
+      "attack": "expired approval receipt",
+      "expected": "approval expired",
+      "observed": "approval expired",
+      "passed": true
+    },
+    {
+      "id": "SEC-006",
+      "attack": "schema confusion with unknown argument",
+      "expected": "Invalid tool arguments: $ has unknown command",
+      "observed": "Invalid tool arguments: $ has unknown command",
+      "passed": true
+    }
+  ]
+}

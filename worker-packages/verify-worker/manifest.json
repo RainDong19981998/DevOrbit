@@ -1,0 +1,18 @@
+{
+  "version": "1.0",
+  "source": {
+    "openclaw_version": "2026.8.x",
+    "hostname": "devorbit-reproducible-build",
+    "os": "Linux",
+    "created_at": "2026-08-12T00:00:00Z"
+  },
+  "worker": {
+    "suggested_name": "verify-worker",
+    "model": "qwen3.6-plus",
+    "runtime": "openclaw",
+    "base_image": "agentteams/worker-agent:latest",
+    "apt_packages": [],
+    "pip_packages": [],
+    "npm_packages": []
+  }
+}

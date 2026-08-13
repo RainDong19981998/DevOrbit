@@ -1,0 +1,4 @@
+interface:
+  display_name: "Patch Plan"
+  short_description: "Plan minimal patches, tests, and rollback points"
+  default_prompt: "Use $patch-plan to draft a minimal reversible fix for the confirmed root cause."

@@ -1,0 +1,6 @@
+[
+  { "id": "RAG-001", "query": "Redis 连接池缩容，幂等查询超时，用户重试后出现重复订单", "tags": ["checkout", "idempotency"], "expectedTop1": "KB-HIST-001" },
+  { "id": "RAG-002", "query": "支付回调验签间歇失败，实例缓存的密钥版本不一致", "tags": ["payment", "signature"], "expectedTop1": "KB-HIST-002" },
+  { "id": "RAG-003", "query": "库存查询执行计划扫描行数变多，下单 p99 延迟升高", "tags": ["inventory", "slow-sql"], "expectedTop1": "KB-HIST-003" },
+  { "id": "RAG-004", "query": "网关固定间隔重试造成同步峰值并触发下游限流", "tags": ["gateway", "retry"], "expectedTop1": "KB-HIST-004" }
+]

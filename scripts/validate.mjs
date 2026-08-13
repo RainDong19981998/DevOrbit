@@ -1,0 +1,57 @@
+import { readFile } from 'node:fs/promises';
+import { runPipeline } from '../src/orchestrator.js';
+
+const result = await runPipeline();
+const checks = [
+  ['closed loop', result.metrics.closedLoop === true],
+  ['seven workers represented', result.metrics.agents === 7],
+  ['real fixture tests green', result.tests.failed === 0 && result.tests.passed === 4 && result.tests.exitCode === 0],
+  ['bug reproduced before patch', result.plan.baselineTests.failed === 3 && result.plan.baselineTests.exitCode !== 0],
+  ['approval recorded', result.approval.required && result.approval.state === 'approved'],
+  ['canary promoted', result.release.decision === 'promoted'],
+  ['rollback ready', result.release.rollbackReady === true],
+  ['knowledge card written', Boolean(result.knowledge.cardId)],
+  ['trace has evidence', result.metrics.evidence >= 15],
+  ['manager worker messages', result.metrics.messages >= 14],
+  ['versioned case state', result.state.revision >= 8],
+  ['real CI artifact digest', result.tests.artifact.startsWith('sha256:')]
+  ,['MCP protocol version', result.mcp.protocolVersion === '2025-06-18']
+  ,['MCP tools called', result.mcp.calls >= 15 && result.mcp.audit.every(item => item.status === 'ok' && item.traceId === result.state.traceId)]
+  ,['workspace disposed', result.plan.workspaceDisposed === true]
+  ,['RAG top result cited', result.rca.retrieval.results[0].id === 'KB-HIST-001' && result.rca.retrieval.results[0].citation === 'knowledge://KB-HIST-001']
+];
+const resources = JSON.parse(await readFile(new URL('../config/agentteams.resources.json', import.meta.url), 'utf8'));
+checks.push(['official AgentTeams apiVersion', resources.every(resource => resource.apiVersion === 'agentteams.io/v1beta1')]);
+checks.push(['team leader declared', resources.some(resource => resource.kind === 'Team' && resource.spec.workerMembers.filter(member => member.role === 'team_leader').length === 1)]);
+for (const skill of ['signal-fusion', 'impact-map', 'evidence-rca', 'patch-plan', 'test-gate', 'release-guard', 'knowledge-card']) {
+  const content = await readFile(new URL(`../skills/${skill}/SKILL.md`, import.meta.url), 'utf8');
+  checks.push([`skill package ${skill}`, content.includes(`name: ${skill}`)]);
+}
+const lifecycle = await readFile(new URL('../config/case-lifecycle.yaml', import.meta.url), 'utf8');
+checks.push(['lifecycle failure policy', lifecycle.includes('canary_regression: automatic_rollback')]);
+const packageArtifact = await readFile(new URL('../worker-packages/dist/intake-worker.zip', import.meta.url)).catch(() => null);
+checks.push(['worker package built', Boolean(packageArtifact)]);
+const officialCloudSkill = JSON.parse(await readFile(new URL('../config/aliyun-official-skill.contract.json', import.meta.url), 'utf8'));
+checks.push(['official cloud skill locked', officialCloudSkill.skill.name === 'alibabacloud-sls-query' && officialCloudSkill.skill.version === '0.0.2' && officialCloudSkill.integration.workers.length === 2]);
+const evaluation = JSON.parse(await readFile(new URL('../reports/evaluation.json', import.meta.url), 'utf8'));
+checks.push(['golden cases pass', evaluation.summary.passed === evaluation.summary.cases && evaluation.summary.cases >= 7]);
+checks.push(['safety cases pass', evaluation.summary.safetyCorrect === evaluation.summary.safetyCases && evaluation.summary.safetyCases >= 5]);
+checks.push(['evaluation evidence coverage', evaluation.summary.averageEvidenceCoverage === 1]);
+checks.push(['evaluation RAG citations', evaluation.summary.ragCitationRate === 1]);
+const ragEvaluation = JSON.parse(await readFile(new URL('../reports/rag-evaluation.json', import.meta.url), 'utf8'));
+checks.push(['diverse RAG top-1 evaluation', ragEvaluation.summary.cases >= 4 && ragEvaluation.summary.top1Accuracy === 1 && ragEvaluation.summary.citationRate === 1]);
+const benchmark = JSON.parse(await readFile(new URL('../reports/benchmark.json', import.meta.url), 'utf8'));
+checks.push(['benchmark full policy accepted', benchmark.primary.outcomeAccuracy === 1 && benchmark.primary.safetyAccuracy === 1]);
+checks.push(['benchmark includes naive baseline', benchmark.variants.some(variant => variant.name === 'monolithic-naive-baseline')]);
+const securityEvaluation = JSON.parse(await readFile(new URL('../reports/security-evaluation.json', import.meta.url), 'utf8'));
+checks.push(['adversarial policy cases pass', securityEvaluation.summary.passed === securityEvaluation.summary.cases && securityEvaluation.summary.cases >= 6]);
+const otel = JSON.parse(await readFile(new URL('../reports/otel-happy-path.json', import.meta.url), 'utf8'));
+checks.push(['OTLP agent and tool spans', otel.summary.agentSpans >= 14 && otel.summary.toolSpans >= 15 && otel.resourceSpans?.[0]?.scopeSpans?.[0]?.spans?.every(span => span.traceId.length === 32 && span.spanId.length === 16)]);
+const toolPolicy = JSON.parse(await readFile(new URL('../config/tool-policy.json', import.meta.url), 'utf8'));
+checks.push(['server-side tool policy contract', Object.keys(toolPolicy.rules).length === 10 && toolPolicy.rules['release.canary'].approval === true]);
+const replay = JSON.parse(await readFile(new URL('../reports/runs/happy-path.json', import.meta.url), 'utf8'));
+checks.push(['replayable run report', replay.release.decision === 'promoted' && replay.plan.baselineTests.failed === 3 && replay.tests.passed === 4]);
+const complianceDisclosure = await readFile(new URL('../docs/第三方依赖与合规清单.md', import.meta.url), 'utf8');
+checks.push(['dependency disclosure', complianceDisclosure.includes('AgentTeams') && complianceDisclosure.includes('alibabacloud-sls-query') && complianceDisclosure.includes('无第三方 npm 包')]);
+for (const [label, ok] of checks) console.log(`${ok ? 'PASS' : 'FAIL'} ${label}`);
+if (checks.some(([, ok]) => !ok)) process.exit(1);

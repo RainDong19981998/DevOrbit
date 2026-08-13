@@ -1,0 +1,4 @@
+interface:
+  display_name: "Release Guard"
+  short_description: "Control approval, canary checks, and rollback"
+  default_prompt: "Use $release-guard to evaluate this release against approval and canary policy."

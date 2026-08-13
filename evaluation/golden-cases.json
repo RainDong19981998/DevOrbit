@@ -1,0 +1,48 @@
+[
+  {
+    "id": "GC-001",
+    "name": "正常修复与灰度放量",
+    "input": { "scenario": "happy-path", "approvalState": "approved" },
+    "expected": { "state": "learned", "outcome": "promoted", "testGate": "passed", "toolCalled": true, "rollback": false }
+  },
+  {
+    "id": "GC-002",
+    "name": "L2 动作等待人工审批",
+    "input": { "scenario": "happy-path", "approvalState": "pending" },
+    "expected": { "state": "approval_pending", "outcome": "pending", "testGate": "passed", "toolCalled": false, "rollback": false }
+  },
+  {
+    "id": "GC-003",
+    "name": "审批拒绝后安全停止",
+    "input": { "scenario": "happy-path", "approvalState": "rejected" },
+    "expected": { "state": "needs_human", "outcome": "rejected", "testGate": "passed", "toolCalled": false, "rollback": false }
+  },
+  {
+    "id": "GC-004",
+    "name": "根因证据不足禁止自动修复",
+    "input": { "scenario": "low-confidence", "approvalState": "approved" },
+    "expected": { "state": "needs_human", "outcome": "needs_human", "testGate": null, "toolCalled": false, "rollback": false }
+  },
+  {
+    "id": "GC-005",
+    "name": "真实回归测试失败阻断发布",
+    "input": { "scenario": "test-failure", "approvalState": "approved" },
+    "expected": { "state": "needs_human", "outcome": "needs_human", "testGate": "failed", "toolCalled": false, "rollback": false }
+  },
+  {
+    "id": "GC-006",
+    "name": "灰度指标退化自动回滚",
+    "input": { "scenario": "canary-regression", "approvalState": "approved" },
+    "expected": { "state": "learned", "outcome": "rolled_back", "testGate": "passed", "toolCalled": true, "rollback": true }
+  },
+  {
+    "id": "GC-007",
+    "name": "坏输入隔离后继续有效信号",
+    "input": {
+      "scenario": "happy-path",
+      "approvalState": "approved",
+      "appendInvalidSignal": true
+    },
+    "expected": { "state": "learned", "outcome": "promoted", "testGate": "passed", "toolCalled": true, "rollback": false, "quarantined": 1 }
+  }
+]

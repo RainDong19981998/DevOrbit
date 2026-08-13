@@ -1,0 +1,4 @@
+interface:
+  display_name: "Impact Map"
+  short_description: "Map code, API, service, and regression impact"
+  default_prompt: "Use $impact-map to identify the code and regression impact of this case."

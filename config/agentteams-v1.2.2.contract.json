@@ -1,0 +1,50 @@
+{
+  "source": {
+    "repository": "https://github.com/agentscope-ai/AgentTeams",
+    "version": "v1.2.2",
+    "commit": "849182af8e017168a5a200a87b1062142caf462d",
+    "license": "Apache-2.0",
+    "releasedAt": "2026-08-08T09:14:14Z"
+  },
+  "resource": {
+    "apiVersion": "agentteams.io/v1beta1",
+    "workerKind": "Worker",
+    "teamKind": "Team",
+    "defaultModel": "qwen3.6-plus",
+    "workerSpecFields": [
+      "model", "modelProvider", "runtime", "image", "workerName", "identity", "soul", "agents",
+      "skills", "remoteSkills", "mcpServers", "package", "expose", "channelPolicy", "channels",
+      "resources", "idleTimeout", "containerManaged", "state", "accessEntries", "agentIdentity",
+      "credentialBindings", "deployMode", "serviceEnabled", "env", "backendRuntime", "labels", "volumes", "mounts"
+    ],
+    "teamSpecFields": [
+      "description", "teamName", "admin", "humanMembers", "workerMembers", "peerMentions", "channelPolicy", "heartbeatEvery"
+    ],
+    "runtimeEnum": ["openclaw", "copaw", "hermes", "qwenpaw"],
+    "mcpTransportEnum": ["http", "sse"],
+    "teamRoleEnum": ["team_leader", "worker"]
+  },
+  "package": {
+    "required": ["manifest.json", "config/SOUL.md", "config/AGENTS.md"],
+    "manifestTopFields": ["version", "source", "worker"],
+    "manifestWorkerFields": ["suggested_name", "model", "runtime", "base_image", "apt_packages", "pip_packages", "npm_packages"]
+  },
+  "evidence": {
+    "workerCrd": {
+      "url": "https://raw.githubusercontent.com/agentscope-ai/AgentTeams/v1.2.2/agentteams-controller/config/crd/workers.agentteams.io.yaml",
+      "sha256": "993894baccb55ea3e9c6c546f3f67258d72e10809fd80ec372272a44da3d5cb5"
+    },
+    "teamCrd": {
+      "url": "https://raw.githubusercontent.com/agentscope-ai/AgentTeams/v1.2.2/agentteams-controller/config/crd/teams.agentteams.io.yaml",
+      "sha256": "4592d3eaf68256ae536a083709b6884081deddbd426d715a3d5f9432da153915"
+    },
+    "importGuide": {
+      "url": "https://github.com/agentscope-ai/AgentTeams/blob/v1.2.2/docs/zh-cn/import-worker.md",
+      "sha256": "051d65ecb328f3e3e6e317e0ab4f4c629cd57e3b4c9048610024770fe2d0bd12"
+    },
+    "applyImplementation": {
+      "url": "https://github.com/agentscope-ai/AgentTeams/blob/v1.2.2/agentteams-controller/cmd/agt/apply.go",
+      "sha256": "fb83db70791ac80c210f3f21763256a996a5b20b7dd91cde13e23d11dc65587e"
+    }
+  }
+}
