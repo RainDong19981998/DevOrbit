@@ -1,0 +1,9 @@
+setuptools==57.5.0
+packaging==21.3
+pyparsing==2.4.7
+pytest==6.2.5
+attrs==21.4.0
+iniconfig==1.1.1
+pluggy==0.13.1
+py==1.11.0
+toml==0.10.2

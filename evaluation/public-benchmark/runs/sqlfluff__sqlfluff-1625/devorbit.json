@@ -1,0 +1,43 @@
+{
+  "caseId": "PUB-SQLFLUFF__SQLFLUFF-1625",
+  "method": "devorbit",
+  "attempts": 3,
+  "rca": {
+    "rootCause": "Rule L031 (Avoid aliases) incorrectly triggers on table aliases in FROM clauses even when no JOIN is present. The rule logic in src/sqlfluff/rules/L031.py does not properly distinguish between aliases used in join conditions versus aliases used in simple FROM clauses with no join. When a query like `SELECT a.[hello] FROM mytable AS a` is linted in TSQL dialect, the rule flags the alias 'a' as being in a join condition, but there is no join present.",
+    "confidence": 0.85,
+    "evidence": [
+      "Issue title: 'TSQL - L031 incorrectly triggers Avoid using aliases in join condition when no join present'",
+      "Example query `SELECT a.[hello] FROM mytable AS a` fails with L031: Avoid using aliases in join condition, but there is no join condition",
+      "Rule file src/sqlfluff/rules/L031.py is the implementation of L031 rule that needs fixing",
+      "The hint says 're-reading the docs I think this is the intended behaviour... closing' but the issue title clearly states it's incorrect behavior - the rule triggers on non-join contexts"
+    ],
+    "filesToChange": [
+      "src/sqlfluff/rules/L031.py"
+    ]
+  },
+  "edits": [
+    {
+      "path": "src/sqlfluff/__init__.py",
+      "search": "try:\n    import pkg_resources\nexcept ImportError:\n    pkg_resources = None",
+      "replace": "try:\n    import pkg_resources\nexcept ImportError:\n    pkg_resources = None\n\nif pkg_resources is None:\n    import os\n    config.read([os.path.join(os.path.dirname(__file__), \"config.ini\")])\nelse:\n    config.read([pkg_resources.resource_filename(\"sqlfluff\", \"config.ini\")])"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "edit apply failed: src/sqlfluff/__init__.py: search block not found (exact and whitespace-normalized match both failed) [search: try:\n    import pkg_resources\nexcept ImportError:\n    pkg_resources = None]",
+    "changedPaths": [
+      "src/sqlfluff/__init__.py"
+    ]
+  },
+  "patchSha256": "sha256:08d27187b9759c3056eb51a451ba5408ce78de23c102fb805b2e55e43b2eb5a5",
+  "contextBytes": 13102,
+  "baselineTail": "m pytest -q --no-header -x test/cli/commands_test.py::test__cli__command_directed\nImportError while loading conftest '/tmp/zhanlu/bench-work/sqlfluff__sqlfluff-1625/source/test/conftest.py'.\ntest/conftest.py:9: in <module>\n    from sqlfluff.cli.commands import quoted_presenter\nsrc/sqlfluff/__init__.py:9: in <module>\n    import pkg_resources\nE   ModuleNotFoundError: No module named 'pkg_resources'\n",
+  "goldFiles": [
+    "src/sqlfluff/rules/L031.py"
+  ],
+  "model": "glm",
+  "modelCalls": 4
+}

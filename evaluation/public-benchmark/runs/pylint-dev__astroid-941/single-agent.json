@@ -1,0 +1,32 @@
+{
+  "caseId": "PUB-PYLINT-DEV__ASTROID-941",
+  "method": "single-agent",
+  "attempts": 3,
+  "rca": null,
+  "edits": [
+    {
+      "path": "astroid/scoped_nodes.py",
+      "search": "        metaclass = self.declared_metaclass()\n        if metaclass and not class_context:\n            # No need to check for properties here if class_context is False, as\n            # the property will not be called.\n            try:\n                attributes = self._metaclass_lookup(name, metaclass)\n            except AttributeInferenceError:\n                pass\n            else:\n                inferred = [attr for attr in infer_property(attributes, self)]\n                if inferred:\n                    yield from inferred\n                    return",
+      "replace": "        metaclass = self.declared_metaclass()\n        if metaclass and not class_context:\n            # No need to check for properties here if class_context is False, as\n            # the property will not be called.\n            try:\n                attributes = self._metaclass_lookup(name, metaclass)\n            except AttributeInferenceError:\n                pass\n            else:\n                inferred = [attr for attr in infer_property(attributes, self)]\n                if inferred:\n                    yield from inferred\n                    return\n        if class_context and metaclass:\n            # Properties defined on a metaclass should be inferred when\n            # accessed on a class context (e.g. a subclass that inherits the\n            # metaclass), just as they are for the parent class.\n            try:\n                attributes = self._metaclass_lookup(name, metaclass)\n            except AttributeInferenceError:\n                pass\n            else:\n                inferred = [attr for attr in infer_property(attributes, self)]\n                if inferred:\n                    yield from inferred\n                    return"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "edit apply failed: astroid/scoped_nodes.py: search block not found (exact and whitespace-normalized match both failed) [search:         metaclass = self.declared_metaclass()\n        if metaclass and not class_context:\n            # No need to check for properties here if class_context is]",
+    "changedPaths": [
+      "astroid/scoped_nodes.py"
+    ]
+  },
+  "patchSha256": null,
+  "contextBytes": 10252,
+  "baselineTail": "y tests/unittest_scoped_nodes.py::test_issue940_enums_as_a_real_world_usecase\nERROR: found no collectors for /tmp/zhanlu/bench-work/pylint-dev__astroid-941/source/tests/unittest_scoped_nodes.py::test_issue940_metaclass_subclass_property\n\nERROR: found no collectors for /tmp/zhanlu/bench-work/pylint-dev__astroid-941/source/tests/unittest_scoped_nodes.py::test_issue940_enums_as_a_real_world_usecase\n\n",
+  "goldFiles": [
+    "astroid/brain/brain_namedtuple_enum.py",
+    "astroid/scoped_nodes.py"
+  ],
+  "model": "glm",
+  "modelCalls": 3
+}

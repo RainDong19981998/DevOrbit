@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { digest } from '../runtime/digest.js';
-import { MCP_PROTOCOL_VERSION, rpcError, rpcResult } from './protocol.js';
+import { MCP_PROTOCOL_VERSION, negotiateProtocolVersion, rpcError, rpcResult } from './protocol.js';
 import { DEVORBIT_VERSION } from '../version.js';
 
 function typeMatches(value, type) {
@@ -55,9 +55,9 @@ export class McpToolServer {
   async dispatch(message, context = {}) {
     if (!message || message.jsonrpc !== '2.0' || typeof message.method !== 'string') return rpcError(message?.id, -32600, 'Invalid Request');
     if (message.method === 'initialize') {
-      if (message.params?.protocolVersion && message.params.protocolVersion !== MCP_PROTOCOL_VERSION) return rpcError(message.id, -32602, `Unsupported protocol version: ${message.params.protocolVersion}`);
+      const protocolVersion = context.protocolVersion || negotiateProtocolVersion(message.params?.protocolVersion);
       return rpcResult(message.id, {
-        protocolVersion: MCP_PROTOCOL_VERSION,
+        protocolVersion,
         capabilities: { tools: { listChanged: false } },
         serverInfo: { name: this.name, version: this.version }
       });
@@ -76,16 +76,17 @@ export class McpToolServer {
     const started = Date.now();
     const at = new Date().toISOString();
     const auditRef = `audit://${randomUUID()}`;
+    const protocolVersion = context.protocolVersion || MCP_PROTOCOL_VERSION;
     const authorization = this.policy?.authorize({ tool: name, args, context }) || { ok: true, risk: tool.annotations?.readOnlyHint ? 'L0' : 'L1' };
     if (!authorization.ok) {
       const structuredContent = { error: 'policy denied tool call', reason: authorization.reason, auditRef };
-      this.audit.push({ auditRef, at, parentSpanId: context.parentSpanId || null, protocolVersion: MCP_PROTOCOL_VERSION, method: 'tools/call', tool: name, caller: context.agent || 'anonymous', traceId: context.traceId || null, caseId: context.caseId || null, durationMs: Date.now() - started, inputDigest: digest(args), outputDigest: digest(structuredContent), idempotencyKey: args.idempotencyKey || null, risk: authorization.risk, policyDecision: 'deny', status: 'denied' });
+      this.audit.push({ auditRef, at, parentSpanId: context.parentSpanId || null, protocolVersion, method: 'tools/call', tool: name, caller: context.agent || 'anonymous', traceId: context.traceId || null, caseId: context.caseId || null, durationMs: Date.now() - started, inputDigest: digest(args), outputDigest: digest(structuredContent), idempotencyKey: args.idempotencyKey || null, risk: authorization.risk, policyDecision: 'deny', status: 'denied' });
       return rpcResult(message.id, { content: [{ type: 'text', text: structuredContent.error }], structuredContent, isError: true });
     }
     const cacheKey = args.idempotencyKey ? `${name}:${args.idempotencyKey}` : null;
     if (cacheKey && this.idempotencyCache.has(cacheKey)) {
       const result = structuredClone(this.idempotencyCache.get(cacheKey));
-      this.audit.push({ auditRef, at, parentSpanId: context.parentSpanId || null, protocolVersion: MCP_PROTOCOL_VERSION, method: 'tools/call', tool: name, caller: context.agent || 'anonymous', traceId: context.traceId || null, caseId: context.caseId || null, durationMs: Date.now() - started, inputDigest: digest(args), outputDigest: digest(result.structuredContent), idempotencyKey: args.idempotencyKey, risk: authorization.risk, policyDecision: 'allow', status: 'replayed' });
+      this.audit.push({ auditRef, at, parentSpanId: context.parentSpanId || null, protocolVersion, method: 'tools/call', tool: name, caller: context.agent || 'anonymous', traceId: context.traceId || null, caseId: context.caseId || null, durationMs: Date.now() - started, inputDigest: digest(args), outputDigest: digest(result.structuredContent), idempotencyKey: args.idempotencyKey, risk: authorization.risk, policyDecision: 'allow', status: 'replayed' });
       return rpcResult(message.id, result);
     }
     try {
@@ -93,12 +94,12 @@ export class McpToolServer {
       const outputError = validateSchema(structuredContent, tool.outputSchema);
       if (outputError) throw new Error(`tool output schema violation: ${outputError}`);
       const result = { content: [{ type: 'text', text: JSON.stringify(structuredContent) }], structuredContent, isError: false };
-      this.audit.push({ auditRef, at, parentSpanId: context.parentSpanId || null, protocolVersion: MCP_PROTOCOL_VERSION, method: 'tools/call', tool: name, caller: context.agent || 'anonymous', traceId: context.traceId || null, caseId: context.caseId || null, durationMs: Date.now() - started, inputDigest: digest(args), outputDigest: digest(structuredContent), idempotencyKey: args.idempotencyKey || null, risk: authorization.risk, policyDecision: 'allow', approvalId: authorization.approval?.approvalId || null, status: 'ok' });
+      this.audit.push({ auditRef, at, parentSpanId: context.parentSpanId || null, protocolVersion, method: 'tools/call', tool: name, caller: context.agent || 'anonymous', traceId: context.traceId || null, caseId: context.caseId || null, durationMs: Date.now() - started, inputDigest: digest(args), outputDigest: digest(structuredContent), idempotencyKey: args.idempotencyKey || null, risk: authorization.risk, policyDecision: 'allow', approvalId: authorization.approval?.approvalId || null, status: 'ok' });
       if (cacheKey) this.idempotencyCache.set(cacheKey, structuredClone(result));
       return rpcResult(message.id, result);
     } catch (error) {
       const structuredContent = { error: error.message, auditRef };
-      this.audit.push({ auditRef, at, parentSpanId: context.parentSpanId || null, protocolVersion: MCP_PROTOCOL_VERSION, method: 'tools/call', tool: name, caller: context.agent || 'anonymous', traceId: context.traceId || null, caseId: context.caseId || null, durationMs: Date.now() - started, inputDigest: digest(args), outputDigest: digest(structuredContent), idempotencyKey: args.idempotencyKey || null, risk: authorization.risk, policyDecision: 'allow', status: 'error' });
+      this.audit.push({ auditRef, at, parentSpanId: context.parentSpanId || null, protocolVersion, method: 'tools/call', tool: name, caller: context.agent || 'anonymous', traceId: context.traceId || null, caseId: context.caseId || null, durationMs: Date.now() - started, inputDigest: digest(args), outputDigest: digest(structuredContent), idempotencyKey: args.idempotencyKey || null, risk: authorization.risk, policyDecision: 'allow', status: 'error' });
       return rpcResult(message.id, { content: [{ type: 'text', text: error.message }], structuredContent, isError: true });
     }
   }

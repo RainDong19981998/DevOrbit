@@ -1,0 +1,54 @@
+{
+  "caseId": "PUB-PYDICOM__PYDICOM-955",
+  "method": "devorbit",
+  "attempts": 3,
+  "rca": {
+    "rootCause": "When reading a LUT Descriptor (0028,3002) or Red/Green/Blue Palette Color Lookup Table Descriptor element with explicit VR SS, pydicom applies the signed VR to all three values. Per DICOM standard, only the second value (first stored pixel value mapped) should be signed when Pixel Representation is 1; the first (number of entries) and third (bit depth) values must always be unsigned US. The fix requires post-processing the decoded MultiValue for these specific tags to reinterpret the first and third values as unsigned integers.",
+    "confidence": 0.82,
+    "evidence": [
+      "Issue states: 'The problem is that a Pixel Representation value of 1 (i.e. 2s complement) gives a LUT Descriptor value 1 as signed when it should always be unsigned.'",
+      "DICOM standard quote in issue: 'the first and third values are always by definition interpreted as unsigned. The explicit VR actually used is dictated by the VR needed to represent the second value.'",
+      "Reproduction expects ds.LUTDescriptor == [62720, -2048, 16] where first (62720) and third (16) are unsigned while second (-2048) is signed.",
+      "Repo map shows pydicom/values.py and pydicom/filereader.py handle raw element value conversion; pydicom/datadict.py contains tag definitions for LUTDescriptor and palette descriptors."
+    ],
+    "filesToChange": [
+      "pydicom/values.py",
+      "pydicom/filereader.py",
+      "pydicom/datadict.py"
+    ]
+  },
+  "edits": [
+    {
+      "path": "pydicom/values.py",
+      "search": "def convert_numbers(byte_string, is_little_endian, struct_format):\n    \"\"\"Return a decoded numerical VR value.",
+      "replace": "def convert_LUT_descriptor(byte_string, is_little_endian):\n    \"\"\"Return a decoded LUT Descriptor value.\n\n    When the explicit VR is SS, only the second value (first stored pixel\n    value mapped) is signed; the first (number of entries) and third\n    (entry bit depth) values are always unsigned US.\n    \"\"\"\n    values = convert_numbers(byte_string, is_little_endian, 'h')\n    if not isinstance(values, list):\n        return values\n    if len(values) >= 3:\n        values[0] &= 0xFFFF\n        values[2] &= 0xFFFF\n    return values\n\n\ndef convert_numbers(byte_string, is_little_endian, struct_format):\n    \"\"\"Return a decoded numerical VR value."
+    }
+  ],
+  "evaluation": {
+    "compilePassed": true,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "F2P red; P2P green ",
+    "f2pLogTail": "\nno tests ran in 0.14s\n\nERROR: not found: /tmp/zhanlu/bench-work/pydicom__pydicom-955/source/pydicom/tests/test_filereader.py::TestReader::test_lut_descriptor\n(no match in any of [<Class TestReader>])\n\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x pydicom/tests/test_filereader.py::TestReader::test_lut_descriptor\nERROR: not found: /tmp/zhanlu/bench-work/pydicom__pydicom-955/source/pydicom/tests/test_filereader.py::TestReader::test_lut_descriptor\n(no match in any of [<Class TestReader>])\n\n\n[...]\n::TestReader::test_lut_descriptor\n(no match in any of [<Class TestReader>])\n\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x pydicom/tests/test_filereader.py::TestReader::test_lut_descriptor\nERROR: not found: /tmp/zhanlu/bench-work/pydicom__pydicom-955/source/pydicom/tests/test_filereader.py::TestReader::test_lut_descriptor\n(no match in any of [<Class TestReader>])\n\n",
+    "changedPaths": [
+      "pydicom/values.py"
+    ],
+    "appliedMethods": [
+      {
+        "path": "pydicom/values.py",
+        "method": "exact",
+        "ambiguous": false
+      }
+    ]
+  },
+  "patchSha256": "sha256:38b42827294e78aeab521bf89597c372ea942a6df4169daff923af0a40e1330f",
+  "contextBytes": 18294,
+  "baselineTail": "===================== short test summary info ============================\nFAILED pydicom/tests/test_filereader.py::TestReader::test_lut_descriptor - as...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.34s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x pydicom/tests/test_filereader.py::TestReader::test_lut_descriptor\n",
+  "goldFiles": [
+    "pydicom/dataelem.py",
+    "pydicom/pixel_data_handlers/util.py"
+  ],
+  "model": "glm",
+  "modelCalls": 4
+}

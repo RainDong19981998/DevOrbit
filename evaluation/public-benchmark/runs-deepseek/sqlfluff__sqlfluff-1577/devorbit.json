@@ -1,0 +1,51 @@
+{
+  "caseId": "PUB-SQLFLUFF__SQLFLUFF-1577",
+  "method": "devorbit",
+  "attempts": 3,
+  "rca": {
+    "rootCause": "The ValueError 'Position Not Found' occurs in `_find_slice_indices_of_templated_pos` when the templated file is empty (or has no content) and the lexer attempts to map a position in the templated file back to the source file. When a file consists entirely of a Jinja macro that renders to an empty string, the templated file has zero length, and the position lookup fails because there are no slices to search. The issue is specifically triggered when the file has no trailing newline, as the newline would otherwise create a non-empty templated output. The root cause is in the templated file's slice mapping logic, which doesn't handle the edge case of an empty templated file gracefully.",
+    "confidence": 0.9,
+    "evidence": [
+      "The stack trace shows the error originates in `src/sqlfluff/core/templaters/base.py` at line 214 in `_find_slice_indices_of_templated_pos`, which raises ValueError when a position cannot be found in the templated file.",
+      "The issue reproduces with `echo -n '{% macro foo() %}{% endmacro %}' | sqlfluff parse -`, where the macro renders to an empty string, and the templated file has no content.",
+      "The issue does not occur with a trailing newline, as the newline becomes part of the templated output, providing a non-empty templated file.",
+      "The test `test__templater_jinja_lint_empty` in `test/core/templaters/jinja_test.py` checks that parsing a file that renders to an empty string does not raise an exception, but it only checks `parsed.tree is None` and doesn't exercise the lexer's position mapping in the same way as the reported case."
+    ],
+    "filesToChange": [
+      "src/sqlfluff/core/templaters/base.py"
+    ]
+  },
+  "edits": [
+    {
+      "path": "src/sqlfluff/core/templaters/base.py",
+      "search": "        if first_idx is None:  # pragma: no cover\n            raise ValueError(\"Position Not Found\")\n        return first_idx, last_idx",
+      "replace": "        if first_idx is None:\n            # If the templated file is empty, return an empty slice.\n            if not self.templated_str:\n                return 0, 0\n            raise ValueError(\"Position Not Found\")\n        return first_idx, last_idx"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": true,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "F2P red; P2P green ",
+    "f2pLogTail": "\nImportError while loading conftest '/tmp/zhanlu/bench-work-ds/sqlfluff__sqlfluff-1577/source/test/conftest.py'.\ntest/conftest.py:9: in <module>\n    from sqlfluff.cli.commands import quoted_presenter\nsrc/sqlfluff/__init__.py:9: in <module>\n    import pkg_resources\nE   ModuleNotFoundError: No module named 'pkg_resources'\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x test/core/templaters/jinja_test.py::test__templater_jinja_lint_empty\nImportError while loading conftest '/tmp/zhanlu/bench-work-ds/sqlfluff__sqlfluff-1577/source/test/conftest.py'.\ntest/conftest.py:9: in <module>\n    from sqlfluff.cli.commands import quoted_presenter\nsrc/sqlfluff/__init__.py:9: in <module>\n    import pkg_resources\nE   ModuleNotFoundError: No module named 'pkg_resources'\n\n[...]\nheader -x test/core/templaters/jinja_test.py::test__templater_jinja_lint_empty\nImportError while loading conftest '/tmp/zhanlu/bench-work-ds/sqlfluff__sqlfluff-1577/source/test/conftest.py'.\ntest/conftest.py:9: in <module>\n    from sqlfluff.cli.commands import quoted_presenter\nsrc/sqlfluff/__init__.py:9: in <module>\n    import pkg_resources\nE   ModuleNotFoundError: No module named 'pkg_resources'\n",
+    "changedPaths": [
+      "src/sqlfluff/core/templaters/base.py"
+    ],
+    "appliedMethods": [
+      {
+        "path": "src/sqlfluff/core/templaters/base.py",
+        "method": "exact",
+        "ambiguous": false
+      }
+    ]
+  },
+  "patchSha256": "sha256:7a424c03b44eb68f8ca3a3464eb86ff7fbe1a3ce95f0b8d3852b0fc4b8de3a81",
+  "contextBytes": 13062,
+  "baselineTail": "header -x test/core/templaters/jinja_test.py::test__templater_jinja_lint_empty\nImportError while loading conftest '/tmp/zhanlu/bench-work-ds/sqlfluff__sqlfluff-1577/source/test/conftest.py'.\ntest/conftest.py:9: in <module>\n    from sqlfluff.cli.commands import quoted_presenter\nsrc/sqlfluff/__init__.py:9: in <module>\n    import pkg_resources\nE   ModuleNotFoundError: No module named 'pkg_resources'\n",
+  "goldFiles": [
+    "src/sqlfluff/core/templaters/base.py"
+  ],
+  "model": "deepseek-v4-flash-0731",
+  "modelCalls": 4
+}

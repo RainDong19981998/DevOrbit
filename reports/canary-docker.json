@@ -1,0 +1,134 @@
+{
+  "generatedAt": "2026-08-25T06:46:50.892Z",
+  "status": "passed",
+  "topology": {
+    "proxy": "weighted reverse proxy on 127.0.0.1:4900",
+    "stable": "docker devorbit-canary-stable :4901",
+    "canary": "docker devorbit-canary-canary :4902",
+    "initialWeight": 0.1
+  },
+  "scenarios": {
+    "healthyCanary": {
+      "slo": {
+        "requests": 200,
+        "errors": 0,
+        "errorRate": 0,
+        "p95Ms": 3.5061270000005607
+      }
+    },
+    "degradedCanary": {
+      "slo": {
+        "requests": 120,
+        "errors": 4,
+        "errorRate": 0.03333333333333333,
+        "p95Ms": 4.6412049999999
+      },
+      "breached": true,
+      "rolledBack": true,
+      "postRollbackSlo": {
+        "requests": 120,
+        "errors": 0,
+        "errorRate": 0,
+        "p95Ms": 1.6986040000001594
+      }
+    }
+  },
+  "trafficSplitObserved": {
+    "proxied": 440,
+    "toStable": 404,
+    "toCanary": 36
+  },
+  "timeline": [
+    {
+      "at": "2026-08-25T06:46:43.899Z",
+      "step": "image.build",
+      "ok": true,
+      "note": "devorbit-canary-service:local built on pinned node base"
+    },
+    {
+      "at": "2026-08-25T06:46:46.651Z",
+      "step": "containers.up",
+      "ok": true,
+      "note": "stable=stable canary=canary"
+    },
+    {
+      "at": "2026-08-25T06:46:46.664Z",
+      "step": "proxy.weighted.started",
+      "ok": true,
+      "note": "weighted proxy 90/10 on :4900 (self-hosted equivalent of Higress/Nginx weighted routing, disclosed in boundary)"
+    },
+    {
+      "at": "2026-08-25T06:46:47.054Z",
+      "step": "scenarioA.healthy-canary.slo",
+      "ok": true,
+      "note": "errors=0/200 p95=3.5ms, canaryShare=12.5%"
+    },
+    {
+      "at": "2026-08-25T06:46:49.589Z",
+      "step": "scenarioB.degradation.injected",
+      "ok": true,
+      "note": "canary replaced with FAULT_RATE=0.5 (simulated regression after release)"
+    },
+    {
+      "at": "2026-08-25T06:46:49.816Z",
+      "step": "scenarioB.slo.breach-detected",
+      "ok": true,
+      "note": "errorRate=3.3% > 1% threshold -> automatic rollback triggers"
+    },
+    {
+      "at": "2026-08-25T06:46:49.816Z",
+      "step": "scenarioB.rollback.executed",
+      "ok": true,
+      "note": "weighted proxy switched to 100% stable (canary drained)"
+    },
+    {
+      "at": "2026-08-25T06:46:49.993Z",
+      "step": "scenarioB.rollback.verified",
+      "ok": true,
+      "note": "post-rollback errorRate=0.0%"
+    }
+  ],
+  "boundary": "Real Docker containers on the pinned node base image serve stable and canary variants; the weighted traffic split, SLO breach detection and automatic rollback are executed by a self-hosted Node proxy standing in for a production gateway (Higress/Nginx/Argo Rollouts provide the same semantics in production; the Argo connector evidence remains protocol-level). No Kubernetes cluster is present on this machine, and this report does not claim one. The injected 50% fault rate is a deliberate regression simulation, not a service defect.",
+  "checks": [
+    {
+      "label": "image.build",
+      "ok": true,
+      "detail": "devorbit-canary-service:local built on pinned node base"
+    },
+    {
+      "label": "containers.up",
+      "ok": true,
+      "detail": "stable=stable canary=canary"
+    },
+    {
+      "label": "proxy.weighted.started",
+      "ok": true,
+      "detail": "weighted proxy 90/10 on :4900 (self-hosted equivalent of Higress/Nginx weighted routing, disclosed in boundary)"
+    },
+    {
+      "label": "scenarioA.healthy-canary.slo",
+      "ok": true,
+      "detail": "errors=0/200 p95=3.5ms, canaryShare=12.5%"
+    },
+    {
+      "label": "scenarioB.degradation.injected",
+      "ok": true,
+      "detail": "canary replaced with FAULT_RATE=0.5 (simulated regression after release)"
+    },
+    {
+      "label": "scenarioB.slo.breach-detected",
+      "ok": true,
+      "detail": "errorRate=3.3% > 1% threshold -> automatic rollback triggers"
+    },
+    {
+      "label": "scenarioB.rollback.executed",
+      "ok": true,
+      "detail": "weighted proxy switched to 100% stable (canary drained)"
+    },
+    {
+      "label": "scenarioB.rollback.verified",
+      "ok": true,
+      "detail": "post-rollback errorRate=0.0%"
+    }
+  ]
+}

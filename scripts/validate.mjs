@@ -1,5 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import { runPipeline } from '../src/orchestrator.js';
+import { buildSkillsRegistry } from '../src/skills-registry.js';
+import { skills } from '../src/skills.js';
 
 const result = await runPipeline();
 const checks = [
@@ -10,7 +12,7 @@ const checks = [
   ['approval recorded', result.approval.required && result.approval.state === 'approved'],
   ['canary promoted', result.release.decision === 'promoted'],
   ['rollback ready', result.release.rollbackReady === true],
-  ['knowledge card written', Boolean(result.knowledge.cardId)],
+  ['knowledge card written', Boolean(result.knowledge.cardId || result.knowledge.episodeId)],
   ['trace has evidence', result.metrics.evidence >= 15],
   ['manager worker messages', result.metrics.messages >= 14],
   ['versioned case state', result.state.revision >= 8],
@@ -18,7 +20,7 @@ const checks = [
   ,['MCP protocol version', result.mcp.protocolVersion === '2025-06-18']
   ,['MCP tools called', result.mcp.calls >= 15 && result.mcp.audit.every(item => item.status === 'ok' && item.traceId === result.state.traceId)]
   ,['workspace disposed', result.plan.workspaceDisposed === true]
-  ,['RAG top result cited', result.rca.retrieval.results[0].id === 'KB-HIST-001' && result.rca.retrieval.results[0].citation === 'knowledge://KB-HIST-001']
+  ,['RAG top result cited', (result.rca.retrieval.results[0]?.id === 'KB-HIST-001' || result.rca.retrieval.results[0]?.id === 'EP-001') && result.rca.retrieval.results[0]?.citation?.startsWith('knowledge://')]
 ];
 const resources = JSON.parse(await readFile(new URL('../config/agentteams.resources.json', import.meta.url), 'utf8'));
 checks.push(['official AgentTeams apiVersion', resources.every(resource => resource.apiVersion === 'agentteams.io/v1beta1')]);
@@ -26,7 +28,13 @@ checks.push(['team leader declared', resources.some(resource => resource.kind ==
 for (const skill of ['signal-fusion', 'impact-map', 'evidence-rca', 'patch-plan', 'test-gate', 'release-guard', 'knowledge-card']) {
   const content = await readFile(new URL(`../skills/${skill}/SKILL.md`, import.meta.url), 'utf8');
   checks.push([`skill package ${skill}`, content.includes(`name: ${skill}`)]);
+  checks.push([`skill package ${skill} semver frontmatter`, /^version: \d+\.\d+\.\d+$/m.test(content)]);
 }
+const registry = buildSkillsRegistry();
+checks.push(['skills registry builds with digests', registry.length === 7 && registry.every(entry => /^\d+\.\d+\.\d+$/.test(entry.version) && entry.digest.startsWith('sha256:'))]);
+const catalogVersions = new Map(skills.filter(skill => !skill.official).map(skill => [skill.id, skill.version]));
+checks.push(['skill versions aligned with catalog', registry.every(entry => catalogVersions.get(entry.id) === entry.version)]);
+checks.push(['trace records skill version and digest', result.trace.filter(event => event.skill && event.skill !== 'case-orchestration').length >= 7 && result.trace.filter(event => event.skill && event.skill !== 'case-orchestration').every(event => event.skillVersion && event.skillDigest?.startsWith('sha256:'))]);
 const lifecycle = await readFile(new URL('../config/case-lifecycle.yaml', import.meta.url), 'utf8');
 checks.push(['lifecycle failure policy', lifecycle.includes('canary_regression: automatic_rollback')]);
 const packageArtifact = await readFile(new URL('../worker-packages/dist/intake-worker.zip', import.meta.url)).catch(() => null);
@@ -39,7 +47,7 @@ checks.push(['safety cases pass', evaluation.summary.safetyCorrect === evaluatio
 checks.push(['evaluation evidence coverage', evaluation.summary.averageEvidenceCoverage === 1]);
 checks.push(['evaluation RAG citations', evaluation.summary.ragCitationRate === 1]);
 const ragEvaluation = JSON.parse(await readFile(new URL('../reports/rag-evaluation.json', import.meta.url), 'utf8'));
-checks.push(['diverse RAG top-1 evaluation', ragEvaluation.summary.cases >= 4 && ragEvaluation.summary.top1Accuracy === 1 && ragEvaluation.summary.citationRate === 1]);
+checks.push(['diverse RAG top-1 evaluation', ragEvaluation.summary.cases >= 4 && ragEvaluation.summary.lexicalTop1Accuracy === 1 && ragEvaluation.summary.hybridTop1Accuracy === 1 && ragEvaluation.summary.citationRate === 1]);
 const benchmark = JSON.parse(await readFile(new URL('../reports/benchmark.json', import.meta.url), 'utf8'));
 checks.push(['benchmark full policy accepted', benchmark.primary.outcomeAccuracy === 1 && benchmark.primary.safetyAccuracy === 1]);
 checks.push(['benchmark includes naive baseline', benchmark.variants.some(variant => variant.name === 'monolithic-naive-baseline')]);
@@ -59,8 +67,8 @@ const containerEvidence = JSON.parse(await readFile(new URL('../reports/containe
 checks.push(['hardened container evidence', containerEvidence.summary.passed === 14 && containerEvidence.summary.failed === 0 && containerEvidence.hardening.uid === 10001 && containerEvidence.hardening.readOnlyRootfs === true && containerEvidence.hardening.noNewPrivileges === true]);
 const publicManifest = JSON.parse(await readFile(new URL('../evaluation/public-benchmark.manifest.json', import.meta.url), 'utf8'));
 const publicReport = JSON.parse(await readFile(new URL('../reports/public-benchmark.json', import.meta.url), 'utf8'));
-checks.push(['public benchmark is honest when unfrozen', publicManifest.status === 'protocol-only' && publicReport.status === 'not_run' && publicReport.manifest.cases === 0 && Object.keys(publicReport.methods).length === 0 && /^sha256:[0-9a-f]{64}$/.test(publicReport.manifestDigest || '')]);
-checks.push(['public benchmark sources are HTTPS', publicManifest.sources.length >= 1 && publicManifest.sources.every(source => source.url.startsWith('https://') && source.snapshot === null)]);
+checks.push(['public benchmark is frozen with scored cases', publicManifest.status === 'frozen' && publicManifest.cases.length === 30 && publicReport.status === 'completed' && publicReport.manifest?.cases === 30 && Object.keys(publicReport.methods).length >= 2 && /^sha256:[0-9a-f]{64}$/.test(publicReport.manifestDigest || '')]);
+checks.push(['public benchmark sources are HTTPS with snapshots', publicManifest.sources.length >= 1 && publicManifest.sources.every(source => source.url.startsWith('https://') && source.snapshot !== null)]);
 checks.push(['public benchmark policy is explicit', publicManifest.selectionPolicy?.splitSeed && publicManifest.evaluationPolicy?.goldFixAccess === 'evaluator-only' && publicManifest.evaluationPolicy?.primarySplit === 'test']);
 const publicPilot = JSON.parse(await readFile(new URL('../evaluation/public-benchmark-pilot.manifest.json', import.meta.url), 'utf8'));
 checks.push(['public reproduction pilot is non-scored', publicPilot.status === 'frozen-reproduced-not-scored' && publicPilot.case.split === 'validation-pilot' && publicPilot.case.goldPatchStored === false && publicPilot.evidence.baselineExitCode === 1 && publicPilot.evidence.goldFailToPassPassed === 1 && publicPilot.evidence.goldAnsiFilePassed === 43]);
@@ -73,5 +81,11 @@ const nativeReport = JSON.parse(await readFile(new URL('../reports/native-platfo
 checks.push(['native platform connector evidence', nativeReport.status === 'passed' && nativeReport.summary.passed === nativeReport.summary.checks && nativeReport.evidence.baselineFailed === 3 && nativeReport.evidence.patchedPassed === 4 && nativeReport.evidence.mcpCalls === 15]);
 const nativeRunnerReport = JSON.parse(await readFile(new URL('../reports/native-runner-smoke.json', import.meta.url), 'utf8'));
 checks.push(['native runner container evidence', nativeRunnerReport.status === 'passed' && nativeRunnerReport.summary.passed === 6 && nativeRunnerReport.summary.failed === 0 && nativeRunnerReport.gitVersion === 'git version 2.39.5' && nativeRunnerReport.hardening.uid === 10001 && nativeRunnerReport.hardening.readOnlyRootfs === true && nativeRunnerReport.persistence.path === '/var/lib/devorbit/idempotency']);
+const migration = JSON.parse(await readFile(new URL('../reports/scenario-migration.json', import.meta.url), 'utf8'));
+checks.push(['scenario migration closes second domain loop', migration.summary.mechanismsIdentical === true && migration.cases.checkout.status === 'learned' && migration.cases.inventory.status === 'learned' && migration.cases.inventory.baseline.failed === 3 && migration.cases.inventory.patched.failed === 0 && migration.cases.inventory.evidenceChainVerified === true]);
+const faultDrill = JSON.parse(await readFile(new URL('../reports/fault-drill.json', import.meta.url), 'utf8'));
+checks.push(['fault drill matrix all pass', faultDrill.summary.passed === faultDrill.summary.drills && faultDrill.summary.drills >= 6 && faultDrill.drills.every(drill => drill.pass)]);
+const skillsRegistry = JSON.parse(await readFile(new URL('../reports/skills-registry.json', import.meta.url), 'utf8'));
+checks.push(['skills registry lifecycle evidence', skillsRegistry.summary.skills === 8 && skillsRegistry.summary.custom === 7 && skillsRegistry.summary.official === 1 && skillsRegistry.summary.versionsAligned === true && skillsRegistry.skills.every(skill => skill.digest && skill.binding)]);
 for (const [label, ok] of checks) console.log(`${ok ? 'PASS' : 'FAIL'} ${label}`);
 if (checks.some(([, ok]) => !ok)) process.exit(1);

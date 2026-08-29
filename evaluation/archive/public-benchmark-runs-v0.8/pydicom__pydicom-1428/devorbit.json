@@ -1,0 +1,24 @@
+{
+  "caseId": "PUB-PYDICOM__PYDICOM-1428",
+  "method": "devorbit",
+  "attempts": 2,
+  "rca": {
+    "files": [
+      "pydicom/fileset.py",
+      "pydicom/tests/test_fileset.py"
+    ]
+  },
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "git apply --check failed: \nerror: corrupt patch at line 42\n\nCommand failed: git apply --check model.patch\nerror: corrupt patch at line 42\n"
+  },
+  "patchSha256": "sha256:1bafe5571799005c1c0732e8da15b7b79864b3451f056a2d775f39505efc30b6",
+  "contextBytes": 8000,
+  "baselineTail": "===\nFAILED pydicom/tests/test_fileset.py::TestFileSet_Load::test_find_values - Va...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.52s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x pydicom/tests/test_fileset.py::TestFileSet_Load::test_find_values pydicom/tests/test_fileset.py::TestFileSet_Load::test_find_values_load\n",
+  "goldFiles": [
+    "pydicom/fileset.py"
+  ]
+}

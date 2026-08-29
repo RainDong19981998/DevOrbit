@@ -1,0 +1,13 @@
+diff --git a/src/sqlfluff/core/dialects/dialect_ansi.py b/src/sqlfluff/core/dialects/dialect_ansi.py
+index d0cba1c..0d31124 100644
+--- a/src/sqlfluff/core/dialects/dialect_ansi.py
++++ b/src/sqlfluff/core/dialects/dialect_ansi.py
+@@ -50,7 +50,7 @@ ansi_dialect = Dialect("ansi", root_segment_name="FileSegment")
+ ansi_dialect.set_lexer_struct(
+     [
+         # name, type, pattern, kwargs
+-        ("whitespace", "regex", r"[\t ]+", dict(type="whitespace")),
++        ("whitespace", "regex", r"[\t ]+", dict(type="whitespace", is_whitespace=True)),
+         (
+             "inline_comment",
+             "regex",

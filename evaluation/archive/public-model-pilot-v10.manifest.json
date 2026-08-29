@@ -1,0 +1,103 @@
+{
+  "$schema": "../schemas/public-model-pilot-v10.schema.json",
+  "protocolVersion": "1.0",
+  "pilotId": "devorbit-public-model-pilot-v10",
+  "runId": "run-010",
+  "status": "pre-registered-policy-guided-source-bound-compatibility-run",
+  "registeredAt": "2026-08-14T05:00:16Z",
+  "disclosure": "Run 10 reuses the same SWE-bench dev validation case after nine disclosed runs. Run 7 passed its frozen gate but failed a later factory compatibility audit; Run 8 control-failed; Run 9 returned two cross-file oldText proposals that the exact replacement contract rejected before tests. Run 10 gives the repair attempt the rejected model proposal and freezes explicit same-file excerpt guidance. It remains policy-guided tuning, not independent generalization, a test-set score, an aggregate benchmark, a production claim, or a ranking claim.",
+  "priorRuns": [
+    { "runId": "run-001", "status": "blocked-before-apply", "evidencePath": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-001-failure.json", "evidenceSha256": "sha256:a41fd5a152abaf9a49e738f16ddbd8be909e04a38c862fdc7afc5b530b015664" },
+    { "runId": "run-002", "status": "failed", "evidencePath": "reports/public-model-pilot-v2.json", "evidenceSha256": "sha256:caf9b21e973db95026388d4d9fb05bacda1dd940e781ba7416554632d9b0b0ca" },
+    { "runId": "run-003", "status": "failed", "evidencePath": "reports/public-model-pilot-v3.json", "evidenceSha256": "sha256:35abde2a8d7622706924aab2a3a85e5fbce18b9f862656731e286215ba2e5c76" },
+    { "runId": "run-004", "status": "failed", "evidencePath": "reports/public-model-pilot-v4.json", "evidenceSha256": "sha256:62a8a537fc5e5daa5485d3ad93544da3afcd303dd737a67c97e8c2a80cf764c5" },
+    { "runId": "run-005", "status": "failed", "evidencePath": "reports/public-model-pilot-v5.json", "evidenceSha256": "sha256:e4229f5895cf86ca111852015d2c300eacabe8679363cf17aefff8abb6b69720" },
+    { "runId": "run-006", "status": "failed", "evidencePath": "reports/public-model-pilot-v6.json", "evidenceSha256": "sha256:3411bb695077c01bfc39100476c58d225e5c399e42ed6270dbf3612296faabc6" },
+    { "runId": "run-007", "status": "passed-under-prior-gate", "evidencePath": "reports/public-model-pilot-v7.json", "evidenceSha256": "sha256:4f12a4ba4ae7d05278300b1d0246722902c33cabfcd6aea7aa3f455ac4895a13" },
+    { "runId": "run-008", "status": "control-failed", "evidencePath": "reports/public-model-pilot-v8.json", "evidenceSha256": "sha256:5a1cab29c2e2bbc5db0bfaa3c72d6ac0d74c62ea51607a1c830ee701d97a8e04" },
+    { "runId": "run-009", "status": "failed", "evidencePath": "reports/public-model-pilot-v9.json", "evidenceSha256": "sha256:ed5cf8a1c4b17f0165e676f1b4830f7224a9d0ad8a73c5fd62405624951e3ac6" }
+  ],
+  "priorRunFeedback": [
+    "Runs 1 through 6 progressively rejected malformed, comment-only, over-broad, incomplete, and repeated patches; every failure remains digest-bound.",
+    "Run 7 passed its frozen gates, but its name-based derivation failed aliases and duplicated an explicitly supplied is_whitespace keyword.",
+    "Run 8 added an explicit factory compatibility probe, but both patch-model calls exceeded 300 seconds and then exposed a zero-artifact reporter bug.",
+    "Run 9 froze a 600-second response timeout and fixed zero-artifact reporting; both model responses returned within the bound.",
+    "Run 9 declared raw.py as the target file but copied nls and WhitespaceSegment oldText from rules/base.py, so both proposals matched zero times and tests did not run.",
+    "Run 10 repair context includes the rejected modelPatch, not only the rejection string, so a retry can change the actual proposal.",
+    "Derive the default from kwargs type, preserve an explicitly supplied is_whitespace value, and avoid passing the same keyword twice into dict construction."
+  ],
+  "case": {
+    "instanceId": "sqlfluff__sqlfluff-884",
+    "dataset": "princeton-nlp/SWE-bench",
+    "datasetSnapshot": "e48e2bd1e9fecd5bbd641e9414ac59da9f2e69f6",
+    "split": "dev-validation-policy-guided-source-bound-compatibility",
+    "repository": "sqlfluff/sqlfluff",
+    "baseCommit": "c0bad78f3fa9549591738c77f869724f721e6830",
+    "sourceArchiveUrl": "https://codeload.github.com/sqlfluff/sqlfluff/tar.gz/c0bad78f3fa9549591738c77f869724f721e6830",
+    "sourceArchiveSha256": "sha256:8484d90c290fc06b8c331991605300a692266a6f71536d1cf1612e4dca8c4fbb",
+    "issuePath": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/issue.json",
+    "issueSha256": "sha256:7db1d09d0c560c0fd2b3974d60fbe9d202a019c9fc26bf689a7acda02553d4c9",
+    "commentsPath": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/comments.json",
+    "commentsSha256": "sha256:303ac24d32a6f1d3388cfa12963bf5da73ce80c73f5f2bd6c2a9ac351cfaa8be",
+    "testPatchPath": "evaluation/public-pilot/sqlfluff__sqlfluff-884/test.patch",
+    "testPatchSha256": "sha256:3e799cc71e656fffdd8d6215dd5561cbdbe0808cfac7352f69b2e86067d8de50"
+  },
+  "model": {
+    "provider": "local-ollama",
+    "name": "qwen3:8b",
+    "digest": "sha256:500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+    "parameterSize": "8.2B",
+    "quantization": "Q4_K_M",
+    "temperature": 0,
+    "seed": 847,
+    "contextTokens": 16384,
+    "maxOutputTokens": 3072,
+    "thinking": false
+  },
+  "workflow": {
+    "agents": ["rca-worker", "patch-worker", "verify-worker"],
+    "patchAttemptLimit": 2,
+    "responseTimeoutMs": 600000,
+    "patchContract": "one-file-one-or-two-unique-exact-source-replacements",
+    "patchGuidance": "For every edit, copy oldText only from files['src/sqlfluff/core/parser/segments/raw.py#L1-L145']. Do not use nls, WhitespaceSegment, or any text from rules/base.py. The clean raw.py excerpt includes RawSegment.make and its newclass = type(...) block.",
+    "repairPolicy": "One repair attempt receives the rejected model proposal plus its deterministic contract error, then restarts from clean source.",
+    "verificationAuthority": "deterministic-machine-gate",
+    "acceptanceRule": "machineGatePassed && modelAccept",
+    "allowedWritePrefix": "src/",
+    "allowedWritePaths": ["src/sqlfluff/core/parser/segments/raw.py"],
+    "forbiddenWritePrefixes": ["test/", ".github/", "evaluation/"],
+    "protectedSourceInvariants": [
+      { "path": "src/sqlfluff/core/parser/segments/base.py", "requiredText": "    is_whitespace = False", "reason": "Ordinary code and structural segments must remain non-whitespace by default." }
+    ],
+    "targetCommand": "/usr/bin/python3.10 -m pytest -q test/core/dialects/ansi_test.py::test__dialect__ansi_is_whitespace",
+    "regressionCommand": "/usr/bin/python3.10 -m pytest -q test/core/parser test/core/dialects/ansi_test.py",
+    "classificationCommand": "require ordinary token classification plus RawSegment.make explicit override, type alias whitespace, type alias newline, and ordinary code compatibility",
+    "successCriteria": [
+      "baseline reproduces the exact target assertion",
+      "the model supplies one or two exact replacements copied from the machine-allowed raw.py excerpt",
+      "each attempt starts from the same clean source plus frozen test patch",
+      "FAIL_TO_PASS exits zero including multiline-comment subdivision",
+      "all 145 parser and ANSI regression tests exit zero",
+      "ordinary token and four-case factory compatibility classification exits zero",
+      "the deterministic machine gate passes both the exact write-path policy and protected BaseSegment invariant",
+      "the advisory verify-worker does not veto the machine-passing patch"
+    ]
+  },
+  "leakagePolicy": {
+    "runnerMayRead": ["frozen issue snapshot", "frozen issue comments", "baseline failure", "repository search results", "runtime class probe", "base-commit source excerpts", "disclosed Run 1 through Run 9 feedback and gate outcomes", "post-Run-7 factory compatibility probe failure", "Run 8 control failure summaries", "Run 9 rejected model proposals", "machine-enforced allowed write path", "previous attempt rejected model proposal and machine evidence", "model-generated source edit"],
+    "runnerMustNotRead": ["pull request page or patch", "expected fix commit", "gold patch", "gold patch digest", "gold verification logs", "SWE-bench model patch field"],
+    "goldComparison": "No gold comparison is performed by the runner or reported as a model score."
+  },
+  "evidence": {
+    "transcriptPath": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-010-transcript.json",
+    "patchPath": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-010-model.patch",
+    "targetLogPath": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-010-target.log",
+    "regressionLogPath": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-010-regression.log",
+    "classificationLogPath": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-010-classification.log",
+    "reportPath": "reports/public-model-pilot-v10.json",
+    "attempts": [
+      { "patchPath": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-010-attempt-1.patch", "targetLogPath": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-010-attempt-1-target.log", "regressionLogPath": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-010-attempt-1-regression.log", "classificationLogPath": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-010-attempt-1-classification.log" },
+      { "patchPath": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-010-attempt-2.patch", "targetLogPath": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-010-attempt-2-target.log", "regressionLogPath": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-010-attempt-2-regression.log", "classificationLogPath": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-010-attempt-2-classification.log" }
+    ]
+  }
+}

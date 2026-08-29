@@ -1,0 +1,3 @@
+observed= [('raw', False), ('whitespace', True), ('raw', False), ('newline', True)]
+expected= [('raw', False), ('whitespace', True), ('raw', False), ('newline', True)]
+PASS token classification

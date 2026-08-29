@@ -1,0 +1,32 @@
+{
+  "caseId": "PUB-SQLFLUFF__SQLFLUFF-4778",
+  "method": "single-agent",
+  "attempts": 3,
+  "rca": null,
+  "edits": [
+    {
+      "path": "src/sqlfluff/core/templaters/slicers/tracer.py",
+      "search": "        elif tag in (\"block\", \"endblock\", \"endfor\"):\n            # Start or end of a block. We need to add a\n            # placeholder so it gets a RawFileSlice.\n            block_type = \"block_\" + (\"start\" if tag == \"block\" else \"end\")\n            block_uuid = self._next_uuid()\n            return RawFileSlice(raw, block_type, slice_idx, block_uuid)\n        elif tag in (\"for\", \"endfor\", \"if\", \"endif\"):\n            # Start or end of a loop. We need to add a\n            # placeholder so it gets a RawFileSlice.\n            block_type = \"block_\" + (\"start\" if tag in (\"for\", \"if\") else \"end\")\n            block_uuid = self._next_uuid()\n            return RawFileSlice(raw, block_type, slice_idx, block_uuid)",
+      "replace": "        elif tag in (\"block\", \"endblock\", \"endfor\"):\n            # Start or end of a block. We need to add a\n            # placeholder so it gets a RawFileSlice.\n            block_type = \"block_\" + (\"start\" if tag == \"block\" else \"end\")\n            block_uuid = self._next_uuid()\n            return RawFileSlice(raw, block_type, slice_idx, block_uuid)\n        elif tag in (\"for\", \"endfor\", \"if\", \"endif\"):\n            # Start or end of a loop. We need to add a\n            # placeholder so it gets a RawFileSlice.\n            block_type = \"block_\" + (\"start\" if tag in (\"for\", \"if\") else \"end\")\n            block_uuid = self._next_uuid()\n            return RawFileSlice(raw, block_type, slice_idx, block_uuid)\n        elif tag == \"do\":\n            # \"do\" is a single expression statement (no block_end),\n            # so treat it as templated rather than a block.\n            return RawFileSlice(raw, \"templated\", slice_idx)"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "edit apply failed: src/sqlfluff/core/templaters/slicers/tracer.py: search block not found (exact and whitespace-normalized match both failed) [search:         elif tag in (\"block\", \"endblock\", \"endfor\"):\n            # Start or end of a block. We need to add a\n            # placeholder so it gets a RawFileSlice]",
+    "changedPaths": [
+      "src/sqlfluff/core/templaters/slicers/tracer.py"
+    ]
+  },
+  "patchSha256": null,
+  "contextBytes": 16000,
+  "baselineTail": "ja_slice_file\n(no match in any of [<Module jinja_test.py>])\n\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x test/core/templaters/jinja_test.py::test__templater_jinja_slice_file[{%\nERROR: not found: /tmp/zhanlu/bench-work/sqlfluff__sqlfluff-4778/source/test/core/templaters/jinja_test.py::test__templater_jinja_slice_file\n(no match in any of [<Module jinja_test.py>])\n\n",
+  "goldFiles": [
+    "src/sqlfluff/core/linter/linter.py",
+    "src/sqlfluff/core/templaters/slicers/tracer.py"
+  ],
+  "model": "glm",
+  "modelCalls": 3
+}

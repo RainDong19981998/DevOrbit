@@ -1,0 +1,99 @@
+{
+  "schema": "devorbit.fault-drill/v1",
+  "version": "0.9.6",
+  "generatedAt": "2026-08-29T11:25:59.084Z",
+  "summary": {
+    "drills": 6,
+    "passed": 6,
+    "failed": 0
+  },
+  "matrix": [
+    {
+      "fault": "Worker 返工耗尽",
+      "expected": "熔断降级 needs_human",
+      "control": "max_patch_attempts=3 + circuit_breaker"
+    },
+    {
+      "fault": "模型 429 限流",
+      "expected": "自动重试后恢复",
+      "control": "postJson 重试策略（幂等读路径）"
+    },
+    {
+      "fault": "模型 500 不可用",
+      "expected": "fail-closed，密钥不泄露",
+      "control": "ModelProviderError + redact"
+    },
+    {
+      "fault": "工具执行错误",
+      "expected": "审计 error + JSON-RPC 失败",
+      "control": "MCP 审计链 + 错误封装"
+    },
+    {
+      "fault": "数据库分支故障/恶意迁移",
+      "expected": "fail-closed + 门禁阻断",
+      "control": "DbBranchError + migration guardrail"
+    },
+    {
+      "fault": "MCP 端点不可达",
+      "expected": "网络错误被捕获",
+      "control": "客户端错误处理"
+    }
+  ],
+  "drills": [
+    {
+      "id": "FD-001",
+      "name": "Worker 返工耗尽：3 次尝试后熔断降级 needs_human",
+      "pass": true,
+      "evidence": {
+        "status": "needs_human",
+        "patchAttempts": 3,
+        "behavior": "verify 连续失败 → 返工回边 → 熔断器触发 → 链路安全停止并请求人工"
+      }
+    },
+    {
+      "id": "FD-002",
+      "name": "模型 429 限流：自动重试后恢复",
+      "pass": true,
+      "evidence": {
+        "attempts": 2,
+        "content": "recovered"
+      }
+    },
+    {
+      "id": "FD-003",
+      "name": "模型 500 不可用：重试耗尽后 fail-closed 且不泄露密钥",
+      "pass": true,
+      "evidence": {
+        "failClosed": true,
+        "keyLeaked": false
+      }
+    },
+    {
+      "id": "FD-004",
+      "name": "工具执行错误：审计记录 error 且 JSON-RPC 返回失败",
+      "pass": true,
+      "evidence": {
+        "auditStatus": "error",
+        "rpcIsError": true
+      }
+    },
+    {
+      "id": "FD-005",
+      "name": "数据库分支故障：未知分支 fail-closed，DROP TABLE 被门禁阻断",
+      "pass": true,
+      "evidence": {
+        "unknownBranchClosed": true,
+        "dropBlocked": true
+      }
+    },
+    {
+      "id": "FD-006",
+      "name": "MCP 端点不可达：网络错误被捕获，进程不崩溃",
+      "pass": true,
+      "evidence": {
+        "unreachableCaught": true,
+        "code": "ECONNREFUSED"
+      }
+    }
+  ]
+}

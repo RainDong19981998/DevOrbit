@@ -1,0 +1,4 @@
+[
+  { "source": "日志", "id": "LOG-20A", "text": "inventory-cache DECR ok qps=310 hit-rate=99.2%; deduct API success", "time": "14:05:12" },
+  { "source": "指标", "id": "METRIC-61", "text": "POST /stock/deduct success rate 99.9%; p95 88ms", "time": "14:05:20" }
+]

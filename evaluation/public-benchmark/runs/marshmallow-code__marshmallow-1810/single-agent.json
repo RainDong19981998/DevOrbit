@@ -1,0 +1,32 @@
+{
+  "caseId": "PUB-MARSHMALLOW-CODE__MARSHMALLOW-1810",
+  "method": "single-agent",
+  "attempts": 3,
+  "rca": null,
+  "edits": [
+    {
+      "path": "src/marshmallow/fields.py",
+      "search": "    @property\n    def root(self):\n        \"\"\"Return the root :class:`Schema` instance.\"\"\"\n        if self.parent is None:\n            return None\n        if isinstance(self.parent, SchemaABC):\n            return self.parent\n        return self.parent.root",
+      "replace": "    @property\n    def root(self):\n        \"\"\"Return the root :class:`Schema` instance.\"\"\"\n        if self.parent is None:\n            return None\n        if isinstance(self.parent, SchemaABC):\n            return self.parent\n        return self.parent.root"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "edit apply failed: src/marshmallow/fields.py: search block not found (exact and whitespace-normalized match both failed) [search:     @property\n    def root(self):\n        \"\"\"Return the root :class:`Schema` instance.\"\"\"\n        if self.parent is None:\n            return None\n        if isi]",
+    "changedPaths": [
+      "src/marshmallow/fields.py"
+    ]
+  },
+  "patchSha256": null,
+  "contextBytes": 8557,
+  "baselineTail": "q --no-header -x tests/test_fields.py::TestParentAndName::test_field_named_parent_has_root\nImportError while loading conftest '/tmp/zhanlu/bench-work/marshmallow-code__marshmallow-1810/source/tests/conftest.py'.\ntests/conftest.py:4: in <module>\n    from tests.base import User, UserSchema, Blog\ntests/base.py:5: in <module>\n    import simplejson\nE   ModuleNotFoundError: No module named 'simplejson'\n",
+  "goldFiles": [
+    "src/marshmallow/base.py",
+    "src/marshmallow/fields.py"
+  ],
+  "model": "glm",
+  "modelCalls": 3
+}

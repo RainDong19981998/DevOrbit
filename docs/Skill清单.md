@@ -12,3 +12,17 @@
 | alibabacloud-sls-query v0.0.2 | 官方用云 Skill；SLS 日志检索与分析 | `project + logstore + query_intent` → `logs + aggregates` | 真实 SLS 已显式配置；Aliyun CLI ≥ 3.3.8 | 无 CLI/凭据/索引/权限时停止，不切换账号；本地 Demo 回退 Fixture | 仅 `GetIndex`、`GetLogsV2` 只读 RAM；可复用日志证据采集 | intake-worker 拉取日志事实，rca-worker按时间窗复核根因；当前未调用云账号 |
 
 七个自定义 Skill 的结构化结果均包含 `status / data / evidence_refs / error / retryable / trace_id`。版本发布遵循语义化版本；Golden Cases 评测不过门禁则禁止升级，运行时可按标签回滚上一版。官方 Skill 的门户原包摘要为 `04baaf21ed9f7fad...`，分发快照摘要为 `0ac29b58e60a10ca...`；核心 `SKILL.md` 未修改，唯一移除路径与原因见 `config/aliyun-official-skill.contract.json` 和 `third_party/aliyun/README.md`。
+
+## Skill 生命周期治理（V1.0.0）
+
+| 环节 | 机制 | 证据 |
+|---|---|---|
+| 版本（SemVer） | 每个 `skills/*/SKILL.md` frontmatter 声明 `version: MAJOR.MINOR.PATCH`，与 `src/skills.js` 目录版本一致性由 `npm run validate` 强制校验 | `validate`：skill versions aligned with catalog |
+| Registry | `npm run write-skills-registry` 生成 `reports/skills-registry.json`：8 个 Skill（7 自定义 + 1 官方锁定）的 version、SKILL.md sha256 digest、Worker 绑定与分发 ZIP | `reports/skills-registry.json` |
+| 运行时发现与调用 | Worker 包（`worker-packages/dist/*.zip`）打包对应 `SKILL.md`；运行时 trace 事件记录 `skillVersion + skillDigest`，任一业务结果可定位到产生它的 Skill 版本 | `validate`：trace records skill version and digest |
+| 晋级判据 | Golden Cases / 评测门禁不过则禁止升级（`npm run evaluate` 7/7 + safety 5/5 为晋级门槛） | `reports/evaluation.json` |
+| 灰度与兼容 | Skill 随 Worker 包版本分发；输入输出 Schema 不变则 PATCH 升级向后兼容，破坏性变更必须 MAJOR 并同步更新 Schema | worker-packages manifest |
+| 回滚 | 保留上一版 ZIP 与 SKILL.md 快照，digest 可比对；运行时按版本标签回退 | `reports/skills-registry.json` lifecycle.rollback |
+| 退役 | 调用审计连续为空且无依赖案例时退役，保留只读存档 | MCP 审计日志 |
+| 官方 Skill 锁定 | 门户版本 + portalContentHash + repositorySnapshot 三重锁定，合规裁剪差异全披露 | `config/aliyun-official-skill.contract.json` |
+

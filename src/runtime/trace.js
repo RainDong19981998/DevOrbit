@@ -1,8 +1,10 @@
 import { digest } from './digest.js';
+import { resolveSkillRef } from '../skills-registry.js';
 
 export function recordTrace(state, { agent, skill, stage, status = 'completed', message, evidence = [], input, output, parentSpanId = null }) {
   const spanId = `SPAN-${String(state.trace.length + 1).padStart(3, '0')}`;
   const durationMs = 8 + state.trace.length * 3;
+  const skillRef = resolveSkillRef(skill);
   const event = {
     traceId: state.trace_id,
     spanId,
@@ -10,6 +12,8 @@ export function recordTrace(state, { agent, skill, stage, status = 'completed', 
     at: new Date(Date.now() + state.trace.length * 1000).toISOString(),
     agent,
     skill,
+    skillVersion: skillRef?.version || null,
+    skillDigest: skillRef?.digest || null,
     stage,
     status,
     message,

@@ -1,0 +1,5 @@
+{
+  "status": "skipped",
+  "reason": "compose up failed",
+  "error": " devorbit-postgres Pulling \n devorbit-postgres Error Get \"https://registry-1.docker.io/v2/\": proxyconnect tcp: dial tcp 192.168.20.57:7890: connect: no route to host\nError response from daemon: Get \"https://registry-1.docker.io/v2/\": proxyconnect tcp: dial tcp 192.168.20.57:7890: connect: no route to host\n"
+}

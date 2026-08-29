@@ -1,0 +1,31 @@
+{
+  "caseId": "PUB-SQLFLUFF__SQLFLUFF-1625",
+  "method": "single-agent",
+  "attempts": 3,
+  "rca": null,
+  "edits": [
+    {
+      "path": "src/sqlfluff/rules/L031.py",
+      "search": "\"Avoid using aliases in join condition.\"",
+      "replace": "\"Avoid aliases in from clauses and join conditions.\""
+    }
+  ],
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "edit apply failed: src/sqlfluff/rules/L031.py: search block not found (exact and whitespace-normalized match both failed) [search: \"Avoid using aliases in join condition.\"]",
+    "changedPaths": [
+      "src/sqlfluff/rules/L031.py"
+    ]
+  },
+  "patchSha256": null,
+  "contextBytes": 13102,
+  "baselineTail": "m pytest -q --no-header -x test/cli/commands_test.py::test__cli__command_directed\nImportError while loading conftest '/tmp/zhanlu/bench-work/sqlfluff__sqlfluff-1625/source/test/conftest.py'.\ntest/conftest.py:9: in <module>\n    from sqlfluff.cli.commands import quoted_presenter\nsrc/sqlfluff/__init__.py:9: in <module>\n    import pkg_resources\nE   ModuleNotFoundError: No module named 'pkg_resources'\n",
+  "goldFiles": [
+    "src/sqlfluff/rules/L031.py"
+  ],
+  "model": "glm",
+  "modelCalls": 3
+}

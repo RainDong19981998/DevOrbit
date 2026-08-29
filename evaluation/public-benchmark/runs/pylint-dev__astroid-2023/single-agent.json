@@ -1,0 +1,36 @@
+{
+  "caseId": "PUB-PYLINT-DEV__ASTROID-2023",
+  "method": "single-agent",
+  "attempts": 3,
+  "rca": null,
+  "edits": [
+    {
+      "path": "astroid/nodes/node_classes.py",
+      "search": "        elif isinstance(node1, (IfExp, If)):\n            if node1.test is node2:\n                return True\n            if node1.body == node2 or node1.orelse == node2:\n                return True",
+      "replace": "        elif isinstance(node1, (IfExp, If)):\n            if node1.test is node2:\n                return True\n            if isinstance(node2, NamedExpr) and node2 in node1.test.nodes_of_class(\n                NamedExpr\n            ):\n                return False\n            if node1.body == node2 or node1.orelse == node2:\n                return True"
+    },
+    {
+      "path": "astroid/nodes/node_classes.py",
+      "search": "        elif isinstance(node2, (IfExp, If)):\n            if node2.test is node1:\n                return True\n            if node2.body == node1 or node2.orelse == node1:\n                return True",
+      "replace": "        elif isinstance(node2, (IfExp, If)):\n            if node2.test is node1:\n                return True\n            if isinstance(node1, NamedExpr) and node1 in node2.test.nodes_of_class(\n                NamedExpr\n            ):\n                return False\n            if node2.body == node1 or node2.orelse == node1:\n                return True"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "edit apply failed: astroid/nodes/node_classes.py: search block not found (exact and whitespace-normalized match both failed) [search:         elif isinstance(node1, (IfExp, If)):\n            if node1.test is node2:\n                return True\n            if node1.body == node2 or node1.orelse ]; astroid/nodes/node_classes.py: search block not found (exact and whitespace-normalized match both failed) [search:         elif isinstance(node2, (IfExp, If)):\n            if node2.test is node1:\n                return True\n            if node2.body == node1 or node2.orelse ]",
+    "changedPaths": [
+      "astroid/nodes/node_classes.py"
+    ]
+  },
+  "patchSha256": null,
+  "contextBytes": 9809,
+  "baselineTail": "e\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.52s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x tests/test_utils.py::InferenceUtil::test_not_exclusive_walrus_multiple tests/test_utils.py::InferenceUtil::test_not_exclusive_walrus_operator tests/test_utils.py::InferenceUtil::test_not_exclusive_walrus_operator_nested\n",
+  "goldFiles": [
+    "astroid/nodes/node_classes.py"
+  ],
+  "model": "glm",
+  "modelCalls": 3
+}

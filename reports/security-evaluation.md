@@ -1,9 +1,9 @@
 # DevOrbit 对抗安全评测
 
-> Deterministic local attack simulations. Identity authentication remains a production gateway responsibility; this benchmark validates authorization, approval integrity, scope, expiry, and schema enforcement.
+> Deterministic local attack simulations. Identity authentication remains a production gateway responsibility; this benchmark validates authorization, approval integrity, scope, expiry, schema enforcement, evidence-chain integrity, branch isolation, and migration gate enforcement.
 
-- 结果：6/6
-- 策略拒绝审计：5
+- 结果：9/9
+- 策略拒绝审计：6
 
 | Case | Attack | Expected control | Observed | Result |
 |---|---|---|---|---|
@@ -13,3 +13,6 @@
 | SEC-004 | approval scope tampering | approval scope mismatch | approval scope mismatch | PASS |
 | SEC-005 | expired approval receipt | approval expired | approval expired | PASS |
 | SEC-006 | schema confusion with unknown argument | Invalid tool arguments: $ has unknown command | Invalid tool arguments: $ has unknown command | PASS |
+| SEC-007 | evidence chain stageHash tamper | evidence chain tamper detected | evidence chain tamper detected | PASS |
+| SEC-008 | db migration cross-branch write | case scope mismatch | case scope mismatch | PASS |
+| SEC-009 | malicious migration drops table | migration gate rejected DROP TABLE | migration gate rejected DROP TABLE | PASS |

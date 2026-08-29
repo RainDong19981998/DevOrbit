@@ -1,0 +1,61 @@
+{
+  "caseId": "PUB-MARSHMALLOW-CODE__MARSHMALLOW-1252",
+  "method": "devorbit",
+  "attempts": 3,
+  "rca": {
+    "rootCause": "The `from_iso_datetime` function in `src/marshmallow/utils.py` uses `datetime.datetime.strptime` with a fixed format string that expects exactly 6-digit microseconds. When parsing ISO8601 datetimes that end with a timezone designator like `Z` (e.g., `2019-06-17T00:57:41.000Z`), strptime fails with `unconverted data remains: Z` because the format string doesn't account for trailing timezone characters. This is a regression introduced in PR #1249 which replaced the previous dateutil-based parsing with strptime-based parsing that doesn't handle timezone suffixes.",
+    "confidence": 0.95,
+    "evidence": [
+      "Issue states `from_iso_datetime` is failing with `unconverted data remains: Z` when parsing ISO8601 datetimes ending in Z",
+      "Hints confirm this is a side effect of PR #1249 which changed the datetime parsing approach",
+      "The test file `tests/test_utils.py` shows `test_from_iso_datetime` tests with 3-digit microseconds as a regression test for issue #1251, indicating the parsing logic in utils.py needs to handle variable-length fractional seconds and timezone designators",
+      "The repo map shows `src/marshmallow/utils.py` contains the `from_iso_datetime` function referenced in the issue"
+    ],
+    "filesToChange": [
+      "src/marshmallow/utils.py"
+    ]
+  },
+  "edits": [
+    {
+      "path": "src/marshmallow/utils.py",
+      "search": "# From Django\n_iso8601_re = re.compile(\n    r'(?P<year>\\d{4})-(?P<month>\\d{1,2})-(?P<day>\\d{1,2})'\n    r'[T ](?P<hour>\\d{1,2}):(?P<minute>\\d{1,2})'\n    r'(?::(?P<second>\\d{1,2})(?:\\.(?P<microsecond>\\d{1,6})\\d{0,6})?)?'\n    r'(?P<tzinfo>Z|[+-]\\d{2}(?::?\\d{2})?)?$'\n)",
+      "replace": "# From Django\n_iso8601_datetime_re = re.compile(\n    r'(?P<year>\\d{4})-(?P<month>\\d{1,2})-(?P<day>\\d{1,2})'\n    r'[T ](?P<hour>\\d{1,2}):(?P<minute>\\d{1,2})'\n    r'(?::(?P<second>\\d{1,2})(?:\\.(?P<microsecond>\\d{1,6})\\d{0,6})?)?'\n    r'(?P<tzinfo>Z|[+-]\\d{2}(?::?\\d{2})?)?$'\n)\n\n_iso8601_date_re = re.compile(\n    r'(?P<year>\\d{4})-(?P<month>\\d{1,2})-(?P<day>\\d{1,2})$'\n)\n\n_iso8601_time_re = re.compile(\n    r'(?P<hour>\\d{1,2}):(?P<minute>\\d{1,2})'\n    r'(?::(?P<second>\\d{1,2})(?:\\.(?P<microsecond>\\d{1,6})\\d{0,6})?)?'\n)"
+    },
+    {
+      "path": "src/marshmallow/utils.py",
+      "search": "    if not _iso8601_re.match(datestring):\n        raise ValueError('Not a valid ISO8601-formatted string')\n    # Use dateutil's parser if possible\n    if dateutil_available and use_dateutil:\n        return parser.parse(datestring)\n    else:\n        # Strip off timezone info.\n        if '.' in datestring:\n            # datestring contains microseconds\n            return datetime.datetime.strptime(datestring[:26], '%Y-%m-%dT%H:%M:%S.%f')\n        return datetime.datetime.strptime(datestring[:19], '%Y-%m-%dT%H:%M:%S')",
+      "replace": "    if not _iso8601_datetime_re.match(datestring):\n        raise ValueError('Not a valid ISO8601-formatted string')\n    # Use dateutil's parser if possible\n    if dateutil_available and use_dateutil:\n        return parser.parse(datestring)\n    else:\n        # Strip off timezone info.\n        match = _iso8601_datetime_re.match(datestring)\n        # Remove microseconds part if it's not 6 digits\n        if match.group('microsecond'):\n            # strptime requires exactly 6 digits for microseconds\n            microsecond = match.group('microsecond')[:6].ljust(6, '0')\n            fmt = '%Y-%m-%dT%H:%M:%S.%f'\n            return datetime.datetime.strptime(\n                '%s-%s-%sT%s:%s:%s.%s' % (\n                    match.group('year'),\n                    match.group('month'),\n                    match.group('day'),\n                    match.group('hour'),\n                    match.group('minute'),\n                    match.group('second'),\n                    microsecond,\n                ),\n                fmt,\n            )\n        return datetime.datetime.strptime(\n            '%s-%s-%sT%s:%s:%s' % (\n                match.group('year'),\n                match.group('month'),\n                match.group('day'),\n                match.group('hour'),\n                match.group('minute'),\n                match.group('second'),\n            ),\n            '%Y-%m-%dT%H:%M:%S',\n        )"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": true,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "F2P red; P2P green ",
+    "f2pLogTail": "\nImportError while loading conftest '/tmp/zhanlu/bench-work/marshmallow-code__marshmallow-1252/source/tests/conftest.py'.\ntests/conftest.py:5: in <module>\n    from tests.base import User, UserSchema, Blog\ntests/base.py:6: in <module>\n    import simplejson\nE   ModuleNotFoundError: No module named 'simplejson'\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x tests/test_utils.py::test_from_iso_datetime[timezone1-False]\nImportError while loading conftest '/tmp/zhanlu/bench-work/marshmallow-code__marshmallow-1252/source/tests/conftest.py'.\ntests/conftest.py:5: in <module>\n    from tests.base import User, UserSchema, Blog\ntests/base.py:6: in <module>\n    import simplejson\nE   ModuleNotFoundError: No module named 'simplejson'\n\n[...]\nn -m pytest -q --no-header -x tests/test_utils.py::test_from_iso_datetime[timezone1-False]\nImportError while loading conftest '/tmp/zhanlu/bench-work/marshmallow-code__marshmallow-1252/source/tests/conftest.py'.\ntests/conftest.py:5: in <module>\n    from tests.base import User, UserSchema, Blog\ntests/base.py:6: in <module>\n    import simplejson\nE   ModuleNotFoundError: No module named 'simplejson'\n",
+    "changedPaths": [
+      "src/marshmallow/utils.py"
+    ],
+    "appliedMethods": [
+      {
+        "path": "src/marshmallow/utils.py",
+        "method": "exact",
+        "ambiguous": false
+      },
+      {
+        "path": "src/marshmallow/utils.py",
+        "method": "exact",
+        "ambiguous": false
+      }
+    ]
+  },
+  "patchSha256": "sha256:16e5afc10d1283a3d321468c4c664db5cb16016e1d52b12473428cbd8e500a5f",
+  "contextBytes": 8489,
+  "baselineTail": "n -m pytest -q --no-header -x tests/test_utils.py::test_from_iso_datetime[timezone1-False]\nImportError while loading conftest '/tmp/zhanlu/bench-work/marshmallow-code__marshmallow-1252/source/tests/conftest.py'.\ntests/conftest.py:5: in <module>\n    from tests.base import User, UserSchema, Blog\ntests/base.py:6: in <module>\n    import simplejson\nE   ModuleNotFoundError: No module named 'simplejson'\n",
+  "goldFiles": [
+    "src/marshmallow/utils.py"
+  ],
+  "model": "glm",
+  "modelCalls": 4
+}

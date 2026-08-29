@@ -1,0 +1,23 @@
+{
+  "caseId": "PUB-SQLFLUFF__SQLFLUFF-3220",
+  "method": "devorbit",
+  "attempts": 2,
+  "rca": {
+    "files": [
+      "src/sqlfluff/cli/commands.py"
+    ]
+  },
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "git apply --check failed: \nerror: patch failed: src/sqlfluff/cli/commands.py:123\nerror: src/sqlfluff/cli/commands.py: patch does not apply\n\nCommand failed: git apply --check model.patch\nerror: patch failed: src/sqlfluff/cli/commands.py:123\nerror: src/sqlfluff/cli/commands.py: patch does not apply\n"
+  },
+  "patchSha256": "sha256:3f56c8ee6ee752ec066e79ffbb22c39e27adc331797b12b523ab9d28b46bc355",
+  "contextBytes": 8000,
+  "baselineTail": "============= short test summary info ============================\nFAILED test/cli/commands_test.py::test_cli_fix_even_unparsable[config-file-True]\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.15s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x test/cli/commands_test.py::test_cli_fix_even_unparsable[config-file-True]\n",
+  "goldFiles": [
+    "src/sqlfluff/cli/commands.py"
+  ]
+}

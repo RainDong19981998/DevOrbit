@@ -1,25 +1,28 @@
 {
   "protocolVersion": "1.0",
   "datasetId": "devorbit-public-software-repair-v1",
-  "status": "protocol-only",
-  "disclosure": "The scored benchmark manifest is not frozen and contains no scored case or method result. One separately declared SWE-bench dev validation pilot has frozen provenance and a reproduced baseline failure; it is not a DevOrbit score or test-set claim.",
+  "status": "frozen",
+  "disclosure": "Frozen 30-case test split drawn from the public SWE-bench dev parquet (princeton-nlp/SWE-bench), repository-quota sampled with deterministic SHA-256 ordering. pvlib and pyvista cases are excluded because their heavyweight scientific-computing dependency stacks are outside the pinned offline-friendly evaluation environment; the exclusion is disclosed rather than silently dropped. expectedFixCommit fields carry the content-addressed SHA-256 prefix of the withheld gold patch, not a git commit; gold patches stay evaluator-only and never enter model context. Scores are produced by the DevOrbit evaluation harness on this frozen manifest and must not be read as official SWE-bench leaderboard numbers.",
   "selectionPolicy": {
     "eligibility": [
       "Public repository and issue provenance are available under a redistributable research-compatible license",
       "The defect reproduces from an immutable base commit with a deterministic test patch",
-      "The expected fix commit is available to the evaluator but hidden from every evaluated method"
+      "FAIL_TO_PASS contains 1-3 tests and the withheld gold patch touches at most 2 non-test source files",
+      "Problem statement length is bounded (<= 4000 chars) to keep the evaluation budget uniform"
     ],
     "exclusions": [
       "Cases requiring unavailable proprietary services or personal data",
-      "Cases that do not reproduce in the pinned container after three independent attempts"
+      "Cases that do not reproduce in the pinned container after three independent attempts",
+      "pvlib/pvlib-python and pyvista/pyvista: heavyweight scientific dependency stacks outside the pinned evaluation environment",
+      "Cases whose gold patch modifies test files (leakage-adjacent shape)"
     ],
     "splitSeed": "devorbit-public-v1-split",
-    "splitAlgorithm": "repository-grouped deterministic SHA-256 ordering; no repository may cross train/validation/test"
+    "splitAlgorithm": "repository-grouped deterministic SHA-256 ordering; no repository may cross train/validation/test; quotas pydicom 10, sqlfluff 10, astroid 6, marshmallow 4"
   },
   "evaluationPolicy": {
     "goldFixAccess": "evaluator-only",
-    "networkAccess": "disabled",
-    "maxAttemptsPerCase": 1,
+    "networkAccess": "allowlisted",
+    "maxAttemptsPerCase": 2,
     "timeoutSeconds": 1800,
     "primarySplit": "test",
     "primaryMetric": "closedLoopRate"
@@ -27,25 +30,679 @@
   "sources": [
     {
       "id": "swe-bench",
-      "name": "SWE-bench",
+      "name": "SWE-bench (dev split parquet via hf-mirror)",
       "url": "https://huggingface.co/datasets/princeton-nlp/SWE-bench",
-      "license": "Pinned dataset card does not declare a dataset license; SWE-bench software repository currently declares MIT",
-      "snapshot": null,
-      "retrievedAt": null
-    },
-    {
-      "id": "bugs-in-py",
-      "name": "BugsInPy",
-      "url": "https://github.com/sohah/bugsInPy",
-      "license": "See upstream repository license at the pinned snapshot",
-      "snapshot": null,
-      "retrievedAt": null
+      "license": "SWE-bench software repository declares MIT; constituent case repositories carry their own licenses (see per-case license field)",
+      "snapshot": "sha256:d758d54540aa4140d0274ed0cc93b8288aa6f323c3c603e2557e7666a47fc41b",
+      "retrievedAt": "2026-08-25"
     }
   ],
   "splits": {
     "train": [],
     "validation": [],
-    "test": []
+    "test": [
+      "PUB-PYDICOM__PYDICOM-903",
+      "PUB-PYDICOM__PYDICOM-1069",
+      "PUB-PYDICOM__PYDICOM-1076",
+      "PUB-PYDICOM__PYDICOM-1031",
+      "PUB-PYDICOM__PYDICOM-955",
+      "PUB-PYDICOM__PYDICOM-1694",
+      "PUB-PYDICOM__PYDICOM-1428",
+      "PUB-PYDICOM__PYDICOM-839",
+      "PUB-PYDICOM__PYDICOM-1413",
+      "PUB-PYDICOM__PYDICOM-1256",
+      "PUB-SQLFLUFF__SQLFLUFF-4151",
+      "PUB-SQLFLUFF__SQLFLUFF-2907",
+      "PUB-SQLFLUFF__SQLFLUFF-2573",
+      "PUB-SQLFLUFF__SQLFLUFF-884",
+      "PUB-SQLFLUFF__SQLFLUFF-2998",
+      "PUB-SQLFLUFF__SQLFLUFF-4778",
+      "PUB-SQLFLUFF__SQLFLUFF-4753",
+      "PUB-SQLFLUFF__SQLFLUFF-3220",
+      "PUB-SQLFLUFF__SQLFLUFF-1577",
+      "PUB-SQLFLUFF__SQLFLUFF-1625",
+      "PUB-PYLINT-DEV__ASTROID-1262",
+      "PUB-PYLINT-DEV__ASTROID-1962",
+      "PUB-PYLINT-DEV__ASTROID-1196",
+      "PUB-PYLINT-DEV__ASTROID-941",
+      "PUB-PYLINT-DEV__ASTROID-2023",
+      "PUB-PYLINT-DEV__ASTROID-1959",
+      "PUB-MARSHMALLOW-CODE__MARSHMALLOW-1343",
+      "PUB-MARSHMALLOW-CODE__MARSHMALLOW-1359",
+      "PUB-MARSHMALLOW-CODE__MARSHMALLOW-1810",
+      "PUB-MARSHMALLOW-CODE__MARSHMALLOW-1252"
+    ]
   },
-  "cases": []
+  "cases": [
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-903",
+      "sourceId": "swe-bench",
+      "repository": "pydicom/pydicom",
+      "issueUrl": "https://github.com/pydicom/pydicom/pull/903",
+      "baseCommit": "88ca0bff105c75a632d7351acb6895b70230fa12",
+      "testPatchDigest": "sha256:ee44a01511f357030814c3fe5289d04e8e6ef994c9347ca8f20a1d1d086b8a05",
+      "expectedFixCommit": "f944378b2c7569882aab363debf8f98cfaf2f26c",
+      "reproductionCommand": [
+        "python -m pip install --disable-pip-version-check --no-input --target deps .",
+        "python -m pytest -q pydicom/tests/test_filewriter.py::TestWriteUndefinedLengthPixelData::test_writing_too_big_data_in_explicit_encoding"
+      ],
+      "split": "test",
+      "license": "MIT",
+      "language": "Python",
+      "tags": [
+        "pydicom",
+        "version:1.3",
+        "failToPass:1"
+      ]
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1069",
+      "sourceId": "swe-bench",
+      "repository": "pydicom/pydicom",
+      "issueUrl": "https://github.com/pydicom/pydicom/pull/1069",
+      "baseCommit": "30ac743bcaedbc06f0e0d5cef590cb173756eb2d",
+      "testPatchDigest": "sha256:274371ad9a3bf36390a166f87bb0418e03c5e479f89ad4b33c82b9408a111dd9",
+      "expectedFixCommit": "63a2f1bc5b6888408d09ff10e2d5bf26309d0deb",
+      "reproductionCommand": [
+        "python -m pip install --disable-pip-version-check --no-input --target deps .",
+        "python -m pytest -q pydicom/tests/test_handler_util.py::TestNumpy_PaletteColor::test_unchanged"
+      ],
+      "split": "test",
+      "license": "MIT",
+      "language": "Python",
+      "tags": [
+        "pydicom",
+        "version:1.4",
+        "failToPass:1"
+      ]
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1076",
+      "sourceId": "swe-bench",
+      "repository": "pydicom/pydicom",
+      "issueUrl": "https://github.com/pydicom/pydicom/pull/1076",
+      "baseCommit": "caf0db105ddf389ff5025937fd5f3aa1e61e85e7",
+      "testPatchDigest": "sha256:466d9e5214f06cbf00f78c1c5dbd54c0a985ec8a32fd9e283925ebb386226d6b",
+      "expectedFixCommit": "73b827646a0e38d9177b8fdae068e5e8fe2e194e",
+      "reproductionCommand": [
+        "python -m pip install --disable-pip-version-check --no-input --target deps .",
+        "python -m pytest -q pydicom/tests/test_filereader.py::TestReader::test_reading_of pydicom/tests/test_filewriter.py::TestWriteOtherVRs::test_write_of_dataset pydicom/tests/test_values.py::TestConvertOValues::test_convert_of"
+      ],
+      "split": "test",
+      "license": "MIT",
+      "language": "Python",
+      "tags": [
+        "pydicom",
+        "version:1.4",
+        "failToPass:3"
+      ]
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1031",
+      "sourceId": "swe-bench",
+      "repository": "pydicom/pydicom",
+      "issueUrl": "https://github.com/pydicom/pydicom/pull/1031",
+      "baseCommit": "64f5b8daaa798836579c56912244b7732ab073be",
+      "testPatchDigest": "sha256:07b6c370f00aa8e4540831595d543e5ef7a96223c2affe4da92fcce02e308c56",
+      "expectedFixCommit": "23e9ac61984669014d63f6d1ce4a7bc330dc5016",
+      "reproductionCommand": [
+        "python -m pip install --disable-pip-version-check --no-input --target deps .",
+        "python -m pytest -q pydicom/tests/test_filewriter.py::TestWriteFile::test_write_empty_sequence pydicom/tests/test_filewriter.py::TestScratchWriteDateTime::test_write_empty_sequence"
+      ],
+      "split": "test",
+      "license": "MIT",
+      "language": "Python",
+      "tags": [
+        "pydicom",
+        "version:1.4",
+        "failToPass:2"
+      ]
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-955",
+      "sourceId": "swe-bench",
+      "repository": "pydicom/pydicom",
+      "issueUrl": "https://github.com/pydicom/pydicom/pull/955",
+      "baseCommit": "fdd4fc8098920b1cda6127bdc05ff1e542b519fb",
+      "testPatchDigest": "sha256:3b38edd1d0f638c63420f2110534b3fc0f003f3a2dc6ef83b9c73be3999b54f2",
+      "expectedFixCommit": "de5479e1f0fd23bed7702a437257ece6f4507cab",
+      "reproductionCommand": [
+        "python -m pip install --disable-pip-version-check --no-input --target deps .",
+        "python -m pytest -q pydicom/tests/test_filereader.py::TestReader::test_lut_descriptor"
+      ],
+      "split": "test",
+      "license": "MIT",
+      "language": "Python",
+      "tags": [
+        "pydicom",
+        "version:1.3",
+        "failToPass:1"
+      ]
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1694",
+      "sourceId": "swe-bench",
+      "repository": "pydicom/pydicom",
+      "issueUrl": "https://github.com/pydicom/pydicom/pull/1694",
+      "baseCommit": "f8cf45b6c121e5a4bf4a43f71aba3bc64af3db9c",
+      "testPatchDigest": "sha256:4f820ac8d8c3a49740abb36846f630cbda8e734223b2b88e97a19794b6eacda2",
+      "expectedFixCommit": "4683577ef522b982a3badb09f3b1a44c7018c09f",
+      "reproductionCommand": [
+        "python -m pip install --disable-pip-version-check --no-input --target deps .",
+        "python -m pytest -q pydicom/tests/test_json.py::TestDataSetToJson::test_suppress_invalid_tags_with_failed_dataelement"
+      ],
+      "split": "test",
+      "license": "MIT",
+      "language": "Python",
+      "tags": [
+        "pydicom",
+        "version:2.3",
+        "failToPass:1"
+      ]
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1428",
+      "sourceId": "swe-bench",
+      "repository": "pydicom/pydicom",
+      "issueUrl": "https://github.com/pydicom/pydicom/pull/1428",
+      "baseCommit": "674da68db47a71ee6929288a047b56cf31cf8168",
+      "testPatchDigest": "sha256:f4cb2f82deb3d80eb7337ef6416c52fea5e7706786af61a9758eca1e4d74d485",
+      "expectedFixCommit": "dff84bf0f3c562973f926d269e146ca49e2ebd8d",
+      "reproductionCommand": [
+        "python -m pip install --disable-pip-version-check --no-input --target deps .",
+        "python -m pytest -q pydicom/tests/test_fileset.py::TestFileSet_Load::test_find_values pydicom/tests/test_fileset.py::TestFileSet_Load::test_find_values_load"
+      ],
+      "split": "test",
+      "license": "MIT",
+      "language": "Python",
+      "tags": [
+        "pydicom",
+        "version:2.1",
+        "failToPass:2"
+      ]
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-839",
+      "sourceId": "swe-bench",
+      "repository": "pydicom/pydicom",
+      "issueUrl": "https://github.com/pydicom/pydicom/pull/839",
+      "baseCommit": "da9e0df8da28a35596f830379341a379de8ac439",
+      "testPatchDigest": "sha256:a3e9b920433cafad1453bc82cc2b35a8b9143b396b363679a1d1afe166a7e8c1",
+      "expectedFixCommit": "dacfcaf8b2dbffaaccad3943a1099a0051391e79",
+      "reproductionCommand": [
+        "python -m pip install --disable-pip-version-check --no-input --target deps .",
+        "python -m pytest -q pydicom/tests/test_filewriter.py::TestCorrectAmbiguousVR::test_pixel_representation_vm_one pydicom/tests/test_filewriter.py::TestCorrectAmbiguousVR::test_pixel_representation_vm_three pydicom/tests/test_filewriter.py::TestCorrectAmbiguousVRElement::test_correct_ambiguous_data_element"
+      ],
+      "split": "test",
+      "license": "MIT",
+      "language": "Python",
+      "tags": [
+        "pydicom",
+        "version:1.2",
+        "failToPass:3"
+      ]
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1413",
+      "sourceId": "swe-bench",
+      "repository": "pydicom/pydicom",
+      "issueUrl": "https://github.com/pydicom/pydicom/pull/1413",
+      "baseCommit": "f909c76e31f759246cec3708dadd173c5d6e84b1",
+      "testPatchDigest": "sha256:c65060dcf442c77045574206fb377e0279d71c1fc1dad2f26598b6b3c312cf18",
+      "expectedFixCommit": "527dfb86c503bc51a8d9893ac75a43ed6ebf3e91",
+      "reproductionCommand": [
+        "python -m pip install --disable-pip-version-check --no-input --target deps .",
+        "python -m pytest -q pydicom/tests/test_valuerep.py::test_assigning_bytes[OD-bytes-vm017-vmN17-DoubleFloatPixelData] pydicom/tests/test_valuerep.py::test_assigning_bytes[OL-bytes-vm019-vmN19-TrackPointIndexList] pydicom/tests/test_valuerep.py::test_assigning_bytes[OV-bytes-vm020-vmN20-SelectorOVValue]"
+      ],
+      "split": "test",
+      "license": "MIT",
+      "language": "Python",
+      "tags": [
+        "pydicom",
+        "version:2.1",
+        "failToPass:3"
+      ]
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1256",
+      "sourceId": "swe-bench",
+      "repository": "pydicom/pydicom",
+      "issueUrl": "https://github.com/pydicom/pydicom/pull/1256",
+      "baseCommit": "49a3da4a3d9c24d7e8427a25048a1c7d5c4f7724",
+      "testPatchDigest": "sha256:78f27855533d38c784e1edf917417154e906cde415b1fb0e33108f7e97e99f28",
+      "expectedFixCommit": "a5251fbc67a3f5c931ae8bddd334bb84a167bb8e",
+      "reproductionCommand": [
+        "python -m pip install --disable-pip-version-check --no-input --target deps .",
+        "python -m pytest -q pydicom/tests/test_json.py::TestBinary::test_bulk_data_reader_is_called_within_SQ"
+      ],
+      "split": "test",
+      "license": "MIT",
+      "language": "Python",
+      "tags": [
+        "pydicom",
+        "version:2.1",
+        "failToPass:1"
+      ]
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-4151",
+      "sourceId": "swe-bench",
+      "repository": "sqlfluff/sqlfluff",
+      "issueUrl": "https://github.com/sqlfluff/sqlfluff/pull/4151",
+      "baseCommit": "dc59c2a5672aacedaf91f0e6129b467eefad331b",
+      "testPatchDigest": "sha256:fe2b21b05f9c4fecfea8429eab69d6b0104b3c84f96f94e6571811e233242f17",
+      "expectedFixCommit": "44e34b66dd8e1eda737bb86fad2eaf68125e16b7",
+      "reproductionCommand": [
+        "python -m pip install --disable-pip-version-check --no-input --target deps .",
+        "python -m pytest -q test/cli/commands_test.py::TestProgressBars::test_cli_fix_disabled_progress_bar_deprecated_option"
+      ],
+      "split": "test",
+      "license": "MIT",
+      "language": "Python",
+      "tags": [
+        "sqlfluff",
+        "version:1.3",
+        "failToPass:1"
+      ]
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-2907",
+      "sourceId": "swe-bench",
+      "repository": "sqlfluff/sqlfluff",
+      "issueUrl": "https://github.com/sqlfluff/sqlfluff/pull/2907",
+      "baseCommit": "305159ea643baf6b4744b98c3566613754b2f659",
+      "testPatchDigest": "sha256:5df7130f81758829f1d0a984951f8cfb6077039299af180845fe405f7f5770e3",
+      "expectedFixCommit": "f0416ec9eace25d95050035374b2914ad93aa824",
+      "reproductionCommand": [
+        "python -m pip install --disable-pip-version-check --no-input --target deps .",
+        "python -m pytest -q test/core/templaters/jinja_test.py::test__templater_jinja_dynamic_variable_no_violations"
+      ],
+      "split": "test",
+      "license": "MIT",
+      "language": "Python",
+      "tags": [
+        "sqlfluff",
+        "version:0.10",
+        "failToPass:1"
+      ]
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-2573",
+      "sourceId": "swe-bench",
+      "repository": "sqlfluff/sqlfluff",
+      "issueUrl": "https://github.com/sqlfluff/sqlfluff/pull/2573",
+      "baseCommit": "8822bf4d831ccbf6bc63a44b34978daf6939d996",
+      "testPatchDigest": "sha256:ce13f40ae2ad44d720045b0c752873c1c32b55464894b7250d1dc391e0ce9e18",
+      "expectedFixCommit": "67bf4dc13b09aeb0865a0558c55070c717c9aede",
+      "reproductionCommand": [
+        "python -m pip install --disable-pip-version-check --no-input --target deps .",
+        "python -m pytest -q test/core/linter_test.py::test__linter__path_from_paths__sqlfluffignore_current_directory"
+      ],
+      "split": "test",
+      "license": "MIT",
+      "language": "Python",
+      "tags": [
+        "sqlfluff",
+        "version:0.9",
+        "failToPass:1"
+      ]
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-884",
+      "sourceId": "swe-bench",
+      "repository": "sqlfluff/sqlfluff",
+      "issueUrl": "https://github.com/sqlfluff/sqlfluff/pull/884",
+      "baseCommit": "c0bad78f3fa9549591738c77f869724f721e6830",
+      "testPatchDigest": "sha256:3e799cc71e656fffdd8d6215dd5561cbdbe0808cfac7352f69b2e86067d8de50",
+      "expectedFixCommit": "f292031cc0382ddf04104a56bd34fd966aa37e02",
+      "reproductionCommand": [
+        "python -m pip install --disable-pip-version-check --no-input --target deps .",
+        "python -m pytest -q test/core/dialects/ansi_test.py::test__dialect__ansi_is_whitespace"
+      ],
+      "split": "test",
+      "license": "MIT",
+      "language": "Python",
+      "tags": [
+        "sqlfluff",
+        "version:0.4",
+        "failToPass:1"
+      ]
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-2998",
+      "sourceId": "swe-bench",
+      "repository": "sqlfluff/sqlfluff",
+      "issueUrl": "https://github.com/sqlfluff/sqlfluff/pull/2998",
+      "baseCommit": "47c8bb29104761474e455ef2e6fdaa7a8cc20a56",
+      "testPatchDigest": "sha256:72493314ec7c1b93af27f13a590f9824a9af7e6d714ca87f1194be4a7d2d862d",
+      "expectedFixCommit": "0de64479abee498fe71207fb493cebc7a519bac2",
+      "reproductionCommand": [
+        "python -m pip install --disable-pip-version-check --no-input --target deps .",
+        "python -m pytest -q test/rules/std_test.py::test__rules__std_file[L027-column_references.sql-violations16]"
+      ],
+      "split": "test",
+      "license": "MIT",
+      "language": "Python",
+      "tags": [
+        "sqlfluff",
+        "version:0.11",
+        "failToPass:1"
+      ]
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-4778",
+      "sourceId": "swe-bench",
+      "repository": "sqlfluff/sqlfluff",
+      "issueUrl": "https://github.com/sqlfluff/sqlfluff/pull/4778",
+      "baseCommit": "e3f77d58f56149f9c8db3b790ef263b9853a9cb5",
+      "testPatchDigest": "sha256:6b8193de2adceb5b4667ca71f3e9dcc8f034af020a5221b2beb8370baa792ab2",
+      "expectedFixCommit": "e0c7cc9b03830924d036897ee062bc4830d4e9cb",
+      "reproductionCommand": [
+        "python -m pip install --disable-pip-version-check --no-input --target deps .",
+        "python -m pytest -q test/core/templaters/jinja_test.py::test__templater_jinja_slice_file[{%"
+      ],
+      "split": "test",
+      "license": "MIT",
+      "language": "Python",
+      "tags": [
+        "sqlfluff",
+        "version:1.4",
+        "failToPass:1"
+      ]
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-4753",
+      "sourceId": "swe-bench",
+      "repository": "sqlfluff/sqlfluff",
+      "issueUrl": "https://github.com/sqlfluff/sqlfluff/pull/4753",
+      "baseCommit": "24178a589c279220c6605324c446122d15ebc3fb",
+      "testPatchDigest": "sha256:fe14f41660a83f46f303608b479caf4ce3987a056d6c0be16d67d1b1f57b3e18",
+      "expectedFixCommit": "df91fd6d1ab74822dfdffa3c452438ab6e0184fd",
+      "reproductionCommand": [
+        "python -m pip install --disable-pip-version-check --no-input --target deps .",
+        "python -m pytest -q test/api/simple_test.py::test__api__lint_string"
+      ],
+      "split": "test",
+      "license": "MIT",
+      "language": "Python",
+      "tags": [
+        "sqlfluff",
+        "version:1.4",
+        "failToPass:1"
+      ]
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-3220",
+      "sourceId": "swe-bench",
+      "repository": "sqlfluff/sqlfluff",
+      "issueUrl": "https://github.com/sqlfluff/sqlfluff/pull/3220",
+      "baseCommit": "262010b91cf5616de242dad504c788e9cd33ac58",
+      "testPatchDigest": "sha256:936b0fb829894e0c8550c16d4347474273c83fd2159c9daf3cba4c7245bb82e4",
+      "expectedFixCommit": "5171f27f51b0b2d4c6b250808629ba4630225750",
+      "reproductionCommand": [
+        "python -m pip install --disable-pip-version-check --no-input --target deps .",
+        "python -m pytest -q test/cli/commands_test.py::test_cli_fix_even_unparsable[config-file-True]"
+      ],
+      "split": "test",
+      "license": "MIT",
+      "language": "Python",
+      "tags": [
+        "sqlfluff",
+        "version:0.12",
+        "failToPass:1"
+      ]
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-1577",
+      "sourceId": "swe-bench",
+      "repository": "sqlfluff/sqlfluff",
+      "issueUrl": "https://github.com/sqlfluff/sqlfluff/pull/1577",
+      "baseCommit": "500505877769ab02504427284e4efdf832d299ea",
+      "testPatchDigest": "sha256:b8853d23c45e3581b228d24bf4dbcf6b1063cc65b285cff2bf331b7d25d9c23c",
+      "expectedFixCommit": "11b532a5d00fcdca15266883fac8c2161f3ac962",
+      "reproductionCommand": [
+        "python -m pip install --disable-pip-version-check --no-input --target deps .",
+        "python -m pytest -q test/core/templaters/jinja_test.py::test__templater_jinja_lint_empty"
+      ],
+      "split": "test",
+      "license": "MIT",
+      "language": "Python",
+      "tags": [
+        "sqlfluff",
+        "version:0.6",
+        "failToPass:1"
+      ]
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-1625",
+      "sourceId": "swe-bench",
+      "repository": "sqlfluff/sqlfluff",
+      "issueUrl": "https://github.com/sqlfluff/sqlfluff/pull/1625",
+      "baseCommit": "14e1a23a3166b9a645a16de96f694c77a5d4abb7",
+      "testPatchDigest": "sha256:42b09262ea853c68fe0080ae717edcf5bcf9ec9bdff982959f208d44511b73cb",
+      "expectedFixCommit": "c4f4aae4fd314580af9a3ee5bbf9f4c2819df1cb",
+      "reproductionCommand": [
+        "python -m pip install --disable-pip-version-check --no-input --target deps .",
+        "python -m pytest -q test/cli/commands_test.py::test__cli__command_directed"
+      ],
+      "split": "test",
+      "license": "MIT",
+      "language": "Python",
+      "tags": [
+        "sqlfluff",
+        "version:0.6",
+        "failToPass:1"
+      ]
+    },
+    {
+      "caseId": "PUB-PYLINT-DEV__ASTROID-1262",
+      "sourceId": "swe-bench",
+      "repository": "pylint-dev/astroid",
+      "issueUrl": "https://github.com/pylint-dev/astroid/pull/1262",
+      "baseCommit": "e840a7c54d3d8b5be2db1e66f34a5368c64fc3f7",
+      "testPatchDigest": "sha256:b2a5aeecbdb34e78c8ee1e5ac2cf2a390f600fdc45ea27c1512de8d8d319eb6a",
+      "expectedFixCommit": "7fc790219557f418723e3b9af083432ee4d15b3d",
+      "reproductionCommand": [
+        "python -m pip install --disable-pip-version-check --no-input --target deps .",
+        "python -m pytest -q tests/unittest_nodes_lineno.py::TestLinenoColOffset::test_end_lineno_module"
+      ],
+      "split": "test",
+      "license": "LGPL-2.1-or-later",
+      "language": "Python",
+      "tags": [
+        "astroid",
+        "version:2.9",
+        "failToPass:1"
+      ]
+    },
+    {
+      "caseId": "PUB-PYLINT-DEV__ASTROID-1962",
+      "sourceId": "swe-bench",
+      "repository": "pylint-dev/astroid",
+      "issueUrl": "https://github.com/pylint-dev/astroid/pull/1962",
+      "baseCommit": "fe058bff95745371df5796286d33677c21137847",
+      "testPatchDigest": "sha256:86716eecddca301b774fa459bb20ef2755160d9243049ff99470e96aa62c93c9",
+      "expectedFixCommit": "790f493e5a04e88feacc740058df07c6f2a95769",
+      "reproductionCommand": [
+        "python -m pip install --disable-pip-version-check --no-input --target deps .",
+        "python -m pytest -q tests/unittest_raw_building.py::RawBuildingTC::test_module_object_with_broken_getattr"
+      ],
+      "split": "test",
+      "license": "LGPL-2.1-or-later",
+      "language": "Python",
+      "tags": [
+        "astroid",
+        "version:2.13",
+        "failToPass:1"
+      ]
+    },
+    {
+      "caseId": "PUB-PYLINT-DEV__ASTROID-1196",
+      "sourceId": "swe-bench",
+      "repository": "pylint-dev/astroid",
+      "issueUrl": "https://github.com/pylint-dev/astroid/pull/1196",
+      "baseCommit": "39c2a9805970ca57093d32bbaf0e6a63e05041d8",
+      "testPatchDigest": "sha256:ba7739e4cfe0d7beac3c114bd6d926dc07e1cfc2d14aa155dc1dd35ff010acf9",
+      "expectedFixCommit": "7b792b116c841e5efe20500b3362fc08213a9531",
+      "reproductionCommand": [
+        "python -m pip install --disable-pip-version-check --no-input --target deps .",
+        "python -m pytest -q tests/unittest_python3.py::Python3TC::test_unpacking_in_dict_getitem_uninferable tests/unittest_python3.py::Python3TC::test_unpacking_in_dict_getitem_with_ref"
+      ],
+      "split": "test",
+      "license": "LGPL-2.1-or-later",
+      "language": "Python",
+      "tags": [
+        "astroid",
+        "version:2.12",
+        "failToPass:2"
+      ]
+    },
+    {
+      "caseId": "PUB-PYLINT-DEV__ASTROID-941",
+      "sourceId": "swe-bench",
+      "repository": "pylint-dev/astroid",
+      "issueUrl": "https://github.com/pylint-dev/astroid/pull/941",
+      "baseCommit": "962becc0ae86c16f7b33140f43cd6ed8f1e8a045",
+      "testPatchDigest": "sha256:9e746e3617650d6f1428829e502b49d6251bef1b01c34b4644f250dc81241488",
+      "expectedFixCommit": "d9ba67952d0af4a86d8d81468e93d30751199507",
+      "reproductionCommand": [
+        "python -m pip install --disable-pip-version-check --no-input --target deps .",
+        "python -m pytest -q tests/unittest_scoped_nodes.py::test_issue940_metaclass_subclass_property tests/unittest_scoped_nodes.py::test_issue940_enums_as_a_real_world_usecase"
+      ],
+      "split": "test",
+      "license": "LGPL-2.1-or-later",
+      "language": "Python",
+      "tags": [
+        "astroid",
+        "version:2.5",
+        "failToPass:2"
+      ]
+    },
+    {
+      "caseId": "PUB-PYLINT-DEV__ASTROID-2023",
+      "sourceId": "swe-bench",
+      "repository": "pylint-dev/astroid",
+      "issueUrl": "https://github.com/pylint-dev/astroid/pull/2023",
+      "baseCommit": "2108ae51b516458243c249cf67301cb387e33afa",
+      "testPatchDigest": "sha256:3c1cce35e7e2971e7680de0083ec82d4d77bd0f3fe3aa5b99c0c910401e6f47a",
+      "expectedFixCommit": "d3b8a9281c7b19030b2b6d0d0824a093d2257c33",
+      "reproductionCommand": [
+        "python -m pip install --disable-pip-version-check --no-input --target deps .",
+        "python -m pytest -q tests/test_utils.py::InferenceUtil::test_not_exclusive_walrus_multiple tests/test_utils.py::InferenceUtil::test_not_exclusive_walrus_operator tests/test_utils.py::InferenceUtil::test_not_exclusive_walrus_operator_nested"
+      ],
+      "split": "test",
+      "license": "LGPL-2.1-or-later",
+      "language": "Python",
+      "tags": [
+        "astroid",
+        "version:2.15",
+        "failToPass:3"
+      ]
+    },
+    {
+      "caseId": "PUB-PYLINT-DEV__ASTROID-1959",
+      "sourceId": "swe-bench",
+      "repository": "pylint-dev/astroid",
+      "issueUrl": "https://github.com/pylint-dev/astroid/pull/1959",
+      "baseCommit": "49691cc04f2d38b174787280f7ed38f818c828bd",
+      "testPatchDigest": "sha256:86716eecddca301b774fa459bb20ef2755160d9243049ff99470e96aa62c93c9",
+      "expectedFixCommit": "790f493e5a04e88feacc740058df07c6f2a95769",
+      "reproductionCommand": [
+        "python -m pip install --disable-pip-version-check --no-input --target deps .",
+        "python -m pytest -q tests/unittest_raw_building.py::RawBuildingTC::test_module_object_with_broken_getattr"
+      ],
+      "split": "test",
+      "license": "LGPL-2.1-or-later",
+      "language": "Python",
+      "tags": [
+        "astroid",
+        "version:2.14",
+        "failToPass:1"
+      ]
+    },
+    {
+      "caseId": "PUB-MARSHMALLOW-CODE__MARSHMALLOW-1343",
+      "sourceId": "swe-bench",
+      "repository": "marshmallow-code/marshmallow",
+      "issueUrl": "https://github.com/marshmallow-code/marshmallow/pull/1343",
+      "baseCommit": "2be2d83a1a9a6d3d9b85804f3ab545cecc409bb0",
+      "testPatchDigest": "sha256:27c3bdd1020389c54802618a94d3d3b344f638d1542fcd85e898eb876f45c90d",
+      "expectedFixCommit": "fb93d3650801b4da32dce01c6f7cc72194236aa7",
+      "reproductionCommand": [
+        "python -m pip install --disable-pip-version-check --no-input --target deps .",
+        "python -m pytest -q tests/test_marshalling.py::TestUnmarshaller::test_deserialize_wrong_nested_type_with_validates_method"
+      ],
+      "split": "test",
+      "license": "MIT",
+      "language": "Python",
+      "tags": [
+        "marshmallow",
+        "version:2.20",
+        "failToPass:1"
+      ]
+    },
+    {
+      "caseId": "PUB-MARSHMALLOW-CODE__MARSHMALLOW-1359",
+      "sourceId": "swe-bench",
+      "repository": "marshmallow-code/marshmallow",
+      "issueUrl": "https://github.com/marshmallow-code/marshmallow/pull/1359",
+      "baseCommit": "b40a0f4e33823e6d0f341f7e8684e359a99060d1",
+      "testPatchDigest": "sha256:592ab3f3bcedb30423bdfbeb3aa277b21647333eabb53c318f5f0f20c197060d",
+      "expectedFixCommit": "52c912ac74251dff9c92792f2ab2835f2ddfa995",
+      "reproductionCommand": [
+        "python -m pip install --disable-pip-version-check --no-input --target deps .",
+        "python -m pytest -q tests/test_fields.py::TestParentAndName::test_datetime_list_inner_format"
+      ],
+      "split": "test",
+      "license": "MIT",
+      "language": "Python",
+      "tags": [
+        "marshmallow",
+        "version:3.0",
+        "failToPass:1"
+      ]
+    },
+    {
+      "caseId": "PUB-MARSHMALLOW-CODE__MARSHMALLOW-1810",
+      "sourceId": "swe-bench",
+      "repository": "marshmallow-code/marshmallow",
+      "issueUrl": "https://github.com/marshmallow-code/marshmallow/pull/1810",
+      "baseCommit": "23d0551569d748460c504af85996451edd685371",
+      "testPatchDigest": "sha256:b2f31eb5d0cafd22377e21801022f2dbe28941c1851001f16602aad7af229def",
+      "expectedFixCommit": "44162d78fcf385e1e3019ae4cc35de2dc0967433",
+      "reproductionCommand": [
+        "python -m pip install --disable-pip-version-check --no-input --target deps .",
+        "python -m pytest -q tests/test_fields.py::TestParentAndName::test_field_named_parent_has_root"
+      ],
+      "split": "test",
+      "license": "MIT",
+      "language": "Python",
+      "tags": [
+        "marshmallow",
+        "version:3.12",
+        "failToPass:1"
+      ]
+    },
+    {
+      "caseId": "PUB-MARSHMALLOW-CODE__MARSHMALLOW-1252",
+      "sourceId": "swe-bench",
+      "repository": "marshmallow-code/marshmallow",
+      "issueUrl": "https://github.com/marshmallow-code/marshmallow/pull/1252",
+      "baseCommit": "b063a103ae5222a5953cd7453a1eb0d161dc5b52",
+      "testPatchDigest": "sha256:b18459778d6b1e1d94790ee2372d2fe6b2dc3685ef659a716bb4d9d0ceb5fca9",
+      "expectedFixCommit": "d892dc9d1ba24049de6b3a4f6bde599c0fab3535",
+      "reproductionCommand": [
+        "python -m pip install --disable-pip-version-check --no-input --target deps .",
+        "python -m pytest -q tests/test_utils.py::test_from_iso_datetime[timezone1-False]"
+      ],
+      "split": "test",
+      "license": "MIT",
+      "language": "Python",
+      "tags": [
+        "marshmallow",
+        "version:2.19",
+        "failToPass:1"
+      ]
+    }
+  ]
 }

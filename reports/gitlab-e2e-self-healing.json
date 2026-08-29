@@ -1,0 +1,305 @@
+{
+  "generatedAt": "2026-08-27T10:10:28.488Z",
+  "status": "passed",
+  "caseId": "CASE-SH-MTBD1UX4",
+  "durationMs": 80960,
+  "selfHealingPattern": "Red→Red→Green",
+  "platform": {
+    "kind": "self-hosted GitLab CE",
+    "version": "18.2.1",
+    "baseUrl": "http://127.0.0.1",
+    "projectId": 37,
+    "projectWebUrl": "http://192.168.0.139/dongyuxiao/devorbit-checkout-demo"
+  },
+  "model": {
+    "driver": "openai-compat",
+    "name": "deepseek-v4-flash-0731",
+    "keyFingerprint": "6eaf729dcafe"
+  },
+  "pipelines": {
+    "baseline": {
+      "id": 60,
+      "status": "failed",
+      "webUrl": "http://192.168.0.139/dongyuxiao/devorbit-checkout-demo/-/pipelines/60",
+      "jobs": [
+        {
+          "id": 145,
+          "name": "test",
+          "status": "failed",
+          "webUrl": "http://192.168.0.139/dongyuxiao/devorbit-checkout-demo/-/jobs/145"
+        }
+      ],
+      "traces": [
+        {
+          "jobId": 145,
+          "name": "test",
+          "status": "failed",
+          "traceTail": "o/devorbit-checkout-demo/test/redisPool.test.js:10:10)\n2026-08-27T10:09:23.899596Z 01O     Test.runInAsyncScope (node:async_hooks:214:14)\n2026-08-27T10:09:23.899597Z 01O     Test.run (node:internal/test_runner/test:1047:25)\n2026-08-27T10:09:23.899599Z 01O     Test.processPendingSubtests (node:internal/test_runner/test:744:18)\n2026-08-27T10:09:23.899600Z 01O     Test.postRun (node:internal/test_runner/test:1173:19)\n2026-08-27T10:09:23.899601Z 01O     Test.run (node:internal/test_runner/test:1101:12)\n2026-08-27T10:09:23.899603Z 01O     async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)\n2026-08-27T10:09:23.899604Z 01O   ...\n2026-08-27T10:09:23.908758Z 01O 1..4\n2026-08-27T10:09:23.908771Z 01O # tests 4\n2026-08-27T10:09:23.908792Z 01O # suites 0\n2026-08-27T10:09:23.908872Z 01O # pass 1\n2026-08-27T10:09:23.908940Z 01O # fail 3\n2026-08-27T10:09:23.909038Z 01O # cancelled 0\n2026-08-27T10:09:23.909113Z 01O # skipped 0\n2026-08-27T10:09:23.909192Z 01O # todo 0\n2026-08-27T10:09:23.909262Z 01O # duration_ms 90.962793\n2026-08-27T10:09:24.063313Z 00O section_end:1787825364:step_script\r\n2026-08-27T10:09:24.063325Z 00O+\u001b[0Ksection_start:1787825364:cleanup_file_variables\r\n2026-08-27T10:09:24.064252Z 00O+\u001b[0K\u001b[0K\u001b[36;1mCleaning up project directory and file based variables\u001b[0;m\u001b[0;m\n2026-08-27T10:09:24.533066Z 00O section_end:1787825364:cleanup_file_variables\r\n2026-08-27T10:09:24.533077Z 00O+\u001b[0K\n2026-08-27T10:09:24.582145Z 00O \u001b[31;1mERROR: Job failed: exit code 1\u001b[0;m\n",
+          "traceSha256": "sha256:8c617cbe3a0742830ef107f73da646b0fc37549c84f83e35bea1638635cd59f5"
+        }
+      ]
+    },
+    "fix1": {
+      "id": 63,
+      "status": "failed",
+      "webUrl": "http://192.168.0.139/dongyuxiao/devorbit-checkout-demo/-/pipelines/63",
+      "jobs": [
+        {
+          "id": 148,
+          "name": "test",
+          "status": "failed",
+          "webUrl": "http://192.168.0.139/dongyuxiao/devorbit-checkout-demo/-/jobs/148"
+        }
+      ],
+      "traces": [
+        {
+          "jobId": 148,
+          "name": "test",
+          "status": "failed",
+          "traceTail": "ool preserves checkout peak capacity\n2026-08-27T10:09:46.754818Z 01O ok 3 - connection pool preserves checkout peak capacity\n2026-08-27T10:09:46.754820Z 01O   ---\n2026-08-27T10:09:46.754821Z 01O   duration_ms: 0.787575\n2026-08-27T10:09:46.754822Z 01O   type: 'test'\n2026-08-27T10:09:46.754824Z 01O   ...\n2026-08-27T10:09:46.754966Z 01O # Subtest: queue timeout absorbs short checkout bursts\n2026-08-27T10:09:46.754975Z 01O ok 4 - queue timeout absorbs short checkout bursts\n2026-08-27T10:09:46.755031Z 01O   ---\n2026-08-27T10:09:46.755033Z 01O   duration_ms: 0.140169\n2026-08-27T10:09:46.755034Z 01O   type: 'test'\n2026-08-27T10:09:46.755035Z 01O   ...\n2026-08-27T10:09:46.755199Z 01O 1..4\n2026-08-27T10:09:46.755213Z 01O # tests 4\n2026-08-27T10:09:46.755221Z 01O # suites 0\n2026-08-27T10:09:46.755235Z 01O # pass 3\n2026-08-27T10:09:46.755248Z 01O # fail 1\n2026-08-27T10:09:46.755348Z 01O # cancelled 0\n2026-08-27T10:09:46.755354Z 01O # skipped 0\n2026-08-27T10:09:46.755364Z 01O # todo 0\n2026-08-27T10:09:46.755427Z 01O # duration_ms 86.325605\n2026-08-27T10:09:46.891142Z 00O section_end:1787825386:step_script\r\n2026-08-27T10:09:46.891153Z 00O+\u001b[0Ksection_start:1787825386:cleanup_file_variables\r\n2026-08-27T10:09:46.891964Z 00O+\u001b[0K\u001b[0K\u001b[36;1mCleaning up project directory and file based variables\u001b[0;m\u001b[0;m\n2026-08-27T10:09:47.342884Z 00O section_end:1787825387:cleanup_file_variables\r\n2026-08-27T10:09:47.342896Z 00O+\u001b[0K\n2026-08-27T10:09:47.391091Z 00O \u001b[31;1mERROR: Job failed: exit code 1\u001b[0;m\n",
+          "traceSha256": "sha256:501781be15d4dc470898e7eda311e6c339304c3e8970fe0485d3f9197b30e845"
+        }
+      ],
+      "failureAnalysis": {
+        "traceSha256": "sha256:501781be15d4dc470898e7eda311e6c339304c3e8970fe0485d3f9197b30e845",
+        "failureSnippet": "# fail 1",
+        "analysis": "order.test.js \"duplicate request returns the original order\" fails because createOrder still returns 201 for duplicate idempotencyKey instead of 409 with the original order"
+      }
+    },
+    "fix2": {
+      "id": 65,
+      "status": "success",
+      "webUrl": "http://192.168.0.139/dongyuxiao/devorbit-checkout-demo/-/pipelines/65",
+      "jobs": [
+        {
+          "id": 150,
+          "name": "test",
+          "status": "success",
+          "webUrl": "http://192.168.0.139/dongyuxiao/devorbit-checkout-demo/-/jobs/150"
+        }
+      ],
+      "traces": [
+        {
+          "jobId": 150,
+          "name": "test",
+          "status": "success",
+          "traceTail": "test: connection pool preserves checkout peak capacity\n2026-08-27T10:10:18.563855Z 01O ok 3 - connection pool preserves checkout peak capacity\n2026-08-27T10:10:18.564044Z 01O   ---\n2026-08-27T10:10:18.564045Z 01O   duration_ms: 0.798567\n2026-08-27T10:10:18.564046Z 01O   type: 'test'\n2026-08-27T10:10:18.564047Z 01O   ...\n2026-08-27T10:10:18.564324Z 01O # Subtest: queue timeout absorbs short checkout bursts\n2026-08-27T10:10:18.564577Z 01O ok 4 - queue timeout absorbs short checkout bursts\n2026-08-27T10:10:18.564664Z 01O   ---\n2026-08-27T10:10:18.564665Z 01O   duration_ms: 0.14039\n2026-08-27T10:10:18.564665Z 01O   type: 'test'\n2026-08-27T10:10:18.564666Z 01O   ...\n2026-08-27T10:10:18.568573Z 01O 1..4\n2026-08-27T10:10:18.568672Z 01O # tests 4\n2026-08-27T10:10:18.568771Z 01O # suites 0\n2026-08-27T10:10:18.568858Z 01O # pass 4\n2026-08-27T10:10:18.568959Z 01O # fail 0\n2026-08-27T10:10:18.569076Z 01O # cancelled 0\n2026-08-27T10:10:18.569223Z 01O # skipped 0\n2026-08-27T10:10:18.569290Z 01O # todo 0\n2026-08-27T10:10:18.569374Z 01O # duration_ms 81.571121\n2026-08-27T10:10:18.688176Z 00O section_end:1787825418:step_script\r\n2026-08-27T10:10:18.688186Z 00O+\u001b[0Ksection_start:1787825418:cleanup_file_variables\r\n2026-08-27T10:10:18.689008Z 00O+\u001b[0K\u001b[0K\u001b[36;1mCleaning up project directory and file based variables\u001b[0;m\u001b[0;m\n2026-08-27T10:10:19.174530Z 00O section_end:1787825419:cleanup_file_variables\r\n2026-08-27T10:10:19.174540Z 00O+\u001b[0K\n2026-08-27T10:10:19.222352Z 00O \u001b[32;1mJob succeeded\u001b[0;m\n",
+          "traceSha256": "sha256:02052ad3924aed1807e3737d670909bd50d3f052bca7ce616be8d233416cd837"
+        }
+      ]
+    }
+  },
+  "mergeRequest": {
+    "iid": 4,
+    "webUrl": "http://192.168.0.139/dongyuxiao/devorbit-checkout-demo/-/merge_requests/4",
+    "state": "merged",
+    "mergedAt": "2026-08-27T10:10:28.312Z"
+  },
+  "patchSource": "model-self-healing",
+  "patches": {
+    "fix1": {
+      "files": [
+        "src/redisPool.js"
+      ],
+      "description": "incomplete: only pool capacity restored (poolSize=80, queueTimeoutMs=800), idempotency guard in order.js still missing"
+    },
+    "fix2": {
+      "files": [
+        "src/order.js"
+      ],
+      "description": "complete: idempotency guard added (duplicate idempotencyKey returns 409 + original order)"
+    }
+  },
+  "timeline": [
+    {
+      "at": "2026-08-27T10:09:07.609Z",
+      "step": "gitlab.version",
+      "ok": true,
+      "note": "GitLab 18.2.1"
+    },
+    {
+      "at": "2026-08-27T10:09:07.754Z",
+      "step": "gitlab.project.ensure",
+      "ok": true,
+      "note": "reused id=37"
+    },
+    {
+      "at": "2026-08-27T10:09:07.868Z",
+      "step": "gitlab.project.enable-ci",
+      "ok": true,
+      "note": "builds_access_level=enabled (idempotent PUT)"
+    },
+    {
+      "at": "2026-08-27T10:09:09.095Z",
+      "step": "gitlab.main.baseline-commit",
+      "ok": true,
+      "note": "commit f8db53be (defective baseline restored)"
+    },
+    {
+      "at": "2026-08-27T10:09:09.507Z",
+      "step": "gitlab.pipeline.baseline.created",
+      "ok": true,
+      "note": "pipeline 60 on main"
+    },
+    {
+      "at": "2026-08-27T10:09:30.010Z",
+      "step": "gitlab.pipeline.baseline.red",
+      "ok": true,
+      "note": "status=failed; a red baseline on the defective commit is the required precondition"
+    },
+    {
+      "at": "2026-08-27T10:09:31.022Z",
+      "step": "gitlab.branch.fix1-commit",
+      "ok": true,
+      "note": "commit f2f273cb (only redisPool.js, order.js idempotency still missing)"
+    },
+    {
+      "at": "2026-08-27T10:09:31.580Z",
+      "step": "gitlab.pipeline.fix1.created",
+      "ok": true,
+      "note": "pipeline 63 on devorbit/sh-case-sh-mtbd1ux4"
+    },
+    {
+      "at": "2026-08-27T10:09:52.213Z",
+      "step": "gitlab.pipeline.fix1.red",
+      "ok": true,
+      "note": "status=failed (order.test.js \"duplicate request returns the original order\" still fails)"
+    },
+    {
+      "at": "2026-08-27T10:09:52.214Z",
+      "step": "gitlab.pipeline.fix1.trace-analysis",
+      "ok": true,
+      "note": "extracted failure info: # fail 1"
+    },
+    {
+      "at": "2026-08-27T10:10:00.491Z",
+      "step": "model.self-healing-analysis",
+      "ok": true,
+      "note": "model analyzed CI trace, missingFix=order.js createOrder lacks idempotency check: when idempotencyKey already exists, it overwrites and returns 201 instead of returning the original order with status 409., tokens=1426, latencyMs=8275"
+    },
+    {
+      "at": "2026-08-27T10:10:00.491Z",
+      "step": "gitlab.self-healing.source",
+      "ok": true,
+      "note": "fix2 patch from model self-healing analysis"
+    },
+    {
+      "at": "2026-08-27T10:10:01.124Z",
+      "step": "gitlab.branch.fix2-commit",
+      "ok": true,
+      "note": "commit 3fb1c56b (order.js idempotency guard: duplicate key returns 409 + original order)"
+    },
+    {
+      "at": "2026-08-27T10:10:01.572Z",
+      "step": "gitlab.pipeline.fix2.created",
+      "ok": true,
+      "note": "pipeline 65 on devorbit/sh-case-sh-mtbd1ux4"
+    },
+    {
+      "at": "2026-08-27T10:10:22.081Z",
+      "step": "gitlab.pipeline.fix2.green",
+      "ok": true,
+      "note": "status=success (all 4 tests pass)"
+    },
+    {
+      "at": "2026-08-27T10:10:22.413Z",
+      "step": "gitlab.mr.ensure",
+      "ok": true,
+      "note": "created MR !4"
+    },
+    {
+      "at": "2026-08-27T10:10:28.487Z",
+      "step": "gitlab.mr.merged",
+      "ok": true,
+      "note": "MR !4 state=merged (after 1 polls)"
+    }
+  ],
+  "boundary": "Real self-hosted GitLab CE self-healing evidence: Red→Red→Green loop on a real project with real CI pipelines. The baseline (red) establishes the defective state; fix1 (red) demonstrates an incomplete patch that fixes redisPool capacity but leaves the idempotency test failing; the CI job trace from fix1 is preserved and its failure info extracted; fix2 (green) completes the self-healing loop by adding the idempotency guard. All three pipeline traces are preserved with SHA-256 digests. When DASHSCOPE_API_KEY is unavailable, the self-healing fix2 patch uses a golden fixture and is honestly disclosed via patchSource=golden-fixture-self-healing; no model output is fabricated. No GitLab SaaS, no vendor cloud account, no production cluster claim.",
+  "checks": [
+    {
+      "label": "gitlab.version",
+      "ok": true,
+      "detail": "GitLab 18.2.1"
+    },
+    {
+      "label": "gitlab.project.ensure",
+      "ok": true,
+      "detail": "reused id=37"
+    },
+    {
+      "label": "gitlab.project.enable-ci",
+      "ok": true,
+      "detail": "builds_access_level=enabled (idempotent PUT)"
+    },
+    {
+      "label": "gitlab.main.baseline-commit",
+      "ok": true,
+      "detail": "commit f8db53be (defective baseline restored)"
+    },
+    {
+      "label": "gitlab.pipeline.baseline.created",
+      "ok": true,
+      "detail": "pipeline 60 on main"
+    },
+    {
+      "label": "gitlab.pipeline.baseline.red",
+      "ok": true,
+      "detail": "status=failed; a red baseline on the defective commit is the required precondition"
+    },
+    {
+      "label": "gitlab.branch.fix1-commit",
+      "ok": true,
+      "detail": "commit f2f273cb (only redisPool.js, order.js idempotency still missing)"
+    },
+    {
+      "label": "gitlab.pipeline.fix1.created",
+      "ok": true,
+      "detail": "pipeline 63 on devorbit/sh-case-sh-mtbd1ux4"
+    },
+    {
+      "label": "gitlab.pipeline.fix1.red",
+      "ok": true,
+      "detail": "status=failed (order.test.js \"duplicate request returns the original order\" still fails)"
+    },
+    {
+      "label": "gitlab.pipeline.fix1.trace-analysis",
+      "ok": true,
+      "detail": "extracted failure info: # fail 1"
+    },
+    {
+      "label": "model.self-healing-analysis",
+      "ok": true,
+      "detail": "model analyzed CI trace, missingFix=order.js createOrder lacks idempotency check: when idempotencyKey already exists, it overwrites and returns 201 instead of returning the original order with status 409., tokens=1426, latencyMs=8275"
+    },
+    {
+      "label": "gitlab.self-healing.source",
+      "ok": true,
+      "detail": "fix2 patch from model self-healing analysis"
+    },
+    {
+      "label": "gitlab.branch.fix2-commit",
+      "ok": true,
+      "detail": "commit 3fb1c56b (order.js idempotency guard: duplicate key returns 409 + original order)"
+    },
+    {
+      "label": "gitlab.pipeline.fix2.created",
+      "ok": true,
+      "detail": "pipeline 65 on devorbit/sh-case-sh-mtbd1ux4"
+    },
+    {
+      "label": "gitlab.pipeline.fix2.green",
+      "ok": true,
+      "detail": "status=success (all 4 tests pass)"
+    },
+    {
+      "label": "gitlab.mr.ensure",
+      "ok": true,
+      "detail": "created MR !4"
+    },
+    {
+      "label": "gitlab.mr.merged",
+      "ok": true,
+      "detail": "MR !4 state=merged (after 1 polls)"
+    }
+  ]
+}

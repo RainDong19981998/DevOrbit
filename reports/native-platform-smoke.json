@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-13T14:30:38.220Z",
+  "generatedAt": "2026-08-29T11:52:26.716Z",
   "status": "passed",
   "boundary": "Local protocol endpoints emulate GitHub, Jenkins and Kubernetes APIs; Git clone/commit/push/checkout and node --test are real local executions. This is native connector evidence, not vendor-account or production-cluster evidence.",
   "summary": {
@@ -8,7 +8,7 @@
     "failed": 0
   },
   "evidence": {
-    "baseCommit": "d30ef2f070e1dd195319c5a2492f45476837a6d6",
+    "baseCommit": "ed7545a5b2e29b0cc5ef4894554a89f8c954e3fe",
     "baselineFailed": 3,
     "patchedPassed": 4,
     "releaseDecision": "promoted",

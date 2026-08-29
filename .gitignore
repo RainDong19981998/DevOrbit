@@ -4,9 +4,13 @@ node_modules/
 __pycache__/
 *.pyc
 *.log
+.env
+.env.*
+!.env.example
 !evaluation/public-pilot/**/evidence/*.log
+!evaluation/public-model-pilot/**/evidence/*.log
 deliverables/*.zip
 .firefox-*-profile/
-灵畿β流程操作手册_20260518.pdf
-“灵畿”科研平台操作指引（项目经理操作版本）-V2.0.pptx
-1 新智基座 agent infra.pdf
+docs/reference/
+reports/runs/state/
+.zhanlu/

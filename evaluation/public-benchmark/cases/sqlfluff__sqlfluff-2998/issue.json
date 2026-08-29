@@ -1,0 +1,8 @@
+{
+  "instanceId": "sqlfluff__sqlfluff-2998",
+  "repository": "sqlfluff/sqlfluff",
+  "version": "0.11",
+  "createdAt": "2022-04-04T20:29:42Z",
+  "problemStatement": "BigQuery: Accessing `STRUCT` elements evades triggering L027\n### Search before asking\n\n- [X] I searched the [issues](https://github.com/sqlfluff/sqlfluff/issues) and found no similar issues.\n\n\n### What Happened\n\nAccessing unreferenced `STRUCT` elements using BigQuery dot notation in a multi table query does not trigger L027.\n\n### Expected Behaviour\n\nL027 gets triggered.\n\n### Observed Behaviour\n\nL027 does not get triggered.\n\n### How to reproduce\n\n```sql\r\nSELECT\r\n    t1.col1,\r\n    t2.col2,\r\n    events.id\r\nFROM t_table1 AS t1\r\nLEFT JOIN t_table2 AS t2\r\n    ON TRUE\r\n```\n\n### Dialect\n\nBigQUery\n\n### Version\n\n`0.11.2` using online.sqlfluff.com\n\n### Configuration\n\nN/A\n\n### Are you willing to work on and submit a PR to address the issue?\n\n- [ ] Yes I am willing to submit a PR!\n\n### Code of Conduct\n\n- [X] I agree to follow this project's [Code of Conduct](https://github.com/sqlfluff/sqlfluff/blob/main/CODE_OF_CONDUCT.md)\n\n",
+  "hintsText": "This is tricky.\r\n\r\nBasicaly L026 works to make sure qualified columns only use tables in the from clause. This doesn’t really work for `STRUCT`s as impossible to know if it’s a qualified column or a `STRUCT`, so is off by default for languages that support them - like BigQuery.\r\n\r\nL027 works to make sure columns are qualified for multi-table joins (i.e. have at least one dot). But it doesn’t check the qualifiers are valid - that’s L026’s job, which as I say is off by default for BigQuery."
+}

@@ -1,0 +1,51 @@
+{
+  "caseId": "PUB-SQLFLUFF__SQLFLUFF-2998",
+  "method": "devorbit",
+  "attempts": 3,
+  "rca": {
+    "rootCause": "L027 rule checks that column references in multi-table SELECT statements are qualified (i.e. have at least one dot). However, when a column reference like `events.id` is encountered, the rule sees it has a qualifier (`events`) and considers it properly qualified, without verifying that the qualifier actually corresponds to a table alias defined in the FROM clause. Since BigQuery supports STRUCT field access via dot notation (e.g. `table.column.struct_field`), a reference like `events.id` where `events` is not a table alias but rather a STRUCT field name passes L027's qualification check. The rule needs to validate that the qualifier of a column reference actually matches a table alias from the FROM clause, at least for the BigQuery dialect where STRUCT access creates this ambiguity.",
+    "confidence": 0.85,
+    "evidence": [
+      "Issue states: 'Accessing unreferenced STRUCT elements using BigQuery dot notation in a multi table query does not trigger L027' with example SQL where `events.id` is used but `events` is not a table alias",
+      "Hints clarify: 'L027 works to make sure columns are qualified for multi-table joins (i.e. have at least one dot). But it doesn't check the qualifiers are valid - that's L026's job, which is off by default for BigQuery.'",
+      "Test file L027.yml includes test cases `test_fail_column_name_not_found_in_table_aliases_bigquery` and `test_pass_column_name_is_a_struct_bigquery` showing the expected behavior: invalid qualifiers should fail L027 while valid STRUCT access should pass",
+      "The rule file is `src/sqlfluff/rules/L027.py` which implements the qualification check logic"
+    ],
+    "filesToChange": [
+      "src/sqlfluff/rules/L027.py"
+    ]
+  },
+  "edits": [
+    {
+      "path": "src/sqlfluff/rules/L027.py",
+      "search": "            if (\n                this_ref_type == \"unqualified\"\n                # Allow unqualified columns that\n                # are actually aliases defined\n                # in a different select clause element.\n                and r.raw not in col_alias_names\n                # Allow columns defined in a USING expression.\n                and r.raw not in using_cols\n            ):\n                violation_buff.append(\n                    LintResult(\n                        anchor=r,\n                        description=f\"Unqualified reference {r.raw!r} found in \"\n                        \"select with more than one referenced table/view.\",\n                    )\n                )\n\n        return violation_buff or None",
+      "replace": "            if (\n                this_ref_type == \"unqualified\"\n                # Allow unqualified columns that\n                # are actually aliases defined\n                # in a different select clause element.\n                and r.raw not in col_alias_names\n                # Allow columns defined in a USING expression.\n                and r.raw not in using_cols\n            ):\n                violation_buff.append(\n                    LintResult(\n                        anchor=r,\n                        description=f\"Unqualified reference {r.raw!r} found in \"\n                        \"select with more than one referenced table/view.\",\n                    )\n                )\n            elif (\n                this_ref_type == \"qualified\"\n                # Check that the qualifier is a valid table alias.\n                and r.qualified_part not in [a.alias_identifier_name for a in table_aliases]\n                and r.raw not in col_alias_names\n                and r.raw not in using_cols\n                # Allow qualified references in BigQuery (STRUCT field access).\n                and self.dialect != \"bigquery\"\n            ):\n                violation_buff.append(\n                    LintResult(\n                        anchor=r,\n                        description=f\"Qualified reference {r.raw!r} not found in \"\n                        \"table aliases for select with more than one referenced \"\n                        \"table/view.\",\n                    )\n                )\n\n        return violation_buff or None"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": true,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "F2P red; P2P green ",
+    "f2pLogTail": "============================== FAILURES ===================================\n________ test__rules__std_file[L027-column_references.sql-violations16] ________\n\nrule = 'L027', path = 'column_references.sql', violations = [(1, 8)]\n\n    @pytest.mark.parametrize(\n        \"rule,path,violations\",\n        [\n            (\"L001\", \"indentation_errors.sql\", [(4, 24)]),\n            (\"L002\", \"indentation_errors.sql\", [(3, 1), (4, 1)]),\n            (\n                \"L003\",\n                \"indentation_errors.sql\",\n                [(2, 4), (3, 4), (4, 6)],\n            ),\n            (\n                \"L004\",\n                \"indentation_errors.sql\",\n                [(3, 1), (4, 1), (5, 1)],\n            ),\n            # Check we get comma (with leading space/newline) whitespace errors\n            # NB The newline before the comma, should report on the comma, not the newline\n            # for clarity.\n            (\"L005\", \"whitespace_errors.sql\", [(2, 9)]),\n            (\"L019\", \"whitespace_errors.sql\", [(4, 1)]),\n            # Check we get comma (with incorrect trailing space) whitespace errors,\n            # but also no false positives on line 4 or 5.\n            (\"L008\", \"whitespace_errors.sql\", [(3, 12)]),\n            # Check we get operator whitespace errors and it works with brackets\n            (\n                \"L006\",\n                \"operator_errors.sql\",\n                [(7, 6), (7, 9), (7, 12)],\n            ),\n            (\n                \"L039\",\n                \"operator_errors.sql\",\n                [(3, 8), (4, 10)],\n            ),\n            (\"L007\", \"operator_errors.s\n[...]\nummary info ============================\nFAILED test/rules/std_test.py::test__rules__std_file[L027-column_references.sql-violations16]\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.20s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x test/rules/std_test.py::test__rules__std_file[L027-column_references.sql-violations16]\n",
+    "changedPaths": [
+      "src/sqlfluff/rules/L027.py"
+    ],
+    "appliedMethods": [
+      {
+        "path": "src/sqlfluff/rules/L027.py",
+        "method": "exact",
+        "ambiguous": false
+      }
+    ]
+  },
+  "patchSha256": "sha256:2b509824d8a2a57f85ba24b77e75783c4fd6eb8f4fc0ac2510b3ccdc0431fe82",
+  "contextBytes": 16334,
+  "baselineTail": "ummary info ============================\nFAILED test/rules/std_test.py::test__rules__std_file[L027-column_references.sql-violations16]\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.20s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x test/rules/std_test.py::test__rules__std_file[L027-column_references.sql-violations16]\n",
+  "goldFiles": [
+    "src/sqlfluff/rules/L027.py"
+  ],
+  "model": "glm",
+  "modelCalls": 4
+}

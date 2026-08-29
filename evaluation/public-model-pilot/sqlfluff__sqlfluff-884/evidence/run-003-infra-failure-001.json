@@ -1,0 +1,66 @@
+{
+  "protocolVersion": "1.0",
+  "pilotId": "devorbit-public-model-pilot-v3",
+  "runId": "run-003",
+  "startedAt": "2026-08-14T03:17:53.745Z",
+  "completedAt": "2026-08-14T03:18:10.349Z",
+  "stage": "prepare-source",
+  "status": "failed",
+  "error": "dependency install failed",
+  "manifestDigest": "sha256:2e0883a546a3b4879792d9c848141716a537ec214642d9213ed22d0b9cb39ee1",
+  "leakageBoundary": {
+    "enforced": true,
+    "runnerManifest": "evaluation/public-model-pilot-v3.manifest.json",
+    "forbiddenArtifactsRead": [],
+    "goldComparisonPerformed": false
+  },
+  "agents": [],
+  "tools": [
+    {
+      "tool": "source.cache-hit",
+      "args": [
+        "sha256:8484d90c290fc06b8c331991605300a692266a6f71536d1cf1612e4dca8c4fbb"
+      ],
+      "cwd": null,
+      "exitCode": 0,
+      "durationMs": 0,
+      "outputSha256": "sha256:8484d90c290fc06b8c331991605300a692266a6f71536d1cf1612e4dca8c4fbb",
+      "outputTail": "verified content-addressed cache"
+    },
+    {
+      "tool": "source.extract",
+      "args": [
+        "-xzf",
+        "/tmp/devorbit-public-model-pilot-sqlfluff-884/source.tar.gz",
+        "-C",
+        "/tmp/devorbit-public-model-pilot-sqlfluff-884/source",
+        "--strip-components=1"
+      ],
+      "cwd": null,
+      "exitCode": 0,
+      "durationMs": 65,
+      "outputSha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputTail": ""
+    },
+    {
+      "tool": "environment.install",
+      "args": [
+        "-m",
+        "pip",
+        "install",
+        "--disable-pip-version-check",
+        "--no-input",
+        "--no-deps",
+        "--target",
+        "/tmp/devorbit-public-model-pilot-sqlfluff-884/deps",
+        "-r",
+        "/home/admin1/hrz/code/goai_lingji/evaluation/public-pilot/sqlfluff__sqlfluff-884/requirements.lock"
+      ],
+      "cwd": null,
+      "exitCode": 2,
+      "durationMs": 16435,
+      "outputSha256": "sha256:004cfd604cf05e7f328166bf76e336a221a1af92df49cc724cdf28e9e05a64e7",
+      "outputTail": "    local_file = unpack_url(\n  File \"/usr/lib/python3/dist-packages/pip/_internal/operations/prepare.py\", line 214, in unpack_url\n    file = get_http_url(\n  File \"/usr/lib/python3/dist-packages/pip/_internal/operations/prepare.py\", line 94, in get_http_url\n    from_path, content_type = download(link, temp_dir.path)\n  File \"/usr/lib/python3/dist-packages/pip/_internal/network/download.py\", line 146, in __call__\n    for chunk in chunks:\n  File \"/usr/lib/python3/dist-packages/pip/_internal/cli/progress_bars.py\", line 304, in _rich_progress_bar\n    for chunk in iterable:\n  File \"/usr/lib/python3/dist-packages/pip/_internal/network/utils.py\", line 63, in response_chunks\n    for chunk in response.raw.stream(\n  File \"/usr/lib/python3/dist-packages/pip/_vendor/urllib3/response.py\", line 576, in stream\n    data = self.read(amt=amt, decode_content=decode_content)\n  File \"/usr/lib/python3/dist-packages/pip/_vendor/urllib3/response.py\", line 512, in read\n    with self._error_catcher():\n  File \"/usr/lib/python3.10/contextlib.py\", line 153, in __exit__\n    self.gen.throw(typ, value, traceback)\n  File \"/usr/lib/python3/dist-packages/pip/_vendor/urllib3/response.py\", line 443, in _error_catcher\n    raise ReadTimeoutError(self._pool, None, \"Read timed out.\")\npip._vendor.urllib3.exceptions.ReadTimeoutError: HTTPSConnectionPool(host='mirrors.aliyun.com', port=443): Read timed out."
+    }
+  ]
+}

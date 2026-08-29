@@ -1,0 +1,42 @@
+{
+  "caseId": "PUB-PYDICOM__PYDICOM-1428",
+  "method": "devorbit",
+  "attempts": 3,
+  "rca": {
+    "rootCause": "The `FileSet.find_values` method in pydicom/fileset.py only accepts a single element at a time. When called with `load=True` for multiple elements, each call reloads instances from disk, causing substantial overhead. The method needs to be modified to accept either a single element or an iterable of elements, loading each instance only once and searching for all requested elements in a single pass.",
+    "confidence": 0.95,
+    "evidence": [
+      "Issue states: 'fileset.FileSet.find_values only allows for elements to be searched for one at a time. When executing this action while setting load to True, this results in a substantial overhead.'",
+      "Hint confirms: 'Just change FileSet.find_values to support an element or iterable of elements.'",
+      "Repo map shows pydicom/fileset.py contains the FileSet class where find_values is defined"
+    ],
+    "filesToChange": [
+      "pydicom/fileset.py"
+    ]
+  },
+  "edits": [
+    {
+      "path": "pydicom/fileset.py",
+      "search": "    def find_values(self, element: str, load: bool = False) -> List[Union[str, int, float]]:\n        \"\"\"Return a list of the values of `element` from the instances in the\n        File-set.\n\n        Parameters\n        ----------\n        element : str\n            An element keyword such as 'PatientID'.\n        load : bool, optional\n            If ``True`` (default ``False``) load each instance before\n            searching for `element`.\n\n        Returns\n        -------\n        list of str/int/float\n            A list of the values of `element` from the instances in the\n            File-set.\n        \"\"\"\n        values = []\n        for instance in self:\n            if load:\n                instance = instance.load()\n\n            if element not in instance:\n                continue\n\n            val = instance[element].value\n            if val not in values:\n                values.append(val)\n\n        return values",
+      "replace": "    def find_values(\n        self,\n        element: Union[str, Iterable[str]],\n        load: bool = False\n    ) -> Union[List[Union[str, int, float]], Dict[str, List[Union[str, int, float]]]]:\n        \"\"\"Return a list of the values of `element` from the instances in the\n        File-set.\n\n        Parameters\n        ----------\n        element : str or iterable of str\n            An element keyword such as 'PatientID', or an iterable of keywords\n            such as ['PatientID', 'StudyInstanceUID'].\n        load : bool, optional\n            If ``True`` (default ``False``) load each instance before\n            searching for `element`.\n\n        Returns\n        -------\n        list of str/int/float or dict\n            If `element` is a single keyword, returns a list of the values of\n            `element` from the instances in the File-set. If `element` is an\n            iterable of keywords, returns a :class:`dict` with each keyword as\n            a key and the corresponding list of values as the value.\n        \"\"\"\n        if isinstance(element, str):\n            values: List[Union[str, int, float]] = []\n            for instance in self:\n                if load:\n                    instance = instance.load()\n\n                if element not in instance:\n                    continue\n\n                val = instance[element].value\n                if val not in values:\n                    values.append(val)\n\n            return values\n\n        # `element` is an iterable of keywords\n        results: Dict[str, List[Union[str, int, float]]] = {\n            elem: [] for elem in element\n        }\n        for instance in self:\n            if load:\n                instance = instance.load()\n\n            for elem in results:\n                if elem not in instance:\n                    continue\n\n                val = instance[elem].value\n                if val not in results[elem]:\n                    results[elem].append(val)\n\n        return results"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "edit apply failed: pydicom/fileset.py: search block not found (exact and whitespace-normalized match both failed) [search:     def find_values(self, element: str, load: bool = False) -> List[Union[str, int, float]]:\n        \"\"\"Return a list of the values of `element` from the instan]",
+    "changedPaths": [
+      "pydicom/fileset.py"
+    ]
+  },
+  "patchSha256": null,
+  "contextBytes": 10966,
+  "baselineTail": "===\nFAILED pydicom/tests/test_fileset.py::TestFileSet_Load::test_find_values - Va...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.51s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x pydicom/tests/test_fileset.py::TestFileSet_Load::test_find_values pydicom/tests/test_fileset.py::TestFileSet_Load::test_find_values_load\n",
+  "goldFiles": [
+    "pydicom/fileset.py"
+  ],
+  "model": "glm",
+  "modelCalls": 4
+}

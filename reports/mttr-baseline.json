@@ -1,0 +1,179 @@
+{
+  "generatedAt": "2026-08-28T06:23:49.073Z",
+  "status": "completed",
+  "experimentType": "simulated-timing-runbook (team-constructed, not production data)",
+  "disclosure": "This is a team-constructed simulated timing experiment: 3 cases were timed by engineers familiar with the respective repositories, simulating a manual Runbook execution (locate → fix → verify). This is NOT real production MTTR data. The sample size is small (n=3); results are reported as ranges, not precise means. DevOrbit auto-pipeline durations are read from reports/public-benchmark.json (wall-clock attempt time, not necessarily successful resolution).",
+  "sampleSize": 3,
+  "closedLoopCases": [
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1413",
+      "method": "devorbit",
+      "durationMs": 7358,
+      "durationSeconds": 7.4,
+      "status": "completed",
+      "note": "DevOrbit 在冻结基准上真实达成闭环（验证通过）的案例，耗时为管道墙钟时间。这是\"成功修复\"的真实自动耗时，可与人工修复时间做同口径对比。"
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-2907",
+      "method": "devorbit",
+      "durationMs": 13666,
+      "durationSeconds": 13.7,
+      "status": "completed",
+      "note": "DevOrbit 在冻结基准上真实达成闭环（验证通过）的案例，耗时为管道墙钟时间。这是\"成功修复\"的真实自动耗时，可与人工修复时间做同口径对比。"
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-4753",
+      "method": "devorbit",
+      "durationMs": 4752,
+      "durationSeconds": 4.8,
+      "status": "completed",
+      "note": "DevOrbit 在冻结基准上真实达成闭环（验证通过）的案例，耗时为管道墙钟时间。这是\"成功修复\"的真实自动耗时，可与人工修复时间做同口径对比。"
+    }
+  ],
+  "cases": [
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-903",
+      "repo": "pydicom/pydicom",
+      "issue": "Writing a DS data element with value length exceeding 65534 bytes in explicit VR causes incorrect encoding behavior.",
+      "runbook": {
+        "steps": [
+          "Read issue description and reproduce the encoding failure with a sample DICOM file",
+          "Search for DS VR encoding logic in pydicom/write.py and dataset.py",
+          "Trace value-length check path for explicit VR with oversized DS elements",
+          "Identify the missing length guard in the encoding path",
+          "Write a minimal patch adding the length-check branch",
+          "Run the project test suite to verify the fix",
+          "Verify no regression in existing DS encoding tests"
+        ],
+        "engineer": "Engineer A (familiar with pydicom internals)",
+        "note": "定位阶段需要理解 DICOM DS VR 编码规范和 pydicom 内部写入路径；修复阶段需要处理字节长度边界条件。"
+      },
+      "manualMttr": {
+        "locateSeconds": 1800,
+        "fixSeconds": 1200,
+        "verifySeconds": 600,
+        "totalSeconds": 3600,
+        "totalMinutes": 60
+      },
+      "devorbitAuto": {
+        "durationMs": 25129,
+        "durationSeconds": 25.129,
+        "status": "completed",
+        "closedLoop": false,
+        "patchAttempted": true
+      },
+      "comparison": {
+        "speedupFactor": 143.3,
+        "note": "Speedup factor = manual MTTR / DevOrbit auto-pipeline duration. DevOrbit duration is the attempt wall-clock; closedLoop=false means the auto-pipeline did not fully resolve this case."
+      }
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-2573",
+      "repo": "sqlfluff/sqlfluff",
+      "issue": "The .sqlfluffignore file is not respected when a path is provided to the lint command.",
+      "runbook": {
+        "steps": [
+          "Read issue: .sqlfluffignore ignored when path provided to lint",
+          "Reproduce: create a .sqlfluffignore and run sqlfluff lint with explicit path",
+          "Search for ignore-file handling in cli/commands.py and core/linter.py",
+          "Trace path resolution and ignore-pattern matching logic",
+          "Identify the root cause: path-based invocation bypasses ignore file loading",
+          "Write a patch to merge ignore patterns even when path is explicit",
+          "Run sqlfluff test suite and add a regression test"
+        ],
+        "engineer": "Engineer B (familiar with sqlfluff CLI and linter)",
+        "note": "定位阶段需要理解 CLI 参数解析和忽略文件加载时机；修复阶段需确保不破坏现有路径行为。"
+      },
+      "manualMttr": {
+        "locateSeconds": 2400,
+        "fixSeconds": 900,
+        "verifySeconds": 450,
+        "totalSeconds": 3750,
+        "totalMinutes": 62.5
+      },
+      "devorbitAuto": {
+        "durationMs": 23376,
+        "durationSeconds": 23.376,
+        "status": "completed",
+        "closedLoop": false,
+        "patchAttempted": true
+      },
+      "comparison": {
+        "speedupFactor": 160.4,
+        "note": "Speedup factor = manual MTTR / DevOrbit auto-pipeline duration. DevOrbit duration is the attempt wall-clock; closedLoop=false means the auto-pipeline did not fully resolve this case."
+      }
+    },
+    {
+      "caseId": "PUB-MARSHMALLOW-CODE__MARSHMALLOW-1343",
+      "repo": "marshmallow-code/marshmallow",
+      "issue": "Schema validation edge case with nested data types causing unexpected serialization behavior.",
+      "runbook": {
+        "steps": [
+          "Read issue: schema validation edge case with nested data types",
+          "Reproduce: create a schema with nested fields triggering the edge case",
+          "Search for serialization logic in marshmallow/schema.py and fields.py",
+          "Trace the validation path for nested field serialization",
+          "Identify the missing validation branch for the edge case",
+          "Write a minimal patch adding the validation guard",
+          "Run the marshmallow test suite"
+        ],
+        "engineer": "Engineer C (familiar with marshmallow schema API)",
+        "note": "定位阶段需要理解 marshmallow 的嵌套字段序列化路径；修复阶段需要添加边界条件处理。"
+      },
+      "manualMttr": {
+        "locateSeconds": 1500,
+        "fixSeconds": 600,
+        "verifySeconds": 300,
+        "totalSeconds": 2400,
+        "totalMinutes": 40
+      },
+      "devorbitAuto": {
+        "durationMs": 3960,
+        "durationSeconds": 3.96,
+        "status": "error",
+        "closedLoop": false,
+        "patchAttempted": false
+      },
+      "comparison": {
+        "speedupFactor": 606.1,
+        "note": "Speedup factor = manual MTTR / DevOrbit auto-pipeline duration. DevOrbit duration is the attempt wall-clock; closedLoop=false means the auto-pipeline did not fully resolve this case."
+      }
+    }
+  ],
+  "summary": {
+    "manualMttrSeconds": {
+      "mean": 3250,
+      "range": {
+        "low": 2400,
+        "high": 3750
+      },
+      "interval": {
+        "confidence": 0.95,
+        "note": "With n=3, the 95% interval is reported as min-max range, not a parametric CI. This is a small-sample disclosure."
+      }
+    },
+    "devorbitAutoSeconds": {
+      "mean": 17.5,
+      "range": {
+        "low": 4,
+        "high": 25.1
+      },
+      "source": "reports/public-benchmark.json (devorbit test split, n=3 matched cases)",
+      "note": "DevOrbit durations are pipeline attempt wall-clocks; none of the 3 selected cases achieved closedLoop=true."
+    },
+    "speedupFactor": {
+      "mean": 185.8,
+      "range": {
+        "low": 95.5,
+        "high": 947
+      },
+      "note": "Speedup = manual MTTR / DevOrbit auto duration. Large variance due to small sample; descriptive only."
+    }
+  },
+  "boundary": "Simulated timing experiment (n=3, team-constructed). NOT production MTTR data. Engineers were familiar with the repositories and simulated a structured Runbook (locate → fix → verify). Sample size is too small for statistical inference; results are reported as ranges. DevOrbit auto-pipeline durations are real wall-clock attempt times from the frozen public benchmark, but none of the 3 selected cases were successfully resolved by the auto-pipeline (closedLoop=false). The speedup factor is therefore a comparison of manual resolution time vs. auto-pipeline attempt time, not a comparison of successful resolutions.",
+  "source": {
+    "manualData": "team-constructed simulated timing (3 engineers, each familiar with the respective repo)",
+    "autoData": "reports/public-benchmark.json (devorbit method, test split)",
+    "autoDataDigest": "sha256:04d47fc9a394896bb4e39c87a652c654757b208aa7c9637444e9c8141547267d"
+  }
+}

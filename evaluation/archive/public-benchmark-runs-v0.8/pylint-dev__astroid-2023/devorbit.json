@@ -1,0 +1,23 @@
+{
+  "caseId": "PUB-PYLINT-DEV__ASTROID-2023",
+  "method": "devorbit",
+  "attempts": 2,
+  "rca": {
+    "files": [
+      "astroid/nodes/node_classes.py"
+    ]
+  },
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "git apply --check failed: \nerror: corrupt patch at line 14\n\nCommand failed: git apply --check model.patch\nerror: corrupt patch at line 14\n"
+  },
+  "patchSha256": "sha256:3539e1d5c52ea593f75b66948d2cb105911d8aa475dd906469040546917a459a",
+  "contextBytes": 6734,
+  "baselineTail": "e\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.52s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x tests/test_utils.py::InferenceUtil::test_not_exclusive_walrus_multiple tests/test_utils.py::InferenceUtil::test_not_exclusive_walrus_operator tests/test_utils.py::InferenceUtil::test_not_exclusive_walrus_operator_nested\n",
+  "goldFiles": [
+    "astroid/nodes/node_classes.py"
+  ]
+}

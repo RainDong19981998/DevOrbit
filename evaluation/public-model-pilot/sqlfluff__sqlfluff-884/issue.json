@@ -1,0 +1,9 @@
+{
+  "url": "https://github.com/sqlfluff/sqlfluff/issues/847",
+  "number": 847,
+  "title": "Whitespace token is_whitespace is False",
+  "body": "I expect segment.is_whitespace of a Whitespace token is True, however, it is set to False.\n\n## Expected Behaviour\nsegment.is_whitespace return True\n\n## Observed Behaviour\nsegment.is_whitespace return False\n## Steps to Reproduce\n\n## Version\nInclude the output of `sqlfluff --version` along with your Python version\n\n## Configuration\n```\nInclude your SQLFluff configuration here\n```",
+  "state": "closed",
+  "createdAt": "2021-03-05T09:00:46Z",
+  "updatedAt": "2021-03-24T10:53:57Z"
+}

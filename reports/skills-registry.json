@@ -1,0 +1,170 @@
+{
+  "schema": "devorbit.skills-registry/v1",
+  "version": "0.9.6",
+  "generatedAt": "2026-08-29T11:27:52.626Z",
+  "summary": {
+    "skills": 8,
+    "custom": 7,
+    "official": 1,
+    "versionsAligned": true
+  },
+  "traceability": "每次运行的 trace 事件记录 skillVersion 与 skillDigest（见 src/runtime/trace.js），MCP 审计按 Agent×Tool allowlist 关联；任一业务结果可回溯到产生它的 Skill 版本与文件摘要。",
+  "skills": [
+    {
+      "id": "evidence-rca",
+      "version": "1.0.0",
+      "digest": "sha256:b2603bc3ec0513699e345ea489b2cb7761f253775ab500acf702b11aeb558b42",
+      "path": "skills/evidence-rca/SKILL.md",
+      "catalogName": "EvidenceRCA",
+      "catalogVersionAligned": true,
+      "binding": {
+        "worker": "rca-worker",
+        "package": "worker-packages/dist/rca-worker.zip"
+      },
+      "lifecycle": {
+        "registry": "skills-registry.json",
+        "versioning": "SemVer（MAJOR.MINOR.PATCH）",
+        "distribution": "worker package ZIP（skills/<id>/SKILL.md 打包进对应 Worker）",
+        "rollback": "保留上一版本 ZIP 与 SKILL.md 快照，digest 可比对",
+        "retirement": "recallStatus/调用审计连续为空且无依赖案例时退役"
+      }
+    },
+    {
+      "id": "impact-map",
+      "version": "1.0.0",
+      "digest": "sha256:357ee194d6032d958541c2e9a52e7779d9e7b073d56b78fdb996faaa89d08624",
+      "path": "skills/impact-map/SKILL.md",
+      "catalogName": "ImpactMap",
+      "catalogVersionAligned": true,
+      "binding": {
+        "worker": "impact-worker",
+        "package": "worker-packages/dist/impact-worker.zip"
+      },
+      "lifecycle": {
+        "registry": "skills-registry.json",
+        "versioning": "SemVer（MAJOR.MINOR.PATCH）",
+        "distribution": "worker package ZIP（skills/<id>/SKILL.md 打包进对应 Worker）",
+        "rollback": "保留上一版本 ZIP 与 SKILL.md 快照，digest 可比对",
+        "retirement": "recallStatus/调用审计连续为空且无依赖案例时退役"
+      }
+    },
+    {
+      "id": "knowledge-card",
+      "version": "1.0.0",
+      "digest": "sha256:712f723b75865c5c896fb2c33a875710f68b944725c451b7fae17ad1e9665bc0",
+      "path": "skills/knowledge-card/SKILL.md",
+      "catalogName": "KnowledgeCard",
+      "catalogVersionAligned": true,
+      "binding": {
+        "worker": "learning-worker",
+        "package": "worker-packages/dist/learning-worker.zip"
+      },
+      "lifecycle": {
+        "registry": "skills-registry.json",
+        "versioning": "SemVer（MAJOR.MINOR.PATCH）",
+        "distribution": "worker package ZIP（skills/<id>/SKILL.md 打包进对应 Worker）",
+        "rollback": "保留上一版本 ZIP 与 SKILL.md 快照，digest 可比对",
+        "retirement": "recallStatus/调用审计连续为空且无依赖案例时退役"
+      }
+    },
+    {
+      "id": "patch-plan",
+      "version": "1.0.0",
+      "digest": "sha256:163cc0dd0211847f75fccbe248afe2919130c5ad8bf0339989b76875acccf6c2",
+      "path": "skills/patch-plan/SKILL.md",
+      "catalogName": "PatchPlan",
+      "catalogVersionAligned": true,
+      "binding": {
+        "worker": "patch-worker",
+        "package": "worker-packages/dist/patch-worker.zip"
+      },
+      "lifecycle": {
+        "registry": "skills-registry.json",
+        "versioning": "SemVer（MAJOR.MINOR.PATCH）",
+        "distribution": "worker package ZIP（skills/<id>/SKILL.md 打包进对应 Worker）",
+        "rollback": "保留上一版本 ZIP 与 SKILL.md 快照，digest 可比对",
+        "retirement": "recallStatus/调用审计连续为空且无依赖案例时退役"
+      }
+    },
+    {
+      "id": "release-guard",
+      "version": "1.0.0",
+      "digest": "sha256:6cbf5b9bd0f31dea284a7466255d812fdb7e755ecfb475fec85028655c1991cc",
+      "path": "skills/release-guard/SKILL.md",
+      "catalogName": "ReleaseGuard",
+      "catalogVersionAligned": true,
+      "binding": {
+        "worker": "release-worker",
+        "package": "worker-packages/dist/release-worker.zip"
+      },
+      "lifecycle": {
+        "registry": "skills-registry.json",
+        "versioning": "SemVer（MAJOR.MINOR.PATCH）",
+        "distribution": "worker package ZIP（skills/<id>/SKILL.md 打包进对应 Worker）",
+        "rollback": "保留上一版本 ZIP 与 SKILL.md 快照，digest 可比对",
+        "retirement": "recallStatus/调用审计连续为空且无依赖案例时退役"
+      }
+    },
+    {
+      "id": "signal-fusion",
+      "version": "1.0.0",
+      "digest": "sha256:5ed67b275ab80ce0c913aeb4cbf3f28a0772eb6773cc450e0557cd57fe0ff6ec",
+      "path": "skills/signal-fusion/SKILL.md",
+      "catalogName": "SignalFusion",
+      "catalogVersionAligned": true,
+      "binding": {
+        "worker": "intake-worker",
+        "package": "worker-packages/dist/intake-worker.zip"
+      },
+      "lifecycle": {
+        "registry": "skills-registry.json",
+        "versioning": "SemVer（MAJOR.MINOR.PATCH）",
+        "distribution": "worker package ZIP（skills/<id>/SKILL.md 打包进对应 Worker）",
+        "rollback": "保留上一版本 ZIP 与 SKILL.md 快照，digest 可比对",
+        "retirement": "recallStatus/调用审计连续为空且无依赖案例时退役"
+      }
+    },
+    {
+      "id": "test-gate",
+      "version": "1.0.0",
+      "digest": "sha256:af6f74bbae9075eca2979479dbc307a206b65fee256304661788175695f27e19",
+      "path": "skills/test-gate/SKILL.md",
+      "catalogName": "TestGate",
+      "catalogVersionAligned": true,
+      "binding": {
+        "worker": "verify-worker",
+        "package": "worker-packages/dist/verify-worker.zip"
+      },
+      "lifecycle": {
+        "registry": "skills-registry.json",
+        "versioning": "SemVer（MAJOR.MINOR.PATCH）",
+        "distribution": "worker package ZIP（skills/<id>/SKILL.md 打包进对应 Worker）",
+        "rollback": "保留上一版本 ZIP 与 SKILL.md 快照，digest 可比对",
+        "retirement": "recallStatus/调用审计连续为空且无依赖案例时退役"
+      }
+    },
+    {
+      "id": "alibabacloud-sls-query",
+      "version": "0.0.2",
+      "official": true,
+      "digest": "sha256:2fd654d2a748f15716f2702f59164de43ff87342af7cdb7560f8b741d3c50324",
+      "path": "third_party/aliyun/alibabacloud-sls-query-0.0.2-devorbit-curated.zip",
+      "catalogName": "SLS Query",
+      "catalogVersionAligned": true,
+      "binding": {
+        "workers": [
+          "intake-worker",
+          "rca-worker"
+        ],
+        "mode": "fixture-backed observability MCP; no cloud API call"
+      },
+      "lifecycle": {
+        "registry": "skills-registry.json",
+        "versioning": "官方门户版本锁定（portalContentHash + repositorySnapshot）",
+        "distribution": "合规裁剪快照（third_party/aliyun/）",
+        "rollback": "门户下载 URL 与快照哈希可复核",
+        "retirement": "跟随官方门户版本策略"
+      }
+    }
+  ]
+}

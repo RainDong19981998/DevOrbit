@@ -1,11 +1,11 @@
 {
-  "dataset": "DevOrbit Adversarial Policy Cases v0.1",
-  "disclosure": "Deterministic local attack simulations. Identity authentication remains a production gateway responsibility; this benchmark validates authorization, approval integrity, scope, expiry, and schema enforcement.",
-  "generatedAt": "2026-08-13T14:30:25.575Z",
+  "dataset": "DevOrbit Adversarial Policy Cases v0.2",
+  "disclosure": "Deterministic local attack simulations. Identity authentication remains a production gateway responsibility; this benchmark validates authorization, approval integrity, scope, expiry, schema enforcement, evidence-chain integrity, branch isolation, and migration gate enforcement.",
+  "generatedAt": "2026-08-29T11:48:58.953Z",
   "summary": {
-    "cases": 6,
-    "passed": 6,
-    "deniedAuditRecords": 5
+    "cases": 9,
+    "passed": 9,
+    "deniedAuditRecords": 6
   },
   "cases": [
     {
@@ -48,6 +48,27 @@
       "attack": "schema confusion with unknown argument",
       "expected": "Invalid tool arguments: $ has unknown command",
       "observed": "Invalid tool arguments: $ has unknown command",
+      "passed": true
+    },
+    {
+      "id": "SEC-007",
+      "attack": "evidence chain stageHash tamper",
+      "expected": "evidence chain tamper detected",
+      "observed": "evidence chain tamper detected",
+      "passed": true
+    },
+    {
+      "id": "SEC-008",
+      "attack": "db migration cross-branch write",
+      "expected": "case scope mismatch",
+      "observed": "case scope mismatch",
+      "passed": true
+    },
+    {
+      "id": "SEC-009",
+      "attack": "malicious migration drops table",
+      "expected": "migration gate rejected DROP TABLE",
+      "observed": "migration gate rejected DROP TABLE",
       "passed": true
     }
   ]

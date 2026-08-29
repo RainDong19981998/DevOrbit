@@ -1,0 +1,64 @@
+{
+  "caseId": "PUB-SQLFLUFF__SQLFLUFF-2907",
+  "method": "devorbit",
+  "attempts": 1,
+  "rca": {
+    "rootCause": "SQLFluff's Jinja templater has custom logic that attempts to detect undeclared Jinja variables and report them as 'Undefined jinja template variable' errors. This custom undefined-variable check does not account for Jinja's block-assignment syntax (`{% set some_var %}...{% endset %}`, added in Jinja 2.8). It only recognizes the standard assignment form (`{% set some_var = value %}`). When a variable is defined via block assignment (especially inside an `{% if %}` block), the custom check fails to register it as defined, producing false 'Undefined jinja template variable' errors for subsequent references to that variable. The fix needs to make the undefined variable detection logic more sophisticated to recognize block-assignment set statements as variable definitions.",
+    "confidence": 0.9,
+    "evidence": [
+      "Issue title: 'sqlfluff doesn't recognise a jinja variable set inside of \"if\" statement'",
+      "Reproduction uses block assignment: '{% set some_var %}1{% endset %}' followed by '{{some_var}}'",
+      "Error reported: 'Undefined jinja template variable: some_var' on lines 2 and 3",
+      "Hint: 'SQLFluff contains some additional code that attempts to detect undeclared Jinja variables and provide better error handling. The \"issue\" is being detected and reported by that code, not by Jinja itself.'",
+      "Hint: 'Need to do this carefully so we don't break error reporting for real errors. I think I have a fix. Just need to make the undefined variable check more sophisticated.'",
+      "Hint: 'It was added in Jinja 2.8: https://jinja.palletsprojects.com/en/3.0.x/templates/#block-assignments'",
+      "The Jinja templater source file src/sqlfluff/core/templaters/jinja.py contains the custom variable tracing/undefined detection logic"
+    ],
+    "filesToChange": [
+      "src/sqlfluff/core/templaters/jinja.py"
+    ]
+  },
+  "edits": [
+    {
+      "path": "src/sqlfluff/core/templaters/jinja.py",
+      "search": "    @classmethod\n    def _crawl_tree(cls, tree, variable_names, raw):\n        \"\"\"Crawl the tree looking for occurrences of the undeclared values.\"\"\"\n        # First iterate through children\n        for elem in tree.iter_child_nodes():\n            yield from cls._crawl_tree(elem, variable_names, raw)\n        # Then assess self\n        if isinstance(tree, jinja2.nodes.Name) and tree.name in variable_names:\n            line_no = tree.lineno\n            line = raw.split(\"\\n\")[line_no - 1]\n            pos = line.index(tree.name) + 1\n            yield SQLTemplaterError(\n                f\"Undefined jinja template variable: {tree.name!r}\",\n                line_no=line_no,\n                line_pos=pos,\n            )",
+      "replace": "    @classmethod\n    def _crawl_tree(cls, tree, variable_names, raw):\n        \"\"\"Crawl the tree looking for occurrences of the undeclared values.\"\"\"\n        # First iterate through children\n        for elem in tree.iter_child_nodes():\n            yield from cls._crawl_tree(elem, variable_names, raw)\n        # Then assess self\n        if isinstance(tree, jinja2.nodes.Name) and tree.name in variable_names:\n            line_no = tree.lineno\n            line = raw.split(\"\\n\")[line_no - 1]\n            pos = line.index(tree.name) + 1\n            yield SQLTemplaterError(\n                f\"Undefined jinja template variable: {tree.name!r}\",\n                line_no=line_no,\n                line_pos=pos,\n            )\n\n    @classmethod\n    def _find_variable_definitions(cls, tree):\n        \"\"\"Find variables defined in the tree via assignment.\n\n        This handles both standard assignments (``{% set x = ... %}``) and\n        block assignments (``{% set x %}...{% endset %}``, Jinja 2.8+).\n        ``meta.find_undeclared_variables`` does not count block-assignment\n        targets as declarations, so we collect them here to avoid false\n        positives.\n        \"\"\"\n        defined = set()\n        for elem in tree.find_all(jinja2.nodes.Assign):\n            target = elem.target\n            if isinstance(target, jinja2.nodes.Name):\n                defined.add(target.name)\n        for elem in tree.find_all(jinja2.nodes.AssignBlock):\n            target = elem.target\n            if isinstance(target, jinja2.nodes.Name):\n                defined.add(target.name)\n        return defined"
+    },
+    {
+      "path": "src/sqlfluff/core/templaters/jinja.py",
+      "search": "        if undefined_variables:\n            # Lets go through and find out where they are:\n            for val in self._crawl_tree(syntax_tree, undefined_variables, in_str):\n                violations.append(val)",
+      "replace": "        # Remove variables that are defined within the template itself via\n        # assignment (including block assignments). Jinja's static analysis\n        # (meta.find_undeclared_variables) does not account for block\n        # assignments (``{% set x %}...{% endset %}``), so we do it here.\n        defined_in_template = self._find_variable_definitions(syntax_tree)\n        undefined_variables -= defined_in_template\n\n        if undefined_variables:\n            # Lets go through and find out where they are:\n            for val in self._crawl_tree(syntax_tree, undefined_variables, in_str):\n                violations.append(val)"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": true,
+    "safetyViolation": false,
+    "testsPassed": true,
+    "closedLoop": true,
+    "detail": "F2P green; P2P green ........                                                                 [100%]\n8 passed in 0.09s\n",
+    "f2pLogTail": "",
+    "changedPaths": [
+      "src/sqlfluff/core/templaters/jinja.py"
+    ],
+    "appliedMethods": [
+      {
+        "path": "src/sqlfluff/core/templaters/jinja.py",
+        "method": "exact",
+        "ambiguous": false
+      },
+      {
+        "path": "src/sqlfluff/core/templaters/jinja.py",
+        "method": "exact",
+        "ambiguous": false
+      }
+    ]
+  },
+  "patchSha256": "sha256:5f9d6d0bffbea0684290b714d6a3e090d23c4939e8cf2c3fdb8ac2fcc4cf49c7",
+  "contextBytes": 14336,
+  "baselineTail": "ry info ============================\nFAILED test/core/templaters/jinja_test.py::test__templater_jinja_dynamic_variable_no_violations\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.10s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x test/core/templaters/jinja_test.py::test__templater_jinja_dynamic_variable_no_violations\n",
+  "goldFiles": [
+    "src/sqlfluff/core/templaters/jinja.py"
+  ],
+  "model": "glm",
+  "modelCalls": 2
+}

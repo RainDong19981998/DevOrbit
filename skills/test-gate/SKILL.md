@@ -1,5 +1,6 @@
 ---
 name: test-gate
+version: 1.0.0
 description: Select and run regression, contract, build, static-analysis, and security checks based on change impact, then produce a reproducible quality-gate decision. Use after a patch or before release; never bypass a required failing test.
 ---
 

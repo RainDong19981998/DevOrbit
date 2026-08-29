@@ -1,0 +1,24 @@
+{
+  "caseId": "PUB-SQLFLUFF__SQLFLUFF-2573",
+  "method": "devorbit",
+  "attempts": 2,
+  "rca": {
+    "files": [
+      "src/sqlfluff/core/linter.py"
+    ]
+  },
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "git apply --check failed: \nerror: src/sqlfluff/core/linter.py: No such file or directory\n\nCommand failed: git apply --check model.patch\nerror: src/sqlfluff/core/linter.py: No such file or directory\n"
+  },
+  "patchSha256": "sha256:1660932dde9064ff3c4e82e777061e67882504413b896ea9ff069b3260430ad2",
+  "contextBytes": 8000,
+  "baselineTail": " info ============================\nFAILED test/core/linter_test.py::test__linter__path_from_paths__sqlfluffignore_current_directory\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.19s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x test/core/linter_test.py::test__linter__path_from_paths__sqlfluffignore_current_directory\n",
+  "goldFiles": [
+    "src/sqlfluff/core/config.py",
+    "src/sqlfluff/core/linter/linter.py"
+  ]
+}

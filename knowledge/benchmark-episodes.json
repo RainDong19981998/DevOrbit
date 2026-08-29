@@ -1,0 +1,1322 @@
+[
+  {
+    "id": "BENCH-EP-043919a5a51f1274",
+    "title": "公开基准失败模式：fix-logic-incomplete（sqlfluff/sqlfluff）",
+    "summary": "在 sqlfluff/sqlfluff 的冻结基准案例上观察到 fix-logic-incomplete 失败模式，涉及 PUB-SQLFLUFF__SQLFLUFF-1577。编辑成功应用且无回归（P2P 绿），但目标失败测试（F2P）仍红，说明修复逻辑未覆盖根因。应结合失败测试输出定位遗漏分支，二次生成时只补差异。",
+    "pattern": "fix-logic-incomplete",
+    "tags": [
+      "public-benchmark",
+      "sqlfluff/sqlfluff",
+      "fix-logic-incomplete"
+    ],
+    "tenant": "public-benchmark",
+    "service": "sqlfluff/sqlfluff",
+    "environment": "benchmark",
+    "evidence": [
+      "F2P red; P2P green "
+    ],
+    "negativeLessons": [
+      {
+        "description": "编辑成功应用且无回归（P2P 绿），但目标失败测试（F2P）仍红，说明修复逻辑未覆盖根因。应结合失败测试输出定位遗漏分支，二次生成时只补差异。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "devorbit"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.915Z"
+  },
+  {
+    "id": "BENCH-EP-1091f6f2dfa5e727",
+    "title": "公开基准失败模式：other（marshmallow-code/marshmallow）",
+    "summary": "在 marshmallow-code/marshmallow 的冻结基准案例上观察到 other 失败模式，涉及 PUB-MARSHMALLOW-CODE__MARSHMALLOW-1359。基准失败模式 other，需在下一轮避免。",
+    "pattern": "other",
+    "tags": [
+      "public-benchmark",
+      "marshmallow-code/marshmallow",
+      "other"
+    ],
+    "tenant": "public-benchmark",
+    "service": "marshmallow-code/marshmallow",
+    "environment": "benchmark",
+    "evidence": [
+      "git apply --check failed: \nerror: patch failed: src/marshmallow/fields.py:1114\nerror: src/marshmallow/fields.py: patch does not apply\n\nCommand failed: git apply --check model.patch\nerror: patch failed"
+    ],
+    "negativeLessons": [
+      {
+        "description": "基准失败模式 other，需在下一轮避免。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "devorbit"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.914Z"
+  },
+  {
+    "id": "BENCH-EP-182d660601154c1c",
+    "title": "公开基准失败模式：fix-logic-incomplete（pydicom/pydicom）",
+    "summary": "在 pydicom/pydicom 的冻结基准案例上观察到 fix-logic-incomplete 失败模式，涉及 PUB-PYDICOM__PYDICOM-903。编辑成功应用且无回归（P2P 绿），但目标失败测试（F2P）仍红，说明修复逻辑未覆盖根因。应结合失败测试输出定位遗漏分支，二次生成时只补差异。",
+    "pattern": "fix-logic-incomplete",
+    "tags": [
+      "public-benchmark",
+      "pydicom/pydicom",
+      "fix-logic-incomplete"
+    ],
+    "tenant": "public-benchmark",
+    "service": "pydicom/pydicom",
+    "environment": "benchmark",
+    "evidence": [
+      "F2P red; P2P green "
+    ],
+    "negativeLessons": [
+      {
+        "description": "编辑成功应用且无回归（P2P 绿），但目标失败测试（F2P）仍红，说明修复逻辑未覆盖根因。应结合失败测试输出定位遗漏分支，二次生成时只补差异。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "devorbit"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.915Z"
+  },
+  {
+    "id": "BENCH-EP-1b1555b459d55d97",
+    "title": "公开基准失败模式：search-block-mismatch（sqlfluff/sqlfluff）",
+    "summary": "在 sqlfluff/sqlfluff 的冻结基准案例上观察到 search-block-mismatch 失败模式，涉及 PUB-SQLFLUFF__SQLFLUFF-1577。search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。",
+    "pattern": "search-block-mismatch",
+    "tags": [
+      "public-benchmark",
+      "sqlfluff/sqlfluff",
+      "search-block-mismatch"
+    ],
+    "tenant": "public-benchmark",
+    "service": "sqlfluff/sqlfluff",
+    "environment": "benchmark",
+    "evidence": [
+      "edit apply failed: src/sqlfluff/core/templaters/base.py: search block not found (exact and whitespace-normalized match both failed) [search:         # Find the index of the first slice which ends _aft"
+    ],
+    "negativeLessons": [
+      {
+        "description": "search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "single-agent"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.915Z"
+  },
+  {
+    "id": "BENCH-EP-22657210b877a19f",
+    "title": "公开基准失败模式：fix-logic-incomplete（pydicom/pydicom）",
+    "summary": "在 pydicom/pydicom 的冻结基准案例上观察到 fix-logic-incomplete 失败模式，涉及 PUB-PYDICOM__PYDICOM-839。编辑成功应用且无回归（P2P 绿），但目标失败测试（F2P）仍红，说明修复逻辑未覆盖根因。应结合失败测试输出定位遗漏分支，二次生成时只补差异。",
+    "pattern": "fix-logic-incomplete",
+    "tags": [
+      "public-benchmark",
+      "pydicom/pydicom",
+      "fix-logic-incomplete"
+    ],
+    "tenant": "public-benchmark",
+    "service": "pydicom/pydicom",
+    "environment": "benchmark",
+    "evidence": [
+      "F2P red; P2P green "
+    ],
+    "negativeLessons": [
+      {
+        "description": "编辑成功应用且无回归（P2P 绿），但目标失败测试（F2P）仍红，说明修复逻辑未覆盖根因。应结合失败测试输出定位遗漏分支，二次生成时只补差异。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "devorbit"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.915Z"
+  },
+  {
+    "id": "BENCH-EP-25952be65a5102bd",
+    "title": "公开基准失败模式：search-block-mismatch（sqlfluff/sqlfluff）",
+    "summary": "在 sqlfluff/sqlfluff 的冻结基准案例上观察到 search-block-mismatch 失败模式，涉及 PUB-SQLFLUFF__SQLFLUFF-2998。search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。",
+    "pattern": "search-block-mismatch",
+    "tags": [
+      "public-benchmark",
+      "sqlfluff/sqlfluff",
+      "search-block-mismatch"
+    ],
+    "tenant": "public-benchmark",
+    "service": "sqlfluff/sqlfluff",
+    "environment": "benchmark",
+    "evidence": [
+      "edit apply failed: src/sqlfluff/rules/L027.py: search block not found (exact and whitespace-normalized match both failed) [search:         # Iterate through all the references that are in columns\n    "
+    ],
+    "negativeLessons": [
+      {
+        "description": "search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "single-agent"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.915Z"
+  },
+  {
+    "id": "BENCH-EP-286d0352a2736fab",
+    "title": "公开基准失败模式：fix-logic-incomplete（marshmallow-code/marshmallow）",
+    "summary": "在 marshmallow-code/marshmallow 的冻结基准案例上观察到 fix-logic-incomplete 失败模式，涉及 PUB-MARSHMALLOW-CODE__MARSHMALLOW-1359。编辑成功应用且无回归（P2P 绿），但目标失败测试（F2P）仍红，说明修复逻辑未覆盖根因。应结合失败测试输出定位遗漏分支，二次生成时只补差异。",
+    "pattern": "fix-logic-incomplete",
+    "tags": [
+      "public-benchmark",
+      "marshmallow-code/marshmallow",
+      "fix-logic-incomplete"
+    ],
+    "tenant": "public-benchmark",
+    "service": "marshmallow-code/marshmallow",
+    "environment": "benchmark",
+    "evidence": [
+      "F2P red; P2P green "
+    ],
+    "negativeLessons": [
+      {
+        "description": "编辑成功应用且无回归（P2P 绿），但目标失败测试（F2P）仍红，说明修复逻辑未覆盖根因。应结合失败测试输出定位遗漏分支，二次生成时只补差异。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "single-agent"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.914Z"
+  },
+  {
+    "id": "BENCH-EP-2a8ddfad805f1bcd",
+    "title": "公开基准失败模式：fix-logic-incomplete（sqlfluff/sqlfluff）",
+    "summary": "在 sqlfluff/sqlfluff 的冻结基准案例上观察到 fix-logic-incomplete 失败模式，涉及 PUB-SQLFLUFF__SQLFLUFF-2998。编辑成功应用且无回归（P2P 绿），但目标失败测试（F2P）仍红，说明修复逻辑未覆盖根因。应结合失败测试输出定位遗漏分支，二次生成时只补差异。",
+    "pattern": "fix-logic-incomplete",
+    "tags": [
+      "public-benchmark",
+      "sqlfluff/sqlfluff",
+      "fix-logic-incomplete"
+    ],
+    "tenant": "public-benchmark",
+    "service": "sqlfluff/sqlfluff",
+    "environment": "benchmark",
+    "evidence": [
+      "F2P red; P2P green "
+    ],
+    "negativeLessons": [
+      {
+        "description": "编辑成功应用且无回归（P2P 绿），但目标失败测试（F2P）仍红，说明修复逻辑未覆盖根因。应结合失败测试输出定位遗漏分支，二次生成时只补差异。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "devorbit"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.915Z"
+  },
+  {
+    "id": "BENCH-EP-3a2c928cdfd8c9c6",
+    "title": "公开基准失败模式：other（marshmallow-code/marshmallow）",
+    "summary": "在 marshmallow-code/marshmallow 的冻结基准案例上观察到 other 失败模式，涉及 PUB-MARSHMALLOW-CODE__MARSHMALLOW-1343。基准失败模式 other，需在下一轮避免。",
+    "pattern": "other",
+    "tags": [
+      "public-benchmark",
+      "marshmallow-code/marshmallow",
+      "other"
+    ],
+    "tenant": "public-benchmark",
+    "service": "marshmallow-code/marshmallow",
+    "environment": "benchmark",
+    "evidence": [
+      "git apply --check failed: \nerror: marshmallow/schema.py: No such file or directory\n\nCommand failed: git apply --check model.patch\nerror: marshmallow/schema.py: No such file or directory\n"
+    ],
+    "negativeLessons": [
+      {
+        "description": "基准失败模式 other，需在下一轮避免。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "devorbit"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.914Z"
+  },
+  {
+    "id": "BENCH-EP-3e1b59ef89de0031",
+    "title": "公开基准失败模式：fix-logic-incomplete（pydicom/pydicom）",
+    "summary": "在 pydicom/pydicom 的冻结基准案例上观察到 fix-logic-incomplete 失败模式，涉及 PUB-PYDICOM__PYDICOM-1413。编辑成功应用且无回归（P2P 绿），但目标失败测试（F2P）仍红，说明修复逻辑未覆盖根因。应结合失败测试输出定位遗漏分支，二次生成时只补差异。",
+    "pattern": "fix-logic-incomplete",
+    "tags": [
+      "public-benchmark",
+      "pydicom/pydicom",
+      "fix-logic-incomplete"
+    ],
+    "tenant": "public-benchmark",
+    "service": "pydicom/pydicom",
+    "environment": "benchmark",
+    "evidence": [
+      "F2P red; P2P green "
+    ],
+    "negativeLessons": [
+      {
+        "description": "编辑成功应用且无回归（P2P 绿），但目标失败测试（F2P）仍红，说明修复逻辑未覆盖根因。应结合失败测试输出定位遗漏分支，二次生成时只补差异。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "devorbit"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.915Z"
+  },
+  {
+    "id": "BENCH-EP-49e10bd8f367f982",
+    "title": "公开基准失败模式：search-block-mismatch（marshmallow-code/marshmallow）",
+    "summary": "在 marshmallow-code/marshmallow 的冻结基准案例上观察到 search-block-mismatch 失败模式，涉及 PUB-MARSHMALLOW-CODE__MARSHMALLOW-1343。search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。",
+    "pattern": "search-block-mismatch",
+    "tags": [
+      "public-benchmark",
+      "marshmallow-code/marshmallow",
+      "search-block-mismatch"
+    ],
+    "tenant": "public-benchmark",
+    "service": "marshmallow-code/marshmallow",
+    "environment": "benchmark",
+    "evidence": [
+      "edit apply failed: src/marshmallow/schema.py: search block not found (exact and whitespace-normalized match both failed) [search:     def _invoke_field_validators(self, unmarshal, data, many):\n       "
+    ],
+    "negativeLessons": [
+      {
+        "description": "search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "single-agent"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.914Z"
+  },
+  {
+    "id": "BENCH-EP-4c766102041881ff",
+    "title": "公开基准失败模式：fix-logic-incomplete（pydicom/pydicom）",
+    "summary": "在 pydicom/pydicom 的冻结基准案例上观察到 fix-logic-incomplete 失败模式，涉及 PUB-PYDICOM__PYDICOM-1256。编辑成功应用且无回归（P2P 绿），但目标失败测试（F2P）仍红，说明修复逻辑未覆盖根因。应结合失败测试输出定位遗漏分支，二次生成时只补差异。",
+    "pattern": "fix-logic-incomplete",
+    "tags": [
+      "public-benchmark",
+      "pydicom/pydicom",
+      "fix-logic-incomplete"
+    ],
+    "tenant": "public-benchmark",
+    "service": "pydicom/pydicom",
+    "environment": "benchmark",
+    "evidence": [
+      "F2P red; P2P green "
+    ],
+    "negativeLessons": [
+      {
+        "description": "编辑成功应用且无回归（P2P 绿），但目标失败测试（F2P）仍红，说明修复逻辑未覆盖根因。应结合失败测试输出定位遗漏分支，二次生成时只补差异。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "devorbit"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.915Z"
+  },
+  {
+    "id": "BENCH-EP-5082320c38365c62",
+    "title": "公开基准失败模式：search-block-mismatch（sqlfluff/sqlfluff）",
+    "summary": "在 sqlfluff/sqlfluff 的冻结基准案例上观察到 search-block-mismatch 失败模式，涉及 PUB-SQLFLUFF__SQLFLUFF-2907。search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。",
+    "pattern": "search-block-mismatch",
+    "tags": [
+      "public-benchmark",
+      "sqlfluff/sqlfluff",
+      "search-block-mismatch"
+    ],
+    "tenant": "public-benchmark",
+    "service": "sqlfluff/sqlfluff",
+    "environment": "benchmark",
+    "evidence": [
+      "edit apply failed: src/sqlfluff/core/templaters/jinja.py: search block not found (exact and whitespace-normalized match both failed) [search:     def handle_set(self, s: str) -> List[RawFileSlice]:\n  "
+    ],
+    "negativeLessons": [
+      {
+        "description": "search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "single-agent"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.915Z"
+  },
+  {
+    "id": "BENCH-EP-52d6065e91c81777",
+    "title": "公开基准失败模式：fix-logic-incomplete（sqlfluff/sqlfluff）",
+    "summary": "在 sqlfluff/sqlfluff 的冻结基准案例上观察到 fix-logic-incomplete 失败模式，涉及 PUB-SQLFLUFF__SQLFLUFF-1625。编辑成功应用且无回归（P2P 绿），但目标失败测试（F2P）仍红，说明修复逻辑未覆盖根因。应结合失败测试输出定位遗漏分支，二次生成时只补差异。",
+    "pattern": "fix-logic-incomplete",
+    "tags": [
+      "public-benchmark",
+      "sqlfluff/sqlfluff",
+      "fix-logic-incomplete"
+    ],
+    "tenant": "public-benchmark",
+    "service": "sqlfluff/sqlfluff",
+    "environment": "benchmark",
+    "evidence": [
+      "F2P red; P2P green "
+    ],
+    "negativeLessons": [
+      {
+        "description": "编辑成功应用且无回归（P2P 绿），但目标失败测试（F2P）仍红，说明修复逻辑未覆盖根因。应结合失败测试输出定位遗漏分支，二次生成时只补差异。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "devorbit"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.915Z"
+  },
+  {
+    "id": "BENCH-EP-59405e83d1211813",
+    "title": "公开基准失败模式：search-block-mismatch（pydicom/pydicom）",
+    "summary": "在 pydicom/pydicom 的冻结基准案例上观察到 search-block-mismatch 失败模式，涉及 PUB-PYDICOM__PYDICOM-1413。search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。",
+    "pattern": "search-block-mismatch",
+    "tags": [
+      "public-benchmark",
+      "pydicom/pydicom",
+      "search-block-mismatch"
+    ],
+    "tenant": "public-benchmark",
+    "service": "pydicom/pydicom",
+    "environment": "benchmark",
+    "evidence": [
+      "edit apply failed: pydicom/values.py: search block not found (exact and whitespace-normalized match both failed) [search:     if vr == vr_text:\n        # Not a text VR so no backslash splitting\n      "
+    ],
+    "negativeLessons": [
+      {
+        "description": "search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "single-agent"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.915Z"
+  },
+  {
+    "id": "BENCH-EP-6925fe67ecec9e21",
+    "title": "公开基准失败模式：search-block-mismatch（pylint-dev/astroid）",
+    "summary": "在 pylint-dev/astroid 的冻结基准案例上观察到 search-block-mismatch 失败模式，涉及 PUB-PYLINT-DEV__ASTROID-2023。search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。",
+    "pattern": "search-block-mismatch",
+    "tags": [
+      "public-benchmark",
+      "pylint-dev/astroid",
+      "search-block-mismatch"
+    ],
+    "tenant": "public-benchmark",
+    "service": "pylint-dev/astroid",
+    "environment": "benchmark",
+    "evidence": [
+      "edit apply failed: astroid/nodes/node_classes.py: search block not found (exact and whitespace-normalized match both failed) [search:         elif isinstance(node1, (nodes.IfExp, If, Match)) or isinst"
+    ],
+    "negativeLessons": [
+      {
+        "description": "search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "single-agent"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.915Z"
+  },
+  {
+    "id": "BENCH-EP-70e07b9228fedeb4",
+    "title": "公开基准失败模式：search-block-mismatch（pydicom/pydicom）",
+    "summary": "在 pydicom/pydicom 的冻结基准案例上观察到 search-block-mismatch 失败模式，涉及 PUB-PYDICOM__PYDICOM-1256。search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。",
+    "pattern": "search-block-mismatch",
+    "tags": [
+      "public-benchmark",
+      "pydicom/pydicom",
+      "search-block-mismatch"
+    ],
+    "tenant": "public-benchmark",
+    "service": "pydicom/pydicom",
+    "environment": "benchmark",
+    "evidence": [
+      "edit apply failed: pydicom/jsonrep.py: search block not found (exact and whitespace-normalized match both failed) [search:                     if vr == 'SQ':\n                        data_element = Dat"
+    ],
+    "negativeLessons": [
+      {
+        "description": "search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "single-agent"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.915Z"
+  },
+  {
+    "id": "BENCH-EP-7698e33e1820dc2b",
+    "title": "公开基准失败模式：search-block-mismatch（sqlfluff/sqlfluff）",
+    "summary": "在 sqlfluff/sqlfluff 的冻结基准案例上观察到 search-block-mismatch 失败模式，涉及 PUB-SQLFLUFF__SQLFLUFF-4778。search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。",
+    "pattern": "search-block-mismatch",
+    "tags": [
+      "public-benchmark",
+      "sqlfluff/sqlfluff",
+      "search-block-mismatch"
+    ],
+    "tenant": "public-benchmark",
+    "service": "sqlfluff/sqlfluff",
+    "environment": "benchmark",
+    "evidence": [
+      "edit apply failed: src/sqlfluff/core/templaters/slicers/tracer.py: search block not found (exact and whitespace-normalized match both failed) [search:         if block_type in (\"block_start\", \"block_e",
+      "edit apply failed: src/sqlfluff/core/templaters/slicers/tracer.py: search block not found (exact and whitespace-normalized match both failed) [search:         elif tag in (\n            \"for\",\n        "
+    ],
+    "negativeLessons": [
+      {
+        "description": "search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "devorbit",
+        "single-agent"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.915Z"
+  },
+  {
+    "id": "BENCH-EP-78b7565af30b46ea",
+    "title": "公开基准失败模式：fix-logic-incomplete（sqlfluff/sqlfluff）",
+    "summary": "在 sqlfluff/sqlfluff 的冻结基准案例上观察到 fix-logic-incomplete 失败模式，涉及 PUB-SQLFLUFF__SQLFLUFF-884。编辑成功应用且无回归（P2P 绿），但目标失败测试（F2P）仍红，说明修复逻辑未覆盖根因。应结合失败测试输出定位遗漏分支，二次生成时只补差异。",
+    "pattern": "fix-logic-incomplete",
+    "tags": [
+      "public-benchmark",
+      "sqlfluff/sqlfluff",
+      "fix-logic-incomplete"
+    ],
+    "tenant": "public-benchmark",
+    "service": "sqlfluff/sqlfluff",
+    "environment": "benchmark",
+    "evidence": [
+      "F2P red; P2P green "
+    ],
+    "negativeLessons": [
+      {
+        "description": "编辑成功应用且无回归（P2P 绿），但目标失败测试（F2P）仍红，说明修复逻辑未覆盖根因。应结合失败测试输出定位遗漏分支，二次生成时只补差异。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "devorbit"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.915Z"
+  },
+  {
+    "id": "BENCH-EP-85921afd61b80019",
+    "title": "公开基准失败模式：search-block-mismatch（sqlfluff/sqlfluff）",
+    "summary": "在 sqlfluff/sqlfluff 的冻结基准案例上观察到 search-block-mismatch 失败模式，涉及 PUB-SQLFLUFF__SQLFLUFF-3220。search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。",
+    "pattern": "search-block-mismatch",
+    "tags": [
+      "public-benchmark",
+      "sqlfluff/sqlfluff",
+      "search-block-mismatch"
+    ],
+    "tenant": "public-benchmark",
+    "service": "sqlfluff/sqlfluff",
+    "environment": "benchmark",
+    "evidence": [
+      "edit apply failed: src/sqlfluff/cli/commands.py: search block not found (exact and whitespace-normalized match both failed) [search: @click.option(\n    \"--fixed-suffix\",\n    default=\"_fixed\",\n    help",
+      "edit apply failed: src/sqlfluff/cli/commands.py: search block not found (exact and whitespace-normalized match both failed) [search: @click.option(\n    \"--fix-even-unparsable\",\n    is_flag=True,\n    d"
+    ],
+    "negativeLessons": [
+      {
+        "description": "search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "devorbit",
+        "single-agent"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.915Z"
+  },
+  {
+    "id": "BENCH-EP-874751f2f2e036b5",
+    "title": "公开基准失败模式：search-block-mismatch（pydicom/pydicom）",
+    "summary": "在 pydicom/pydicom 的冻结基准案例上观察到 search-block-mismatch 失败模式，涉及 PUB-PYDICOM__PYDICOM-1694。search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。",
+    "pattern": "search-block-mismatch",
+    "tags": [
+      "public-benchmark",
+      "pydicom/pydicom",
+      "search-block-mismatch"
+    ],
+    "tenant": "public-benchmark",
+    "service": "pydicom/pydicom",
+    "environment": "benchmark",
+    "evidence": [
+      "edit apply failed: pydicom/dataset.py: search block not found (exact and whitespace-normalized match both failed) [search:             if suppress_invalid_tags:\n                try:\n                  ",
+      "edit apply failed: pydicom/dataset.py: search block not found (exact and whitespace-normalized match both failed) [search:             if tag not in tags:\n                continue\n\n            data_el"
+    ],
+    "negativeLessons": [
+      {
+        "description": "search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "devorbit",
+        "single-agent"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.915Z"
+  },
+  {
+    "id": "BENCH-EP-8d1dd744a51cdf4d",
+    "title": "公开基准失败模式：fix-logic-incomplete（pylint-dev/astroid）",
+    "summary": "在 pylint-dev/astroid 的冻结基准案例上观察到 fix-logic-incomplete 失败模式，涉及 PUB-PYLINT-DEV__ASTROID-2023。编辑成功应用且无回归（P2P 绿），但目标失败测试（F2P）仍红，说明修复逻辑未覆盖根因。应结合失败测试输出定位遗漏分支，二次生成时只补差异。",
+    "pattern": "fix-logic-incomplete",
+    "tags": [
+      "public-benchmark",
+      "pylint-dev/astroid",
+      "fix-logic-incomplete"
+    ],
+    "tenant": "public-benchmark",
+    "service": "pylint-dev/astroid",
+    "environment": "benchmark",
+    "evidence": [
+      "F2P red; P2P green "
+    ],
+    "negativeLessons": [
+      {
+        "description": "编辑成功应用且无回归（P2P 绿），但目标失败测试（F2P）仍红，说明修复逻辑未覆盖根因。应结合失败测试输出定位遗漏分支，二次生成时只补差异。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "devorbit"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.915Z"
+  },
+  {
+    "id": "BENCH-EP-8f3d88852a74b2c5",
+    "title": "公开基准失败模式：search-block-mismatch（pydicom/pydicom）",
+    "summary": "在 pydicom/pydicom 的冻结基准案例上观察到 search-block-mismatch 失败模式，涉及 PUB-PYDICOM__PYDICOM-955。search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。",
+    "pattern": "search-block-mismatch",
+    "tags": [
+      "public-benchmark",
+      "pydicom/pydicom",
+      "search-block-mismatch"
+    ],
+    "tenant": "public-benchmark",
+    "service": "pydicom/pydicom",
+    "environment": "benchmark",
+    "evidence": [
+      "edit apply failed: pydicom/filereader.py: search block not found (exact and whitespace-normalized match both failed) [search:             if not data_element:\n                break\n            if data"
+    ],
+    "negativeLessons": [
+      {
+        "description": "search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "single-agent"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.915Z"
+  },
+  {
+    "id": "BENCH-EP-99fcda943a468e8c",
+    "title": "公开基准失败模式：search-block-mismatch（sqlfluff/sqlfluff）",
+    "summary": "在 sqlfluff/sqlfluff 的冻结基准案例上观察到 search-block-mismatch 失败模式，涉及 PUB-SQLFLUFF__SQLFLUFF-4151。search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。",
+    "pattern": "search-block-mismatch",
+    "tags": [
+      "public-benchmark",
+      "sqlfluff/sqlfluff",
+      "search-block-mismatch"
+    ],
+    "tenant": "public-benchmark",
+    "service": "sqlfluff/sqlfluff",
+    "environment": "benchmark",
+    "evidence": [
+      "edit apply failed: src/sqlfluff/cli/commands.py: search block not found (exact and whitespace-normalized match both failed) [search:     @click.option(\n        \"--disable-progress-bar\",\n        is_fla",
+      "edit apply failed: src/sqlfluff/cli/commands.py: search block not found (exact and whitespace-normalized match both failed) [search: @click.option(\n    \"--disable-progress-bar\",\n    is_flag=True,\n    "
+    ],
+    "negativeLessons": [
+      {
+        "description": "search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "devorbit",
+        "single-agent"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.915Z"
+  },
+  {
+    "id": "BENCH-EP-9ac9a87d5117c835",
+    "title": "公开基准失败模式：search-block-mismatch（marshmallow-code/marshmallow）",
+    "summary": "在 marshmallow-code/marshmallow 的冻结基准案例上观察到 search-block-mismatch 失败模式，涉及 PUB-MARSHMALLOW-CODE__MARSHMALLOW-1252。search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。",
+    "pattern": "search-block-mismatch",
+    "tags": [
+      "public-benchmark",
+      "marshmallow-code/marshmallow",
+      "search-block-mismatch"
+    ],
+    "tenant": "public-benchmark",
+    "service": "marshmallow-code/marshmallow",
+    "environment": "benchmark",
+    "evidence": [
+      "edit apply failed: src/marshmallow/utils.py: search block not found (exact and whitespace-normalized match both failed) [search: def _parse(value, format):\n    if format == _iso_format_time:\n        #"
+    ],
+    "negativeLessons": [
+      {
+        "description": "search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "single-agent"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.914Z"
+  },
+  {
+    "id": "BENCH-EP-a2762f773162e8df",
+    "title": "公开基准失败模式：search-block-mismatch（marshmallow-code/marshmallow）",
+    "summary": "在 marshmallow-code/marshmallow 的冻结基准案例上观察到 search-block-mismatch 失败模式，涉及 PUB-MARSHMALLOW-CODE__MARSHMALLOW-1810。search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。",
+    "pattern": "search-block-mismatch",
+    "tags": [
+      "public-benchmark",
+      "marshmallow-code/marshmallow",
+      "search-block-mismatch"
+    ],
+    "tenant": "public-benchmark",
+    "service": "marshmallow-code/marshmallow",
+    "environment": "benchmark",
+    "evidence": [
+      "edit apply failed: src/marshmallow/fields.py: search block not found (exact and whitespace-normalized match both failed) [search:     @property\n    def root(self):\n        \"\"\"Reference to the `Schema`"
+    ],
+    "negativeLessons": [
+      {
+        "description": "search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "single-agent"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.914Z"
+  },
+  {
+    "id": "BENCH-EP-a50a1ce5db09d439",
+    "title": "公开基准失败模式：fix-logic-incomplete（pydicom/pydicom）",
+    "summary": "在 pydicom/pydicom 的冻结基准案例上观察到 fix-logic-incomplete 失败模式，涉及 PUB-PYDICOM__PYDICOM-955。编辑成功应用且无回归（P2P 绿），但目标失败测试（F2P）仍红，说明修复逻辑未覆盖根因。应结合失败测试输出定位遗漏分支，二次生成时只补差异。",
+    "pattern": "fix-logic-incomplete",
+    "tags": [
+      "public-benchmark",
+      "pydicom/pydicom",
+      "fix-logic-incomplete"
+    ],
+    "tenant": "public-benchmark",
+    "service": "pydicom/pydicom",
+    "environment": "benchmark",
+    "evidence": [
+      "F2P red; P2P green "
+    ],
+    "negativeLessons": [
+      {
+        "description": "编辑成功应用且无回归（P2P 绿），但目标失败测试（F2P）仍红，说明修复逻辑未覆盖根因。应结合失败测试输出定位遗漏分支，二次生成时只补差异。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "devorbit"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.915Z"
+  },
+  {
+    "id": "BENCH-EP-a80e111199085edf",
+    "title": "公开基准失败模式：search-block-mismatch（pydicom/pydicom）",
+    "summary": "在 pydicom/pydicom 的冻结基准案例上观察到 search-block-mismatch 失败模式，涉及 PUB-PYDICOM__PYDICOM-1076。search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。",
+    "pattern": "search-block-mismatch",
+    "tags": [
+      "public-benchmark",
+      "pydicom/pydicom",
+      "search-block-mismatch"
+    ],
+    "tenant": "public-benchmark",
+    "service": "pydicom/pydicom",
+    "environment": "benchmark",
+    "evidence": [
+      "edit apply failed: pydicom/filewriter.py: search block not found (exact and whitespace-normalized match both failed) [search:     'UL': (write_numbers, 'L'),\n    'SS': (write_numbers, 'h'),\n    'US': ",
+      "edit apply failed: pydicom/filewriter.py: search block not found (exact and whitespace-normalized match both failed) [search:     'OB': write_OBvalue,\n    'OB or OW': write_OWvalue,\n    'OD': write_OD"
+    ],
+    "negativeLessons": [
+      {
+        "description": "search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "devorbit",
+        "single-agent"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.915Z"
+  },
+  {
+    "id": "BENCH-EP-a92e794abcd5ec90",
+    "title": "公开基准失败模式：search-block-mismatch（sqlfluff/sqlfluff）",
+    "summary": "在 sqlfluff/sqlfluff 的冻结基准案例上观察到 search-block-mismatch 失败模式，涉及 PUB-SQLFLUFF__SQLFLUFF-1625。search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。",
+    "pattern": "search-block-mismatch",
+    "tags": [
+      "public-benchmark",
+      "sqlfluff/sqlfluff",
+      "search-block-mismatch"
+    ],
+    "tenant": "public-benchmark",
+    "service": "sqlfluff/sqlfluff",
+    "environment": "benchmark",
+    "evidence": [
+      "edit apply failed: src/sqlfluff/rules/L031.py: search block not found (exact and whitespace-normalized match both failed) [search:         # Iterate over all the aliases used in the query, and check w"
+    ],
+    "negativeLessons": [
+      {
+        "description": "search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "single-agent"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.915Z"
+  },
+  {
+    "id": "BENCH-EP-a944efe1d128cf60",
+    "title": "公开基准失败模式：search-block-mismatch（pylint-dev/astroid）",
+    "summary": "在 pylint-dev/astroid 的冻结基准案例上观察到 search-block-mismatch 失败模式，涉及 PUB-PYLINT-DEV__ASTROID-1196。search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。",
+    "pattern": "search-block-mismatch",
+    "tags": [
+      "public-benchmark",
+      "pylint-dev/astroid",
+      "search-block-mismatch"
+    ],
+    "tenant": "public-benchmark",
+    "service": "pylint-dev/astroid",
+    "environment": "benchmark",
+    "evidence": [
+      "edit apply failed: astroid/nodes/node_classes.py: search block not found (exact and whitespace-normalized match both failed) [search:     def getitem(self, index, context=None):\n        # type: (NodeN",
+      "edit apply failed: astroid/nodes/node_classes.py: search block not found (exact and whitespace-normalized match both failed) [search:         for node in self.values:\n            # If the current node"
+    ],
+    "negativeLessons": [
+      {
+        "description": "search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "devorbit",
+        "single-agent"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.915Z"
+  },
+  {
+    "id": "BENCH-EP-b9fc673c55a23976",
+    "title": "公开基准失败模式：fix-logic-incomplete（pydicom/pydicom）",
+    "summary": "在 pydicom/pydicom 的冻结基准案例上观察到 fix-logic-incomplete 失败模式，涉及 PUB-PYDICOM__PYDICOM-1031。编辑成功应用且无回归（P2P 绿），但目标失败测试（F2P）仍红，说明修复逻辑未覆盖根因。应结合失败测试输出定位遗漏分支，二次生成时只补差异。",
+    "pattern": "fix-logic-incomplete",
+    "tags": [
+      "public-benchmark",
+      "pydicom/pydicom",
+      "fix-logic-incomplete"
+    ],
+    "tenant": "public-benchmark",
+    "service": "pydicom/pydicom",
+    "environment": "benchmark",
+    "evidence": [
+      "F2P red; P2P green "
+    ],
+    "negativeLessons": [
+      {
+        "description": "编辑成功应用且无回归（P2P 绿），但目标失败测试（F2P）仍红，说明修复逻辑未覆盖根因。应结合失败测试输出定位遗漏分支，二次生成时只补差异。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "devorbit"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.915Z"
+  },
+  {
+    "id": "BENCH-EP-bcc6482beba8ab8b",
+    "title": "公开基准失败模式：search-block-mismatch（pylint-dev/astroid）",
+    "summary": "在 pylint-dev/astroid 的冻结基准案例上观察到 search-block-mismatch 失败模式，涉及 PUB-PYLINT-DEV__ASTROID-941。search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。",
+    "pattern": "search-block-mismatch",
+    "tags": [
+      "public-benchmark",
+      "pylint-dev/astroid",
+      "search-block-mismatch"
+    ],
+    "tenant": "public-benchmark",
+    "service": "pylint-dev/astroid",
+    "environment": "benchmark",
+    "evidence": [
+      "edit apply failed: astroid/scoped_nodes.py: search block not found (exact and whitespace-normalized match both failed) [search:         metaclass = self.metaclass()\n        if name in self._metaclass_",
+      "edit apply failed: astroid/scoped_nodes.py: search block not found (exact and whitespace-normalized match both failed) [search:         if class_context:\n            metaclass = cls.metaclass()\n      "
+    ],
+    "negativeLessons": [
+      {
+        "description": "search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "devorbit",
+        "single-agent"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.915Z"
+  },
+  {
+    "id": "BENCH-EP-ca59dff7cda8511b",
+    "title": "公开基准失败模式：fix-logic-incomplete（sqlfluff/sqlfluff）",
+    "summary": "在 sqlfluff/sqlfluff 的冻结基准案例上观察到 fix-logic-incomplete 失败模式，涉及 PUB-SQLFLUFF__SQLFLUFF-4753。编辑成功应用且无回归（P2P 绿），但目标失败测试（F2P）仍红，说明修复逻辑未覆盖根因。应结合失败测试输出定位遗漏分支，二次生成时只补差异。",
+    "pattern": "fix-logic-incomplete",
+    "tags": [
+      "public-benchmark",
+      "sqlfluff/sqlfluff",
+      "fix-logic-incomplete"
+    ],
+    "tenant": "public-benchmark",
+    "service": "sqlfluff/sqlfluff",
+    "environment": "benchmark",
+    "evidence": [
+      "F2P red; P2P green "
+    ],
+    "negativeLessons": [
+      {
+        "description": "编辑成功应用且无回归（P2P 绿），但目标失败测试（F2P）仍红，说明修复逻辑未覆盖根因。应结合失败测试输出定位遗漏分支，二次生成时只补差异。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "single-agent"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.915Z"
+  },
+  {
+    "id": "BENCH-EP-cae1254447012b5e",
+    "title": "公开基准失败模式：search-block-mismatch（pydicom/pydicom）",
+    "summary": "在 pydicom/pydicom 的冻结基准案例上观察到 search-block-mismatch 失败模式，涉及 PUB-PYDICOM__PYDICOM-903。search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。",
+    "pattern": "search-block-mismatch",
+    "tags": [
+      "public-benchmark",
+      "pydicom/pydicom",
+      "search-block-mismatch"
+    ],
+    "tenant": "public-benchmark",
+    "service": "pydicom/pydicom",
+    "environment": "benchmark",
+    "evidence": [
+      "edit apply failed: pydicom/filewriter.py: search block not found (exact and whitespace-normalized match both failed) [search:     # write_data_element\n    # Must be either explicit VR or implicit VR\n "
+    ],
+    "negativeLessons": [
+      {
+        "description": "search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "single-agent"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.915Z"
+  },
+  {
+    "id": "BENCH-EP-d255d4478ab019c9",
+    "title": "公开基准失败模式：search-block-mismatch（sqlfluff/sqlfluff）",
+    "summary": "在 sqlfluff/sqlfluff 的冻结基准案例上观察到 search-block-mismatch 失败模式，涉及 PUB-SQLFLUFF__SQLFLUFF-2573。search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。",
+    "pattern": "search-block-mismatch",
+    "tags": [
+      "public-benchmark",
+      "sqlfluff/sqlfluff",
+      "search-block-mismatch"
+    ],
+    "tenant": "public-benchmark",
+    "service": "sqlfluff/sqlfluff",
+    "environment": "benchmark",
+    "evidence": [
+      "edit apply failed: src/sqlfluff/core/linter/linter.py: search block not found (exact and whitespace-normalized match both failed) [search:     def paths_from_path(\n        self,\n        path: str,\n   ",
+      "edit apply failed: src/sqlfluff/core/linter/linter.py: search block not found (exact and whitespace-normalized match both failed) [search:     def paths_from_path(\n        self,\n        path: str,\n   "
+    ],
+    "negativeLessons": [
+      {
+        "description": "search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "devorbit",
+        "single-agent"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.915Z"
+  },
+  {
+    "id": "BENCH-EP-d41f806b175bce65",
+    "title": "公开基准失败模式：search-block-mismatch（pydicom/pydicom）",
+    "summary": "在 pydicom/pydicom 的冻结基准案例上观察到 search-block-mismatch 失败模式，涉及 PUB-PYDICOM__PYDICOM-839。search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。",
+    "pattern": "search-block-mismatch",
+    "tags": [
+      "public-benchmark",
+      "pydicom/pydicom",
+      "search-block-mismatch"
+    ],
+    "tenant": "public-benchmark",
+    "service": "pydicom/pydicom",
+    "environment": "benchmark",
+    "evidence": [
+      "edit apply failed: pydicom/filewriter.py: search block not found (exact and whitespace-normalized match both failed) [search:     if data_element.tag == 0x00280100:\n        # PixelRepresentation\n     "
+    ],
+    "negativeLessons": [
+      {
+        "description": "search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "single-agent"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.915Z"
+  },
+  {
+    "id": "BENCH-EP-d8c8fcae12b5957a",
+    "title": "公开基准失败模式：search-block-mismatch（pydicom/pydicom）",
+    "summary": "在 pydicom/pydicom 的冻结基准案例上观察到 search-block-mismatch 失败模式，涉及 PUB-PYDICOM__PYDICOM-1031。search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。",
+    "pattern": "search-block-mismatch",
+    "tags": [
+      "public-benchmark",
+      "pydicom/pydicom",
+      "search-block-mismatch"
+    ],
+    "tenant": "public-benchmark",
+    "service": "pydicom/pydicom",
+    "environment": "benchmark",
+    "evidence": [
+      "edit apply failed: pydicom/filewriter.py: search block not found (exact and whitespace-normalized match both failed) [search:     # VR lookup\n    if data_element.VR is None:\n        try:\n            d"
+    ],
+    "negativeLessons": [
+      {
+        "description": "search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "single-agent"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.915Z"
+  },
+  {
+    "id": "BENCH-EP-da3c767a0a2d0541",
+    "title": "公开基准失败模式：search-block-mismatch（pydicom/pydicom）",
+    "summary": "在 pydicom/pydicom 的冻结基准案例上观察到 search-block-mismatch 失败模式，涉及 PUB-PYDICOM__PYDICOM-1428。search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。",
+    "pattern": "search-block-mismatch",
+    "tags": [
+      "public-benchmark",
+      "pydicom/pydicom",
+      "search-block-mismatch"
+    ],
+    "tenant": "public-benchmark",
+    "service": "pydicom/pydicom",
+    "environment": "benchmark",
+    "evidence": [
+      "edit apply failed: pydicom/fileset.py: search block not found (exact and whitespace-normalized match both failed) [search:     def find_values(self, element: str, load: bool = False) ->\n        List[L",
+      "edit apply failed: pydicom/fileset.py: search block not found (exact and whitespace-normalized match both failed) [search:     def find_values(self, element: str, load: bool = False) -> List[str]:\n   "
+    ],
+    "negativeLessons": [
+      {
+        "description": "search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "devorbit",
+        "single-agent"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.915Z"
+  },
+  {
+    "id": "BENCH-EP-e3e9299e0878c22f",
+    "title": "公开基准失败模式：search-block-mismatch（sqlfluff/sqlfluff）",
+    "summary": "在 sqlfluff/sqlfluff 的冻结基准案例上观察到 search-block-mismatch 失败模式，涉及 PUB-SQLFLUFF__SQLFLUFF-884。search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。",
+    "pattern": "search-block-mismatch",
+    "tags": [
+      "public-benchmark",
+      "sqlfluff/sqlfluff",
+      "search-block-mismatch"
+    ],
+    "tenant": "public-benchmark",
+    "service": "sqlfluff/sqlfluff",
+    "environment": "benchmark",
+    "evidence": [
+      "edit apply failed: src/sqlfluff/core/parser/segments/raw.py: search block not found (exact and whitespace-normalized match both failed) [search: class WhitespaceSegment(RawSegment):\n    \"\"\"A segment u"
+    ],
+    "negativeLessons": [
+      {
+        "description": "search 块与文件真实内容不一致导致编辑无法应用。必须从 target-file 证据中逐字复制 search 块（含缩进与空白），不要凭记忆改写或猜测代码。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "single-agent"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.915Z"
+  },
+  {
+    "id": "BENCH-EP-fd7dcabc8ab77fa0",
+    "title": "公开基准失败模式：other（marshmallow-code/marshmallow）",
+    "summary": "在 marshmallow-code/marshmallow 的冻结基准案例上观察到 other 失败模式，涉及 PUB-MARSHMALLOW-CODE__MARSHMALLOW-1252。基准失败模式 other，需在下一轮避免。",
+    "pattern": "other",
+    "tags": [
+      "public-benchmark",
+      "marshmallow-code/marshmallow",
+      "other"
+    ],
+    "tenant": "public-benchmark",
+    "service": "marshmallow-code/marshmallow",
+    "environment": "benchmark",
+    "evidence": [
+      "git apply --check failed: \nerror: patch failed: src/marshmallow/utils.py:210\nerror: src/marshmallow/utils.py: patch does not apply\n\nCommand failed: git apply --check model.patch\nerror: patch failed: s"
+    ],
+    "negativeLessons": [
+      {
+        "description": "基准失败模式 other，需在下一轮避免。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "devorbit"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.914Z"
+  },
+  {
+    "id": "BENCH-EP-fdd4907712c76ff4",
+    "title": "公开基准失败模式：other（marshmallow-code/marshmallow）",
+    "summary": "在 marshmallow-code/marshmallow 的冻结基准案例上观察到 other 失败模式，涉及 PUB-MARSHMALLOW-CODE__MARSHMALLOW-1810。基准失败模式 other，需在下一轮避免。",
+    "pattern": "other",
+    "tags": [
+      "public-benchmark",
+      "marshmallow-code/marshmallow",
+      "other"
+    ],
+    "tenant": "public-benchmark",
+    "service": "marshmallow-code/marshmallow",
+    "environment": "benchmark",
+    "evidence": [
+      "git apply --check failed: \nerror: corrupt patch at line 12\n\nCommand failed: git apply --check model.patch\nerror: corrupt patch at line 12\n"
+    ],
+    "negativeLessons": [
+      {
+        "description": "基准失败模式 other，需在下一轮避免。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "devorbit"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.914Z"
+  },
+  {
+    "id": "BENCH-EP-ff3e7fe0ff3b4f76",
+    "title": "公开基准失败模式：fix-logic-incomplete（sqlfluff/sqlfluff）",
+    "summary": "在 sqlfluff/sqlfluff 的冻结基准案例上观察到 fix-logic-incomplete 失败模式，涉及 PUB-SQLFLUFF__SQLFLUFF-2907。编辑成功应用且无回归（P2P 绿），但目标失败测试（F2P）仍红，说明修复逻辑未覆盖根因。应结合失败测试输出定位遗漏分支，二次生成时只补差异。",
+    "pattern": "fix-logic-incomplete",
+    "tags": [
+      "public-benchmark",
+      "sqlfluff/sqlfluff",
+      "fix-logic-incomplete"
+    ],
+    "tenant": "public-benchmark",
+    "service": "sqlfluff/sqlfluff",
+    "environment": "benchmark",
+    "evidence": [
+      "F2P red; P2P green "
+    ],
+    "negativeLessons": [
+      {
+        "description": "编辑成功应用且无回归（P2P 绿），但目标失败测试（F2P）仍红，说明修复逻辑未覆盖根因。应结合失败测试输出定位遗漏分支，二次生成时只补差异。"
+      }
+    ],
+    "recallStatus": "negative",
+    "confidence": "medium",
+    "source": {
+      "runsDir": "/home/admin1/hrz/code/goai_lingji/evaluation/public-benchmark/runs/",
+      "methods": [
+        "devorbit"
+      ]
+    },
+    "createdAt": "2026-08-28T03:12:05.915Z"
+  }
+]

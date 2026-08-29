@@ -1,0 +1,53 @@
+{
+  "caseId": "PUB-PYDICOM__PYDICOM-1031",
+  "method": "devorbit",
+  "attempts": 3,
+  "rca": {
+    "rootCause": "PR #965 introduced a regression in the handling of certain data element types during file writing. The tag (0040, 0275) 'Hanging Protocol Author' is defined as 'OB' (Other Byte) VR in the DICOM dictionary, but its value is being stored as a list (MultiValue) instead of bytes. When write_data_element attempts to write this element, it calls buffer.write(data_element.value) which expects a bytes-like object but receives a list, causing the TypeError. The fact that accessing the tag before saving fixes the issue suggests that accessing the element triggers proper conversion/decoding of the raw data element, while the write path fails to properly convert the raw element's value from list to bytes before writing.",
+    "confidence": 0.85,
+    "evidence": [
+      "Traceback shows failure at filewriter.py line 463: buffer.write(data_element.value) with TypeError: a bytes-like object is required, not 'list'",
+      "The failing tag is (0040, 0275) which is 'Hanging Protocol Author' with VR 'OB' in the DICOM dictionary",
+      "Hint confirms: 'This has been introduced by PR #965 (by myself). Will provide a fix ASAP...'",
+      "Accessing the tag before save_as makes the crash go away, indicating the raw data element is not being properly converted/decoded during the write path",
+      "The write path in filewriter.py write_data_element does not handle the case where an OB/OW element value is a list/MultiValue instead of bytes"
+    ],
+    "filesToChange": [
+      "pydicom/filewriter.py",
+      "pydicom/values.py"
+    ]
+  },
+  "edits": [
+    {
+      "path": "pydicom/filewriter.py",
+      "search": "    if data_element.is_raw:\n        # raw data element values can be written as they are\n        buffer.write(data_element.value)\n        is_undefined_length = data_element.length == 0xFFFFFFFF\n    else:\n        if VR not in writers:\n            raise NotImplem",
+      "replace": "    if data_element.is_raw:\n        # raw data element values can be written as they are\n        value = data_element.value\n        if isinstance(value, (list, MultiValue)):\n            if len(value) == 0:\n                value = b''\n            else:\n                value = b''.join(value)\n        buffer.write(value)\n        is_undefined_length = data_element.length == 0xFFFFFFFF\n    else:\n        if VR not in writers:\n            raise NotImplem"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": true,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "F2P red; P2P green ",
+    "f2pLogTail": "\nno tests ran in 0.07s\n\nERROR: not found: /tmp/zhanlu/bench-work/pydicom__pydicom-1031/source/pydicom/tests/test_filewriter.py::TestWriteFile::test_write_empty_sequence\n(no match in any of [<Class TestWriteFile>])\n\nERROR: not found: /tmp/zhanlu/bench-work/pydicom__pydicom-1031/source/pydicom/tests/test_filewriter.py::TestScratchWriteDateTime::test_write_empty_sequence\n(no match in any of [<Class TestScratchWriteDateTime>])\n\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x pydicom/tests/test_filewriter.py::TestWriteFile::test_write_empty_sequence pydicom/tests/test_filewriter.py::TestScratchWriteDateTime::test_write_empty_sequence\nERROR: not found: /tmp/zhanlu/bench-work/pydicom__pydicom-1031/source/pydicom/tests/test_filewriter.py::TestWriteFile::test_write_empty_sequence\n(no match in any of [<Class TestWriteFile>])\n\nERROR: not found: /tmp/zhanlu/bench-work/pydicom__pydicom-1031/source/pydicom/tests/test_filewriter.py::TestScratchWriteDateTime::test_write_empty_sequence\n(no match in any of [<Class TestScratchWriteDateTime>])\n\n\n[...]\nR: not found: /tmp/zhanlu/bench-work/pydicom__pydicom-1031/source/pydicom/tests/test_filewriter.py::TestWriteFile::test_write_empty_sequence\n(no match in any of [<Class TestWriteFile>])\n\nERROR: not found: /tmp/zhanlu/bench-work/pydicom__pydicom-1031/source/pydicom/tests/test_filewriter.py::TestScratchWriteDateTime::test_write_empty_sequence\n(no match in any of [<Class TestScratchWriteDateTime>])\n\n",
+    "changedPaths": [
+      "pydicom/filewriter.py"
+    ],
+    "appliedMethods": [
+      {
+        "path": "pydicom/filewriter.py",
+        "method": "exact",
+        "ambiguous": false
+      }
+    ]
+  },
+  "patchSha256": "sha256:a18ba9c1e1636a9fbb7e4bab4581bec05800d2569828b68c573da0279a74738a",
+  "contextBytes": 10515,
+  "baselineTail": "test_filewriter.py::TestWriteFile::test_write_empty_sequence\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.49s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x pydicom/tests/test_filewriter.py::TestWriteFile::test_write_empty_sequence pydicom/tests/test_filewriter.py::TestScratchWriteDateTime::test_write_empty_sequence\n",
+  "goldFiles": [
+    "pydicom/dataelem.py"
+  ],
+  "model": "glm",
+  "modelCalls": 4
+}

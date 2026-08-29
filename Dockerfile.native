@@ -4,7 +4,7 @@ FROM ${NODE_IMAGE}
 ARG DEBIAN_MIRROR=https://deb.debian.org
 LABEL org.opencontainers.image.title="DevOrbit Native Platform Runner" \
       org.opencontainers.image.description="DevOrbit control plane with the Git runtime required by native repository adapters" \
-      org.opencontainers.image.version="0.6.0" \
+      org.opencontainers.image.version="0.7.0" \
       org.opencontainers.image.licenses="Apache-2.0"
 
 RUN sed -i "s|http://deb.debian.org|${DEBIAN_MIRROR}|g" /etc/apt/sources.list.d/debian.sources \

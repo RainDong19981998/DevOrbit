@@ -3,9 +3,10 @@ import { randomUUID } from 'node:crypto';
 export const terminalStates = new Set(['learned', 'needs_human']);
 const allowedTransitions = new Map([
   ['received', new Set(['triaged'])],
-  ['triaged', new Set(['diagnosed', 'needs_human'])],
-  ['diagnosed', new Set(['planned'])],
-  ['planned', new Set(['verified', 'needs_human'])],
+  ['triaged', new Set(['evidence_gathering', 'diagnosed', 'needs_human'])],
+  ['evidence_gathering', new Set(['triaged', 'needs_human'])],
+  ['diagnosed', new Set(['planned', 'needs_human'])],
+  ['planned', new Set(['verified', 'diagnosed', 'needs_human'])],
   ['verified', new Set(['approval_pending', 'canary', 'needs_human'])],
   ['approval_pending', new Set(['canary', 'needs_human'])],
   ['canary', new Set(['confirmed', 'rolled_back'])],

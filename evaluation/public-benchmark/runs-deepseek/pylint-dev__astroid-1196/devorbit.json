@@ -1,0 +1,43 @@
+{
+  "caseId": "PUB-PYLINT-DEV__ASTROID-1196",
+  "method": "devorbit",
+  "attempts": 3,
+  "rca": {
+    "rootCause": "The `getitem` method on `Dict` nodes does not handle dictionary unpacking (`**`) in the dictionary literal. When a `Dict` node contains a `DictUnpack` item, the inference of the unpacked value is not performed, leading to an `AttributeError` when trying to call `getitem` on a `Name` node that represents the unpacked dictionary. The fix should infer the unpacked dictionary's items and merge them into the current dictionary's items before performing the key lookup.",
+    "confidence": 0.9,
+    "evidence": [
+      "The issue describes that `Dict.getitem()` fails with `AttributeError: 'Name' object has no attribute 'getitem'` when the dictionary contains `**X` unpacking.",
+      "The expected behavior is that `second_dict.getitem(key).value` should return `'B'`, which requires inferring the unpacked dictionary `X` and merging its items.",
+      "The relevant code is in `astroid/nodes/node_classes.py` around line 2254, where `getitem` calls `value.getitem(index, context)` on the inferred value, but the inferred value is a `Name` node that doesn't have `getitem`.",
+      "The `Dict` node's `getitem` method likely iterates over `self.items` and calls `getitem` on each value, but it doesn't handle `DictUnpack` items by inferring the unpacked dictionary."
+    ],
+    "filesToChange": [
+      "astroid/nodes/node_classes.py"
+    ]
+  },
+  "edits": [
+    {
+      "path": "astroid/nodes/node_classes.py",
+      "search": "        try:\n            for key, value in self.items:\n                if isinstance(key, DictUnpack):\n                    continue\n                key = next(key.infer(context=context))\n                if isinstance(key, Const) and key.value == index.value:\n                    return value\n        except StopIteration as exc:",
+      "replace": "        try:\n            for key, value in self.items:\n                if isinstance(key, DictUnpack):\n                    for inferred in key.infer(context=context):\n                        if inferred is util.Uninferable:\n                            continue\n                        if isinstance(inferred, Dict):\n                            try:\n                                return inferred.getitem(index, context)\n                            except AstroidIndexError:\n                                continue\n                    continue\n                key = next(key.infer(context=context))\n                if isinstance(key, Const) and key.value == index.value:\n                    return value\n        except StopIteration as exc:"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "edit apply failed: astroid/nodes/node_classes.py: search block not found (exact and whitespace-normalized match both failed) [search:         try:\n            for key, value in self.items:\n                if isinstance(key, DictUnpack):\n                    continue\n                key = next(k]",
+    "changedPaths": [
+      "astroid/nodes/node_classes.py"
+    ]
+  },
+  "patchSha256": null,
+  "contextBytes": 10876,
+  "baselineTail": "hon3TC::test_unpacking_in_dict_getitem_uninferable\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 2 warnings in 0.53s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x tests/unittest_python3.py::Python3TC::test_unpacking_in_dict_getitem_uninferable tests/unittest_python3.py::Python3TC::test_unpacking_in_dict_getitem_with_ref\n",
+  "goldFiles": [
+    "astroid/nodes/node_classes.py"
+  ],
+  "model": "deepseek-v4-flash-0731",
+  "modelCalls": 4
+}

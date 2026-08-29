@@ -1,0 +1,43 @@
+{
+  "caseId": "PUB-PYLINT-DEV__ASTROID-941",
+  "method": "devorbit",
+  "attempts": 3,
+  "rca": {
+    "rootCause": "In `ClassDef.igetattr` (scoped_nodes.py around lines 2590-2603), when inferring an attribute on a derived class, `class_context` is `True` but `metaclass` is `False`. The code only calls the property's `__get__` (i.e. infers the property) when `class_context` is `False` OR `metaclass` is `True`. For a derived class accessing a metaclass-defined property, neither condition holds, so the property object itself is yielded instead of being inferred/called. This causes `Parent.__members__` to infer correctly (metaclass is True) but `Derived.__members__` to return the raw Property node.",
+    "confidence": 0.92,
+    "evidence": [
+      "Issue states: Inference works on the parent class but not the child for @property members defined in metaclasses of a base class.",
+      "Hint points directly to scoped_nodes.py lines 2590-2603: 'When we are inferring an attribute on a derived class then class_context is True but metaclass is False so the property itself is returned.'",
+      "Repo map confirms astroid/scoped_nodes.py contains ClassDef attribute inference logic."
+    ],
+    "filesToChange": [
+      "astroid/scoped_nodes.py"
+    ]
+  },
+  "edits": [
+    {
+      "path": "astroid/scoped_nodes.py",
+      "search": "                if isinstance(stmt, FunctionDef) and stmt.type == \"property\":\n                    if not class_context or metaclass:\n                        yield stmt.infer_call_result(self, context)\n                        continue\n                yield stmt",
+      "replace": "                if isinstance(stmt, FunctionDef) and stmt.type == \"property\":\n                    if not class_context or metaclass or owner is self.metaclass():\n                        yield stmt.infer_call_result(self, context)\n                        continue\n                yield stmt"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "edit apply failed: astroid/scoped_nodes.py: search block not found (exact and whitespace-normalized match both failed) [search:                 if isinstance(stmt, FunctionDef) and stmt.type == \"property\":\n                    if not class_context or metaclass:\n                        yie]",
+    "changedPaths": [
+      "astroid/scoped_nodes.py"
+    ]
+  },
+  "patchSha256": null,
+  "contextBytes": 10252,
+  "baselineTail": "y tests/unittest_scoped_nodes.py::test_issue940_enums_as_a_real_world_usecase\nERROR: found no collectors for /tmp/zhanlu/bench-work/pylint-dev__astroid-941/source/tests/unittest_scoped_nodes.py::test_issue940_metaclass_subclass_property\n\nERROR: found no collectors for /tmp/zhanlu/bench-work/pylint-dev__astroid-941/source/tests/unittest_scoped_nodes.py::test_issue940_enums_as_a_real_world_usecase\n\n",
+  "goldFiles": [
+    "astroid/brain/brain_namedtuple_enum.py",
+    "astroid/scoped_nodes.py"
+  ],
+  "model": "glm",
+  "modelCalls": 4
+}

@@ -1,0 +1,24 @@
+{
+  "caseId": "PUB-PYDICOM__PYDICOM-1413",
+  "method": "devorbit",
+  "attempts": 2,
+  "rca": {
+    "files": [
+      "pydicom/valuerep.py",
+      "pydicom/dataelem.py"
+    ]
+  },
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "git apply --check failed: \nerror: patch failed: pydicom/dataelem.py:438\nerror: pydicom/dataelem.py: patch does not apply\n\nCommand failed: git apply --check model.patch\nerror: patch failed: pydicom/dataelem.py:438\nerror: pydicom/dataelem.py: patch does not apply\n"
+  },
+  "patchSha256": "sha256:463640e51ffe9651d206d130f848daf631bff810d24a4c94e1f67c1049ce8fc5",
+  "contextBytes": 8000,
+  "baselineTail": "!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.30s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x pydicom/tests/test_valuerep.py::test_assigning_bytes[OD-bytes-vm017-vmN17-DoubleFloatPixelData] pydicom/tests/test_valuerep.py::test_assigning_bytes[OL-bytes-vm019-vmN19-TrackPointIndexList] pydicom/tests/test_valuerep.py::test_assigning_bytes[OV-bytes-vm020-vmN20-SelectorOVValue]\n",
+  "goldFiles": [
+    "pydicom/dataelem.py"
+  ]
+}

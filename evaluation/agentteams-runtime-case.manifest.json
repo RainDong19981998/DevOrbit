@@ -1,0 +1,96 @@
+{
+  "$schema": "../schemas/agentteams-runtime-case.schema.json",
+  "protocolVersion": "1.0",
+  "runId": "agentteams-local-runtime-001",
+  "caseId": "CASE-2026-0042",
+  "registeredAt": "2026-08-14T01:40:00Z",
+  "teamName": "devorbit-delivery-team",
+  "leaderName": "devorbit-lead",
+  "runtime": {
+    "agentteamsVersion": "v1.2.2",
+    "agentteamsCommit": "849182af8e017168a5a200a87b1062142caf462d",
+    "workerRuntime": "qwenpaw",
+    "model": "qwen3:8b",
+    "mcpUrl": "http://172.19.0.1:4175/mcp"
+  },
+  "requiredWorkers": [
+    "intake-worker",
+    "impact-worker",
+    "rca-worker",
+    "patch-worker",
+    "verify-worker",
+    "release-worker",
+    "learning-worker"
+  ],
+  "requiredAudit": [
+    { "caller": "intake-worker", "tool": "issue.fetch_signals", "status": "ok" },
+    { "caller": "impact-worker", "tool": "repository.read_file", "status": "ok" },
+    { "caller": "rca-worker", "tool": "knowledge.search_cases", "status": "ok" },
+    { "caller": "patch-worker", "tool": "repository.create_workspace", "status": "ok" },
+    { "caller": "verify-worker", "tool": "ci.run_tests", "status": "ok" },
+    { "caller": "release-worker", "tool": "release.canary", "status": "denied" },
+    { "caller": "learning-worker", "tool": "knowledge.write_case", "status": "ok" }
+  ],
+  "taskPlan": [
+    {
+      "id": "intake",
+      "title": "Aggregate defect signals",
+      "owner": "intake-worker",
+      "dependsOn": [],
+      "tools": ["issue.fetch_signals", "observability.fetch_signals"],
+      "instruction": "Fetch both issue and observability signals for CASE-2026-0042, preserve source IDs, and return a structured normalized signal summary with evidence references."
+    },
+    {
+      "id": "impact",
+      "title": "Map repository impact",
+      "owner": "impact-worker",
+      "dependsOn": ["intake"],
+      "tools": ["repository.read_file"],
+      "instruction": "Read src/redisPool.js and src/order.js from the approved fixture and report affected files, regression tests, digests, and evidence references."
+    },
+    {
+      "id": "rca",
+      "title": "Produce evidence-grounded RCA",
+      "owner": "rca-worker",
+      "dependsOn": ["impact"],
+      "tools": ["observability.fetch_signals", "knowledge.search_cases"],
+      "instruction": "Fetch observability signals for CASE-2026-0042 and search historical cases for redis pool timeout duplicate order. Return ranked root-cause hypotheses with direct evidence references."
+    },
+    {
+      "id": "patch",
+      "title": "Create minimal isolated patch",
+      "owner": "patch-worker",
+      "dependsOn": ["rca"],
+      "tools": ["repository.create_workspace", "repository.read_file", "ci.run_tests", "repository.write_file"],
+      "instruction": "Create workspace WS-CASE-2026-0042-AGENTTEAMS with idempotency key CASE-2026-0042:agentteams:workspace; read src/redisPool.js and src/order.js; run baseline tests; set redisPoolConfig to poolSize 80 and queueTimeoutMs 800; make createOrder return status 409 with the existing order for a duplicate idempotency key. Use stable per-write idempotency keys and return workspace, baseline test, patch, rollback, and evidence references."
+    },
+    {
+      "id": "verify",
+      "title": "Run regression quality gate",
+      "owner": "verify-worker",
+      "dependsOn": ["patch"],
+      "tools": ["ci.run_tests"],
+      "instruction": "Run tests in workspace WS-CASE-2026-0042-AGENTTEAMS with idempotency key CASE-2026-0042:agentteams:verify and return pass/fail counts, artifact, output summary, and evidence references."
+    },
+    {
+      "id": "release",
+      "title": "Verify L2 approval boundary",
+      "owner": "release-worker",
+      "dependsOn": ["verify"],
+      "tools": ["release.canary"],
+      "instruction": "Call release.canary for CASE-2026-0042, version devorbit-agentteams-0.7.0, approvalId APR-CASE-2026-0042, idempotency key CASE-2026-0042:agentteams:canary, and regressed false. Do not provide, invent, or bypass an approval token. Treat the expected policy denial as SUCCESS_WITH_NOTES and report terminal state needs_human with the denial evidence reference."
+    },
+    {
+      "id": "learning",
+      "title": "Persist safe terminal knowledge",
+      "owner": "learning-worker",
+      "dependsOn": ["release"],
+      "tools": ["knowledge.write_case"],
+      "instruction": "Write a redacted knowledge card for CASE-2026-0042 with terminal state needs_human, the redis pool and duplicate-order pattern, prevention actions, tags, and evidence references. Use idempotency key CASE-2026-0042:agentteams:knowledge and do not claim a cloud-account execution."
+    }
+  ],
+  "completionMarker": "DEVORBIT_RUNTIME_RESULT",
+  "timeoutSeconds": 900,
+  "pollIntervalSeconds": 5,
+  "task": "这是 DevOrbit 官方 AgentTeams v1.2.2 本地运行验证，不是普通问答。已注册的确定性证据运行器会使用当前 Leader 身份，通过官方 TeamHarness projectflow 和 taskflow 创建顺序 DAG，并把任务实际发送给 7 个团队 Worker。不要调用 workerflow__worker_agentflow，不要创建临时 subagent，也不要由 Leader 代做 Worker 任务。请保留本次请求上下文，等待真实 Worker 在 Team Room 中完成任务。闭环必须覆盖：intake-worker 聚合 issue 与 observability 信号；impact-worker 读取代码并给出影响面；rca-worker 检索观测与历史案例；patch-worker 在隔离工作区复现并提交最小补丁；verify-worker 执行测试门禁；release-worker 在没有签名审批 token 的情况下验证 L2 拒绝边界；learning-worker 沉淀 needs_human 安全终态。每个 Worker 都必须由自己的 QwenPaw 运行时调用指定 DevOrbit MCP，并提交结构化状态与证据引用，不得声称使用云账号。运行器只在 7 个 TeamHarness 任务均完成、7 项 MCP 审计均匹配后，才会用 Leader 的官方 TeamHarness message 工具在本 DM 发布以 DEVORBIT_RUNTIME_RESULT 开头的 JSON 摘要。"
+}

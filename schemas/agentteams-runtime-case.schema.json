@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devorbit.example/schemas/agentteams-runtime-case.schema.json",
+  "type": "object",
+  "required": ["$schema", "protocolVersion", "runId", "caseId", "registeredAt", "teamName", "leaderName", "runtime", "requiredWorkers", "requiredAudit", "taskPlan", "completionMarker", "timeoutSeconds", "pollIntervalSeconds", "task"],
+  "properties": {
+    "$schema": { "const": "../schemas/agentteams-runtime-case.schema.json" },
+    "protocolVersion": { "const": "1.0" },
+    "runId": { "const": "agentteams-local-runtime-001" },
+    "caseId": { "pattern": "^CASE-" },
+    "registeredAt": { "type": "string", "minLength": 1 },
+    "teamName": { "const": "devorbit-delivery-team" },
+    "leaderName": { "const": "devorbit-lead" },
+    "runtime": {
+      "type": "object",
+      "required": ["agentteamsVersion", "agentteamsCommit", "workerRuntime", "model", "mcpUrl"],
+      "properties": {
+        "agentteamsVersion": { "const": "v1.2.2" },
+        "agentteamsCommit": { "pattern": "^[0-9a-f]{40}$" },
+        "workerRuntime": { "const": "qwenpaw" },
+        "model": { "const": "qwen3:8b" },
+        "mcpUrl": { "pattern": "^http://172\\.19\\.0\\.1:4175/mcp$" }
+      },
+      "additionalProperties": false
+    },
+    "requiredWorkers": { "type": "array", "minItems": 7, "maxItems": 7, "uniqueItems": true, "items": { "type": "string" } },
+    "requiredAudit": {
+      "type": "array",
+      "minItems": 7,
+      "items": {
+        "type": "object",
+        "required": ["caller", "tool", "status"],
+        "properties": { "caller": { "type": "string" }, "tool": { "type": "string" }, "status": { "enum": ["ok", "denied"] } },
+        "additionalProperties": false
+      }
+    },
+    "taskPlan": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "owner", "dependsOn", "tools", "instruction"],
+        "properties": {
+          "id": { "pattern": "^[a-z][a-z0-9-]*$" },
+          "title": { "type": "string", "minLength": 3 },
+          "owner": { "type": "string" },
+          "dependsOn": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+          "tools": { "type": "array", "minItems": 1, "items": { "type": "string", "pattern": "^[a-z]+\\.[a-z_]+$" }, "uniqueItems": true },
+          "instruction": { "type": "string", "minLength": 80 }
+        },
+        "additionalProperties": false
+      }
+    },
+    "completionMarker": { "const": "DEVORBIT_RUNTIME_RESULT" },
+    "timeoutSeconds": { "type": "integer", "minimum": 60, "maximum": 1800 },
+    "pollIntervalSeconds": { "type": "integer", "minimum": 2, "maximum": 30 },
+    "task": { "type": "string", "minLength": 500 }
+  },
+  "additionalProperties": false
+}

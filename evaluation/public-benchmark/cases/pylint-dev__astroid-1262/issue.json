@@ -1,0 +1,8 @@
+{
+  "instanceId": "pylint-dev__astroid-1262",
+  "repository": "pylint-dev/astroid",
+  "version": "2.9",
+  "createdAt": "2021-11-19T16:46:31Z",
+  "problemStatement": "``nodes.Module`` don't have a ``end_lineno`` and ``end_col_offset``\n### Steps to reproduce\r\n\r\n```python\r\nimport astroid\r\n\r\ncode = \"\"\"\r\n    print(\"a module\")\r\n    \"\"\"\r\n\r\nmodule = astroid.parse(code)\r\nprint(module.end_lineno)\r\nprint(module.end_col_offset)\r\n```\r\n\r\n### Current behavior\r\n\r\n`AttributeError` on both of the last lines.\r\n\r\n### Expected behavior\r\n\r\n@cdce8p Let me know if I misunderstood you, but I thought we wanted these to be accessible on all nodes, just initialised as `None`.\r\nIf that was not the case, I would make the case to do so as it allows you to do `node.end_lineno` without running in to `AttributeError`'s.\r\n\r\n### Version\r\n\r\nLatest `main`.\r\n\n",
+  "hintsText": ""
+}

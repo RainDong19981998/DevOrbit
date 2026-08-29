@@ -1,0 +1,53 @@
+{
+  "caseId": "PUB-PYDICOM__PYDICOM-1413",
+  "method": "devorbit",
+  "attempts": 1,
+  "rca": {
+    "rootCause": "When a bytes value is assigned to a DataElement with VR 'OL' (or other O* VRs), pydicom incorrectly splits the bytes on the backslash byte (0x5C) and wraps the result in a MultiValue. This happens because the code that handles value assignment/conversion for byte-string VRs treats the backslash character as a DICOM value separator, even though byte/binary VRs (OB, OW, OF, OL, OD, etc.) should be stored as a single bytes object without any splitting. When the bytes value happens to contain 0x5C (backslash), it gets split into multiple byte fragments inside a MultiValue, which later causes 'TypeError: a bytes-like object is required, not MultiValue' during writing/serialization.",
+    "confidence": 0.9,
+    "evidence": [
+      "Issue title: 'Error : a bytes-like object is required, not MultiValue' when updating tag LongTrianglePointIndexList (0066,0040) with VR 'OL'",
+      "Reporter notes error only occurs with VR 'OL', works fine with 'OB', 'OF' etc.",
+      "Maintainer reproduces and observes: print(ds) shows the OL value split into a MultiValue of two byte fragments: [b'...\\\\x00[\\\\x00', b'\\\\x00]\\\\x00...'] — indicating the backslash byte 0x5C in the data triggered splitting",
+      "Maintainer comment: 'I think this is because the byte value is hitting the hex for the backslash character during assignment. Ouch, that's kinda nasty.'",
+      "The value conversion/assignment logic in pydicom/values.py and pydicom/dataelem.py is responsible for converting raw values and must avoid applying backslash-based MultiValue splitting to binary/byte VRs"
+    ],
+    "filesToChange": [
+      "pydicom/values.py",
+      "pydicom/dataelem.py"
+    ]
+  },
+  "edits": [
+    {
+      "path": "pydicom/dataelem.py",
+      "search": "        if isinstance(val, (str, bytes)) and self.VR not in \\\n                ['UT', 'ST', 'LT', 'FL', 'FD', 'AT', 'OB', 'OW', 'OF', 'SL',\n                 'SQ', 'SS', 'UL', 'OB/OW', 'OW/OB', 'OB or OW',\n                 'OW or OB', 'UN'] and 'US' not in self.VR:",
+      "replace": "        if isinstance(val, (str, bytes)) and self.VR not in \\\n                ['UT', 'ST', 'LT', 'FL', 'FD', 'AT', 'OB', 'OW', 'OF', 'OL',\n                 'OD', 'OV', 'SL', 'SQ', 'SS', 'UL', 'OB/OW', 'OW/OB',\n                 'OB or OW', 'OW or OB', 'UN'] and 'US' not in self.VR:"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": true,
+    "safetyViolation": false,
+    "testsPassed": true,
+    "closedLoop": true,
+    "detail": "F2P green; P2P green ........                                                                 [100%]\n8 passed in 0.03s\n",
+    "f2pLogTail": "",
+    "changedPaths": [
+      "pydicom/dataelem.py"
+    ],
+    "appliedMethods": [
+      {
+        "path": "pydicom/dataelem.py",
+        "method": "exact",
+        "ambiguous": false
+      }
+    ]
+  },
+  "patchSha256": "sha256:1efbd36a7e5f3392176de15f5d77a8cc18cdbf9492e04c232179976e4a95ac28",
+  "contextBytes": 10966,
+  "baselineTail": "!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.29s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x pydicom/tests/test_valuerep.py::test_assigning_bytes[OD-bytes-vm017-vmN17-DoubleFloatPixelData] pydicom/tests/test_valuerep.py::test_assigning_bytes[OL-bytes-vm019-vmN19-TrackPointIndexList] pydicom/tests/test_valuerep.py::test_assigning_bytes[OV-bytes-vm020-vmN20-SelectorOVValue]\n",
+  "goldFiles": [
+    "pydicom/dataelem.py"
+  ],
+  "model": "glm",
+  "modelCalls": 2
+}

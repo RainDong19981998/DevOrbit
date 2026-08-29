@@ -1,10 +1,26 @@
 {
   "summary": {
     "dataset": "DevOrbit Synthetic RAG Cases v0.1",
-    "disclosure": "Team-authored synthetic queries and knowledge cards; not a production retrieval benchmark.",
+    "disclosure": "Team-authored synthetic queries and knowledge cards; not a production retrieval benchmark. Hybrid retrieval uses a local-hash deterministic embedding fallback when no API key is configured, and the Alibaba Cloud DashScope text-embedding-v4 endpoint when DASHSCOPE_API_KEY is set.",
+    "methods": [
+      {
+        "label": "lexical",
+        "top1Accuracy": 1,
+        "citationRate": 1,
+        "passed": 4,
+        "total": 4
+      },
+      {
+        "label": "hybrid",
+        "top1Accuracy": 1,
+        "citationRate": 1,
+        "passed": 4,
+        "total": 4
+      }
+    ],
     "cases": 4,
-    "passed": 4,
-    "top1Accuracy": 1,
+    "lexicalTop1Accuracy": 1,
+    "hybridTop1Accuracy": 1,
     "citationRate": 1
   },
   "cases": [
@@ -16,10 +32,18 @@
         "idempotency"
       ],
       "expectedTop1": "KB-HIST-001",
-      "actualTop1": "KB-HIST-001",
-      "citation": "knowledge://KB-HIST-001",
-      "score": 0.76,
-      "passed": true
+      "lexical": {
+        "top1": "KB-HIST-001",
+        "score": 0.76,
+        "passed": true
+      },
+      "hybrid": {
+        "top1": "KB-HIST-001",
+        "score": 0.76,
+        "combinedScore": 0.572,
+        "vecScore": 0.38398164407398033,
+        "passed": true
+      }
     },
     {
       "id": "RAG-002",
@@ -29,10 +53,18 @@
         "signature"
       ],
       "expectedTop1": "KB-HIST-002",
-      "actualTop1": "KB-HIST-002",
-      "citation": "knowledge://KB-HIST-002",
-      "score": 0.6667,
-      "passed": true
+      "lexical": {
+        "top1": "KB-HIST-002",
+        "score": 0.6667,
+        "passed": true
+      },
+      "hybrid": {
+        "top1": "KB-HIST-002",
+        "score": 0.6667,
+        "combinedScore": 0.4568,
+        "vecScore": 0.2468054276586026,
+        "passed": true
+      }
     },
     {
       "id": "RAG-003",
@@ -42,10 +74,18 @@
         "slow-sql"
       ],
       "expectedTop1": "KB-HIST-003",
-      "actualTop1": "KB-HIST-003",
-      "citation": "knowledge://KB-HIST-003",
-      "score": 0.7727,
-      "passed": true
+      "lexical": {
+        "top1": "KB-HIST-003",
+        "score": 0.7727,
+        "passed": true
+      },
+      "hybrid": {
+        "top1": "KB-HIST-003",
+        "score": 0.7727,
+        "combinedScore": 0.5427,
+        "vecScore": 0.31272420966015335,
+        "passed": true
+      }
     },
     {
       "id": "RAG-004",
@@ -55,10 +95,18 @@
         "retry"
       ],
       "expectedTop1": "KB-HIST-004",
-      "actualTop1": "KB-HIST-004",
-      "citation": "knowledge://KB-HIST-004",
-      "score": 0.6957,
-      "passed": true
+      "lexical": {
+        "top1": "KB-HIST-004",
+        "score": 0.6957,
+        "passed": true
+      },
+      "hybrid": {
+        "top1": "KB-HIST-004",
+        "score": 0.6957,
+        "combinedScore": 0.4809,
+        "vecScore": 0.26609544992139067,
+        "passed": true
+      }
     }
   ]
 }

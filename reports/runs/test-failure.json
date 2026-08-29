@@ -37,7 +37,7 @@
     ]
   },
   "canonical": {
-    "id": "CASE-CCEA5F8A",
+    "id": "CASE-F526A903",
     "title": "支付页提交后持续转圈，订单偶发重复创建",
     "severity": "S2",
     "confidence": 0.94,
@@ -108,7 +108,7 @@
         "protocolVersion": "2025-06-18",
         "transport": "embedded-jsonrpc",
         "tool": "repository.read_file",
-        "durationMs": 2,
+        "durationMs": 0,
         "isError": false
       },
       {
@@ -116,7 +116,7 @@
         "protocolVersion": "2025-06-18",
         "transport": "embedded-jsonrpc",
         "tool": "repository.read_file",
-        "durationMs": 0,
+        "durationMs": 1,
         "isError": false
       }
     ]
@@ -124,14 +124,14 @@
   "causes": [
     {
       "rank": 1,
-      "statement": "连接池容量下降造成幂等存储排队超时，重试路径未复用已创建订单。",
+      "statement": "连接池容量从 80 缩减为 8 造成幂等存储排队超时，重试路径未复用已创建订单。",
       "score": 0.91,
       "evidence": [
         "CHG-402",
         "LOG-10A",
         "METRIC-55",
         "repo://src/redisPool.js",
-        "knowledge://KB-HIST-001"
+        "knowledge://EP-001"
       ]
     },
     {
@@ -155,14 +155,14 @@
     "causes": [
       {
         "rank": 1,
-        "statement": "连接池容量下降造成幂等存储排队超时，重试路径未复用已创建订单。",
+        "statement": "连接池容量从 80 缩减为 8 造成幂等存储排队超时，重试路径未复用已创建订单。",
         "score": 0.91,
         "evidence": [
           "CHG-402",
           "LOG-10A",
           "METRIC-55",
           "repo://src/redisPool.js",
-          "knowledge://KB-HIST-001"
+          "knowledge://EP-001"
         ]
       },
       {
@@ -185,13 +185,113 @@
     "threshold": 0.8,
     "decision": "supported",
     "missingEvidence": [],
+    "warnings": [
+      {
+        "id": "EP-005",
+        "title": "调大连接池参数导致下游数据库级联崩溃（负面方案）",
+        "summary": "曾尝试将 Redis 连接池从 80 调至 200 试图缓解超时问题，结果下游 Redis 集群因连接数激增触发内存溢出，导致级联崩溃。正确方案是恢复至合理容量并优化查询。",
+        "pattern": "连接池过度调大 + 下游级联崩溃",
+        "tags": [
+          "redis",
+          "pool",
+          "cascade-failure",
+          "negative-evidence"
+        ],
+        "evidence": [
+          "Redis OOM 日志",
+          "连接池水位指标",
+          "级联告警"
+        ],
+        "prevention": [
+          "连接池上限策略",
+          "容量变更回归测试"
+        ],
+        "tenant": "acme-commerce",
+        "service": "checkout-service",
+        "environment": "production",
+        "gitRevision": "a1b2c3d4",
+        "configRevision": "release/2026.08",
+        "topology": [
+          {
+            "from": "checkout-service",
+            "to": "idempotency-store",
+            "type": "redis"
+          },
+          {
+            "from": "idempotency-store",
+            "to": "redis-cluster",
+            "type": "redis"
+          }
+        ],
+        "hypotheses": [
+          {
+            "statement": "调大连接池可缓解超时",
+            "verdict": "rejected",
+            "evidence": [
+              "Redis OOM 日志"
+            ]
+          },
+          {
+            "statement": "连接池过度调大致下游级联崩溃",
+            "verdict": "confirmed",
+            "evidence": [
+              "级联告警",
+              "连接池水位指标"
+            ]
+          }
+        ],
+        "evidenceChain": [
+          "POOL-200-001",
+          "REDIS-OOM-001",
+          "CASCADE-001"
+        ],
+        "patches": [
+          {
+            "digest": "sha256:badpool200",
+            "outcome": "harmful",
+            "notes": "poolSize 80→200 致 Redis OOM 级联崩溃，已回滚"
+          },
+          {
+            "digest": "sha256:correctfix001",
+            "outcome": "success",
+            "notes": "恢复 poolSize=80 + 幂等保护"
+          }
+        ],
+        "negativeLessons": [
+          {
+            "description": "曾尝试调大连接池参数（80→200），导致下游 Redis 集群 OOM 级联崩溃，已自动规避",
+            "severity": "high"
+          }
+        ],
+        "observation": {
+          "windowMinutes": 5,
+          "metricsVerdict": "degraded",
+          "reviewedBy": "sre-oncall",
+          "recovered": false,
+          "rollbackReason": "Redis OOM 级联崩溃"
+        },
+        "confidence": "high",
+        "recallStatus": "negative",
+        "createdAt": "2026-08-01T09:00:00Z",
+        "score": 0.0441,
+        "citation": "knowledge://EP-005",
+        "warningMessage": "曾尝试调大连接池参数（80→200），导致下游 Redis 集群 OOM 级联崩溃，已自动规避"
+      }
+    ],
+    "resampling": {
+      "rounds": 0,
+      "maxRounds": 2,
+      "trace": [],
+      "finalConfidence": 0.91,
+      "escalated": false
+    },
     "retrieval": {
       "query": "支付页提交后持续转圈，订单偶发重复创建",
       "results": [
         {
-          "id": "KB-HIST-001",
+          "id": "EP-001",
           "title": "连接池缩容导致幂等存储超时与重复订单",
-          "summary": "结算服务的 Redis 连接池被从 96 缩减为 12，峰值期间幂等键查询排队。客户端在超时后重试，而旧实现没有复用已创建订单。恢复容量、延长排队超时并增加重复提交保护后恢复。",
+          "summary": "结算服务的 Redis 连接池被从 80 缩减为 8，峰值期间幂等键查询排队。客户端在超时后重试，而旧实现没有复用已创建订单。恢复容量、延长排队超时并增加重复提交保护后恢复。",
           "pattern": "连接池缩容 + 幂等重试放大",
           "tags": [
             "redis",
@@ -212,78 +312,208 @@
             "连接池水位告警",
             "幂等回归门禁"
           ],
-          "score": 0.2059,
-          "citation": "knowledge://KB-HIST-001"
+          "tenant": "acme-commerce",
+          "service": "checkout-service",
+          "environment": "production",
+          "gitRevision": "a1b2c3d4",
+          "configRevision": "release/2026.08",
+          "topology": [
+            {
+              "from": "checkout-web",
+              "to": "checkout-service",
+              "type": "http"
+            },
+            {
+              "from": "checkout-service",
+              "to": "idempotency-store",
+              "type": "redis"
+            },
+            {
+              "from": "checkout-service",
+              "to": "order-service",
+              "type": "http"
+            }
+          ],
+          "hypotheses": [
+            {
+              "statement": "网关 502 是首因",
+              "verdict": "rejected",
+              "evidence": [
+                "METRIC-55"
+              ]
+            },
+            {
+              "statement": "连接池缩容导致幂等存储排队超时",
+              "verdict": "confirmed",
+              "evidence": [
+                "CHG-402",
+                "TRACE-771",
+                "METRIC-POOL"
+              ]
+            },
+            {
+              "statement": "订单重试未复用已创建订单",
+              "verdict": "confirmed",
+              "evidence": [
+                "TRACE-772"
+              ]
+            }
+          ],
+          "evidenceChain": [
+            "CHG-402",
+            "LOG-10A",
+            "METRIC-55",
+            "TRACE-771",
+            "METRIC-POOL",
+            "TRACE-772"
+          ],
+          "patches": [
+            {
+              "digest": "sha256:poolfix001",
+              "outcome": "success",
+              "notes": "恢复 poolSize=80, queueTimeoutMs=800"
+            },
+            {
+              "digest": "sha256:idempotencyfix001",
+              "outcome": "success",
+              "notes": "重复请求返回 409 + 原订单"
+            }
+          ],
+          "negativeLessons": [],
+          "observation": {
+            "windowMinutes": 15,
+            "metricsVerdict": "healthy",
+            "reviewedBy": "sre-oncall",
+            "recovered": true
+          },
+          "confidence": "high",
+          "recallStatus": "active",
+          "createdAt": "2026-07-15T08:30:00Z",
+          "score": 0.2206,
+          "citation": "knowledge://EP-001"
         },
         {
-          "id": "KB-HIST-003",
-          "title": "库存查询慢 SQL 导致下单尾延迟",
-          "summary": "库存表新增过滤条件后未命中联合索引，订单链路 p99 上升。增加索引并限制查询扫描行数后恢复。",
-          "pattern": "索引缺失 + 下游尾延迟",
+          "id": "EP-005",
+          "title": "调大连接池参数导致下游数据库级联崩溃（负面方案）",
+          "summary": "曾尝试将 Redis 连接池从 80 调至 200 试图缓解超时问题，结果下游 Redis 集群因连接数激增触发内存溢出，导致级联崩溃。正确方案是恢复至合理容量并优化查询。",
+          "pattern": "连接池过度调大 + 下游级联崩溃",
           "tags": [
-            "mysql",
-            "inventory",
-            "slow-sql",
-            "checkout"
+            "redis",
+            "pool",
+            "cascade-failure",
+            "negative-evidence"
           ],
           "evidence": [
-            "慢查询日志",
-            "执行计划",
-            "调用链"
+            "Redis OOM 日志",
+            "连接池水位指标",
+            "级联告警"
           ],
           "prevention": [
-            "SQL 执行计划门禁",
-            "扫描行数告警"
+            "连接池上限策略",
+            "容量变更回归测试"
           ],
+          "tenant": "acme-commerce",
+          "service": "checkout-service",
+          "environment": "production",
+          "gitRevision": "a1b2c3d4",
+          "configRevision": "release/2026.08",
+          "topology": [
+            {
+              "from": "checkout-service",
+              "to": "idempotency-store",
+              "type": "redis"
+            },
+            {
+              "from": "idempotency-store",
+              "to": "redis-cluster",
+              "type": "redis"
+            }
+          ],
+          "hypotheses": [
+            {
+              "statement": "调大连接池可缓解超时",
+              "verdict": "rejected",
+              "evidence": [
+                "Redis OOM 日志"
+              ]
+            },
+            {
+              "statement": "连接池过度调大致下游级联崩溃",
+              "verdict": "confirmed",
+              "evidence": [
+                "级联告警",
+                "连接池水位指标"
+              ]
+            }
+          ],
+          "evidenceChain": [
+            "POOL-200-001",
+            "REDIS-OOM-001",
+            "CASCADE-001"
+          ],
+          "patches": [
+            {
+              "digest": "sha256:badpool200",
+              "outcome": "harmful",
+              "notes": "poolSize 80→200 致 Redis OOM 级联崩溃，已回滚"
+            },
+            {
+              "digest": "sha256:correctfix001",
+              "outcome": "success",
+              "notes": "恢复 poolSize=80 + 幂等保护"
+            }
+          ],
+          "negativeLessons": [
+            {
+              "description": "曾尝试调大连接池参数（80→200），导致下游 Redis 集群 OOM 级联崩溃，已自动规避",
+              "severity": "high"
+            }
+          ],
+          "observation": {
+            "windowMinutes": 5,
+            "metricsVerdict": "degraded",
+            "reviewedBy": "sre-oncall",
+            "recovered": false,
+            "rollbackReason": "Redis OOM 级联崩溃"
+          },
+          "confidence": "high",
+          "recallStatus": "negative",
+          "createdAt": "2026-08-01T09:00:00Z",
           "score": 0.0441,
-          "citation": "knowledge://KB-HIST-003"
-        },
-        {
-          "id": "KB-HIST-002",
-          "title": "支付回调签名密钥轮换不一致",
-          "summary": "支付回调方已切换新密钥，但部分实例仍缓存旧版本，造成间歇性签名验证失败。通过双密钥过渡与缓存版本检查修复。",
-          "pattern": "密钥轮换 + 实例缓存不一致",
-          "tags": [
-            "payment",
-            "signature",
-            "cache",
-            "key-rotation"
-          ],
-          "evidence": [
-            "签名失败日志",
-            "实例配置版本"
-          ],
-          "prevention": [
-            "双密钥窗口",
-            "配置版本一致性检查"
-          ],
-          "score": 0.0147,
-          "citation": "knowledge://KB-HIST-002"
+          "citation": "knowledge://EP-005",
+          "warningMessage": "曾尝试调大连接池参数（80→200），导致下游 Redis 集群 OOM 级联崩溃，已自动规避"
         }
       ],
-      "topScore": 0.2059,
+      "topScore": 0.2206,
       "cited": true,
       "mcpCall": {
         "protocol": "MCP",
         "protocolVersion": "2025-06-18",
         "transport": "embedded-jsonrpc",
         "tool": "knowledge.search_cases",
-        "durationMs": 1,
+        "durationMs": 0,
         "isError": false
       }
     }
   },
   "plan": {
-    "workspaceId": "WS-CASE-CCEA5F8A",
+    "workspaceId": "WS-CASE-F526A903",
     "baseCommit": null,
     "branch": "release/2026.08",
-    "summary": "恢复连接池容量、延长排队超时并在重试路径复用原订单。",
+    "attempts": 3,
+    "maxAttempts": 3,
+    "isRework": true,
+    "failureFeedback": {
+      "outputTail": "ok 4 - queue timeout absorbs short checkout bursts\n  ---\n  duration_ms: 0.14523\n  type: 'test'\n  ...\n1..4\n# tests 4\n# suites 0\n# pass 3\n# fail 1\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 81.815492",
+      "failed": 1,
+      "passed": 3
+    },
+    "summary": "第 3 次返工：分析失败日志（1 项失败）后修正补丁，恢复连接池容量并补全幂等保护。",
     "files": [
-      "src/redisPool.js",
-      "src/order.js"
+      "src/redisPool.js"
     ],
-    "patch": "- poolSize: 8\n+ poolSize: 80\n- queueTimeoutMs: 250\n+ queueTimeoutMs: 800\n+ duplicate request → 409 + original order",
-    "rollbackRef": "sha256:39921e0e6eb52fe9",
+    "patch": "- poolSize: 8\n+ poolSize: 80\n- queueTimeoutMs: 250\n+ queueTimeoutMs: 800",
+    "rollbackRef": "sha256:b96ee98face7921b",
     "patchDigest": "sha256:b96ee98face7921b",
     "baselineTests": {
       "command": "node --test",
@@ -291,43 +521,11 @@
       "passed": 1,
       "failed": 3,
       "skipped": 0,
-      "durationMs": 144,
-      "artifact": "sha256:3b74918ea00df1dd",
-      "outputTail": "    Test.processPendingSubtests (node:internal/test_runner/test:744:18)\n    Test.postRun (node:internal/test_runner/test:1173:19)\n    Test.run (node:internal/test_runner/test:1101:12)\n    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)\n  ...\n1..4\n# tests 4\n# suites 0\n# pass 1\n# fail 3\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 90.412146"
+      "durationMs": 133,
+      "artifact": "sha256:9fe06c6f3ceec73c",
+      "outputTail": "    Test.processPendingSubtests (node:internal/test_runner/test:744:18)\n    Test.postRun (node:internal/test_runner/test:1173:19)\n    Test.run (node:internal/test_runner/test:1101:12)\n    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)\n  ...\n1..4\n# tests 4\n# suites 0\n# pass 1\n# fail 3\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 85.61453"
     },
     "mcpCalls": [
-      {
-        "protocol": "MCP",
-        "protocolVersion": "2025-06-18",
-        "transport": "embedded-jsonrpc",
-        "tool": "repository.create_workspace",
-        "durationMs": 7,
-        "isError": false
-      },
-      {
-        "protocol": "MCP",
-        "protocolVersion": "2025-06-18",
-        "transport": "embedded-jsonrpc",
-        "tool": "repository.read_file",
-        "durationMs": 1,
-        "isError": false
-      },
-      {
-        "protocol": "MCP",
-        "protocolVersion": "2025-06-18",
-        "transport": "embedded-jsonrpc",
-        "tool": "repository.read_file",
-        "durationMs": 0,
-        "isError": false
-      },
-      {
-        "protocol": "MCP",
-        "protocolVersion": "2025-06-18",
-        "transport": "embedded-jsonrpc",
-        "tool": "ci.run_tests",
-        "durationMs": 144,
-        "isError": false
-      },
       {
         "protocol": "MCP",
         "protocolVersion": "2025-06-18",
@@ -346,17 +544,18 @@
     "passed": 3,
     "failed": 1,
     "skipped": 0,
-    "durationMs": 135,
-    "artifact": "sha256:ca2e869be7a1ce48",
-    "outputTail": "ok 4 - queue timeout absorbs short checkout bursts\n  ---\n  duration_ms: 0.139733\n  type: 'test'\n  ...\n1..4\n# tests 4\n# suites 0\n# pass 3\n# fail 1\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 81.783863",
+    "durationMs": 131,
+    "artifact": "sha256:d2d0b65ff19dd083",
+    "outputTail": "ok 4 - queue timeout absorbs short checkout bursts\n  ---\n  duration_ms: 0.14019\n  type: 'test'\n  ...\n1..4\n# tests 4\n# suites 0\n# pass 3\n# fail 1\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 82.28259",
     "mcpCall": {
       "protocol": "MCP",
       "protocolVersion": "2025-06-18",
       "transport": "embedded-jsonrpc",
       "tool": "ci.run_tests",
-      "durationMs": 135,
+      "durationMs": 131,
       "isError": false
     },
+    "attempt": 3,
     "suites": [
       "test/order.test.js",
       "test/redisPool.test.js"
@@ -366,37 +565,171 @@
   "approval": null,
   "release": null,
   "knowledge": null,
+  "evidenceChain": {
+    "genesis": "0000000000000000",
+    "head": "6bff0b20eab17137",
+    "links": [
+      {
+        "stage": "triage",
+        "stageHash": "720df057ad40925c",
+        "prevHash": "0000000000000000",
+        "linkHash": "77c6190e455bec68",
+        "at": "2026-08-28T06:45:05.533Z"
+      },
+      {
+        "stage": "intake",
+        "stageHash": "720df057ad40925c",
+        "prevHash": "77c6190e455bec68",
+        "linkHash": "dab280a1b8c29a19",
+        "at": "2026-08-28T06:45:05.533Z"
+      },
+      {
+        "stage": "impact",
+        "stageHash": "9ca58f518b0ab474",
+        "prevHash": "dab280a1b8c29a19",
+        "linkHash": "0a5fe1ae58de8061",
+        "at": "2026-08-28T06:45:05.534Z"
+      },
+      {
+        "stage": "impact",
+        "stageHash": "9ca58f518b0ab474",
+        "prevHash": "0a5fe1ae58de8061",
+        "linkHash": "ee5f2426aaaf3429",
+        "at": "2026-08-28T06:45:05.534Z"
+      },
+      {
+        "stage": "rca",
+        "stageHash": "c0bd9c326f0fbab2",
+        "prevHash": "ee5f2426aaaf3429",
+        "linkHash": "b970fbaf51490871",
+        "at": "2026-08-28T06:45:05.534Z"
+      },
+      {
+        "stage": "rca",
+        "stageHash": "c0bd9c326f0fbab2",
+        "prevHash": "b970fbaf51490871",
+        "linkHash": "f2a66c1a2c219023",
+        "at": "2026-08-28T06:45:05.534Z"
+      },
+      {
+        "stage": "patch",
+        "stageHash": "70ea9f0c8df59fa9",
+        "prevHash": "f2a66c1a2c219023",
+        "linkHash": "c634c5d6a57399af",
+        "at": "2026-08-28T06:45:05.676Z"
+      },
+      {
+        "stage": "patch",
+        "stageHash": "70ea9f0c8df59fa9",
+        "prevHash": "c634c5d6a57399af",
+        "linkHash": "d81399927ae1618c",
+        "at": "2026-08-28T06:45:05.676Z"
+      },
+      {
+        "stage": "verify",
+        "stageHash": "ff353955cd721d98",
+        "prevHash": "d81399927ae1618c",
+        "linkHash": "501719c668b1507c",
+        "at": "2026-08-28T06:45:05.807Z"
+      },
+      {
+        "stage": "verify",
+        "stageHash": "ff353955cd721d98",
+        "prevHash": "501719c668b1507c",
+        "linkHash": "4e07aace636f7b9c",
+        "at": "2026-08-28T06:45:05.807Z"
+      },
+      {
+        "stage": "patch",
+        "stageHash": "98c3c1e3e5f5a5bd",
+        "prevHash": "4e07aace636f7b9c",
+        "linkHash": "fff51d03d2eb00e2",
+        "at": "2026-08-28T06:45:05.810Z"
+      },
+      {
+        "stage": "patch",
+        "stageHash": "98c3c1e3e5f5a5bd",
+        "prevHash": "fff51d03d2eb00e2",
+        "linkHash": "6ea62e202e6f262f",
+        "at": "2026-08-28T06:45:05.810Z"
+      },
+      {
+        "stage": "verify",
+        "stageHash": "d3400d572fd639f2",
+        "prevHash": "6ea62e202e6f262f",
+        "linkHash": "7bb346e9400936d0",
+        "at": "2026-08-28T06:45:05.936Z"
+      },
+      {
+        "stage": "verify",
+        "stageHash": "d3400d572fd639f2",
+        "prevHash": "7bb346e9400936d0",
+        "linkHash": "740d2ad728bbd1c2",
+        "at": "2026-08-28T06:45:05.936Z"
+      },
+      {
+        "stage": "patch",
+        "stageHash": "d0a3c91ce15af519",
+        "prevHash": "740d2ad728bbd1c2",
+        "linkHash": "1005b4314566efff",
+        "at": "2026-08-28T06:45:05.939Z"
+      },
+      {
+        "stage": "patch",
+        "stageHash": "d0a3c91ce15af519",
+        "prevHash": "1005b4314566efff",
+        "linkHash": "72a8bc54994255a6",
+        "at": "2026-08-28T06:45:05.939Z"
+      },
+      {
+        "stage": "verify",
+        "stageHash": "d2051b807b784ba9",
+        "prevHash": "72a8bc54994255a6",
+        "linkHash": "6f46a968d96ba906",
+        "at": "2026-08-28T06:45:06.070Z"
+      },
+      {
+        "stage": "verify",
+        "stageHash": "d2051b807b784ba9",
+        "prevHash": "6f46a968d96ba906",
+        "linkHash": "6bff0b20eab17137",
+        "at": "2026-08-28T06:45:06.070Z"
+      }
+    ],
+    "verified": true,
+    "linkCount": 18
+  },
   "state": {
-    "caseId": "CASE-CCEA5F8A",
-    "traceId": "TRACE-628e62e8-b1e1-4ea4-b5ad-4da427985558",
+    "caseId": "CASE-F526A903",
+    "traceId": "TRACE-10655d88-294b-4a5e-a078-0d9dbff545a2",
     "status": "needs_human",
-    "revision": 5,
+    "revision": 9,
     "scenario": "test-failure",
-    "messageCount": 9
+    "messageCount": 17
   },
   "trace": [
     {
-      "traceId": "TRACE-628e62e8-b1e1-4ea4-b5ad-4da427985558",
+      "traceId": "TRACE-10655d88-294b-4a5e-a078-0d9dbff545a2",
       "spanId": "SPAN-001",
       "parentSpanId": null,
-      "at": "2026-08-13T14:30:11.287Z",
+      "at": "2026-08-28T06:45:05.533Z",
       "agent": "devorbit-lead",
       "skill": "case-orchestration",
       "stage": "triage",
       "status": "dispatched",
       "message": "委派 triage 任务给 intake-worker，共享 Case State 版本 1。",
       "evidence": [
-        "state://CASE-CCEA5F8A/received"
+        "state://CASE-F526A903/received"
       ],
       "durationMs": 8,
       "inputDigest": "1acbc1c47da92b68",
       "outputDigest": "48da602835f7e498"
     },
     {
-      "traceId": "TRACE-628e62e8-b1e1-4ea4-b5ad-4da427985558",
+      "traceId": "TRACE-10655d88-294b-4a5e-a078-0d9dbff545a2",
       "spanId": "SPAN-002",
       "parentSpanId": "SPAN-001",
-      "at": "2026-08-13T14:30:12.288Z",
+      "at": "2026-08-28T06:45:06.533Z",
       "agent": "intake-worker",
       "skill": "SignalFusion",
       "stage": "triage",
@@ -410,31 +743,31 @@
         "CHG-402"
       ],
       "durationMs": 11,
-      "inputDigest": "4dc9bbb6b236bc35",
-      "outputDigest": "c150291f274d8b35"
+      "inputDigest": "a2c0bab069620bf8",
+      "outputDigest": "720df057ad40925c"
     },
     {
-      "traceId": "TRACE-628e62e8-b1e1-4ea4-b5ad-4da427985558",
+      "traceId": "TRACE-10655d88-294b-4a5e-a078-0d9dbff545a2",
       "spanId": "SPAN-003",
       "parentSpanId": null,
-      "at": "2026-08-13T14:30:13.288Z",
+      "at": "2026-08-28T06:45:07.533Z",
       "agent": "devorbit-lead",
       "skill": "case-orchestration",
       "stage": "impact",
       "status": "dispatched",
       "message": "委派 impact 任务给 impact-worker，共享 Case State 版本 3。",
       "evidence": [
-        "state://CASE-CCEA5F8A/triaged"
+        "state://CASE-F526A903/triaged"
       ],
       "durationMs": 14,
-      "inputDigest": "75116320299f148f",
+      "inputDigest": "9de2436cdc9e00a8",
       "outputDigest": "fa2a6e96d73fa112"
     },
     {
-      "traceId": "TRACE-628e62e8-b1e1-4ea4-b5ad-4da427985558",
+      "traceId": "TRACE-10655d88-294b-4a5e-a078-0d9dbff545a2",
       "spanId": "SPAN-004",
       "parentSpanId": "SPAN-003",
-      "at": "2026-08-13T14:30:14.290Z",
+      "at": "2026-08-28T06:45:08.534Z",
       "agent": "impact-worker",
       "skill": "ImpactMap",
       "stage": "impact",
@@ -449,118 +782,266 @@
         "mcp://sha256:6169a3e590b472cb"
       ],
       "durationMs": 17,
-      "inputDigest": "c150291f274d8b35",
-      "outputDigest": "e6525f33328a5578"
+      "inputDigest": "720df057ad40925c",
+      "outputDigest": "9ca58f518b0ab474"
     },
     {
-      "traceId": "TRACE-628e62e8-b1e1-4ea4-b5ad-4da427985558",
+      "traceId": "TRACE-10655d88-294b-4a5e-a078-0d9dbff545a2",
       "spanId": "SPAN-005",
       "parentSpanId": null,
-      "at": "2026-08-13T14:30:15.290Z",
+      "at": "2026-08-28T06:45:09.534Z",
       "agent": "devorbit-lead",
       "skill": "case-orchestration",
       "stage": "rca",
       "status": "dispatched",
       "message": "委派 rca 任务给 rca-worker，共享 Case State 版本 4。",
       "evidence": [
-        "state://CASE-CCEA5F8A/triaged"
+        "state://CASE-F526A903/triaged"
       ],
       "durationMs": 20,
-      "inputDigest": "1ca2c1d29affea71",
+      "inputDigest": "569252955efec2c7",
       "outputDigest": "1ef0f8abb234dd13"
     },
     {
-      "traceId": "TRACE-628e62e8-b1e1-4ea4-b5ad-4da427985558",
+      "traceId": "TRACE-10655d88-294b-4a5e-a078-0d9dbff545a2",
       "spanId": "SPAN-006",
       "parentSpanId": "SPAN-005",
-      "at": "2026-08-13T14:30:16.291Z",
+      "at": "2026-08-28T06:45:10.534Z",
       "agent": "rca-worker",
       "skill": "EvidenceRCA",
       "stage": "rca",
       "status": "completed",
-      "message": "RAG 命中 KB-HIST-001，现场证据置信度 0.91。",
+      "message": "RAG 命中 EP-001，现场证据置信度 0.91。负面方案召回：曾尝试调大连接池参数（80→200），导致下游 Redis 集群 OOM 级联崩溃，已自动规避，已自动规避。",
       "evidence": [
         "CHG-402",
         "LOG-10A",
         "METRIC-55",
         "repo://src/redisPool.js",
-        "knowledge://KB-HIST-001"
+        "knowledge://EP-001"
       ],
       "durationMs": 23,
-      "inputDigest": "74f8deb5979ab85f",
-      "outputDigest": "b92337a04bac7427"
+      "inputDigest": "4e82c881e58183af",
+      "outputDigest": "c0bd9c326f0fbab2"
     },
     {
-      "traceId": "TRACE-628e62e8-b1e1-4ea4-b5ad-4da427985558",
+      "traceId": "TRACE-10655d88-294b-4a5e-a078-0d9dbff545a2",
       "spanId": "SPAN-007",
       "parentSpanId": null,
-      "at": "2026-08-13T14:30:17.291Z",
+      "at": "2026-08-28T06:45:11.534Z",
       "agent": "devorbit-lead",
       "skill": "case-orchestration",
       "stage": "patch",
       "status": "dispatched",
       "message": "委派 patch 任务给 patch-worker，共享 Case State 版本 6。",
       "evidence": [
-        "state://CASE-CCEA5F8A/diagnosed"
+        "state://CASE-F526A903/diagnosed"
       ],
       "durationMs": 26,
-      "inputDigest": "4d4d7e0fa74d54fb",
+      "inputDigest": "903029a433b94af5",
       "outputDigest": "1012bb2b9032d666"
     },
     {
-      "traceId": "TRACE-628e62e8-b1e1-4ea4-b5ad-4da427985558",
+      "traceId": "TRACE-10655d88-294b-4a5e-a078-0d9dbff545a2",
       "spanId": "SPAN-008",
       "parentSpanId": "SPAN-007",
-      "at": "2026-08-13T14:30:18.444Z",
+      "at": "2026-08-28T06:45:12.675Z",
       "agent": "patch-worker",
       "skill": "PatchPlan",
       "stage": "patch",
       "status": "completed",
       "message": "经 MCP 工具在隔离工作区复现 3 个失败，并应用最小补丁。",
       "evidence": [
-        "baseline-ci://sha256:3b74918ea00df1dd",
+        "baseline-ci://sha256:9fe06c6f3ceec73c",
         "patch://sha256:b96ee98face7921b",
         "rollback://sha256:39921e0e6eb52fe9",
-        "mcp://workspace/WS-CASE-CCEA5F8A"
+        "mcp://workspace/WS-CASE-F526A903"
       ],
       "durationMs": 29,
-      "inputDigest": "b92337a04bac7427",
-      "outputDigest": "51f52002d5dd443e"
+      "inputDigest": "e6fea407a24abcae",
+      "outputDigest": "70ea9f0c8df59fa9"
     },
     {
-      "traceId": "TRACE-628e62e8-b1e1-4ea4-b5ad-4da427985558",
+      "traceId": "TRACE-10655d88-294b-4a5e-a078-0d9dbff545a2",
       "spanId": "SPAN-009",
       "parentSpanId": null,
-      "at": "2026-08-13T14:30:19.444Z",
+      "at": "2026-08-28T06:45:13.676Z",
       "agent": "devorbit-lead",
       "skill": "case-orchestration",
       "stage": "verify",
       "status": "dispatched",
       "message": "委派 verify 任务给 verify-worker，共享 Case State 版本 8。",
       "evidence": [
-        "state://CASE-CCEA5F8A/planned"
+        "state://CASE-F526A903/planned"
       ],
       "durationMs": 32,
-      "inputDigest": "493b178f438fc6a0",
+      "inputDigest": "7d4dadfa442622a3",
       "outputDigest": "0e0607c3cb5cc321"
     },
     {
-      "traceId": "TRACE-628e62e8-b1e1-4ea4-b5ad-4da427985558",
+      "traceId": "TRACE-10655d88-294b-4a5e-a078-0d9dbff545a2",
       "spanId": "SPAN-010",
       "parentSpanId": "SPAN-009",
-      "at": "2026-08-13T14:30:20.579Z",
+      "at": "2026-08-28T06:45:14.807Z",
       "agent": "verify-worker",
       "skill": "TestGate",
       "stage": "verify",
       "status": "failed",
-      "message": "MCP CI 测试失败：3 通过，1 失败；发布链路已阻断。",
+      "message": "第 1/3 次尝试测试失败：3 通过，1 失败。失败日志已回传 patch worker 进行迭代自纠错。",
       "evidence": [
-        "ci://sha256:ca2e869be7a1ce48",
-        "mcp://ci.run_tests"
+        "ci://sha256:ad1d1659d25a7296",
+        "mcp://ci.run_tests",
+        "rework://attempt-1"
       ],
       "durationMs": 35,
       "inputDigest": "f0718853df9f881f",
-      "outputDigest": "6d34e208facfbcf6"
+      "outputDigest": "ff353955cd721d98"
+    },
+    {
+      "traceId": "TRACE-10655d88-294b-4a5e-a078-0d9dbff545a2",
+      "spanId": "SPAN-011",
+      "parentSpanId": null,
+      "at": "2026-08-28T06:45:15.807Z",
+      "agent": "devorbit-lead",
+      "skill": "case-orchestration",
+      "stage": "patch",
+      "status": "dispatched",
+      "message": "委派 patch 任务给 patch-worker，共享 Case State 版本 10。",
+      "evidence": [
+        "state://CASE-F526A903/diagnosed"
+      ],
+      "durationMs": 38,
+      "inputDigest": "f2111600769b1b4f",
+      "outputDigest": "1012bb2b9032d666"
+    },
+    {
+      "traceId": "TRACE-10655d88-294b-4a5e-a078-0d9dbff545a2",
+      "spanId": "SPAN-012",
+      "parentSpanId": "SPAN-011",
+      "at": "2026-08-28T06:45:16.810Z",
+      "agent": "patch-worker",
+      "skill": "PatchPlan",
+      "stage": "patch",
+      "status": "completed",
+      "message": "第 2 次返工：读取失败日志（ok 4 - queue timeout absorbs short checkout bursts\n  ---\n  duration_ms: 0.140891…），补全幂等保护逻辑，恢复 poolSize=80。",
+      "evidence": [
+        "baseline-ci://sha256:9fe06c6f3ceec73c",
+        "patch://sha256:b96ee98face7921b",
+        "rollback://sha256:b96ee98face7921b",
+        "mcp://workspace/WS-CASE-F526A903",
+        "rework://2/3"
+      ],
+      "durationMs": 41,
+      "inputDigest": "7cc5f0acec022c10",
+      "outputDigest": "98c3c1e3e5f5a5bd"
+    },
+    {
+      "traceId": "TRACE-10655d88-294b-4a5e-a078-0d9dbff545a2",
+      "spanId": "SPAN-013",
+      "parentSpanId": null,
+      "at": "2026-08-28T06:45:17.810Z",
+      "agent": "devorbit-lead",
+      "skill": "case-orchestration",
+      "stage": "verify",
+      "status": "dispatched",
+      "message": "委派 verify 任务给 verify-worker，共享 Case State 版本 12。",
+      "evidence": [
+        "state://CASE-F526A903/planned"
+      ],
+      "durationMs": 44,
+      "inputDigest": "a395562b8f324b47",
+      "outputDigest": "0e0607c3cb5cc321"
+    },
+    {
+      "traceId": "TRACE-10655d88-294b-4a5e-a078-0d9dbff545a2",
+      "spanId": "SPAN-014",
+      "parentSpanId": "SPAN-013",
+      "at": "2026-08-28T06:45:18.936Z",
+      "agent": "verify-worker",
+      "skill": "TestGate",
+      "stage": "verify",
+      "status": "failed",
+      "message": "第 2/3 次尝试测试失败：3 通过，1 失败。失败日志已回传 patch worker 进行迭代自纠错。",
+      "evidence": [
+        "ci://sha256:6015c14e2ed0ed95",
+        "mcp://ci.run_tests",
+        "rework://attempt-2"
+      ],
+      "durationMs": 47,
+      "inputDigest": "f0718853df9f881f",
+      "outputDigest": "d3400d572fd639f2"
+    },
+    {
+      "traceId": "TRACE-10655d88-294b-4a5e-a078-0d9dbff545a2",
+      "spanId": "SPAN-015",
+      "parentSpanId": null,
+      "at": "2026-08-28T06:45:19.937Z",
+      "agent": "devorbit-lead",
+      "skill": "case-orchestration",
+      "stage": "patch",
+      "status": "dispatched",
+      "message": "委派 patch 任务给 patch-worker，共享 Case State 版本 14。",
+      "evidence": [
+        "state://CASE-F526A903/diagnosed"
+      ],
+      "durationMs": 50,
+      "inputDigest": "1444e55f749638d9",
+      "outputDigest": "1012bb2b9032d666"
+    },
+    {
+      "traceId": "TRACE-10655d88-294b-4a5e-a078-0d9dbff545a2",
+      "spanId": "SPAN-016",
+      "parentSpanId": "SPAN-015",
+      "at": "2026-08-28T06:45:20.939Z",
+      "agent": "patch-worker",
+      "skill": "PatchPlan",
+      "stage": "patch",
+      "status": "completed",
+      "message": "第 3 次返工：读取失败日志（ok 4 - queue timeout absorbs short checkout bursts\n  ---\n  duration_ms: 0.14523\n…），补全幂等保护逻辑，恢复 poolSize=80。",
+      "evidence": [
+        "baseline-ci://sha256:9fe06c6f3ceec73c",
+        "patch://sha256:b96ee98face7921b",
+        "rollback://sha256:b96ee98face7921b",
+        "mcp://workspace/WS-CASE-F526A903",
+        "rework://3/3"
+      ],
+      "durationMs": 53,
+      "inputDigest": "fc70e2677e17dc2d",
+      "outputDigest": "d0a3c91ce15af519"
+    },
+    {
+      "traceId": "TRACE-10655d88-294b-4a5e-a078-0d9dbff545a2",
+      "spanId": "SPAN-017",
+      "parentSpanId": null,
+      "at": "2026-08-28T06:45:21.939Z",
+      "agent": "devorbit-lead",
+      "skill": "case-orchestration",
+      "stage": "verify",
+      "status": "dispatched",
+      "message": "委派 verify 任务给 verify-worker，共享 Case State 版本 16。",
+      "evidence": [
+        "state://CASE-F526A903/planned"
+      ],
+      "durationMs": 56,
+      "inputDigest": "aef0a0db01e20bf6",
+      "outputDigest": "0e0607c3cb5cc321"
+    },
+    {
+      "traceId": "TRACE-10655d88-294b-4a5e-a078-0d9dbff545a2",
+      "spanId": "SPAN-018",
+      "parentSpanId": "SPAN-017",
+      "at": "2026-08-28T06:45:23.070Z",
+      "agent": "verify-worker",
+      "skill": "TestGate",
+      "stage": "verify",
+      "status": "circuit_breaker",
+      "message": "熔断降级：3/3 次返工后测试仍失败（3 通过，1 失败），链路安全停止并请求人工介入。",
+      "evidence": [
+        "ci://sha256:d2d0b65ff19dd083",
+        "mcp://ci.run_tests"
+      ],
+      "durationMs": 59,
+      "inputDigest": "f0718853df9f881f",
+      "outputDigest": "d2051b807b784ba9"
     }
   ],
   "messages": [
@@ -596,7 +1077,7 @@
       "type": "state_transition",
       "from": "triaged",
       "to": "diagnosed",
-      "reason": "root cause accepted by active evaluation policy",
+      "reason": "RAG 命中 EP-001，现场证据置信度 0.91。",
       "revision": 3
     },
     {
@@ -623,9 +1104,65 @@
     {
       "type": "state_transition",
       "from": "planned",
-      "to": "needs_human",
-      "reason": "real regression tests failed",
+      "to": "diagnosed",
+      "reason": "test failure on attempt 1/3; returning to patch worker for rework",
       "revision": 5
+    },
+    {
+      "type": "task",
+      "from": "devorbit-lead",
+      "to": "patch-worker",
+      "stage": "patch",
+      "spanId": "SPAN-011"
+    },
+    {
+      "type": "state_transition",
+      "from": "diagnosed",
+      "to": "planned",
+      "reason": "rework attempt 2/3 applied after test failure",
+      "revision": 6
+    },
+    {
+      "type": "task",
+      "from": "devorbit-lead",
+      "to": "verify-worker",
+      "stage": "verify",
+      "spanId": "SPAN-013"
+    },
+    {
+      "type": "state_transition",
+      "from": "planned",
+      "to": "diagnosed",
+      "reason": "test failure on attempt 2/3; returning to patch worker for rework",
+      "revision": 7
+    },
+    {
+      "type": "task",
+      "from": "devorbit-lead",
+      "to": "patch-worker",
+      "stage": "patch",
+      "spanId": "SPAN-015"
+    },
+    {
+      "type": "state_transition",
+      "from": "diagnosed",
+      "to": "planned",
+      "reason": "rework attempt 3/3 applied after test failure",
+      "revision": 8
+    },
+    {
+      "type": "task",
+      "from": "devorbit-lead",
+      "to": "verify-worker",
+      "stage": "verify",
+      "spanId": "SPAN-017"
+    },
+    {
+      "type": "state_transition",
+      "from": "planned",
+      "to": "needs_human",
+      "reason": "circuit breaker: 3/3 attempts exhausted, test still failing",
+      "revision": 9
     }
   ],
   "skills": [
@@ -814,12 +1351,14 @@
   ],
   "metrics": {
     "agents": 7,
-    "evidence": 22,
-    "spans": 10,
-    "messages": 9,
-    "mcpCalls": 12,
+    "evidence": 29,
+    "spans": 18,
+    "messages": 17,
+    "mcpCalls": 20,
     "policyDenials": 0,
-    "ragHits": 3,
+    "ragHits": 2,
+    "resamplingRounds": 0,
+    "patchAttempts": 3,
     "closedLoop": false,
     "outcome": "needs_human"
   },
@@ -838,7 +1377,7 @@
             {
               "key": "service.version",
               "value": {
-                "stringValue": "0.6.0"
+                "stringValue": "0.9.6"
               }
             },
             {
@@ -853,16 +1392,16 @@
           {
             "scope": {
               "name": "devorbit.runtime",
-              "version": "0.6.0"
+              "version": "0.9.6"
             },
             "spans": [
               {
-                "traceId": "51df1c2f06f02f7801ae97458059c231",
+                "traceId": "1a799d5d6ae66d844ede255663bdde75",
                 "spanId": "d6fb01a4172d8870",
                 "name": "orchestrate triage",
                 "kind": 1,
-                "startTimeUnixNano": "1786631411287000000",
-                "endTimeUnixNano": "1786631411295000000",
+                "startTimeUnixNano": "1787899505533000000",
+                "endTimeUnixNano": "1787899505541000000",
                 "attributes": [
                   {
                     "key": "gen_ai.operation.name",
@@ -885,7 +1424,7 @@
                   {
                     "key": "devorbit.case.id",
                     "value": {
-                      "stringValue": "CASE-CCEA5F8A"
+                      "stringValue": "CASE-F526A903"
                     }
                   },
                   {
@@ -918,13 +1457,13 @@
                 }
               },
               {
-                "traceId": "51df1c2f06f02f7801ae97458059c231",
+                "traceId": "1a799d5d6ae66d844ede255663bdde75",
                 "spanId": "377e20e3b4ac3798",
                 "parentSpanId": "d6fb01a4172d8870",
                 "name": "invoke_agent intake-worker",
                 "kind": 1,
-                "startTimeUnixNano": "1786631412288000000",
-                "endTimeUnixNano": "1786631412299000000",
+                "startTimeUnixNano": "1787899506533000000",
+                "endTimeUnixNano": "1787899506544000000",
                 "attributes": [
                   {
                     "key": "gen_ai.operation.name",
@@ -947,7 +1486,7 @@
                   {
                     "key": "devorbit.case.id",
                     "value": {
-                      "stringValue": "CASE-CCEA5F8A"
+                      "stringValue": "CASE-F526A903"
                     }
                   },
                   {
@@ -965,13 +1504,13 @@
                   {
                     "key": "devorbit.input.digest",
                     "value": {
-                      "stringValue": "4dc9bbb6b236bc35"
+                      "stringValue": "a2c0bab069620bf8"
                     }
                   },
                   {
                     "key": "devorbit.output.digest",
                     "value": {
-                      "stringValue": "c150291f274d8b35"
+                      "stringValue": "720df057ad40925c"
                     }
                   }
                 ],
@@ -980,12 +1519,12 @@
                 }
               },
               {
-                "traceId": "51df1c2f06f02f7801ae97458059c231",
+                "traceId": "1a799d5d6ae66d844ede255663bdde75",
                 "spanId": "38b47dce2a5d66f6",
                 "name": "orchestrate impact",
                 "kind": 1,
-                "startTimeUnixNano": "1786631413288000000",
-                "endTimeUnixNano": "1786631413302000000",
+                "startTimeUnixNano": "1787899507533000000",
+                "endTimeUnixNano": "1787899507547000000",
                 "attributes": [
                   {
                     "key": "gen_ai.operation.name",
@@ -1008,7 +1547,7 @@
                   {
                     "key": "devorbit.case.id",
                     "value": {
-                      "stringValue": "CASE-CCEA5F8A"
+                      "stringValue": "CASE-F526A903"
                     }
                   },
                   {
@@ -1026,7 +1565,7 @@
                   {
                     "key": "devorbit.input.digest",
                     "value": {
-                      "stringValue": "75116320299f148f"
+                      "stringValue": "9de2436cdc9e00a8"
                     }
                   },
                   {
@@ -1041,13 +1580,13 @@
                 }
               },
               {
-                "traceId": "51df1c2f06f02f7801ae97458059c231",
+                "traceId": "1a799d5d6ae66d844ede255663bdde75",
                 "spanId": "f7149e496d2c951c",
                 "parentSpanId": "38b47dce2a5d66f6",
                 "name": "invoke_agent impact-worker",
                 "kind": 1,
-                "startTimeUnixNano": "1786631414290000000",
-                "endTimeUnixNano": "1786631414307000000",
+                "startTimeUnixNano": "1787899508534000000",
+                "endTimeUnixNano": "1787899508551000000",
                 "attributes": [
                   {
                     "key": "gen_ai.operation.name",
@@ -1070,7 +1609,7 @@
                   {
                     "key": "devorbit.case.id",
                     "value": {
-                      "stringValue": "CASE-CCEA5F8A"
+                      "stringValue": "CASE-F526A903"
                     }
                   },
                   {
@@ -1088,13 +1627,13 @@
                   {
                     "key": "devorbit.input.digest",
                     "value": {
-                      "stringValue": "c150291f274d8b35"
+                      "stringValue": "720df057ad40925c"
                     }
                   },
                   {
                     "key": "devorbit.output.digest",
                     "value": {
-                      "stringValue": "e6525f33328a5578"
+                      "stringValue": "9ca58f518b0ab474"
                     }
                   }
                 ],
@@ -1103,12 +1642,12 @@
                 }
               },
               {
-                "traceId": "51df1c2f06f02f7801ae97458059c231",
+                "traceId": "1a799d5d6ae66d844ede255663bdde75",
                 "spanId": "135d14b4b4d305ec",
                 "name": "orchestrate rca",
                 "kind": 1,
-                "startTimeUnixNano": "1786631415290000000",
-                "endTimeUnixNano": "1786631415310000000",
+                "startTimeUnixNano": "1787899509534000000",
+                "endTimeUnixNano": "1787899509554000000",
                 "attributes": [
                   {
                     "key": "gen_ai.operation.name",
@@ -1131,7 +1670,7 @@
                   {
                     "key": "devorbit.case.id",
                     "value": {
-                      "stringValue": "CASE-CCEA5F8A"
+                      "stringValue": "CASE-F526A903"
                     }
                   },
                   {
@@ -1149,7 +1688,7 @@
                   {
                     "key": "devorbit.input.digest",
                     "value": {
-                      "stringValue": "1ca2c1d29affea71"
+                      "stringValue": "569252955efec2c7"
                     }
                   },
                   {
@@ -1164,13 +1703,13 @@
                 }
               },
               {
-                "traceId": "51df1c2f06f02f7801ae97458059c231",
+                "traceId": "1a799d5d6ae66d844ede255663bdde75",
                 "spanId": "ad283660f806710f",
                 "parentSpanId": "135d14b4b4d305ec",
                 "name": "invoke_agent rca-worker",
                 "kind": 1,
-                "startTimeUnixNano": "1786631416291000000",
-                "endTimeUnixNano": "1786631416314000000",
+                "startTimeUnixNano": "1787899510534000000",
+                "endTimeUnixNano": "1787899510557000000",
                 "attributes": [
                   {
                     "key": "gen_ai.operation.name",
@@ -1193,7 +1732,7 @@
                   {
                     "key": "devorbit.case.id",
                     "value": {
-                      "stringValue": "CASE-CCEA5F8A"
+                      "stringValue": "CASE-F526A903"
                     }
                   },
                   {
@@ -1211,13 +1750,13 @@
                   {
                     "key": "devorbit.input.digest",
                     "value": {
-                      "stringValue": "74f8deb5979ab85f"
+                      "stringValue": "4e82c881e58183af"
                     }
                   },
                   {
                     "key": "devorbit.output.digest",
                     "value": {
-                      "stringValue": "b92337a04bac7427"
+                      "stringValue": "c0bd9c326f0fbab2"
                     }
                   }
                 ],
@@ -1226,12 +1765,12 @@
                 }
               },
               {
-                "traceId": "51df1c2f06f02f7801ae97458059c231",
+                "traceId": "1a799d5d6ae66d844ede255663bdde75",
                 "spanId": "9d0ce1f69c4b8b9e",
                 "name": "orchestrate patch",
                 "kind": 1,
-                "startTimeUnixNano": "1786631417291000000",
-                "endTimeUnixNano": "1786631417317000000",
+                "startTimeUnixNano": "1787899511534000000",
+                "endTimeUnixNano": "1787899511560000000",
                 "attributes": [
                   {
                     "key": "gen_ai.operation.name",
@@ -1254,7 +1793,7 @@
                   {
                     "key": "devorbit.case.id",
                     "value": {
-                      "stringValue": "CASE-CCEA5F8A"
+                      "stringValue": "CASE-F526A903"
                     }
                   },
                   {
@@ -1272,7 +1811,7 @@
                   {
                     "key": "devorbit.input.digest",
                     "value": {
-                      "stringValue": "4d4d7e0fa74d54fb"
+                      "stringValue": "903029a433b94af5"
                     }
                   },
                   {
@@ -1287,13 +1826,13 @@
                 }
               },
               {
-                "traceId": "51df1c2f06f02f7801ae97458059c231",
+                "traceId": "1a799d5d6ae66d844ede255663bdde75",
                 "spanId": "1e0c3ecbb3e87848",
                 "parentSpanId": "9d0ce1f69c4b8b9e",
                 "name": "invoke_agent patch-worker",
                 "kind": 1,
-                "startTimeUnixNano": "1786631418444000000",
-                "endTimeUnixNano": "1786631418473000000",
+                "startTimeUnixNano": "1787899512675000000",
+                "endTimeUnixNano": "1787899512704000000",
                 "attributes": [
                   {
                     "key": "gen_ai.operation.name",
@@ -1316,7 +1855,7 @@
                   {
                     "key": "devorbit.case.id",
                     "value": {
-                      "stringValue": "CASE-CCEA5F8A"
+                      "stringValue": "CASE-F526A903"
                     }
                   },
                   {
@@ -1334,13 +1873,13 @@
                   {
                     "key": "devorbit.input.digest",
                     "value": {
-                      "stringValue": "b92337a04bac7427"
+                      "stringValue": "e6fea407a24abcae"
                     }
                   },
                   {
                     "key": "devorbit.output.digest",
                     "value": {
-                      "stringValue": "51f52002d5dd443e"
+                      "stringValue": "70ea9f0c8df59fa9"
                     }
                   }
                 ],
@@ -1349,12 +1888,12 @@
                 }
               },
               {
-                "traceId": "51df1c2f06f02f7801ae97458059c231",
+                "traceId": "1a799d5d6ae66d844ede255663bdde75",
                 "spanId": "babfb2d27c2ed798",
                 "name": "orchestrate verify",
                 "kind": 1,
-                "startTimeUnixNano": "1786631419444000000",
-                "endTimeUnixNano": "1786631419476000000",
+                "startTimeUnixNano": "1787899513676000000",
+                "endTimeUnixNano": "1787899513708000000",
                 "attributes": [
                   {
                     "key": "gen_ai.operation.name",
@@ -1377,7 +1916,7 @@
                   {
                     "key": "devorbit.case.id",
                     "value": {
-                      "stringValue": "CASE-CCEA5F8A"
+                      "stringValue": "CASE-F526A903"
                     }
                   },
                   {
@@ -1395,7 +1934,7 @@
                   {
                     "key": "devorbit.input.digest",
                     "value": {
-                      "stringValue": "493b178f438fc6a0"
+                      "stringValue": "7d4dadfa442622a3"
                     }
                   },
                   {
@@ -1410,13 +1949,13 @@
                 }
               },
               {
-                "traceId": "51df1c2f06f02f7801ae97458059c231",
+                "traceId": "1a799d5d6ae66d844ede255663bdde75",
                 "spanId": "e1b6b9c84612174d",
                 "parentSpanId": "babfb2d27c2ed798",
                 "name": "invoke_agent verify-worker",
                 "kind": 1,
-                "startTimeUnixNano": "1786631420579000000",
-                "endTimeUnixNano": "1786631420614000000",
+                "startTimeUnixNano": "1787899514807000000",
+                "endTimeUnixNano": "1787899514842000000",
                 "attributes": [
                   {
                     "key": "gen_ai.operation.name",
@@ -1439,7 +1978,499 @@
                   {
                     "key": "devorbit.case.id",
                     "value": {
-                      "stringValue": "CASE-CCEA5F8A"
+                      "stringValue": "CASE-F526A903"
+                    }
+                  },
+                  {
+                    "key": "devorbit.case.state",
+                    "value": {
+                      "stringValue": "needs_human"
+                    }
+                  },
+                  {
+                    "key": "devorbit.evidence.count",
+                    "value": {
+                      "intValue": "3"
+                    }
+                  },
+                  {
+                    "key": "devorbit.input.digest",
+                    "value": {
+                      "stringValue": "f0718853df9f881f"
+                    }
+                  },
+                  {
+                    "key": "devorbit.output.digest",
+                    "value": {
+                      "stringValue": "ff353955cd721d98"
+                    }
+                  }
+                ],
+                "status": {
+                  "code": 1
+                }
+              },
+              {
+                "traceId": "1a799d5d6ae66d844ede255663bdde75",
+                "spanId": "afa0b4a4b3052d56",
+                "name": "orchestrate patch",
+                "kind": 1,
+                "startTimeUnixNano": "1787899515807000000",
+                "endTimeUnixNano": "1787899515845000000",
+                "attributes": [
+                  {
+                    "key": "gen_ai.operation.name",
+                    "value": {
+                      "stringValue": "orchestrate"
+                    }
+                  },
+                  {
+                    "key": "gen_ai.agent.name",
+                    "value": {
+                      "stringValue": "devorbit-lead"
+                    }
+                  },
+                  {
+                    "key": "devorbit.skill.name",
+                    "value": {
+                      "stringValue": "case-orchestration"
+                    }
+                  },
+                  {
+                    "key": "devorbit.case.id",
+                    "value": {
+                      "stringValue": "CASE-F526A903"
+                    }
+                  },
+                  {
+                    "key": "devorbit.case.state",
+                    "value": {
+                      "stringValue": "needs_human"
+                    }
+                  },
+                  {
+                    "key": "devorbit.evidence.count",
+                    "value": {
+                      "intValue": "1"
+                    }
+                  },
+                  {
+                    "key": "devorbit.input.digest",
+                    "value": {
+                      "stringValue": "f2111600769b1b4f"
+                    }
+                  },
+                  {
+                    "key": "devorbit.output.digest",
+                    "value": {
+                      "stringValue": "1012bb2b9032d666"
+                    }
+                  }
+                ],
+                "status": {
+                  "code": 1
+                }
+              },
+              {
+                "traceId": "1a799d5d6ae66d844ede255663bdde75",
+                "spanId": "955ad2593146be57",
+                "parentSpanId": "afa0b4a4b3052d56",
+                "name": "invoke_agent patch-worker",
+                "kind": 1,
+                "startTimeUnixNano": "1787899516810000000",
+                "endTimeUnixNano": "1787899516851000000",
+                "attributes": [
+                  {
+                    "key": "gen_ai.operation.name",
+                    "value": {
+                      "stringValue": "invoke_agent"
+                    }
+                  },
+                  {
+                    "key": "gen_ai.agent.name",
+                    "value": {
+                      "stringValue": "patch-worker"
+                    }
+                  },
+                  {
+                    "key": "devorbit.skill.name",
+                    "value": {
+                      "stringValue": "PatchPlan"
+                    }
+                  },
+                  {
+                    "key": "devorbit.case.id",
+                    "value": {
+                      "stringValue": "CASE-F526A903"
+                    }
+                  },
+                  {
+                    "key": "devorbit.case.state",
+                    "value": {
+                      "stringValue": "needs_human"
+                    }
+                  },
+                  {
+                    "key": "devorbit.evidence.count",
+                    "value": {
+                      "intValue": "5"
+                    }
+                  },
+                  {
+                    "key": "devorbit.input.digest",
+                    "value": {
+                      "stringValue": "7cc5f0acec022c10"
+                    }
+                  },
+                  {
+                    "key": "devorbit.output.digest",
+                    "value": {
+                      "stringValue": "98c3c1e3e5f5a5bd"
+                    }
+                  }
+                ],
+                "status": {
+                  "code": 1
+                }
+              },
+              {
+                "traceId": "1a799d5d6ae66d844ede255663bdde75",
+                "spanId": "eaa75170c9865b6e",
+                "name": "orchestrate verify",
+                "kind": 1,
+                "startTimeUnixNano": "1787899517810000000",
+                "endTimeUnixNano": "1787899517854000000",
+                "attributes": [
+                  {
+                    "key": "gen_ai.operation.name",
+                    "value": {
+                      "stringValue": "orchestrate"
+                    }
+                  },
+                  {
+                    "key": "gen_ai.agent.name",
+                    "value": {
+                      "stringValue": "devorbit-lead"
+                    }
+                  },
+                  {
+                    "key": "devorbit.skill.name",
+                    "value": {
+                      "stringValue": "case-orchestration"
+                    }
+                  },
+                  {
+                    "key": "devorbit.case.id",
+                    "value": {
+                      "stringValue": "CASE-F526A903"
+                    }
+                  },
+                  {
+                    "key": "devorbit.case.state",
+                    "value": {
+                      "stringValue": "needs_human"
+                    }
+                  },
+                  {
+                    "key": "devorbit.evidence.count",
+                    "value": {
+                      "intValue": "1"
+                    }
+                  },
+                  {
+                    "key": "devorbit.input.digest",
+                    "value": {
+                      "stringValue": "a395562b8f324b47"
+                    }
+                  },
+                  {
+                    "key": "devorbit.output.digest",
+                    "value": {
+                      "stringValue": "0e0607c3cb5cc321"
+                    }
+                  }
+                ],
+                "status": {
+                  "code": 1
+                }
+              },
+              {
+                "traceId": "1a799d5d6ae66d844ede255663bdde75",
+                "spanId": "3b2b0d03e0dde756",
+                "parentSpanId": "eaa75170c9865b6e",
+                "name": "invoke_agent verify-worker",
+                "kind": 1,
+                "startTimeUnixNano": "1787899518936000000",
+                "endTimeUnixNano": "1787899518983000000",
+                "attributes": [
+                  {
+                    "key": "gen_ai.operation.name",
+                    "value": {
+                      "stringValue": "invoke_agent"
+                    }
+                  },
+                  {
+                    "key": "gen_ai.agent.name",
+                    "value": {
+                      "stringValue": "verify-worker"
+                    }
+                  },
+                  {
+                    "key": "devorbit.skill.name",
+                    "value": {
+                      "stringValue": "TestGate"
+                    }
+                  },
+                  {
+                    "key": "devorbit.case.id",
+                    "value": {
+                      "stringValue": "CASE-F526A903"
+                    }
+                  },
+                  {
+                    "key": "devorbit.case.state",
+                    "value": {
+                      "stringValue": "needs_human"
+                    }
+                  },
+                  {
+                    "key": "devorbit.evidence.count",
+                    "value": {
+                      "intValue": "3"
+                    }
+                  },
+                  {
+                    "key": "devorbit.input.digest",
+                    "value": {
+                      "stringValue": "f0718853df9f881f"
+                    }
+                  },
+                  {
+                    "key": "devorbit.output.digest",
+                    "value": {
+                      "stringValue": "d3400d572fd639f2"
+                    }
+                  }
+                ],
+                "status": {
+                  "code": 1
+                }
+              },
+              {
+                "traceId": "1a799d5d6ae66d844ede255663bdde75",
+                "spanId": "9ec8dfd17b9e7b7b",
+                "name": "orchestrate patch",
+                "kind": 1,
+                "startTimeUnixNano": "1787899519937000000",
+                "endTimeUnixNano": "1787899519987000000",
+                "attributes": [
+                  {
+                    "key": "gen_ai.operation.name",
+                    "value": {
+                      "stringValue": "orchestrate"
+                    }
+                  },
+                  {
+                    "key": "gen_ai.agent.name",
+                    "value": {
+                      "stringValue": "devorbit-lead"
+                    }
+                  },
+                  {
+                    "key": "devorbit.skill.name",
+                    "value": {
+                      "stringValue": "case-orchestration"
+                    }
+                  },
+                  {
+                    "key": "devorbit.case.id",
+                    "value": {
+                      "stringValue": "CASE-F526A903"
+                    }
+                  },
+                  {
+                    "key": "devorbit.case.state",
+                    "value": {
+                      "stringValue": "needs_human"
+                    }
+                  },
+                  {
+                    "key": "devorbit.evidence.count",
+                    "value": {
+                      "intValue": "1"
+                    }
+                  },
+                  {
+                    "key": "devorbit.input.digest",
+                    "value": {
+                      "stringValue": "1444e55f749638d9"
+                    }
+                  },
+                  {
+                    "key": "devorbit.output.digest",
+                    "value": {
+                      "stringValue": "1012bb2b9032d666"
+                    }
+                  }
+                ],
+                "status": {
+                  "code": 1
+                }
+              },
+              {
+                "traceId": "1a799d5d6ae66d844ede255663bdde75",
+                "spanId": "63e4a9a55bddeb16",
+                "parentSpanId": "9ec8dfd17b9e7b7b",
+                "name": "invoke_agent patch-worker",
+                "kind": 1,
+                "startTimeUnixNano": "1787899520939000000",
+                "endTimeUnixNano": "1787899520992000000",
+                "attributes": [
+                  {
+                    "key": "gen_ai.operation.name",
+                    "value": {
+                      "stringValue": "invoke_agent"
+                    }
+                  },
+                  {
+                    "key": "gen_ai.agent.name",
+                    "value": {
+                      "stringValue": "patch-worker"
+                    }
+                  },
+                  {
+                    "key": "devorbit.skill.name",
+                    "value": {
+                      "stringValue": "PatchPlan"
+                    }
+                  },
+                  {
+                    "key": "devorbit.case.id",
+                    "value": {
+                      "stringValue": "CASE-F526A903"
+                    }
+                  },
+                  {
+                    "key": "devorbit.case.state",
+                    "value": {
+                      "stringValue": "needs_human"
+                    }
+                  },
+                  {
+                    "key": "devorbit.evidence.count",
+                    "value": {
+                      "intValue": "5"
+                    }
+                  },
+                  {
+                    "key": "devorbit.input.digest",
+                    "value": {
+                      "stringValue": "fc70e2677e17dc2d"
+                    }
+                  },
+                  {
+                    "key": "devorbit.output.digest",
+                    "value": {
+                      "stringValue": "d0a3c91ce15af519"
+                    }
+                  }
+                ],
+                "status": {
+                  "code": 1
+                }
+              },
+              {
+                "traceId": "1a799d5d6ae66d844ede255663bdde75",
+                "spanId": "7705f24eb565d9d7",
+                "name": "orchestrate verify",
+                "kind": 1,
+                "startTimeUnixNano": "1787899521939000000",
+                "endTimeUnixNano": "1787899521995000000",
+                "attributes": [
+                  {
+                    "key": "gen_ai.operation.name",
+                    "value": {
+                      "stringValue": "orchestrate"
+                    }
+                  },
+                  {
+                    "key": "gen_ai.agent.name",
+                    "value": {
+                      "stringValue": "devorbit-lead"
+                    }
+                  },
+                  {
+                    "key": "devorbit.skill.name",
+                    "value": {
+                      "stringValue": "case-orchestration"
+                    }
+                  },
+                  {
+                    "key": "devorbit.case.id",
+                    "value": {
+                      "stringValue": "CASE-F526A903"
+                    }
+                  },
+                  {
+                    "key": "devorbit.case.state",
+                    "value": {
+                      "stringValue": "needs_human"
+                    }
+                  },
+                  {
+                    "key": "devorbit.evidence.count",
+                    "value": {
+                      "intValue": "1"
+                    }
+                  },
+                  {
+                    "key": "devorbit.input.digest",
+                    "value": {
+                      "stringValue": "aef0a0db01e20bf6"
+                    }
+                  },
+                  {
+                    "key": "devorbit.output.digest",
+                    "value": {
+                      "stringValue": "0e0607c3cb5cc321"
+                    }
+                  }
+                ],
+                "status": {
+                  "code": 1
+                }
+              },
+              {
+                "traceId": "1a799d5d6ae66d844ede255663bdde75",
+                "spanId": "1971bfa05a5df75a",
+                "parentSpanId": "7705f24eb565d9d7",
+                "name": "invoke_agent verify-worker",
+                "kind": 1,
+                "startTimeUnixNano": "1787899523070000000",
+                "endTimeUnixNano": "1787899523129000000",
+                "attributes": [
+                  {
+                    "key": "gen_ai.operation.name",
+                    "value": {
+                      "stringValue": "invoke_agent"
+                    }
+                  },
+                  {
+                    "key": "gen_ai.agent.name",
+                    "value": {
+                      "stringValue": "verify-worker"
+                    }
+                  },
+                  {
+                    "key": "devorbit.skill.name",
+                    "value": {
+                      "stringValue": "TestGate"
+                    }
+                  },
+                  {
+                    "key": "devorbit.case.id",
+                    "value": {
+                      "stringValue": "CASE-F526A903"
                     }
                   },
                   {
@@ -1463,7 +2494,7 @@
                   {
                     "key": "devorbit.output.digest",
                     "value": {
-                      "stringValue": "6d34e208facfbcf6"
+                      "stringValue": "d2051b807b784ba9"
                     }
                   }
                 ],
@@ -1472,13 +2503,13 @@
                 }
               },
               {
-                "traceId": "51df1c2f06f02f7801ae97458059c231",
-                "spanId": "896694a7082e8899",
+                "traceId": "1a799d5d6ae66d844ede255663bdde75",
+                "spanId": "71b0faa06f587a08",
                 "parentSpanId": "d6fb01a4172d8870",
                 "name": "execute_tool issue.fetch_signals",
                 "kind": 1,
-                "startTimeUnixNano": "1786631411288000000",
-                "endTimeUnixNano": "1786631411289000000",
+                "startTimeUnixNano": "1787899505533000000",
+                "endTimeUnixNano": "1787899505534000000",
                 "attributes": [
                   {
                     "key": "gen_ai.operation.name",
@@ -1501,7 +2532,7 @@
                   {
                     "key": "devorbit.case.id",
                     "value": {
-                      "stringValue": "CASE-CCEA5F8A"
+                      "stringValue": "CASE-F526A903"
                     }
                   },
                   {
@@ -1519,13 +2550,13 @@
                   {
                     "key": "devorbit.audit.ref",
                     "value": {
-                      "stringValue": "audit://8e316771-1b6a-4c0b-8799-af3eb557b130"
+                      "stringValue": "audit://ba4203c0-96bd-4631-8b72-92c7a23c8be1"
                     }
                   },
                   {
                     "key": "devorbit.input.digest",
                     "value": {
-                      "stringValue": "174cb91b728dd33a"
+                      "stringValue": "9d1388a464791fd9"
                     }
                   },
                   {
@@ -1546,13 +2577,13 @@
                 }
               },
               {
-                "traceId": "51df1c2f06f02f7801ae97458059c231",
-                "spanId": "8eeaf7750c09d3cd",
+                "traceId": "1a799d5d6ae66d844ede255663bdde75",
+                "spanId": "209660dbdf0ffdf4",
                 "parentSpanId": "d6fb01a4172d8870",
                 "name": "execute_tool observability.fetch_signals",
                 "kind": 1,
-                "startTimeUnixNano": "1786631411288000000",
-                "endTimeUnixNano": "1786631411289000000",
+                "startTimeUnixNano": "1787899505533000000",
+                "endTimeUnixNano": "1787899505534000000",
                 "attributes": [
                   {
                     "key": "gen_ai.operation.name",
@@ -1575,7 +2606,7 @@
                   {
                     "key": "devorbit.case.id",
                     "value": {
-                      "stringValue": "CASE-CCEA5F8A"
+                      "stringValue": "CASE-F526A903"
                     }
                   },
                   {
@@ -1593,19 +2624,19 @@
                   {
                     "key": "devorbit.audit.ref",
                     "value": {
-                      "stringValue": "audit://32ede689-d3cd-45dd-9e3a-86a7eecea069"
+                      "stringValue": "audit://737dc3fe-4fce-4ba6-a1e2-a4b5d6bb6741"
                     }
                   },
                   {
                     "key": "devorbit.input.digest",
                     "value": {
-                      "stringValue": "174cb91b728dd33a"
+                      "stringValue": "9d1388a464791fd9"
                     }
                   },
                   {
                     "key": "devorbit.output.digest",
                     "value": {
-                      "stringValue": "b77f7460980392c8"
+                      "stringValue": "af724134f40d6255"
                     }
                   },
                   {
@@ -1620,13 +2651,13 @@
                 }
               },
               {
-                "traceId": "51df1c2f06f02f7801ae97458059c231",
-                "spanId": "c8ea55a3db4bc883",
+                "traceId": "1a799d5d6ae66d844ede255663bdde75",
+                "spanId": "138f3a8fa0f530f5",
                 "parentSpanId": "38b47dce2a5d66f6",
                 "name": "execute_tool repository.read_file",
                 "kind": 1,
-                "startTimeUnixNano": "1786631411288000000",
-                "endTimeUnixNano": "1786631411290000000",
+                "startTimeUnixNano": "1787899505533000000",
+                "endTimeUnixNano": "1787899505534000000",
                 "attributes": [
                   {
                     "key": "gen_ai.operation.name",
@@ -1649,7 +2680,7 @@
                   {
                     "key": "devorbit.case.id",
                     "value": {
-                      "stringValue": "CASE-CCEA5F8A"
+                      "stringValue": "CASE-F526A903"
                     }
                   },
                   {
@@ -1667,7 +2698,7 @@
                   {
                     "key": "devorbit.audit.ref",
                     "value": {
-                      "stringValue": "audit://0da5c627-7834-4544-b819-317729a00f6a"
+                      "stringValue": "audit://02804bf3-4af0-49a5-bad2-dffa4c8466ad"
                     }
                   },
                   {
@@ -1694,13 +2725,13 @@
                 }
               },
               {
-                "traceId": "51df1c2f06f02f7801ae97458059c231",
-                "spanId": "51230fae7ea5a0bc",
+                "traceId": "1a799d5d6ae66d844ede255663bdde75",
+                "spanId": "98a77fc4c001449a",
                 "parentSpanId": "38b47dce2a5d66f6",
                 "name": "execute_tool repository.read_file",
                 "kind": 1,
-                "startTimeUnixNano": "1786631411290000000",
-                "endTimeUnixNano": "1786631411291000000",
+                "startTimeUnixNano": "1787899505533000000",
+                "endTimeUnixNano": "1787899505534000000",
                 "attributes": [
                   {
                     "key": "gen_ai.operation.name",
@@ -1723,7 +2754,7 @@
                   {
                     "key": "devorbit.case.id",
                     "value": {
-                      "stringValue": "CASE-CCEA5F8A"
+                      "stringValue": "CASE-F526A903"
                     }
                   },
                   {
@@ -1741,7 +2772,7 @@
                   {
                     "key": "devorbit.audit.ref",
                     "value": {
-                      "stringValue": "audit://cac023a3-c0c8-4494-a80e-3766063127b8"
+                      "stringValue": "audit://dbd1e6a5-f46c-4899-8659-cc2a9f97f669"
                     }
                   },
                   {
@@ -1768,13 +2799,13 @@
                 }
               },
               {
-                "traceId": "51df1c2f06f02f7801ae97458059c231",
-                "spanId": "78b26603849c8a5e",
+                "traceId": "1a799d5d6ae66d844ede255663bdde75",
+                "spanId": "10ff1dda6ae093f4",
                 "parentSpanId": "135d14b4b4d305ec",
                 "name": "execute_tool knowledge.search_cases",
                 "kind": 1,
-                "startTimeUnixNano": "1786631411290000000",
-                "endTimeUnixNano": "1786631411291000000",
+                "startTimeUnixNano": "1787899505534000000",
+                "endTimeUnixNano": "1787899505535000000",
                 "attributes": [
                   {
                     "key": "gen_ai.operation.name",
@@ -1797,7 +2828,7 @@
                   {
                     "key": "devorbit.case.id",
                     "value": {
-                      "stringValue": "CASE-CCEA5F8A"
+                      "stringValue": "CASE-F526A903"
                     }
                   },
                   {
@@ -1815,19 +2846,19 @@
                   {
                     "key": "devorbit.audit.ref",
                     "value": {
-                      "stringValue": "audit://10327ace-a72e-4c93-ba34-63417bdbfe43"
+                      "stringValue": "audit://b4186700-5046-43e0-813d-e5eb16e20790"
                     }
                   },
                   {
                     "key": "devorbit.input.digest",
                     "value": {
-                      "stringValue": "022049b34087b3b3"
+                      "stringValue": "a270449969d356f0"
                     }
                   },
                   {
                     "key": "devorbit.output.digest",
                     "value": {
-                      "stringValue": "1bdb181ca6a080a6"
+                      "stringValue": "aa79c8ed635c0107"
                     }
                   },
                   {
@@ -1842,13 +2873,13 @@
                 }
               },
               {
-                "traceId": "51df1c2f06f02f7801ae97458059c231",
-                "spanId": "eadffc54454cb2d3",
+                "traceId": "1a799d5d6ae66d844ede255663bdde75",
+                "spanId": "02166106aa93361c",
                 "parentSpanId": "9d0ce1f69c4b8b9e",
                 "name": "execute_tool repository.create_workspace",
                 "kind": 1,
-                "startTimeUnixNano": "1786631411291000000",
-                "endTimeUnixNano": "1786631411298000000",
+                "startTimeUnixNano": "1787899505534000000",
+                "endTimeUnixNano": "1787899505540000000",
                 "attributes": [
                   {
                     "key": "gen_ai.operation.name",
@@ -1871,7 +2902,7 @@
                   {
                     "key": "devorbit.case.id",
                     "value": {
-                      "stringValue": "CASE-CCEA5F8A"
+                      "stringValue": "CASE-F526A903"
                     }
                   },
                   {
@@ -1889,19 +2920,19 @@
                   {
                     "key": "devorbit.audit.ref",
                     "value": {
-                      "stringValue": "audit://de169d80-9234-42ed-8401-4c75fda6fb01"
+                      "stringValue": "audit://27490143-e9e7-4785-9d0d-bd3bab198e3a"
                     }
                   },
                   {
                     "key": "devorbit.input.digest",
                     "value": {
-                      "stringValue": "550ac5db9abfcae0"
+                      "stringValue": "98be0e51918710c9"
                     }
                   },
                   {
                     "key": "devorbit.output.digest",
                     "value": {
-                      "stringValue": "2e30bd37ede1cc88"
+                      "stringValue": "18123989ae18190e"
                     }
                   },
                   {
@@ -1916,13 +2947,13 @@
                 }
               },
               {
-                "traceId": "51df1c2f06f02f7801ae97458059c231",
-                "spanId": "2c8675d51249009e",
+                "traceId": "1a799d5d6ae66d844ede255663bdde75",
+                "spanId": "07adc48c963d6725",
                 "parentSpanId": "9d0ce1f69c4b8b9e",
                 "name": "execute_tool repository.read_file",
                 "kind": 1,
-                "startTimeUnixNano": "1786631411298000000",
-                "endTimeUnixNano": "1786631411299000000",
+                "startTimeUnixNano": "1787899505540000000",
+                "endTimeUnixNano": "1787899505541000000",
                 "attributes": [
                   {
                     "key": "gen_ai.operation.name",
@@ -1945,7 +2976,7 @@
                   {
                     "key": "devorbit.case.id",
                     "value": {
-                      "stringValue": "CASE-CCEA5F8A"
+                      "stringValue": "CASE-F526A903"
                     }
                   },
                   {
@@ -1963,13 +2994,13 @@
                   {
                     "key": "devorbit.audit.ref",
                     "value": {
-                      "stringValue": "audit://5bf24a15-37f2-4ad3-9ce6-1881c1dc7e49"
+                      "stringValue": "audit://6d64b5d1-7eea-4989-8fd9-f6ec37bdf3c1"
                     }
                   },
                   {
                     "key": "devorbit.input.digest",
                     "value": {
-                      "stringValue": "d3473057799b6cbe"
+                      "stringValue": "fde6a609dccd67b1"
                     }
                   },
                   {
@@ -1990,13 +3021,13 @@
                 }
               },
               {
-                "traceId": "51df1c2f06f02f7801ae97458059c231",
-                "spanId": "de960775b5baa6d2",
+                "traceId": "1a799d5d6ae66d844ede255663bdde75",
+                "spanId": "840d5c8fad4f5707",
                 "parentSpanId": "9d0ce1f69c4b8b9e",
                 "name": "execute_tool repository.read_file",
                 "kind": 1,
-                "startTimeUnixNano": "1786631411299000000",
-                "endTimeUnixNano": "1786631411300000000",
+                "startTimeUnixNano": "1787899505540000000",
+                "endTimeUnixNano": "1787899505541000000",
                 "attributes": [
                   {
                     "key": "gen_ai.operation.name",
@@ -2019,7 +3050,7 @@
                   {
                     "key": "devorbit.case.id",
                     "value": {
-                      "stringValue": "CASE-CCEA5F8A"
+                      "stringValue": "CASE-F526A903"
                     }
                   },
                   {
@@ -2037,13 +3068,13 @@
                   {
                     "key": "devorbit.audit.ref",
                     "value": {
-                      "stringValue": "audit://d2a9a615-b3a6-4625-b38a-5a82d51b2f83"
+                      "stringValue": "audit://74e9c2b9-8ee9-4576-82a4-3e18db48658a"
                     }
                   },
                   {
                     "key": "devorbit.input.digest",
                     "value": {
-                      "stringValue": "eefc24c4fcd5f237"
+                      "stringValue": "af4b56071acfc23b"
                     }
                   },
                   {
@@ -2064,13 +3095,13 @@
                 }
               },
               {
-                "traceId": "51df1c2f06f02f7801ae97458059c231",
-                "spanId": "62391e082ae97fb4",
+                "traceId": "1a799d5d6ae66d844ede255663bdde75",
+                "spanId": "49acd7d3fe5d72d8",
                 "parentSpanId": "9d0ce1f69c4b8b9e",
                 "name": "execute_tool ci.run_tests",
                 "kind": 1,
-                "startTimeUnixNano": "1786631411299000000",
-                "endTimeUnixNano": "1786631411443000000",
+                "startTimeUnixNano": "1787899505541000000",
+                "endTimeUnixNano": "1787899505674000000",
                 "attributes": [
                   {
                     "key": "gen_ai.operation.name",
@@ -2093,7 +3124,7 @@
                   {
                     "key": "devorbit.case.id",
                     "value": {
-                      "stringValue": "CASE-CCEA5F8A"
+                      "stringValue": "CASE-F526A903"
                     }
                   },
                   {
@@ -2111,19 +3142,19 @@
                   {
                     "key": "devorbit.audit.ref",
                     "value": {
-                      "stringValue": "audit://9e5a0053-262a-4c4c-8b88-50ead2bc33b4"
+                      "stringValue": "audit://536aef56-95b1-4e50-b8e7-f0c65d81a686"
                     }
                   },
                   {
                     "key": "devorbit.input.digest",
                     "value": {
-                      "stringValue": "ecc37f95817dfeba"
+                      "stringValue": "bceba392431dd2f6"
                     }
                   },
                   {
                     "key": "devorbit.output.digest",
                     "value": {
-                      "stringValue": "2bec5ed9557c3fed"
+                      "stringValue": "abcf63ba3e8030a0"
                     }
                   },
                   {
@@ -2138,13 +3169,13 @@
                 }
               },
               {
-                "traceId": "51df1c2f06f02f7801ae97458059c231",
-                "spanId": "62fbb39899eb0545",
+                "traceId": "1a799d5d6ae66d844ede255663bdde75",
+                "spanId": "1c62a013bdb0471f",
                 "parentSpanId": "9d0ce1f69c4b8b9e",
                 "name": "execute_tool repository.write_file",
                 "kind": 1,
-                "startTimeUnixNano": "1786631411443000000",
-                "endTimeUnixNano": "1786631411444000000",
+                "startTimeUnixNano": "1787899505674000000",
+                "endTimeUnixNano": "1787899505675000000",
                 "attributes": [
                   {
                     "key": "gen_ai.operation.name",
@@ -2167,7 +3198,7 @@
                   {
                     "key": "devorbit.case.id",
                     "value": {
-                      "stringValue": "CASE-CCEA5F8A"
+                      "stringValue": "CASE-F526A903"
                     }
                   },
                   {
@@ -2185,13 +3216,13 @@
                   {
                     "key": "devorbit.audit.ref",
                     "value": {
-                      "stringValue": "audit://17d9bf3c-fac7-4823-a222-bf616a511c9d"
+                      "stringValue": "audit://28e769cf-c278-4518-927e-d6888c1bf4c2"
                     }
                   },
                   {
                     "key": "devorbit.input.digest",
                     "value": {
-                      "stringValue": "89174003058f95d7"
+                      "stringValue": "39be3edd4e933f73"
                     }
                   },
                   {
@@ -2212,13 +3243,13 @@
                 }
               },
               {
-                "traceId": "51df1c2f06f02f7801ae97458059c231",
-                "spanId": "b1251ca7d0d183fa",
+                "traceId": "1a799d5d6ae66d844ede255663bdde75",
+                "spanId": "a33bb5ea861d9afe",
                 "parentSpanId": "babfb2d27c2ed798",
                 "name": "execute_tool ci.run_tests",
                 "kind": 1,
-                "startTimeUnixNano": "1786631411444000000",
-                "endTimeUnixNano": "1786631411579000000",
+                "startTimeUnixNano": "1787899505676000000",
+                "endTimeUnixNano": "1787899505807000000",
                 "attributes": [
                   {
                     "key": "gen_ai.operation.name",
@@ -2241,7 +3272,7 @@
                   {
                     "key": "devorbit.case.id",
                     "value": {
-                      "stringValue": "CASE-CCEA5F8A"
+                      "stringValue": "CASE-F526A903"
                     }
                   },
                   {
@@ -2259,19 +3290,19 @@
                   {
                     "key": "devorbit.audit.ref",
                     "value": {
-                      "stringValue": "audit://c11f6f9c-4636-4bd7-aebe-3b04ae441ff9"
+                      "stringValue": "audit://155c66ff-3d9e-4976-88bc-bd8450fea39e"
                     }
                   },
                   {
                     "key": "devorbit.input.digest",
                     "value": {
-                      "stringValue": "3c26a4e1764bf7b7"
+                      "stringValue": "a998b7af7ff58572"
                     }
                   },
                   {
                     "key": "devorbit.output.digest",
                     "value": {
-                      "stringValue": "115c3786818f97a7"
+                      "stringValue": "11b2fe3d51956241"
                     }
                   },
                   {
@@ -2286,12 +3317,604 @@
                 }
               },
               {
-                "traceId": "51df1c2f06f02f7801ae97458059c231",
-                "spanId": "f086638146fba5cf",
+                "traceId": "1a799d5d6ae66d844ede255663bdde75",
+                "spanId": "ae2294cf11ad06cf",
+                "parentSpanId": "afa0b4a4b3052d56",
+                "name": "execute_tool repository.read_file",
+                "kind": 1,
+                "startTimeUnixNano": "1787899505807000000",
+                "endTimeUnixNano": "1787899505809000000",
+                "attributes": [
+                  {
+                    "key": "gen_ai.operation.name",
+                    "value": {
+                      "stringValue": "execute_tool"
+                    }
+                  },
+                  {
+                    "key": "gen_ai.agent.name",
+                    "value": {
+                      "stringValue": "patch-worker"
+                    }
+                  },
+                  {
+                    "key": "gen_ai.tool.name",
+                    "value": {
+                      "stringValue": "repository.read_file"
+                    }
+                  },
+                  {
+                    "key": "devorbit.case.id",
+                    "value": {
+                      "stringValue": "CASE-F526A903"
+                    }
+                  },
+                  {
+                    "key": "devorbit.tool.risk_level",
+                    "value": {
+                      "stringValue": "L0"
+                    }
+                  },
+                  {
+                    "key": "devorbit.policy.decision",
+                    "value": {
+                      "stringValue": "allow"
+                    }
+                  },
+                  {
+                    "key": "devorbit.audit.ref",
+                    "value": {
+                      "stringValue": "audit://bd3f9494-efb2-453e-bed8-ed191bd4c607"
+                    }
+                  },
+                  {
+                    "key": "devorbit.input.digest",
+                    "value": {
+                      "stringValue": "fde6a609dccd67b1"
+                    }
+                  },
+                  {
+                    "key": "devorbit.output.digest",
+                    "value": {
+                      "stringValue": "40f627f9bcec3da4"
+                    }
+                  },
+                  {
+                    "key": "devorbit.idempotency.replayed",
+                    "value": {
+                      "boolValue": false
+                    }
+                  }
+                ],
+                "status": {
+                  "code": 1
+                }
+              },
+              {
+                "traceId": "1a799d5d6ae66d844ede255663bdde75",
+                "spanId": "448f7bce415ef637",
+                "parentSpanId": "afa0b4a4b3052d56",
+                "name": "execute_tool repository.read_file",
+                "kind": 1,
+                "startTimeUnixNano": "1787899505809000000",
+                "endTimeUnixNano": "1787899505810000000",
+                "attributes": [
+                  {
+                    "key": "gen_ai.operation.name",
+                    "value": {
+                      "stringValue": "execute_tool"
+                    }
+                  },
+                  {
+                    "key": "gen_ai.agent.name",
+                    "value": {
+                      "stringValue": "patch-worker"
+                    }
+                  },
+                  {
+                    "key": "gen_ai.tool.name",
+                    "value": {
+                      "stringValue": "repository.read_file"
+                    }
+                  },
+                  {
+                    "key": "devorbit.case.id",
+                    "value": {
+                      "stringValue": "CASE-F526A903"
+                    }
+                  },
+                  {
+                    "key": "devorbit.tool.risk_level",
+                    "value": {
+                      "stringValue": "L0"
+                    }
+                  },
+                  {
+                    "key": "devorbit.policy.decision",
+                    "value": {
+                      "stringValue": "allow"
+                    }
+                  },
+                  {
+                    "key": "devorbit.audit.ref",
+                    "value": {
+                      "stringValue": "audit://5ab028f5-480d-4516-909f-2c8fe06bc0f7"
+                    }
+                  },
+                  {
+                    "key": "devorbit.input.digest",
+                    "value": {
+                      "stringValue": "af4b56071acfc23b"
+                    }
+                  },
+                  {
+                    "key": "devorbit.output.digest",
+                    "value": {
+                      "stringValue": "78e5780144ed281e"
+                    }
+                  },
+                  {
+                    "key": "devorbit.idempotency.replayed",
+                    "value": {
+                      "boolValue": false
+                    }
+                  }
+                ],
+                "status": {
+                  "code": 1
+                }
+              },
+              {
+                "traceId": "1a799d5d6ae66d844ede255663bdde75",
+                "spanId": "229432bb320f51cd",
+                "parentSpanId": "afa0b4a4b3052d56",
+                "name": "execute_tool repository.write_file",
+                "kind": 1,
+                "startTimeUnixNano": "1787899505809000000",
+                "endTimeUnixNano": "1787899505810000000",
+                "attributes": [
+                  {
+                    "key": "gen_ai.operation.name",
+                    "value": {
+                      "stringValue": "execute_tool"
+                    }
+                  },
+                  {
+                    "key": "gen_ai.agent.name",
+                    "value": {
+                      "stringValue": "patch-worker"
+                    }
+                  },
+                  {
+                    "key": "gen_ai.tool.name",
+                    "value": {
+                      "stringValue": "repository.write_file"
+                    }
+                  },
+                  {
+                    "key": "devorbit.case.id",
+                    "value": {
+                      "stringValue": "CASE-F526A903"
+                    }
+                  },
+                  {
+                    "key": "devorbit.tool.risk_level",
+                    "value": {
+                      "stringValue": "L1"
+                    }
+                  },
+                  {
+                    "key": "devorbit.policy.decision",
+                    "value": {
+                      "stringValue": "allow"
+                    }
+                  },
+                  {
+                    "key": "devorbit.audit.ref",
+                    "value": {
+                      "stringValue": "audit://5764b75b-ab13-4e55-84a2-d7fe7c35dfd2"
+                    }
+                  },
+                  {
+                    "key": "devorbit.input.digest",
+                    "value": {
+                      "stringValue": "bf3935bb6564e6da"
+                    }
+                  },
+                  {
+                    "key": "devorbit.output.digest",
+                    "value": {
+                      "stringValue": "e629a023ca172fef"
+                    }
+                  },
+                  {
+                    "key": "devorbit.idempotency.replayed",
+                    "value": {
+                      "boolValue": false
+                    }
+                  }
+                ],
+                "status": {
+                  "code": 1
+                }
+              },
+              {
+                "traceId": "1a799d5d6ae66d844ede255663bdde75",
+                "spanId": "773943e403784039",
+                "parentSpanId": "eaa75170c9865b6e",
+                "name": "execute_tool ci.run_tests",
+                "kind": 1,
+                "startTimeUnixNano": "1787899505810000000",
+                "endTimeUnixNano": "1787899505936000000",
+                "attributes": [
+                  {
+                    "key": "gen_ai.operation.name",
+                    "value": {
+                      "stringValue": "execute_tool"
+                    }
+                  },
+                  {
+                    "key": "gen_ai.agent.name",
+                    "value": {
+                      "stringValue": "verify-worker"
+                    }
+                  },
+                  {
+                    "key": "gen_ai.tool.name",
+                    "value": {
+                      "stringValue": "ci.run_tests"
+                    }
+                  },
+                  {
+                    "key": "devorbit.case.id",
+                    "value": {
+                      "stringValue": "CASE-F526A903"
+                    }
+                  },
+                  {
+                    "key": "devorbit.tool.risk_level",
+                    "value": {
+                      "stringValue": "L1"
+                    }
+                  },
+                  {
+                    "key": "devorbit.policy.decision",
+                    "value": {
+                      "stringValue": "allow"
+                    }
+                  },
+                  {
+                    "key": "devorbit.audit.ref",
+                    "value": {
+                      "stringValue": "audit://184ef3c4-7762-4c8f-83d2-3ee8bfd6a8f7"
+                    }
+                  },
+                  {
+                    "key": "devorbit.input.digest",
+                    "value": {
+                      "stringValue": "42da31046525d480"
+                    }
+                  },
+                  {
+                    "key": "devorbit.output.digest",
+                    "value": {
+                      "stringValue": "0231cc7949c4b4bc"
+                    }
+                  },
+                  {
+                    "key": "devorbit.idempotency.replayed",
+                    "value": {
+                      "boolValue": false
+                    }
+                  }
+                ],
+                "status": {
+                  "code": 1
+                }
+              },
+              {
+                "traceId": "1a799d5d6ae66d844ede255663bdde75",
+                "spanId": "4220f5c4f48d9ddb",
+                "parentSpanId": "9ec8dfd17b9e7b7b",
+                "name": "execute_tool repository.read_file",
+                "kind": 1,
+                "startTimeUnixNano": "1787899505937000000",
+                "endTimeUnixNano": "1787899505938000000",
+                "attributes": [
+                  {
+                    "key": "gen_ai.operation.name",
+                    "value": {
+                      "stringValue": "execute_tool"
+                    }
+                  },
+                  {
+                    "key": "gen_ai.agent.name",
+                    "value": {
+                      "stringValue": "patch-worker"
+                    }
+                  },
+                  {
+                    "key": "gen_ai.tool.name",
+                    "value": {
+                      "stringValue": "repository.read_file"
+                    }
+                  },
+                  {
+                    "key": "devorbit.case.id",
+                    "value": {
+                      "stringValue": "CASE-F526A903"
+                    }
+                  },
+                  {
+                    "key": "devorbit.tool.risk_level",
+                    "value": {
+                      "stringValue": "L0"
+                    }
+                  },
+                  {
+                    "key": "devorbit.policy.decision",
+                    "value": {
+                      "stringValue": "allow"
+                    }
+                  },
+                  {
+                    "key": "devorbit.audit.ref",
+                    "value": {
+                      "stringValue": "audit://4a3293f7-f521-4278-94d7-f75122ffcc9c"
+                    }
+                  },
+                  {
+                    "key": "devorbit.input.digest",
+                    "value": {
+                      "stringValue": "fde6a609dccd67b1"
+                    }
+                  },
+                  {
+                    "key": "devorbit.output.digest",
+                    "value": {
+                      "stringValue": "40f627f9bcec3da4"
+                    }
+                  },
+                  {
+                    "key": "devorbit.idempotency.replayed",
+                    "value": {
+                      "boolValue": false
+                    }
+                  }
+                ],
+                "status": {
+                  "code": 1
+                }
+              },
+              {
+                "traceId": "1a799d5d6ae66d844ede255663bdde75",
+                "spanId": "24267865f946b3ba",
+                "parentSpanId": "9ec8dfd17b9e7b7b",
+                "name": "execute_tool repository.read_file",
+                "kind": 1,
+                "startTimeUnixNano": "1787899505937000000",
+                "endTimeUnixNano": "1787899505938000000",
+                "attributes": [
+                  {
+                    "key": "gen_ai.operation.name",
+                    "value": {
+                      "stringValue": "execute_tool"
+                    }
+                  },
+                  {
+                    "key": "gen_ai.agent.name",
+                    "value": {
+                      "stringValue": "patch-worker"
+                    }
+                  },
+                  {
+                    "key": "gen_ai.tool.name",
+                    "value": {
+                      "stringValue": "repository.read_file"
+                    }
+                  },
+                  {
+                    "key": "devorbit.case.id",
+                    "value": {
+                      "stringValue": "CASE-F526A903"
+                    }
+                  },
+                  {
+                    "key": "devorbit.tool.risk_level",
+                    "value": {
+                      "stringValue": "L0"
+                    }
+                  },
+                  {
+                    "key": "devorbit.policy.decision",
+                    "value": {
+                      "stringValue": "allow"
+                    }
+                  },
+                  {
+                    "key": "devorbit.audit.ref",
+                    "value": {
+                      "stringValue": "audit://25bb5e29-38c0-420f-bfa6-96f40343e232"
+                    }
+                  },
+                  {
+                    "key": "devorbit.input.digest",
+                    "value": {
+                      "stringValue": "af4b56071acfc23b"
+                    }
+                  },
+                  {
+                    "key": "devorbit.output.digest",
+                    "value": {
+                      "stringValue": "78e5780144ed281e"
+                    }
+                  },
+                  {
+                    "key": "devorbit.idempotency.replayed",
+                    "value": {
+                      "boolValue": false
+                    }
+                  }
+                ],
+                "status": {
+                  "code": 1
+                }
+              },
+              {
+                "traceId": "1a799d5d6ae66d844ede255663bdde75",
+                "spanId": "879af9657c0b2bb7",
+                "parentSpanId": "9ec8dfd17b9e7b7b",
+                "name": "execute_tool repository.write_file",
+                "kind": 1,
+                "startTimeUnixNano": "1787899505938000000",
+                "endTimeUnixNano": "1787899505939000000",
+                "attributes": [
+                  {
+                    "key": "gen_ai.operation.name",
+                    "value": {
+                      "stringValue": "execute_tool"
+                    }
+                  },
+                  {
+                    "key": "gen_ai.agent.name",
+                    "value": {
+                      "stringValue": "patch-worker"
+                    }
+                  },
+                  {
+                    "key": "gen_ai.tool.name",
+                    "value": {
+                      "stringValue": "repository.write_file"
+                    }
+                  },
+                  {
+                    "key": "devorbit.case.id",
+                    "value": {
+                      "stringValue": "CASE-F526A903"
+                    }
+                  },
+                  {
+                    "key": "devorbit.tool.risk_level",
+                    "value": {
+                      "stringValue": "L1"
+                    }
+                  },
+                  {
+                    "key": "devorbit.policy.decision",
+                    "value": {
+                      "stringValue": "allow"
+                    }
+                  },
+                  {
+                    "key": "devorbit.audit.ref",
+                    "value": {
+                      "stringValue": "audit://553ebadf-bed5-450b-963d-88a1c7c8f17b"
+                    }
+                  },
+                  {
+                    "key": "devorbit.input.digest",
+                    "value": {
+                      "stringValue": "82f4ffb0f561d6d5"
+                    }
+                  },
+                  {
+                    "key": "devorbit.output.digest",
+                    "value": {
+                      "stringValue": "e629a023ca172fef"
+                    }
+                  },
+                  {
+                    "key": "devorbit.idempotency.replayed",
+                    "value": {
+                      "boolValue": false
+                    }
+                  }
+                ],
+                "status": {
+                  "code": 1
+                }
+              },
+              {
+                "traceId": "1a799d5d6ae66d844ede255663bdde75",
+                "spanId": "b056ff24897301b5",
+                "parentSpanId": "7705f24eb565d9d7",
+                "name": "execute_tool ci.run_tests",
+                "kind": 1,
+                "startTimeUnixNano": "1787899505939000000",
+                "endTimeUnixNano": "1787899506070000000",
+                "attributes": [
+                  {
+                    "key": "gen_ai.operation.name",
+                    "value": {
+                      "stringValue": "execute_tool"
+                    }
+                  },
+                  {
+                    "key": "gen_ai.agent.name",
+                    "value": {
+                      "stringValue": "verify-worker"
+                    }
+                  },
+                  {
+                    "key": "gen_ai.tool.name",
+                    "value": {
+                      "stringValue": "ci.run_tests"
+                    }
+                  },
+                  {
+                    "key": "devorbit.case.id",
+                    "value": {
+                      "stringValue": "CASE-F526A903"
+                    }
+                  },
+                  {
+                    "key": "devorbit.tool.risk_level",
+                    "value": {
+                      "stringValue": "L1"
+                    }
+                  },
+                  {
+                    "key": "devorbit.policy.decision",
+                    "value": {
+                      "stringValue": "allow"
+                    }
+                  },
+                  {
+                    "key": "devorbit.audit.ref",
+                    "value": {
+                      "stringValue": "audit://4569f532-ce7b-4440-9250-24d9355f8c1d"
+                    }
+                  },
+                  {
+                    "key": "devorbit.input.digest",
+                    "value": {
+                      "stringValue": "342985442452da4c"
+                    }
+                  },
+                  {
+                    "key": "devorbit.output.digest",
+                    "value": {
+                      "stringValue": "34ac220f83d38968"
+                    }
+                  },
+                  {
+                    "key": "devorbit.idempotency.replayed",
+                    "value": {
+                      "boolValue": false
+                    }
+                  }
+                ],
+                "status": {
+                  "code": 1
+                }
+              },
+              {
+                "traceId": "1a799d5d6ae66d844ede255663bdde75",
+                "spanId": "644040d4ed1cf613",
                 "name": "execute_tool repository.dispose_workspace",
                 "kind": 1,
-                "startTimeUnixNano": "1786631411579000000",
-                "endTimeUnixNano": "1786631411581000000",
+                "startTimeUnixNano": "1787899506070000000",
+                "endTimeUnixNano": "1787899506072000000",
                 "attributes": [
                   {
                     "key": "gen_ai.operation.name",
@@ -2314,7 +3937,7 @@
                   {
                     "key": "devorbit.case.id",
                     "value": {
-                      "stringValue": "CASE-CCEA5F8A"
+                      "stringValue": "CASE-F526A903"
                     }
                   },
                   {
@@ -2332,19 +3955,19 @@
                   {
                     "key": "devorbit.audit.ref",
                     "value": {
-                      "stringValue": "audit://b1eb77d3-58f7-4eef-8245-46cf4f2cacba"
+                      "stringValue": "audit://ce825344-9eda-4483-b68b-54f1087fca06"
                     }
                   },
                   {
                     "key": "devorbit.input.digest",
                     "value": {
-                      "stringValue": "9f5ff30a7f5df348"
+                      "stringValue": "e81f22486f457034"
                     }
                   },
                   {
                     "key": "devorbit.output.digest",
                     "value": {
-                      "stringValue": "0af6ac50037771c6"
+                      "stringValue": "20ee673f309d7c17"
                     }
                   },
                   {
@@ -2376,7 +3999,7 @@
             {
               "key": "service.version",
               "value": {
-                "stringValue": "0.6.0"
+                "stringValue": "0.9.6"
               }
             },
             {
@@ -2391,7 +4014,7 @@
           {
             "scope": {
               "name": "devorbit.runtime",
-              "version": "0.6.0"
+              "version": "0.9.6"
             },
             "metrics": [
               {
@@ -2400,8 +4023,8 @@
                 "gauge": {
                   "dataPoints": [
                     {
-                      "asInt": "5",
-                      "timeUnixNano": "1786631411582000000"
+                      "asInt": "9",
+                      "timeUnixNano": "1787899506074000000"
                     }
                   ]
                 }
@@ -2412,8 +4035,8 @@
                 "gauge": {
                   "dataPoints": [
                     {
-                      "asInt": "12",
-                      "timeUnixNano": "1786631411582000000"
+                      "asInt": "20",
+                      "timeUnixNano": "1787899506074000000"
                     }
                   ]
                 }
@@ -2425,7 +4048,7 @@
                   "dataPoints": [
                     {
                       "asInt": "0",
-                      "timeUnixNano": "1786631411582000000"
+                      "timeUnixNano": "1787899506074000000"
                     }
                   ]
                 }
@@ -2436,8 +4059,8 @@
                 "gauge": {
                   "dataPoints": [
                     {
-                      "asInt": "22",
-                      "timeUnixNano": "1786631411582000000"
+                      "asInt": "29",
+                      "timeUnixNano": "1787899506074000000"
                     }
                   ]
                 }
@@ -2449,7 +4072,7 @@
                   "dataPoints": [
                     {
                       "asInt": "0",
-                      "timeUnixNano": "1786631411582000000"
+                      "timeUnixNano": "1787899506074000000"
                     }
                   ]
                 }
@@ -2460,14 +4083,14 @@
       }
     ],
     "summary": {
-      "spans": 22,
-      "agentSpans": 10,
-      "toolSpans": 12,
+      "spans": 38,
+      "agentSpans": 18,
+      "toolSpans": 20,
       "metrics": {
-        "devorbit.agent.invocations": 5,
-        "devorbit.tool.calls": 12,
+        "devorbit.agent.invocations": 9,
+        "devorbit.tool.calls": 20,
         "devorbit.policy.denials": 0,
-        "devorbit.evidence.references": 22,
+        "devorbit.evidence.references": 29,
         "devorbit.human.approvals": 0
       }
     }
@@ -2484,22 +4107,26 @@
       "ci.run_tests",
       "knowledge.search_cases",
       "knowledge.write_case",
-      "release.canary"
+      "release.canary",
+      "db.create_branch",
+      "db.apply_migration",
+      "db.replay_traffic",
+      "db.compare_and_select"
     ],
-    "calls": 12,
+    "calls": 20,
     "audit": [
       {
-        "auditRef": "audit://8e316771-1b6a-4c0b-8799-af3eb557b130",
-        "at": "2026-08-13T14:30:11.288Z",
+        "auditRef": "audit://ba4203c0-96bd-4631-8b72-92c7a23c8be1",
+        "at": "2026-08-28T06:45:05.533Z",
         "parentSpanId": "SPAN-001",
         "protocolVersion": "2025-06-18",
         "method": "tools/call",
         "tool": "issue.fetch_signals",
         "caller": "intake-worker",
-        "traceId": "TRACE-628e62e8-b1e1-4ea4-b5ad-4da427985558",
-        "caseId": "CASE-CCEA5F8A",
+        "traceId": "TRACE-10655d88-294b-4a5e-a078-0d9dbff545a2",
+        "caseId": "CASE-F526A903",
         "durationMs": 0,
-        "inputDigest": "174cb91b728dd33a",
+        "inputDigest": "9d1388a464791fd9",
         "outputDigest": "156eb4a248a14ca5",
         "idempotencyKey": null,
         "risk": "L0",
@@ -2508,18 +4135,18 @@
         "status": "ok"
       },
       {
-        "auditRef": "audit://32ede689-d3cd-45dd-9e3a-86a7eecea069",
-        "at": "2026-08-13T14:30:11.288Z",
+        "auditRef": "audit://737dc3fe-4fce-4ba6-a1e2-a4b5d6bb6741",
+        "at": "2026-08-28T06:45:05.533Z",
         "parentSpanId": "SPAN-001",
         "protocolVersion": "2025-06-18",
         "method": "tools/call",
         "tool": "observability.fetch_signals",
         "caller": "intake-worker",
-        "traceId": "TRACE-628e62e8-b1e1-4ea4-b5ad-4da427985558",
-        "caseId": "CASE-CCEA5F8A",
+        "traceId": "TRACE-10655d88-294b-4a5e-a078-0d9dbff545a2",
+        "caseId": "CASE-F526A903",
         "durationMs": 0,
-        "inputDigest": "174cb91b728dd33a",
-        "outputDigest": "b77f7460980392c8",
+        "inputDigest": "9d1388a464791fd9",
+        "outputDigest": "af724134f40d6255",
         "idempotencyKey": null,
         "risk": "L0",
         "policyDecision": "allow",
@@ -2527,16 +4154,16 @@
         "status": "ok"
       },
       {
-        "auditRef": "audit://0da5c627-7834-4544-b819-317729a00f6a",
-        "at": "2026-08-13T14:30:11.288Z",
+        "auditRef": "audit://02804bf3-4af0-49a5-bad2-dffa4c8466ad",
+        "at": "2026-08-28T06:45:05.533Z",
         "parentSpanId": "SPAN-003",
         "protocolVersion": "2025-06-18",
         "method": "tools/call",
         "tool": "repository.read_file",
         "caller": "impact-worker",
-        "traceId": "TRACE-628e62e8-b1e1-4ea4-b5ad-4da427985558",
-        "caseId": "CASE-CCEA5F8A",
-        "durationMs": 2,
+        "traceId": "TRACE-10655d88-294b-4a5e-a078-0d9dbff545a2",
+        "caseId": "CASE-F526A903",
+        "durationMs": 0,
         "inputDigest": "52ddff3c37df9013",
         "outputDigest": "78e5780144ed281e",
         "idempotencyKey": null,
@@ -2546,16 +4173,16 @@
         "status": "ok"
       },
       {
-        "auditRef": "audit://cac023a3-c0c8-4494-a80e-3766063127b8",
-        "at": "2026-08-13T14:30:11.290Z",
+        "auditRef": "audit://dbd1e6a5-f46c-4899-8659-cc2a9f97f669",
+        "at": "2026-08-28T06:45:05.533Z",
         "parentSpanId": "SPAN-003",
         "protocolVersion": "2025-06-18",
         "method": "tools/call",
         "tool": "repository.read_file",
         "caller": "impact-worker",
-        "traceId": "TRACE-628e62e8-b1e1-4ea4-b5ad-4da427985558",
-        "caseId": "CASE-CCEA5F8A",
-        "durationMs": 0,
+        "traceId": "TRACE-10655d88-294b-4a5e-a078-0d9dbff545a2",
+        "caseId": "CASE-F526A903",
+        "durationMs": 1,
         "inputDigest": "5673a87146b22d4b",
         "outputDigest": "8438022557690dc8",
         "idempotencyKey": null,
@@ -2565,18 +4192,18 @@
         "status": "ok"
       },
       {
-        "auditRef": "audit://10327ace-a72e-4c93-ba34-63417bdbfe43",
-        "at": "2026-08-13T14:30:11.290Z",
+        "auditRef": "audit://b4186700-5046-43e0-813d-e5eb16e20790",
+        "at": "2026-08-28T06:45:05.534Z",
         "parentSpanId": "SPAN-005",
         "protocolVersion": "2025-06-18",
         "method": "tools/call",
         "tool": "knowledge.search_cases",
         "caller": "rca-worker",
-        "traceId": "TRACE-628e62e8-b1e1-4ea4-b5ad-4da427985558",
-        "caseId": "CASE-CCEA5F8A",
-        "durationMs": 1,
-        "inputDigest": "022049b34087b3b3",
-        "outputDigest": "1bdb181ca6a080a6",
+        "traceId": "TRACE-10655d88-294b-4a5e-a078-0d9dbff545a2",
+        "caseId": "CASE-F526A903",
+        "durationMs": 0,
+        "inputDigest": "a270449969d356f0",
+        "outputDigest": "aa79c8ed635c0107",
         "idempotencyKey": null,
         "risk": "L0",
         "policyDecision": "allow",
@@ -2584,36 +4211,36 @@
         "status": "ok"
       },
       {
-        "auditRef": "audit://de169d80-9234-42ed-8401-4c75fda6fb01",
-        "at": "2026-08-13T14:30:11.291Z",
+        "auditRef": "audit://27490143-e9e7-4785-9d0d-bd3bab198e3a",
+        "at": "2026-08-28T06:45:05.534Z",
         "parentSpanId": "SPAN-007",
         "protocolVersion": "2025-06-18",
         "method": "tools/call",
         "tool": "repository.create_workspace",
         "caller": "patch-worker",
-        "traceId": "TRACE-628e62e8-b1e1-4ea4-b5ad-4da427985558",
-        "caseId": "CASE-CCEA5F8A",
-        "durationMs": 7,
-        "inputDigest": "550ac5db9abfcae0",
-        "outputDigest": "2e30bd37ede1cc88",
-        "idempotencyKey": "CASE-CCEA5F8A:workspace",
+        "traceId": "TRACE-10655d88-294b-4a5e-a078-0d9dbff545a2",
+        "caseId": "CASE-F526A903",
+        "durationMs": 6,
+        "inputDigest": "98be0e51918710c9",
+        "outputDigest": "18123989ae18190e",
+        "idempotencyKey": "CASE-F526A903:workspace",
         "risk": "L1",
         "policyDecision": "allow",
         "approvalId": null,
         "status": "ok"
       },
       {
-        "auditRef": "audit://5bf24a15-37f2-4ad3-9ce6-1881c1dc7e49",
-        "at": "2026-08-13T14:30:11.298Z",
+        "auditRef": "audit://6d64b5d1-7eea-4989-8fd9-f6ec37bdf3c1",
+        "at": "2026-08-28T06:45:05.540Z",
         "parentSpanId": "SPAN-007",
         "protocolVersion": "2025-06-18",
         "method": "tools/call",
         "tool": "repository.read_file",
         "caller": "patch-worker",
-        "traceId": "TRACE-628e62e8-b1e1-4ea4-b5ad-4da427985558",
-        "caseId": "CASE-CCEA5F8A",
-        "durationMs": 1,
-        "inputDigest": "d3473057799b6cbe",
+        "traceId": "TRACE-10655d88-294b-4a5e-a078-0d9dbff545a2",
+        "caseId": "CASE-F526A903",
+        "durationMs": 0,
+        "inputDigest": "fde6a609dccd67b1",
         "outputDigest": "8438022557690dc8",
         "idempotencyKey": null,
         "risk": "L0",
@@ -2622,17 +4249,17 @@
         "status": "ok"
       },
       {
-        "auditRef": "audit://d2a9a615-b3a6-4625-b38a-5a82d51b2f83",
-        "at": "2026-08-13T14:30:11.299Z",
+        "auditRef": "audit://74e9c2b9-8ee9-4576-82a4-3e18db48658a",
+        "at": "2026-08-28T06:45:05.540Z",
         "parentSpanId": "SPAN-007",
         "protocolVersion": "2025-06-18",
         "method": "tools/call",
         "tool": "repository.read_file",
         "caller": "patch-worker",
-        "traceId": "TRACE-628e62e8-b1e1-4ea4-b5ad-4da427985558",
-        "caseId": "CASE-CCEA5F8A",
-        "durationMs": 0,
-        "inputDigest": "eefc24c4fcd5f237",
+        "traceId": "TRACE-10655d88-294b-4a5e-a078-0d9dbff545a2",
+        "caseId": "CASE-F526A903",
+        "durationMs": 1,
+        "inputDigest": "af4b56071acfc23b",
         "outputDigest": "78e5780144ed281e",
         "idempotencyKey": null,
         "risk": "L0",
@@ -2641,76 +4268,228 @@
         "status": "ok"
       },
       {
-        "auditRef": "audit://9e5a0053-262a-4c4c-8b88-50ead2bc33b4",
-        "at": "2026-08-13T14:30:11.299Z",
+        "auditRef": "audit://536aef56-95b1-4e50-b8e7-f0c65d81a686",
+        "at": "2026-08-28T06:45:05.541Z",
         "parentSpanId": "SPAN-007",
         "protocolVersion": "2025-06-18",
         "method": "tools/call",
         "tool": "ci.run_tests",
         "caller": "patch-worker",
-        "traceId": "TRACE-628e62e8-b1e1-4ea4-b5ad-4da427985558",
-        "caseId": "CASE-CCEA5F8A",
-        "durationMs": 144,
-        "inputDigest": "ecc37f95817dfeba",
-        "outputDigest": "2bec5ed9557c3fed",
-        "idempotencyKey": "CASE-CCEA5F8A:baseline-tests",
+        "traceId": "TRACE-10655d88-294b-4a5e-a078-0d9dbff545a2",
+        "caseId": "CASE-F526A903",
+        "durationMs": 133,
+        "inputDigest": "bceba392431dd2f6",
+        "outputDigest": "abcf63ba3e8030a0",
+        "idempotencyKey": "CASE-F526A903:baseline-tests-1",
         "risk": "L1",
         "policyDecision": "allow",
         "approvalId": null,
         "status": "ok"
       },
       {
-        "auditRef": "audit://17d9bf3c-fac7-4823-a222-bf616a511c9d",
-        "at": "2026-08-13T14:30:11.443Z",
+        "auditRef": "audit://28e769cf-c278-4518-927e-d6888c1bf4c2",
+        "at": "2026-08-28T06:45:05.674Z",
         "parentSpanId": "SPAN-007",
         "protocolVersion": "2025-06-18",
         "method": "tools/call",
         "tool": "repository.write_file",
         "caller": "patch-worker",
-        "traceId": "TRACE-628e62e8-b1e1-4ea4-b5ad-4da427985558",
-        "caseId": "CASE-CCEA5F8A",
+        "traceId": "TRACE-10655d88-294b-4a5e-a078-0d9dbff545a2",
+        "caseId": "CASE-F526A903",
         "durationMs": 1,
-        "inputDigest": "89174003058f95d7",
+        "inputDigest": "39be3edd4e933f73",
         "outputDigest": "e629a023ca172fef",
-        "idempotencyKey": "CASE-CCEA5F8A:write:redisPool",
+        "idempotencyKey": "CASE-F526A903:write:redisPool:1",
         "risk": "L1",
         "policyDecision": "allow",
         "approvalId": null,
         "status": "ok"
       },
       {
-        "auditRef": "audit://c11f6f9c-4636-4bd7-aebe-3b04ae441ff9",
-        "at": "2026-08-13T14:30:11.444Z",
+        "auditRef": "audit://155c66ff-3d9e-4976-88bc-bd8450fea39e",
+        "at": "2026-08-28T06:45:05.676Z",
         "parentSpanId": "SPAN-009",
         "protocolVersion": "2025-06-18",
         "method": "tools/call",
         "tool": "ci.run_tests",
         "caller": "verify-worker",
-        "traceId": "TRACE-628e62e8-b1e1-4ea4-b5ad-4da427985558",
-        "caseId": "CASE-CCEA5F8A",
-        "durationMs": 135,
-        "inputDigest": "3c26a4e1764bf7b7",
-        "outputDigest": "115c3786818f97a7",
-        "idempotencyKey": "CASE-CCEA5F8A:patched-tests",
+        "traceId": "TRACE-10655d88-294b-4a5e-a078-0d9dbff545a2",
+        "caseId": "CASE-F526A903",
+        "durationMs": 131,
+        "inputDigest": "a998b7af7ff58572",
+        "outputDigest": "11b2fe3d51956241",
+        "idempotencyKey": "CASE-F526A903:patched-tests-1",
         "risk": "L1",
         "policyDecision": "allow",
         "approvalId": null,
         "status": "ok"
       },
       {
-        "auditRef": "audit://b1eb77d3-58f7-4eef-8245-46cf4f2cacba",
-        "at": "2026-08-13T14:30:11.579Z",
+        "auditRef": "audit://bd3f9494-efb2-453e-bed8-ed191bd4c607",
+        "at": "2026-08-28T06:45:05.807Z",
+        "parentSpanId": "SPAN-011",
+        "protocolVersion": "2025-06-18",
+        "method": "tools/call",
+        "tool": "repository.read_file",
+        "caller": "patch-worker",
+        "traceId": "TRACE-10655d88-294b-4a5e-a078-0d9dbff545a2",
+        "caseId": "CASE-F526A903",
+        "durationMs": 2,
+        "inputDigest": "fde6a609dccd67b1",
+        "outputDigest": "40f627f9bcec3da4",
+        "idempotencyKey": null,
+        "risk": "L0",
+        "policyDecision": "allow",
+        "approvalId": null,
+        "status": "ok"
+      },
+      {
+        "auditRef": "audit://5ab028f5-480d-4516-909f-2c8fe06bc0f7",
+        "at": "2026-08-28T06:45:05.809Z",
+        "parentSpanId": "SPAN-011",
+        "protocolVersion": "2025-06-18",
+        "method": "tools/call",
+        "tool": "repository.read_file",
+        "caller": "patch-worker",
+        "traceId": "TRACE-10655d88-294b-4a5e-a078-0d9dbff545a2",
+        "caseId": "CASE-F526A903",
+        "durationMs": 0,
+        "inputDigest": "af4b56071acfc23b",
+        "outputDigest": "78e5780144ed281e",
+        "idempotencyKey": null,
+        "risk": "L0",
+        "policyDecision": "allow",
+        "approvalId": null,
+        "status": "ok"
+      },
+      {
+        "auditRef": "audit://5764b75b-ab13-4e55-84a2-d7fe7c35dfd2",
+        "at": "2026-08-28T06:45:05.809Z",
+        "parentSpanId": "SPAN-011",
+        "protocolVersion": "2025-06-18",
+        "method": "tools/call",
+        "tool": "repository.write_file",
+        "caller": "patch-worker",
+        "traceId": "TRACE-10655d88-294b-4a5e-a078-0d9dbff545a2",
+        "caseId": "CASE-F526A903",
+        "durationMs": 1,
+        "inputDigest": "bf3935bb6564e6da",
+        "outputDigest": "e629a023ca172fef",
+        "idempotencyKey": "CASE-F526A903:write:redisPool:2",
+        "risk": "L1",
+        "policyDecision": "allow",
+        "approvalId": null,
+        "status": "ok"
+      },
+      {
+        "auditRef": "audit://184ef3c4-7762-4c8f-83d2-3ee8bfd6a8f7",
+        "at": "2026-08-28T06:45:05.810Z",
+        "parentSpanId": "SPAN-013",
+        "protocolVersion": "2025-06-18",
+        "method": "tools/call",
+        "tool": "ci.run_tests",
+        "caller": "verify-worker",
+        "traceId": "TRACE-10655d88-294b-4a5e-a078-0d9dbff545a2",
+        "caseId": "CASE-F526A903",
+        "durationMs": 126,
+        "inputDigest": "42da31046525d480",
+        "outputDigest": "0231cc7949c4b4bc",
+        "idempotencyKey": "CASE-F526A903:patched-tests-2",
+        "risk": "L1",
+        "policyDecision": "allow",
+        "approvalId": null,
+        "status": "ok"
+      },
+      {
+        "auditRef": "audit://4a3293f7-f521-4278-94d7-f75122ffcc9c",
+        "at": "2026-08-28T06:45:05.937Z",
+        "parentSpanId": "SPAN-015",
+        "protocolVersion": "2025-06-18",
+        "method": "tools/call",
+        "tool": "repository.read_file",
+        "caller": "patch-worker",
+        "traceId": "TRACE-10655d88-294b-4a5e-a078-0d9dbff545a2",
+        "caseId": "CASE-F526A903",
+        "durationMs": 0,
+        "inputDigest": "fde6a609dccd67b1",
+        "outputDigest": "40f627f9bcec3da4",
+        "idempotencyKey": null,
+        "risk": "L0",
+        "policyDecision": "allow",
+        "approvalId": null,
+        "status": "ok"
+      },
+      {
+        "auditRef": "audit://25bb5e29-38c0-420f-bfa6-96f40343e232",
+        "at": "2026-08-28T06:45:05.937Z",
+        "parentSpanId": "SPAN-015",
+        "protocolVersion": "2025-06-18",
+        "method": "tools/call",
+        "tool": "repository.read_file",
+        "caller": "patch-worker",
+        "traceId": "TRACE-10655d88-294b-4a5e-a078-0d9dbff545a2",
+        "caseId": "CASE-F526A903",
+        "durationMs": 1,
+        "inputDigest": "af4b56071acfc23b",
+        "outputDigest": "78e5780144ed281e",
+        "idempotencyKey": null,
+        "risk": "L0",
+        "policyDecision": "allow",
+        "approvalId": null,
+        "status": "ok"
+      },
+      {
+        "auditRef": "audit://553ebadf-bed5-450b-963d-88a1c7c8f17b",
+        "at": "2026-08-28T06:45:05.938Z",
+        "parentSpanId": "SPAN-015",
+        "protocolVersion": "2025-06-18",
+        "method": "tools/call",
+        "tool": "repository.write_file",
+        "caller": "patch-worker",
+        "traceId": "TRACE-10655d88-294b-4a5e-a078-0d9dbff545a2",
+        "caseId": "CASE-F526A903",
+        "durationMs": 1,
+        "inputDigest": "82f4ffb0f561d6d5",
+        "outputDigest": "e629a023ca172fef",
+        "idempotencyKey": "CASE-F526A903:write:redisPool:3",
+        "risk": "L1",
+        "policyDecision": "allow",
+        "approvalId": null,
+        "status": "ok"
+      },
+      {
+        "auditRef": "audit://4569f532-ce7b-4440-9250-24d9355f8c1d",
+        "at": "2026-08-28T06:45:05.939Z",
+        "parentSpanId": "SPAN-017",
+        "protocolVersion": "2025-06-18",
+        "method": "tools/call",
+        "tool": "ci.run_tests",
+        "caller": "verify-worker",
+        "traceId": "TRACE-10655d88-294b-4a5e-a078-0d9dbff545a2",
+        "caseId": "CASE-F526A903",
+        "durationMs": 131,
+        "inputDigest": "342985442452da4c",
+        "outputDigest": "34ac220f83d38968",
+        "idempotencyKey": "CASE-F526A903:patched-tests-3",
+        "risk": "L1",
+        "policyDecision": "allow",
+        "approvalId": null,
+        "status": "ok"
+      },
+      {
+        "auditRef": "audit://ce825344-9eda-4483-b68b-54f1087fca06",
+        "at": "2026-08-28T06:45:06.070Z",
         "parentSpanId": null,
         "protocolVersion": "2025-06-18",
         "method": "tools/call",
         "tool": "repository.dispose_workspace",
         "caller": "devorbit-lead",
-        "traceId": "TRACE-628e62e8-b1e1-4ea4-b5ad-4da427985558",
-        "caseId": "CASE-CCEA5F8A",
+        "traceId": "TRACE-10655d88-294b-4a5e-a078-0d9dbff545a2",
+        "caseId": "CASE-F526A903",
         "durationMs": 2,
-        "inputDigest": "9f5ff30a7f5df348",
-        "outputDigest": "0af6ac50037771c6",
-        "idempotencyKey": "CASE-CCEA5F8A:dispose-workspace",
+        "inputDigest": "e81f22486f457034",
+        "outputDigest": "20ee673f309d7c17",
+        "idempotencyKey": "CASE-F526A903:dispose-workspace",
         "risk": "L1",
         "policyDecision": "allow",
         "approvalId": null,

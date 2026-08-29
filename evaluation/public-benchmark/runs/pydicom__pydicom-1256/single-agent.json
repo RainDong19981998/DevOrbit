@@ -1,0 +1,31 @@
+{
+  "caseId": "PUB-PYDICOM__PYDICOM-1256",
+  "method": "single-agent",
+  "attempts": 3,
+  "rca": null,
+  "edits": [
+    {
+      "path": "pydicom/jsonrep.py",
+      "search": "        if vr == 'SQ':\n            # data_element_value is a list of dict\n            # where each dict is a dataset\n            ds = Dataset()\n            ds.update(data_element_value)\n            return DataElement(tag, vr, ds)",
+      "replace": "        if vr == 'SQ':\n            # data_element_value is a list of dict\n            # where each dict is a dataset\n            ds = Dataset()\n            ds.update(bulk_data_uri_handler, data_element_value)\n            return DataElement(tag, vr, ds)"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "edit apply failed: pydicom/jsonrep.py: search block not found (exact and whitespace-normalized match both failed) [search:         if vr == 'SQ':\n            # data_element_value is a list of dict\n            # where each dict is a dataset\n            ds = Dataset()\n            ds.u]",
+    "changedPaths": [
+      "pydicom/jsonrep.py"
+    ]
+  },
+  "patchSha256": null,
+  "contextBytes": 10760,
+  "baselineTail": "/__init__.py:2: in <module>\n    from pydicom.pixel_data_handlers.util import (\npydicom/pixel_data_handlers/util.py:15: in <module>\n    from pydicom.data import get_palette_files\npydicom/data/__init__.py:4: in <module>\n    from .data_manager import (\npydicom/data/data_manager.py:52: in <module>\n    from pkg_resources import iter_entry_points\nE   ModuleNotFoundError: No module named 'pkg_resources'\n",
+  "goldFiles": [
+    "pydicom/jsonrep.py"
+  ],
+  "model": "glm",
+  "modelCalls": 3
+}

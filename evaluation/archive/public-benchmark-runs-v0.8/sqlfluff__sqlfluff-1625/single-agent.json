@@ -1,0 +1,19 @@
+{
+  "caseId": "PUB-SQLFLUFF__SQLFLUFF-1625",
+  "method": "single-agent",
+  "attempts": 2,
+  "rca": null,
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "git apply --check failed: \nerror: corrupt patch at line 35\n\nCommand failed: git apply --check model.patch\nerror: corrupt patch at line 35\n"
+  },
+  "patchSha256": "sha256:cc53bb3fc97be55ddb670073e5c1c92a6c8465746feea04a6b7c07552341420e",
+  "contextBytes": 8000,
+  "baselineTail": "m pytest -q --no-header -x test/cli/commands_test.py::test__cli__command_directed\nImportError while loading conftest '/tmp/zhanlu/bench-work/sqlfluff__sqlfluff-1625/source/test/conftest.py'.\ntest/conftest.py:9: in <module>\n    from sqlfluff.cli.commands import quoted_presenter\nsrc/sqlfluff/__init__.py:9: in <module>\n    import pkg_resources\nE   ModuleNotFoundError: No module named 'pkg_resources'\n",
+  "goldFiles": [
+    "src/sqlfluff/rules/L031.py"
+  ]
+}

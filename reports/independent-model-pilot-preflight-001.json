@@ -1,0 +1,34 @@
+{
+  "generatedAt": "2026-08-14T05:54:17.534Z",
+  "protocolVersion": "1.0",
+  "pilotId": "devorbit-independent-model-pilot-v1",
+  "runId": "independent-run-001",
+  "status": "failed",
+  "independent": true,
+  "stage": "verify-runtime",
+  "error": "model name or digest mismatch",
+  "manifestSha256": "sha256:7b38ec923701f56ae3eda132624f2f4564e85b35d401db5680ed4338c45f4c23",
+  "case": {
+    "instanceId": "pydicom__pydicom-965",
+    "repository": "pydicom/pydicom",
+    "split": "dev-independent-validation"
+  },
+  "workflow": {
+    "agentsCompleted": [],
+    "patchAttempts": 0,
+    "durationMs": 46
+  },
+  "leakage": {
+    "modelWorkspaceContainsHiddenTestPatch": false,
+    "modelWorkspaceContainsClassificationProbe": false,
+    "forbiddenArtifactsReadByModel": [],
+    "goldImplementationRead": false,
+    "goldComparisonPerformed": false,
+    "agentNetworkToolsAvailable": false
+  },
+  "formalBenchmark": {
+    "status": "not_run",
+    "scoredCases": 0
+  },
+  "claimBoundary": "Failed pre-registered independent SWE-bench dev validation run; no aggregate, test-set, production, vendor-platform, success-rate, or ranking claim."
+}

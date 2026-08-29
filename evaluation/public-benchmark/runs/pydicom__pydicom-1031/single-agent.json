@@ -1,0 +1,31 @@
+{
+  "caseId": "PUB-PYDICOM__PYDICOM-1031",
+  "method": "single-agent",
+  "attempts": 3,
+  "rca": null,
+  "edits": [
+    {
+      "path": "pydicom/filewriter.py",
+      "search": "    elif data_element.VR == 'UN':\n        # Ignore any endianness for this code\n        buffer.write(data_element.value)\n        return fp.write(buffer.parent.getvalue())",
+      "replace": "    elif data_element.VR == 'UN':\n        # Ignore any endianness for this code\n        if isinstance(data_element.value, list):\n            buffer.write(b'')\n        else:\n            buffer.write(data_element.value)\n        return fp.write(buffer.parent.getvalue())"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "edit apply failed: pydicom/filewriter.py: search block not found (exact and whitespace-normalized match both failed) [search:     elif data_element.VR == 'UN':\n        # Ignore any endianness for this code\n        buffer.write(data_element.value)\n        return fp.write(buffer.parent.g]",
+    "changedPaths": [
+      "pydicom/filewriter.py"
+    ]
+  },
+  "patchSha256": null,
+  "contextBytes": 10515,
+  "baselineTail": "test_filewriter.py::TestWriteFile::test_write_empty_sequence\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.49s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x pydicom/tests/test_filewriter.py::TestWriteFile::test_write_empty_sequence pydicom/tests/test_filewriter.py::TestScratchWriteDateTime::test_write_empty_sequence\n",
+  "goldFiles": [
+    "pydicom/dataelem.py"
+  ],
+  "model": "glm",
+  "modelCalls": 3
+}

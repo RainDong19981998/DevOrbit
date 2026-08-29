@@ -1,0 +1,138 @@
+{
+  "$schema": "../schemas/public-model-pilot-v4.schema.json",
+  "protocolVersion": "1.0",
+  "pilotId": "devorbit-public-model-pilot-v4",
+  "runId": "run-004",
+  "status": "pre-registered-validation-tuning-protected-repair-run",
+  "registeredAt": "2026-08-14T03:32:38Z",
+  "disclosure": "Run 4 reuses the same SWE-bench dev validation case after three disclosed failures. It evaluates machine-enforced source invariants, diagnostic classification output, and one bounded patch-repair loop. It is not independent generalization, a test-set score, an aggregate benchmark, a production claim, or a ranking claim.",
+  "priorRuns": [
+    {
+      "runId": "run-001",
+      "status": "blocked-before-apply",
+      "evidencePath": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-001-failure.json",
+      "evidenceSha256": "sha256:a41fd5a152abaf9a49e738f16ddbd8be909e04a38c862fdc7afc5b530b015664"
+    },
+    {
+      "runId": "run-002",
+      "status": "failed",
+      "evidencePath": "reports/public-model-pilot-v2.json",
+      "evidenceSha256": "sha256:caf9b21e973db95026388d4d9fb05bacda1dd940e781ba7416554632d9b0b0ca"
+    },
+    {
+      "runId": "run-003",
+      "status": "failed",
+      "evidencePath": "reports/public-model-pilot-v3.json",
+      "evidenceSha256": "sha256:35abde2a8d7622706924aab2a3a85e5fbce18b9f862656731e286215ba2e5c76"
+    }
+  ],
+  "priorRunFeedback": [
+    "Run 1 fabricated unified-diff metadata; use a unique exact-source replacement contract instead.",
+    "Run 2 changed comments only and left target, regression, and token-classification checks failing.",
+    "Run 3 changed BaseSegment.is_whitespace globally; target and regression passed but ordinary code tokens became whitespace.",
+    "Run 3 machine and model verifiers correctly rejected classification observed raw=true, whitespace=true, raw=true, newline=true.",
+    "Preserve the BaseSegment default and localize behavior to runtime-generated whitespace and newline segment classes."
+  ],
+  "case": {
+    "instanceId": "sqlfluff__sqlfluff-884",
+    "dataset": "princeton-nlp/SWE-bench",
+    "datasetSnapshot": "e48e2bd1e9fecd5bbd641e9414ac59da9f2e69f6",
+    "split": "dev-validation-tuning-protected-repair",
+    "repository": "sqlfluff/sqlfluff",
+    "baseCommit": "c0bad78f3fa9549591738c77f869724f721e6830",
+    "sourceArchiveUrl": "https://codeload.github.com/sqlfluff/sqlfluff/tar.gz/c0bad78f3fa9549591738c77f869724f721e6830",
+    "sourceArchiveSha256": "sha256:8484d90c290fc06b8c331991605300a692266a6f71536d1cf1612e4dca8c4fbb",
+    "issuePath": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/issue.json",
+    "issueSha256": "sha256:7db1d09d0c560c0fd2b3974d60fbe9d202a019c9fc26bf689a7acda02553d4c9",
+    "commentsPath": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/comments.json",
+    "commentsSha256": "sha256:303ac24d32a6f1d3388cfa12963bf5da73ce80c73f5f2bd6c2a9ac351cfaa8be",
+    "testPatchPath": "evaluation/public-pilot/sqlfluff__sqlfluff-884/test.patch",
+    "testPatchSha256": "sha256:3e799cc71e656fffdd8d6215dd5561cbdbe0808cfac7352f69b2e86067d8de50"
+  },
+  "model": {
+    "provider": "local-ollama",
+    "name": "qwen3:8b",
+    "digest": "sha256:500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+    "parameterSize": "8.2B",
+    "quantization": "Q4_K_M",
+    "temperature": 0,
+    "seed": 847,
+    "contextTokens": 16384,
+    "maxOutputTokens": 3072,
+    "thinking": false
+  },
+  "workflow": {
+    "agents": ["rca-worker", "patch-worker", "verify-worker"],
+    "patchAttemptLimit": 2,
+    "patchContract": "unique-exact-source-replacement",
+    "repairPolicy": "One repair attempt may read only the previous model diff, deterministic gate result, and executed test output before restarting from clean source.",
+    "verificationAuthority": "deterministic-machine-gate",
+    "acceptanceRule": "machineGatePassed && modelAccept",
+    "allowedWritePrefix": "src/",
+    "forbiddenWritePrefixes": ["test/", ".github/", "evaluation/"],
+    "protectedSourceInvariants": [
+      {
+        "path": "src/sqlfluff/core/parser/segments/base.py",
+        "requiredText": "    is_whitespace = False",
+        "reason": "Ordinary code and structural segments must remain non-whitespace by default."
+      }
+    ],
+    "targetCommand": "/usr/bin/python3.10 -m pytest -q test/core/dialects/ansi_test.py::test__dialect__ansi_is_whitespace",
+    "regressionCommand": "/usr/bin/python3.10 -m pytest -q test/core/parser test/core/dialects/ansi_test.py",
+    "classificationCommand": "lex select x newline; require raw=false, whitespace=true, raw=false, newline=true",
+    "successCriteria": [
+      "baseline reproduces the exact target assertion",
+      "the model supplies a unique source-only executable replacement",
+      "each attempt starts from the same clean source plus frozen test patch",
+      "FAIL_TO_PASS exits zero",
+      "parser and ANSI regression tests exit zero",
+      "token classification exits zero",
+      "the deterministic machine gate passes",
+      "the advisory verify-worker does not veto the machine-passing patch"
+    ]
+  },
+  "leakagePolicy": {
+    "runnerMayRead": [
+      "frozen issue snapshot",
+      "frozen issue comments",
+      "baseline failure",
+      "repository search results",
+      "runtime class probe",
+      "base-commit source excerpts",
+      "disclosed Run 1 and Run 2 failure feedback",
+      "previous attempt diff and machine test evidence",
+      "model-generated source edit"
+    ],
+    "runnerMustNotRead": [
+      "pull request page or patch",
+      "expected fix commit",
+      "gold patch",
+      "gold patch digest",
+      "gold verification logs",
+      "SWE-bench model patch field"
+    ],
+    "goldComparison": "No gold comparison is performed by the runner or reported as a model score."
+  },
+  "evidence": {
+    "transcriptPath": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-004-transcript.json",
+    "patchPath": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-004-model.patch",
+    "targetLogPath": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-004-target.log",
+    "regressionLogPath": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-004-regression.log",
+    "classificationLogPath": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-004-classification.log",
+    "reportPath": "reports/public-model-pilot-v4.json",
+    "attempts": [
+      {
+        "patchPath": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-004-attempt-1.patch",
+        "targetLogPath": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-004-attempt-1-target.log",
+        "regressionLogPath": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-004-attempt-1-regression.log",
+        "classificationLogPath": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-004-attempt-1-classification.log"
+      },
+      {
+        "patchPath": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-004-attempt-2.patch",
+        "targetLogPath": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-004-attempt-2-target.log",
+        "regressionLogPath": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-004-attempt-2-regression.log",
+        "classificationLogPath": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-004-attempt-2-classification.log"
+      }
+    ]
+  }
+}

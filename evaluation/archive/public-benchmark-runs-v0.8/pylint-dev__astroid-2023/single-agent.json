@@ -1,0 +1,19 @@
+{
+  "caseId": "PUB-PYLINT-DEV__ASTROID-2023",
+  "method": "single-agent",
+  "attempts": 2,
+  "rca": null,
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "git apply --check failed: \nerror: corrupt patch at line 17\n\nCommand failed: git apply --check model.patch\nerror: corrupt patch at line 17\n"
+  },
+  "patchSha256": "sha256:93c3a3223d3faf998ceaca3d895e1ff8d1dce96e511e16633b429797ac2293ac",
+  "contextBytes": 6734,
+  "baselineTail": "e\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.52s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x tests/test_utils.py::InferenceUtil::test_not_exclusive_walrus_multiple tests/test_utils.py::InferenceUtil::test_not_exclusive_walrus_operator tests/test_utils.py::InferenceUtil::test_not_exclusive_walrus_operator_nested\n",
+  "goldFiles": [
+    "astroid/nodes/node_classes.py"
+  ]
+}

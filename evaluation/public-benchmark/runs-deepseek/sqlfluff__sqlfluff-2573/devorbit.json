@@ -1,0 +1,52 @@
+{
+  "caseId": "PUB-SQLFLUFF__SQLFLUFF-2573",
+  "method": "devorbit",
+  "attempts": 3,
+  "rca": {
+    "rootCause": "The .sqlfluffignore file is only loaded from the directory being linted or its subdirectories, not from the current working directory when a specific path is provided. This causes ignored files to be linted when running `sqlfluff lint path_a` or `sqlfluff lint path_b` because the .sqlfluffignore in the parent directory (cwd) is not considered. The fix should make the linter also check for .sqlfluffignore files in the current working directory (or project root) when resolving ignore patterns, similar to how .gitignore works from the repository root downward.",
+    "confidence": 0.9,
+    "evidence": [
+      "The issue describes that when running `sqlfluff lint .` the .sqlfluffignore in the current directory is respected, but when running `sqlfluff lint path_a` or `sqlfluff lint path_b`, the .sqlfluffignore in the parent directory is not loaded, causing ignored files to be linted.",
+      "The test `test__linter__path_from_paths__sqlfluffignore_current_directory` in `test/core/linter_test.py` explicitly tests that .sqlfluffignore in the current directory is read when a directory is given, but the test passes `working_path` explicitly, suggesting the current implementation may not automatically use cwd.",
+      "The hints mention that the behavior is currently to only look for .sqlfluffignore within the specified directories, and there is discussion about wanting to check parent directories or cwd for configuration."
+    ],
+    "filesToChange": [
+      "src/sqlfluff/core/linter/linter.py",
+      "src/sqlfluff/core/config.py"
+    ]
+  },
+  "edits": [
+    {
+      "path": "src/sqlfluff/core/config.py",
+      "search": "    @classmethod\n    def find_ignore_config_files(\n        cls, path, working_path=os.getcwd(), ignore_file_name=\".sqlfluffignore\"\n    ):\n        \"\"\"Finds sqlfluff ignore files from both the path and its parent paths.\"\"\"\n        return set(\n            filter(\n                os.path.isfile,\n                map(\n                    lambda x: os.path.join(x, ignore_file_name),\n                    cls.iter_config_locations_up_to_path(\n                        path=path, working_path=working_path\n                    ),\n                ),\n            )\n        )",
+      "replace": "    @classmethod\n    def find_ignore_config_files(\n        cls, path, working_path=os.getcwd(), ignore_file_name=\".sqlfluffignore\"\n    ):\n        \"\"\"Finds sqlfluff ignore files from both the path and its parent paths.\"\"\"\n        return set(\n            filter(\n                os.path.isfile,\n                map(\n                    lambda x: os.path.join(x, ignore_file_name),\n                    cls.iter_config_locations_up_to_path(\n                        path=path, working_path=working_path\n                    ),\n                ),\n            )\n        ) | set(\n            filter(\n                os.path.isfile,\n                map(\n                    lambda x: os.path.join(x, ignore_file_name),\n                    cls.iter_config_locations_up_to_path(\n                        path=working_path, working_path=working_path\n                    ),\n                ),\n            )\n        )"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": true,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "F2P red; P2P green ",
+    "f2pLogTail": "\nno tests ran in 0.09s\n\nERROR: not found: /tmp/zhanlu/bench-work-ds/sqlfluff__sqlfluff-2573/source/test/core/linter_test.py::test__linter__path_from_paths__sqlfluffignore_current_directory\n(no match in any of [<Module linter_test.py>])\n\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x test/core/linter_test.py::test__linter__path_from_paths__sqlfluffignore_current_directory\nERROR: not found: /tmp/zhanlu/bench-work-ds/sqlfluff__sqlfluff-2573/source/test/core/linter_test.py::test__linter__path_from_paths__sqlfluffignore_current_directory\n(no match in any of [<Module linter_test.py>])\n\n\n[...]\ninter_test.py>])\n\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x test/core/linter_test.py::test__linter__path_from_paths__sqlfluffignore_current_directory\nERROR: not found: /tmp/zhanlu/bench-work-ds/sqlfluff__sqlfluff-2573/source/test/core/linter_test.py::test__linter__path_from_paths__sqlfluffignore_current_directory\n(no match in any of [<Module linter_test.py>])\n\n",
+    "changedPaths": [
+      "src/sqlfluff/core/config.py"
+    ],
+    "appliedMethods": [
+      {
+        "path": "src/sqlfluff/core/config.py",
+        "method": "exact",
+        "ambiguous": false
+      }
+    ]
+  },
+  "patchSha256": "sha256:0109e0c7042759a25f06fa0c872626eb733cd82335e4960323aea50b484fa3c1",
+  "contextBytes": 14336,
+  "baselineTail": " info ============================\nFAILED test/core/linter_test.py::test__linter__path_from_paths__sqlfluffignore_current_directory\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.15s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x test/core/linter_test.py::test__linter__path_from_paths__sqlfluffignore_current_directory\n",
+  "goldFiles": [
+    "src/sqlfluff/core/config.py",
+    "src/sqlfluff/core/linter/linter.py"
+  ],
+  "model": "deepseek-v4-flash-0731",
+  "modelCalls": 4
+}

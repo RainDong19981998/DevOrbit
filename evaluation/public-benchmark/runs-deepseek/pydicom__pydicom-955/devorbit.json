@@ -1,0 +1,49 @@
+{
+  "caseId": "PUB-PYDICOM__PYDICOM-955",
+  "method": "devorbit",
+  "attempts": 3,
+  "rca": {
+    "rootCause": "The LUT Descriptor (0028,3002) and Red/Green/Blue Palette Color Lookup Table Descriptor (0028,3001, 0028,3003, 0028,3005) are multi-valued elements where the first and third values are always unsigned, but the VR is determined by the second value which may be signed (SS) when Pixel Representation is 1. The current implementation incorrectly interprets all values as signed when the VR is SS, causing the first and third values to be misinterpreted as signed. The fix should ensure that for these specific tags, the first and third values are always interpreted as unsigned regardless of the VR used for the element.",
+    "confidence": 0.95,
+    "evidence": [
+      "The issue explicitly states that LUT Descriptor has VM=3 with values [number of entries, first stored pixel value mapped, LUT entry bit depth], and that the first and third values are always unsigned even when the VR is SS due to the second value being signed.",
+      "The reproduction code shows that with Explicit VR SS, the first value 0x00f5 (62720) is being interpreted as signed, resulting in -2048 for the second value but the first value should be 62720 (unsigned) not -2048.",
+      "The issue mentions this affects both LUT Descriptor (0028,3002) and Red/Green/Blue Palette Color Lookup Table Descriptor (0028,3001, 0028,3003, 0028,3005)."
+    ],
+    "filesToChange": [
+      "pydicom/values.py",
+      "pydicom/dataelem.py"
+    ]
+  },
+  "edits": [
+    {
+      "path": "pydicom/dataelem.py",
+      "search": "BINARY_VR_VALUES = [\n    'US', 'SS', 'UL', 'SL', 'OW', 'OB', 'OL', 'UN',\n    'OB or OW', 'US or OW', 'US or SS or OW', 'FL', 'FD', 'OF', 'OD'\n]",
+      "replace": "BINARY_VR_VALUES = [\n    'US', 'SS', 'UL', 'SL', 'OW', 'OB', 'OL', 'UN',\n    'OB or OW', 'US or OW', 'US or SS or OW', 'FL', 'FD', 'OF', 'OD'\n]\n\n# Tags where the first and third values of a multi-valued element are always\n# unsigned even when the VR is 'SS' (DICOM PS3.3 C.11.1.1)\nLUT_DESCRIPTOR_TAGS = [\n    Tag(0x0028, 0x3001),  # Red Palette Color Lookup Table Descriptor\n    Tag(0x0028, 0x3002),  # LUT Descriptor\n    Tag(0x0028, 0x3003),  # Green Palette Color Lookup Table Descriptor\n    Tag(0x0028, 0x3005),  # Blue Palette Color Lookup Table Descriptor\n]"
+    },
+    {
+      "path": "pydicom/dataelem.py",
+      "search": "    @value.setter\n    def value(self, val):\n        \"\"\"Convert (if necessary) and set the value of the \n\n        For LUT Descriptor elements with VR 'SS', the first and third values\n        are always unsigned per DICOM PS3.3 C.11.1.1, so convert them back\n        to unsigned.\n        \"\"\"\n        if (self.VR == 'SS' and self.tag in LUT_DESCRIPTOR_TAGS and\n                isinstance(val, list) and len(val) == 3):\n            val = [val[0] & 0xFFFF, val[1], val[2] & 0xFFFF]\n        ",
+      "replace": "    @value.setter\n    def value(self, val):\n        \"\"\"Convert (if necessary) and set the value of the \n\n        For LUT Descriptor elements with VR 'SS', the first and third values\n        are always unsigned per DICOM PS3.3 C.11.1.1, so convert them back\n        to unsigned.\n        \"\"\"\n        if (self.VR == 'SS' and self.tag in LUT_DESCRIPTOR_TAGS and\n                isinstance(val, list) and len(val) == 3):\n            val = [val[0] & 0xFFFF, val[1], val[2] & 0xFFFF]\n        "
+    }
+  ],
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "edit apply failed: pydicom/dataelem.py: search block not found (exact and whitespace-normalized match both failed) [search:     @value.setter\n    def value(self, val):\n        \"\"\"Convert (if necessary) and set the value of the \n\n        For LUT Descriptor elements with VR 'SS', the f]",
+    "changedPaths": [
+      "pydicom/dataelem.py"
+    ]
+  },
+  "patchSha256": "sha256:95be3cbf763c455f41e7c6658cbc43f7c57f3cbb42f6329c8cbf6d0c58b39221",
+  "contextBytes": 18294,
+  "baselineTail": "===================== short test summary info ============================\nFAILED pydicom/tests/test_filereader.py::TestReader::test_lut_descriptor - as...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.36s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x pydicom/tests/test_filereader.py::TestReader::test_lut_descriptor\n",
+  "goldFiles": [
+    "pydicom/dataelem.py",
+    "pydicom/pixel_data_handlers/util.py"
+  ],
+  "model": "deepseek-v4-flash-0731",
+  "modelCalls": 4
+}

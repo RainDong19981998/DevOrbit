@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import { MCP_PROTOCOL_VERSION } from './protocol.js';
+import { negotiateProtocolVersion } from './protocol.js';
 
 const DEFAULT_MAX_BODY_BYTES = 1024 * 1024;
 const DEFAULT_MAX_SESSIONS = 256;
@@ -16,13 +16,20 @@ export function createStreamableHttpHandler(toolServer, { maxBodyBytes = DEFAULT
     for (const [sessionId, session] of sessions) if (now() - session.lastSeenAt > sessionTtlMs) sessions.delete(sessionId);
     const origin = req.headers.origin;
     if (origin && !/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) return sendJson(res, 403, { error: 'origin not allowed' });
-    if (req.method === 'GET') return sendJson(res, 405, { error: 'SSE stream not implemented by this basic server' }, { allow: 'POST, DELETE' });
-    if (req.method === 'DELETE') {
+    if (req.method === 'GET') {
       const sessionId = req.headers['mcp-session-id'];
-      const version = req.headers['mcp-protocol-version'];
-      if (version !== MCP_PROTOCOL_VERSION) return sendJson(res, 400, { error: `unsupported MCP protocol version: ${version || 'missing'}` });
       const identity = sessions.get(sessionId);
       if (!identity) return sendJson(res, 404, { error: 'MCP session not found or expired' });
+      if (req.headers['mcp-protocol-version'] !== identity.protocolVersion) return sendJson(res, 400, { error: `MCP session requires protocol version ${identity.protocolVersion}` });
+      if (req.headers['x-devorbit-agent'] !== identity.agent) return sendJson(res, 403, { error: 'session agent identity mismatch' });
+      identity.lastSeenAt = now();
+      return sendJson(res, 405, { error: 'SSE stream not implemented by this server' }, { allow: 'POST, DELETE' });
+    }
+    if (req.method === 'DELETE') {
+      const sessionId = req.headers['mcp-session-id'];
+      const identity = sessions.get(sessionId);
+      if (!identity) return sendJson(res, 404, { error: 'MCP session not found or expired' });
+      if (req.headers['mcp-protocol-version'] !== identity.protocolVersion) return sendJson(res, 400, { error: `MCP session requires protocol version ${identity.protocolVersion}` });
       if (req.headers['x-devorbit-agent'] !== identity.agent) return sendJson(res, 403, { error: 'session agent identity mismatch' });
       sessions.delete(sessionId);
       res.writeHead(204); return res.end();
@@ -41,17 +48,17 @@ export function createStreamableHttpHandler(toolServer, { maxBodyBytes = DEFAULT
     let message;
     try { message = JSON.parse(body); } catch { return sendJson(res, 400, { error: 'invalid JSON' }); }
     const isInitialize = message.method === 'initialize';
-    const version = req.headers['mcp-protocol-version'];
-    if (!isInitialize && version !== MCP_PROTOCOL_VERSION) return sendJson(res, 400, { error: `unsupported MCP protocol version: ${version || 'missing'}` });
     let sessionId = req.headers['mcp-session-id'];
     if (isInitialize) {
       const agent = req.headers['x-devorbit-agent'];
       if (!agent) return sendJson(res, 401, { error: 'x-devorbit-agent identity required' });
       if (sessions.size >= maxSessions) return sendJson(res, 503, { error: 'MCP session capacity reached' }, { 'retry-after': '1' });
+      const protocolVersion = negotiateProtocolVersion(message.params?.protocolVersion);
       sessionId = randomUUID();
-      sessions.set(sessionId, { agent, traceId: req.headers['x-trace-id'] || null, caseId: req.headers['x-case-id'] || null, lastSeenAt: now() });
+      sessions.set(sessionId, { agent, protocolVersion, traceId: req.headers['x-trace-id'] || null, caseId: req.headers['x-case-id'] || null, lastSeenAt: now() });
     } else if (!sessionId || !sessions.has(sessionId)) return sendJson(res, 400, { error: 'valid Mcp-Session-Id required' });
     const identity = sessions.get(sessionId);
+    if (!isInitialize && req.headers['mcp-protocol-version'] !== identity.protocolVersion) return sendJson(res, 400, { error: `MCP session requires protocol version ${identity.protocolVersion}` });
     if (!isInitialize && req.headers['x-devorbit-agent'] && req.headers['x-devorbit-agent'] !== identity.agent) return sendJson(res, 403, { error: 'session agent identity mismatch' });
     identity.lastSeenAt = now();
     const response = await toolServer.dispatch(message, identity);

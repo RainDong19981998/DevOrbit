@@ -1,0 +1,24 @@
+{
+  "caseId": "PUB-SQLFLUFF__SQLFLUFF-1577",
+  "method": "devorbit",
+  "attempts": 2,
+  "rca": {
+    "files": [
+      "src/sqlfluff/core/templaters/base.py",
+      "src/sqlfluff/core/templaters/jinja.py"
+    ]
+  },
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "git apply --check failed: \nerror: corrupt patch at line 15\n\nCommand failed: git apply --check model.patch\nerror: corrupt patch at line 15\n"
+  },
+  "patchSha256": "sha256:e68d2c4ec94060b36df31ae469dbd71edaf6b1c7efe248b6b20431a8f3659767",
+  "contextBytes": 8000,
+  "baselineTail": "no-header -x test/core/templaters/jinja_test.py::test__templater_jinja_lint_empty\nImportError while loading conftest '/tmp/zhanlu/bench-work/sqlfluff__sqlfluff-1577/source/test/conftest.py'.\ntest/conftest.py:9: in <module>\n    from sqlfluff.cli.commands import quoted_presenter\nsrc/sqlfluff/__init__.py:9: in <module>\n    import pkg_resources\nE   ModuleNotFoundError: No module named 'pkg_resources'\n",
+  "goldFiles": [
+    "src/sqlfluff/core/templaters/base.py"
+  ]
+}

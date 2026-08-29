@@ -1,0 +1,5 @@
+observed= [('raw', False), ('whitespace', True), ('raw', False), ('newline', False)]
+expected= [('raw', False), ('whitespace', True), ('raw', False), ('newline', True)]
+Traceback (most recent call last):
+  File "<string>", line 9, in <module>
+AssertionError

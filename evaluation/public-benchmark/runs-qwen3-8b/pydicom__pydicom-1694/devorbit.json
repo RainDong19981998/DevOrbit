@@ -1,0 +1,44 @@
+{
+  "caseId": "PUB-PYDICOM__PYDICOM-1694",
+  "method": "devorbit",
+  "attempts": 3,
+  "rca": {
+    "rootCause": "The `Dataset.to_json_dict` method is not properly handling invalid tags when `suppress_invalid_tags=True` is set, leading to exceptions being raised during the conversion process.",
+    "confidence": 0.95,
+    "evidence": [
+      "The traceback indicates that the exception is raised in `convert_value` when trying to convert a value to an integer without loss, which is related to the `IS` VR (Value Representation) type.",
+      "The user's suggestion to move the `data_element = self[key]` into a try/catch block implies that the current logic is not handling invalid tags properly when `suppress_invalid_tags=True` is enabled.",
+      "The `to_json_dict` method is directly accessing the dataset elements, which may not be properly validated or suppressed when invalid tags are present."
+    ],
+    "filesToChange": [
+      "pydicom/dataset.py",
+      "pydicom/values.py",
+      "pydicom/valuerep.py"
+    ]
+  },
+  "edits": [
+    {
+      "path": "pydicom/dataset.py",
+      "search": "    def to_json_dict(self, suppress_invalid_tags: bool = False) -> Dict[BaseTag, Dict[str, Any]]:\n        \"\"\"Return a dictionary representation of the dataset.\n\n        Parameters\n        ----------\n        suppress_invalid_tags : bool\n            If True, suppress invalid tags during the conversion.\n\n        Returns\n        -------\n        dict\n            A dictionary representation of the dataset.\n        \"\"\"\n        ds = self\n        result = {}\n        for tag in ds:\n            try:\n                data_element = ds[tag]\n            except KeyError:\n                continue\n            if suppress_invalid_tags and not data_element.is_valid:\n                continue\n            result[tag] = data_element.to_json",
+      "replace": "    def to_json_dict(self, suppress_invalid_tags: bool = False) -> Dict[BaseTag, Dict[str, Any]]:\n        \"\"\"Return a dictionary representation of the dataset.\n\n        Parameters\n        ----------\n        suppress_invalid\n        \"\"\"\n        ds = self\n        result = {}\n        for tag in ds:\n            try:\n                data_element = ds[tag]\n            except KeyError:\n                continue\n            try:\n                data_element = ds[tag]\n            except KeyError:\n                continue\n            if suppress_invalid_tags and not data_element.is_valid:\n                continue\n            result[tag] = data_element.to_json"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "edit apply failed: pydicom/dataset.py: search block not found (exact and whitespace-normalized match both failed) [search:     def to_json_dict(self, suppress_invalid_tags: bool = False) -> Dict[BaseTag, Dict[str, Any]]:\n        \"\"\"Return a dictionary representation of the dataset.\n]",
+    "changedPaths": [
+      "pydicom/dataset.py"
+    ]
+  },
+  "patchSha256": null,
+  "contextBytes": 10934,
+  "baselineTail": "=======\nFAILED pydicom/tests/test_json.py::TestDataSetToJson::test_suppress_invalid_tags_with_failed_dataelement\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 1 warning in 0.24s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x pydicom/tests/test_json.py::TestDataSetToJson::test_suppress_invalid_tags_with_failed_dataelement\n",
+  "goldFiles": [
+    "pydicom/dataset.py"
+  ],
+  "model": "qwen3:8b",
+  "modelCalls": 4
+}

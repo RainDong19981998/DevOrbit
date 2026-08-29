@@ -1,0 +1,4 @@
+[
+  { "source": "日志", "id": "LOG-10A", "text": "IdempotencyStore timeout after 3000ms; retrying request", "time": "10:15:24" },
+  { "source": "指标", "id": "METRIC-55", "text": "POST /orders p95 420ms -> 2.8s; error rate 0.2% -> 7.4%", "time": "10:15:30" }
+]

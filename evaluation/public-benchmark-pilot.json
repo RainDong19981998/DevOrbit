@@ -1,0 +1,114 @@
+{
+  "protocolVersion": "1.0",
+  "datasetId": "devorbit-public-software-repair-v1",
+  "manifestDigest": "sha256:04d47fc9a394896bb4e39c87a652c654757b208aa7c9637444e9c8141547267d",
+  "generatedAt": "2026-08-28T02:37:10.250Z",
+  "methods": [
+    {
+      "method": "devorbit",
+      "name": "DevOrbit staged RCA->patch multi-agent pipeline",
+      "version": "0.9.6",
+      "patchMode": "edit-based",
+      "model": "deepseek-v4-flash-0731",
+      "commit": "e587280cc9ddf12d77b7a9e683ccbde03b88e20d",
+      "configurationDigest": "sha256:5f3a330497215db0da18c83a8c6d25f7c61d318427fcd21299a1305178c05e0c",
+      "environmentDigest": "sha256:60aeca7d263d8441f68b91d978f9fd13f3a2678e800b525e1ed6384b854da518"
+    },
+    {
+      "method": "single-agent",
+      "name": "Single-agent direct patch baseline (same model and budget)",
+      "version": "0.9.6",
+      "patchMode": "edit-based",
+      "model": "deepseek-v4-flash-0731",
+      "commit": "e587280cc9ddf12d77b7a9e683ccbde03b88e20d",
+      "configurationDigest": "sha256:5f3a330497215db0da18c83a8c6d25f7c61d318427fcd21299a1305178c05e0c",
+      "environmentDigest": "sha256:60aeca7d263d8441f68b91d978f9fd13f3a2678e800b525e1ed6384b854da518"
+    }
+  ],
+  "runs": [
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-903",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": true,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 24919,
+      "tokenCount": 36103,
+      "evidenceRefs": [
+        "runs/pydicom__pydicom-903/devorbit.json"
+      ],
+      "artifactDigests": [
+        "sha256:68c56e84e4d67f7b3d2d08f9963135b5f04aafc8d891aeb2f1785f25e6fc6c3f"
+      ],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-903",
+      "method": "single-agent",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": null,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 26203,
+      "tokenCount": 17020,
+      "evidenceRefs": [
+        "runs/pydicom__pydicom-903/single-agent.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-MARSHMALLOW-CODE__MARSHMALLOW-1252",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": true,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 13231,
+      "tokenCount": 27862,
+      "evidenceRefs": [
+        "runs/marshmallow-code__marshmallow-1252/devorbit.json"
+      ],
+      "artifactDigests": [
+        "sha256:24c784bf6352fbc25fd64ddf969fb0159c9094b84a071ec3e1cc69f0880b56fe"
+      ],
+      "error": null
+    },
+    {
+      "caseId": "PUB-MARSHMALLOW-CODE__MARSHMALLOW-1252",
+      "method": "single-agent",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": null,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 12563,
+      "tokenCount": 12832,
+      "evidenceRefs": [
+        "runs/marshmallow-code__marshmallow-1252/single-agent.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    }
+  ]
+}

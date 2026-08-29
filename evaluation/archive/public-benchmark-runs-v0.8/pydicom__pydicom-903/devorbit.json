@@ -1,0 +1,23 @@
+{
+  "caseId": "PUB-PYDICOM__PYDICOM-903",
+  "method": "devorbit",
+  "attempts": 2,
+  "rca": {
+    "files": [
+      "pydicom/filewriter.py"
+    ]
+  },
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "git apply --check failed: \nerror: corrupt patch at line 19\n\nCommand failed: git apply --check model.patch\nerror: corrupt patch at line 19\n"
+  },
+  "patchSha256": "sha256:7c12412cbf48dd8348253e2efef7c7156f0be495b7ae22d3ecdc7f425f914cf6",
+  "contextBytes": 8000,
+  "baselineTail": "sts/test_filewriter.py::TestWriteUndefinedLengthPixelData::test_writing_too_big_data_in_explicit_encoding\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.47s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x pydicom/tests/test_filewriter.py::TestWriteUndefinedLengthPixelData::test_writing_too_big_data_in_explicit_encoding\n",
+  "goldFiles": [
+    "pydicom/filewriter.py"
+  ]
+}

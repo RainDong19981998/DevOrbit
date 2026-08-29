@@ -3,7 +3,7 @@ FROM ${NODE_IMAGE}
 
 LABEL org.opencontainers.image.title="DevOrbit" \
       org.opencontainers.image.description="Auditable multi-agent software delivery control plane" \
-      org.opencontainers.image.version="0.6.0" \
+      org.opencontainers.image.version="0.7.0" \
       org.opencontainers.image.licenses="Apache-2.0"
 
 RUN groupadd --gid 10001 devorbit \
@@ -17,6 +17,7 @@ COPY --chown=10001:10001 fixtures ./fixtures
 COPY --chown=10001:10001 knowledge ./knowledge
 COPY --chown=10001:10001 reports ./reports
 COPY --chown=10001:10001 schemas ./schemas
+COPY --chown=10001:10001 skills ./skills
 COPY --chown=10001:10001 src ./src
 
 ENV NODE_ENV=production \

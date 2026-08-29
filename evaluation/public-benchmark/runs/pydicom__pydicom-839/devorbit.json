@@ -1,0 +1,51 @@
+{
+  "caseId": "PUB-PYDICOM__PYDICOM-839",
+  "method": "devorbit",
+  "attempts": 3,
+  "rca": {
+    "rootCause": "In pydicom >= 1.2.0, the function `_correct_ambiguous_vr_element` in `filewriter.py` unconditionally accesses `ds.PixelRepresentation` when resolving the VR of tags like `PixelPaddingValue` (0028, 0120). For RTSTRUCT files that contain `PixelPaddingValue` but no `PixelData` (and thus no `PixelRepresentation`), this raises `AttributeError`. The fix should handle the case where `PixelRepresentation` is missing: if `PixelData` is also absent, the ambiguous VR element should be left as-is (or given a default VR) instead of raising an exception.",
+    "confidence": 0.9,
+    "evidence": [
+      "Traceback shows `_correct_ambiguous_vr_element` at filewriter.py line 75 doing `if ds.PixelRepresentation == 0:` which raises AttributeError when PixelRepresentation is absent",
+      "Issue states this worked in pydicom <= 1.1.0 and broke in >= 1.2.0, and that PixelRepresentation is not defined in the RTSTRUCT dataset",
+      "Hint says: 'Hm, in this case PixelPadding doesn't make sense, as there is no PixelData present, so we could just ignore it (e.g. use some default VR). With PixelData present, a missing PixelRepresentation would be a real DICOM violation, that would justify an exception.'",
+      "The tag (0028, 0120) PixelPaddingValue has ambiguous VR (US or SS) dependent on PixelRepresentation"
+    ],
+    "filesToChange": [
+      "pydicom/filewriter.py"
+    ]
+  },
+  "edits": [
+    {
+      "path": "pydicom/filewriter.py",
+      "search": "        # US if PixelRepresentation value is 0x0000, else SS\n        #   For references, see the list at\n        #   https://github.com/darcymason/pydicom/pull/298\n        # PixelRepresentation is usually set in the root dataset\n        while 'PixelRepresentation' not in ds and ds.parent:\n            ds = ds.parent\n        if ds.PixelRepresentation == 0:\n            elem.VR = 'US'\n            byte_type = 'H'\n        else:\n            elem.VR = 'SS'\n            byte_type = 'h'",
+      "replace": "        # US if PixelRepresentation value is 0x0000, else SS\n        #   For references, see the list at\n        #   https://github.com/darcymason/pydicom/pull/298\n        # PixelRepresentation is usually set in the root dataset\n        while 'PixelRepresentation' not in ds and ds.parent:\n            ds = ds.parent\n        if 'PixelRepresentation' not in ds:\n            # PixelRepresentation is missing, which is a real DICOM\n            # violation if PixelData is present. If PixelData is not\n            # present, we use the default VR (US).\n            if 'PixelData' in ds:\n                raise AttributeError(\n                    \"PixelRepresentation is required to resolve \"\n                    \"the ambiguous VR\".format(elem.tag))\n            pixel_representation = 0\n        else:\n            pixel_representation = ds.PixelRepresentation\n        if pixel_representation == 0:\n            elem.VR = 'US'\n            byte_type = 'H'\n        else:\n            elem.VR = 'SS'\n            byte_type = 'h'"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": true,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "F2P red; P2P green ",
+    "f2pLogTail": "============================== FAILURES ===================================\n___________ TestCorrectAmbiguousVR.test_pixel_representation_vm_one ____________\n\nself = <pydicom.tests.test_filewriter.TestCorrectAmbiguousVR object at 0x75d98e52fb10>\n\n    def test_pixel_representation_vm_one(self):\n        \"\"\"Test correcting VM 1 elements which require PixelRepresentation.\"\"\"\n        ref_ds = Dataset()\n    \n        # If PixelRepresentation is 0 then VR should be US\n        ref_ds.PixelRepresentation = 0\n        ref_ds.SmallestValidPixelValue = b'\\x00\\x01'  # Little endian 256\n        ds = correct_ambiguous_vr(deepcopy(ref_ds), True)\n        assert 256 == ds.SmallestValidPixelValue\n        assert 'US' == ds[0x00280104].VR\n    \n        # If PixelRepresentation is 1 then VR should be SS\n        ref_ds.PixelRepresentation = 1\n        ref_ds.SmallestValidPixelValue = b'\\x00\\x01'  # Big endian 1\n        ds = correct_ambiguous_vr(deepcopy(ref_ds), False)\n        assert 1 == ds.SmallestValidPixelValue\n        assert 'SS' == ds[0x00280104].VR\n    \n        # If no PixelRepresentation AttributeError shall be raised\n        ref_ds = Dataset()\n        ref_ds.SmallestValidPixelValue = b'\\x00\\x01'  # Big endian 1\n>       with pytest.raises(AttributeError,\n                           match=r\"Failed to resolve ambiguous VR for tag \"\n                                 r\"\\(0028, 0104\\):.* 'PixelRepresentation'\"):\nE                                Failed: DID NOT RAISE AttributeError\n\npydicom/tests/test_filewriter.py:677: Failed\n=========================== short test summary info ================\n[...]\n!!!!!!!!!!!!!!!!!\n1 failed in 0.27s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x pydicom/tests/test_filewriter.py::TestCorrectAmbiguousVR::test_pixel_representation_vm_one pydicom/tests/test_filewriter.py::TestCorrectAmbiguousVR::test_pixel_representation_vm_three pydicom/tests/test_filewriter.py::TestCorrectAmbiguousVRElement::test_correct_ambiguous_data_element\n",
+    "changedPaths": [
+      "pydicom/filewriter.py"
+    ],
+    "appliedMethods": [
+      {
+        "path": "pydicom/filewriter.py",
+        "method": "exact",
+        "ambiguous": false
+      }
+    ]
+  },
+  "patchSha256": "sha256:f8743f1907bf75bd424c30c2aad8d01af15d31fc3d60ee909e811bfbfd168b69",
+  "contextBytes": 10261,
+  "baselineTail": "!!!!!!!!!!!!!!!!!\n1 failed in 0.49s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x pydicom/tests/test_filewriter.py::TestCorrectAmbiguousVR::test_pixel_representation_vm_one pydicom/tests/test_filewriter.py::TestCorrectAmbiguousVR::test_pixel_representation_vm_three pydicom/tests/test_filewriter.py::TestCorrectAmbiguousVRElement::test_correct_ambiguous_data_element\n",
+  "goldFiles": [
+    "pydicom/filewriter.py"
+  ],
+  "model": "glm",
+  "modelCalls": 4
+}

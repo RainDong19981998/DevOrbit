@@ -1,0 +1,43 @@
+{
+  "caseId": "PUB-PYDICOM__PYDICOM-1694",
+  "method": "devorbit",
+  "attempts": 3,
+  "rca": {
+    "rootCause": "In Dataset.to_json_dict(), the line `data_element = self[key]` is executed outside the try/except block that handles suppress_invalid_tags. When accessing a raw data element with an invalid value (e.g., `2.0` in an IS field), __getitem__ triggers DataElement_from_raw -> convert_value -> convert_IS_string -> IS.__new__, which raises TypeError. Since this access is outside the suppression try/except, the exception propagates even when suppress_invalid_tags=True. The fix is to move `data_element = self[key]` inside the try/except block so that access-time conversion errors are also suppressed.",
+    "confidence": 0.95,
+    "evidence": [
+      "Issue traceback shows the exception originates at `data_element = self[key]` in dataset.py line 2495, inside to_json_dict, before the suppress_invalid_tags try/except block",
+      "The traceback chain is: Dataset.__getitem__ -> DataElement_from_raw -> convert_value -> convert_IS_string -> MultiString -> IS.__new__ raising TypeError('Could not convert value to integer without loss')",
+      "Issue reporter states: 'My thought was simply to move the `data_element = self[key]` into the try/catch block that's right after it.'",
+      "suppress_invalid_tags is meant to prevent exceptions from invalid tags, but the element access/conversion itself can throw before the suppression logic applies"
+    ],
+    "filesToChange": [
+      "pydicom/dataset.py"
+    ]
+  },
+  "edits": [
+    {
+      "path": "pydicom/dataset.py",
+      "search": "            if key in self:\n                data_element = self[key]\n\n                try:\n                    json_key, json_value = data_element.to_json_dict(",
+      "replace": "            if key in self:\n                try:\n                    data_element = self[key]\n                    json_key, json_value = data_element.to_json_dict("
+    }
+  ],
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "edit apply failed: pydicom/dataset.py: search block not found (exact and whitespace-normalized match both failed) [search:             if key in self:\n                data_element = self[key]\n\n                try:\n                    json_key, json_value = data_element.to_json_dict(]",
+    "changedPaths": [
+      "pydicom/dataset.py"
+    ]
+  },
+  "patchSha256": null,
+  "contextBytes": 10934,
+  "baselineTail": "=======\nFAILED pydicom/tests/test_json.py::TestDataSetToJson::test_suppress_invalid_tags_with_failed_dataelement\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 1 warning in 0.16s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x pydicom/tests/test_json.py::TestDataSetToJson::test_suppress_invalid_tags_with_failed_dataelement\n",
+  "goldFiles": [
+    "pydicom/dataset.py"
+  ],
+  "model": "glm",
+  "modelCalls": 4
+}

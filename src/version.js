@@ -1,2 +1,4 @@
-export const DEVORBIT_VERSION = '0.6.0';
+export const DEVORBIT_VERSION = '1.0.0';
 export const MCP_PROTOCOL_VERSION = '2025-06-18';
+export const MCP_PROTOCOL_VERSIONS = Object.freeze(['2025-06-18', '2025-11-25']);
+export const MCP_LATEST_PROTOCOL_VERSION = MCP_PROTOCOL_VERSIONS.at(-1);

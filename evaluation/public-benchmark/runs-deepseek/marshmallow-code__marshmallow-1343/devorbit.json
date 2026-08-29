@@ -1,0 +1,43 @@
+{
+  "caseId": "PUB-MARSHMALLOW-CODE__MARSHMALLOW-1343",
+  "method": "devorbit",
+  "attempts": 3,
+  "rca": {
+    "rootCause": "The regression from PR #1323 changed the behavior of nested field deserialization so that when a nested field receives invalid data (e.g., a string instead of a dict), the nested schema's load returns None instead of raising a ValidationError. Later, when field validators are invoked in _invoke_field_validators, it tries to access data[field_obj.attribute or field_name] on the None result, causing the TypeError. The fix should ensure that when a nested field fails to deserialize, the result is not None but rather an empty dict or the error is properly propagated before validators run.",
+    "confidence": 0.9,
+    "evidence": [
+      "Traceback shows the error occurs in schema.py line 894 in _invoke_field_validators when accessing data[field_obj.attribute or field_name] on a None value.",
+      "The issue is triggered by a Nested field receiving invalid data ('invalid' string instead of a dict), causing the nested schema's load to return None.",
+      "The hint mentions this is a regression from PR #1323, which likely changed how nested deserialization handles errors."
+    ],
+    "filesToChange": [
+      "src/marshmallow/schema.py",
+      "src/marshmallow/fields.py"
+    ]
+  },
+  "edits": [
+    {
+      "path": "src/marshmallow/schema.py",
+      "search": "                else:\n                    try:\n                        value = data[field_obj.attribute or field_name]\n                    except KeyError:\n                        pass\n                    else:\n                        validator(value)",
+      "replace": "                else:\n                    if data is None:\n                        continue\n                    try:\n                        value = data[field_obj.attribute or field_name]\n                    except KeyError:\n                        pass\n                    else:\n                        validator(value)"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "edit apply failed: src/marshmallow/schema.py: search block not found (exact and whitespace-normalized match both failed) [search:                 else:\n                    try:\n                        value = data[field_obj.attribute or field_name]\n                    except KeyError:\n    ]",
+    "changedPaths": [
+      "src/marshmallow/schema.py"
+    ]
+  },
+  "patchSha256": null,
+  "contextBytes": 8525,
+  "baselineTail": "shalling.py::TestUnmarshaller::test_deserialize_wrong_nested_type_with_validates_method\nImportError while loading conftest '/tmp/zhanlu/bench-work-ds/marshmallow-code__marshmallow-1343/source/tests/conftest.py'.\ntests/conftest.py:5: in <module>\n    from tests.base import User, UserSchema, Blog\ntests/base.py:6: in <module>\n    import simplejson\nE   ModuleNotFoundError: No module named 'simplejson'\n",
+  "goldFiles": [
+    "src/marshmallow/schema.py"
+  ],
+  "model": "deepseek-v4-flash-0731",
+  "modelCalls": 4
+}

@@ -1,5 +1,6 @@
 ---
 name: evidence-rca
+version: 1.0.0
 description: Generate and rank software root-cause candidates using timelines, code impact, changes, logs, traces, metrics, and historical cases with explicit evidence references. Use when diagnosis must be reviewable and uncertainty must gate automated repair.
 ---
 

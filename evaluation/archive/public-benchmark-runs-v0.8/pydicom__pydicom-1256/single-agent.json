@@ -1,0 +1,19 @@
+{
+  "caseId": "PUB-PYDICOM__PYDICOM-1256",
+  "method": "single-agent",
+  "attempts": 2,
+  "rca": null,
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "git apply --check failed: \nerror: patch failed: pydicom/jsonrep.py:224\nerror: pydicom/jsonrep.py: patch does not apply\n\nCommand failed: git apply --check model.patch\nerror: patch failed: pydicom/jsonrep.py:224\nerror: pydicom/jsonrep.py: patch does not apply\n"
+  },
+  "patchSha256": "sha256:a0a9301382584f6cfb330ef846e25e1c9814dc7856d343253ec15c1b2a53c4b7",
+  "contextBytes": 8000,
+  "baselineTail": "/__init__.py:2: in <module>\n    from pydicom.pixel_data_handlers.util import (\npydicom/pixel_data_handlers/util.py:15: in <module>\n    from pydicom.data import get_palette_files\npydicom/data/__init__.py:4: in <module>\n    from .data_manager import (\npydicom/data/data_manager.py:52: in <module>\n    from pkg_resources import iter_entry_points\nE   ModuleNotFoundError: No module named 'pkg_resources'\n",
+  "goldFiles": [
+    "pydicom/jsonrep.py"
+  ]
+}

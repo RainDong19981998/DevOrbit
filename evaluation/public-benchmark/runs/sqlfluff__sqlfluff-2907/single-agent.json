@@ -1,0 +1,31 @@
+{
+  "caseId": "PUB-SQLFLUFF__SQLFLUFF-2907",
+  "method": "single-agent",
+  "attempts": 3,
+  "rca": null,
+  "edits": [
+    {
+      "path": "src/sqlfluff/core/templaters/jinja.py",
+      "search": "        elif m.group(\"set\"):\n            if m.group(\"set_var\"):\n                self.live_names[\"variable\"].add(m.group(\"set_var\"))\n            # Otherwise it's a block set statement. We don't add anything\n            # to the live_names, because the variable is set later.\n            return JinjaTracer._make_slice(m, \"block_start\", \"set\")",
+      "replace": "        elif m.group(\"set\"):\n            if m.group(\"set_var\"):\n                self.live_names[\"variable\"].add(m.group(\"set_var\"))\n            else:\n                # Block set statement: {% set var %}...{% endset %}.\n                # Extract the variable name from the raw slice so it's\n                # recognized as defined (e.g. inside an {% if %} block).\n                set_match = re.match(\n                    r\"{%-?\\s*set\\s+(\\w+)\\s*-?%}\", m.group(0)\n                )\n                if set_match:\n                    self.live_names[\"variable\"].add(set_match.group(1))\n            return JinjaTracer._make_slice(m, \"block_start\", \"set\")"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "edit apply failed: src/sqlfluff/core/templaters/jinja.py: search block not found (exact and whitespace-normalized match both failed) [search:         elif m.group(\"set\"):\n            if m.group(\"set_var\"):\n                self.live_names[\"variable\"].add(m.group(\"set_var\"))\n            # Otherwise it's]",
+    "changedPaths": [
+      "src/sqlfluff/core/templaters/jinja.py"
+    ]
+  },
+  "patchSha256": null,
+  "contextBytes": 14336,
+  "baselineTail": "ry info ============================\nFAILED test/core/templaters/jinja_test.py::test__templater_jinja_dynamic_variable_no_violations\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.10s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x test/core/templaters/jinja_test.py::test__templater_jinja_dynamic_variable_no_violations\n",
+  "goldFiles": [
+    "src/sqlfluff/core/templaters/jinja.py"
+  ],
+  "model": "glm",
+  "modelCalls": 3
+}

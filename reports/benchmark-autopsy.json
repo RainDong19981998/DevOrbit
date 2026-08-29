@@ -1,0 +1,539 @@
+{
+  "generatedAt": "2026-08-28T06:23:49.296Z",
+  "datasetId": "devorbit-public-software-repair-v1",
+  "totalDevorbitRuns": 30,
+  "runFailuresCount": 5,
+  "completedNotClosedCount": 22,
+  "categoryCounts": {
+    "environment-mismatch": 4,
+    "unclassified": 1
+  },
+  "selfHealingStats": {
+    "retriedCasesCount": 23,
+    "savedBySelfHealing": 0,
+    "allClosedLoopFalse": false,
+    "attemptsDistribution": {
+      "1": 3,
+      "2": 1,
+      "3": 22
+    }
+  },
+  "runFailures": [
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1069",
+      "status": "skipped",
+      "patchAttempted": false,
+      "closedLoop": false,
+      "testsPassed": false,
+      "durationMs": 10176,
+      "tokenCount": 0,
+      "attempts": null,
+      "rcaFiles": null,
+      "goldFiles": null,
+      "evalDetail": null,
+      "error": "baseline FAIL_TO_PASS already green on base commit; case excluded as environment_error",
+      "isRunFailure": true,
+      "category": "environment-mismatch",
+      "reason": "baseline FAIL_TO_PASS already green on base commit; case excluded as environment_error"
+    },
+    {
+      "caseId": "PUB-PYLINT-DEV__ASTROID-1262",
+      "status": "error",
+      "patchAttempted": false,
+      "closedLoop": false,
+      "testsPassed": false,
+      "durationMs": 5434,
+      "tokenCount": 0,
+      "attempts": null,
+      "rcaFiles": null,
+      "goldFiles": null,
+      "evalDetail": null,
+      "error": "dependency install failed: in1/miniconda3/lib/python3.13/inspect.py). Did you mean: 'formatargvalues'?\n      [end of output]\n  \n  note: This error originates from a subprocess, and is likely not a problem with pip.\nerror: metadata-generation-failed\n\n× Encountered error while generating package metad",
+      "isRunFailure": true,
+      "category": "environment-mismatch",
+      "reason": "dependency install failed: in1/miniconda3/lib/python3.13/inspect.py). Did you mean: 'formatargvalues'?\n      [end of out"
+    },
+    {
+      "caseId": "PUB-PYLINT-DEV__ASTROID-1962",
+      "status": "error",
+      "patchAttempted": false,
+      "closedLoop": false,
+      "testsPassed": false,
+      "durationMs": 2880,
+      "tokenCount": 0,
+      "attempts": null,
+      "rcaFiles": null,
+      "goldFiles": null,
+      "evalDetail": null,
+      "error": "dependency install failed: as no attribute 'ImpImporter'. Did you mean: 'zipimporter'?\n      [end of output]\n  \n  note: This error originates from a subprocess, and is likely not a problem with pip.\nerror: subprocess-exited-with-error\n\n× Getting requirements to build wheel did not run successfully.\n",
+      "isRunFailure": true,
+      "category": "environment-mismatch",
+      "reason": "dependency install failed: as no attribute 'ImpImporter'. Did you mean: 'zipimporter'?\n      [end of output]\n  \n  note: "
+    },
+    {
+      "caseId": "PUB-PYLINT-DEV__ASTROID-1959",
+      "status": "error",
+      "patchAttempted": false,
+      "closedLoop": false,
+      "testsPassed": false,
+      "durationMs": 2795,
+      "tokenCount": 0,
+      "attempts": null,
+      "rcaFiles": null,
+      "goldFiles": null,
+      "evalDetail": null,
+      "error": "dependency install failed: as no attribute 'ImpImporter'. Did you mean: 'zipimporter'?\n      [end of output]\n  \n  note: This error originates from a subprocess, and is likely not a problem with pip.\nerror: subprocess-exited-with-error\n\n× Getting requirements to build wheel did not run successfully.\n",
+      "isRunFailure": true,
+      "category": "environment-mismatch",
+      "reason": "dependency install failed: as no attribute 'ImpImporter'. Did you mean: 'zipimporter'?\n      [end of output]\n  \n  note: "
+    },
+    {
+      "caseId": "PUB-MARSHMALLOW-CODE__MARSHMALLOW-1343",
+      "status": "error",
+      "patchAttempted": false,
+      "closedLoop": false,
+      "testsPassed": false,
+      "durationMs": 3960,
+      "tokenCount": 3384,
+      "attempts": 2,
+      "rcaFiles": [
+        "marshmallow/schema.py"
+      ],
+      "goldFiles": [
+        "src/marshmallow/schema.py"
+      ],
+      "evalDetail": "git apply --check failed: \nerror: marshmallow/schema.py: No such file or directory\n\nCommand failed: git apply --check model.patch\nerror: marshmallow/schema.py: No such file or directory\n",
+      "error": "model HTTP 502: {\"error\":{\"message\":\"Unable to connect to the Zhanlu model service\",\"type\":\"gateway_error\",\"param\":null,\"code\":\"upstream_connection_error\"}}",
+      "isRunFailure": true,
+      "category": "unclassified",
+      "reason": "model HTTP 502: {\"error\":{\"message\":\"Unable to connect to the Zhanlu model service\",\"type\":\"gateway_error\",\"param\":null,"
+    }
+  ],
+  "completedNotClosed": [
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-903",
+      "status": "completed",
+      "patchAttempted": true,
+      "closedLoop": false,
+      "testsPassed": false,
+      "durationMs": 25129,
+      "tokenCount": 38881,
+      "attempts": 3,
+      "rcaFiles": null,
+      "goldFiles": [
+        "pydicom/filewriter.py"
+      ],
+      "evalDetail": "edit apply failed: pydicom/filewriter.py: search block not found (exact and whitespace-normalized match both failed) [search:     if data_element.is_undefined_length:\n        fp.write_UL(0xFFFFFFFF)\n    else:\n        fp.write_US(len(buffer.parent.parent.getvalue()))\n\n    fp.write(buffe]",
+      "error": null,
+      "isRunFailure": false,
+      "category": "localization-error",
+      "reason": "RCA wrong files"
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1076",
+      "status": "completed",
+      "patchAttempted": true,
+      "closedLoop": false,
+      "testsPassed": false,
+      "durationMs": 5859,
+      "tokenCount": 43796,
+      "attempts": 3,
+      "rcaFiles": null,
+      "goldFiles": [
+        "pydicom/filewriter.py",
+        "pydicom/values.py"
+      ],
+      "evalDetail": "edit apply failed: pydicom/filewriter.py: search block not found (exact and whitespace-normalized match both failed) [search:     'OF': (write_numbers, 'L'),]",
+      "error": null,
+      "isRunFailure": false,
+      "category": "localization-error",
+      "reason": "RCA wrong files"
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1031",
+      "status": "completed",
+      "patchAttempted": true,
+      "closedLoop": false,
+      "testsPassed": false,
+      "durationMs": 23305,
+      "tokenCount": 51096,
+      "attempts": 3,
+      "rcaFiles": null,
+      "goldFiles": [
+        "pydicom/dataelem.py"
+      ],
+      "evalDetail": "F2P red; P2P green ",
+      "error": null,
+      "isRunFailure": false,
+      "category": "localization-error",
+      "reason": "RCA wrong files"
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-955",
+      "status": "completed",
+      "patchAttempted": true,
+      "closedLoop": false,
+      "testsPassed": false,
+      "durationMs": 25790,
+      "tokenCount": 71782,
+      "attempts": 3,
+      "rcaFiles": null,
+      "goldFiles": [
+        "pydicom/dataelem.py",
+        "pydicom/pixel_data_handlers/util.py"
+      ],
+      "evalDetail": "F2P red; P2P green ",
+      "error": null,
+      "isRunFailure": false,
+      "category": "localization-error",
+      "reason": "RCA wrong files"
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1694",
+      "status": "completed",
+      "patchAttempted": true,
+      "closedLoop": false,
+      "testsPassed": false,
+      "durationMs": 24125,
+      "tokenCount": 37414,
+      "attempts": 3,
+      "rcaFiles": null,
+      "goldFiles": [
+        "pydicom/dataset.py"
+      ],
+      "evalDetail": "edit apply failed: pydicom/dataset.py: search block not found (exact and whitespace-normalized match both failed) [search:             if key in self:\n                data_element = self[key]\n\n                try:\n                    json_key, json_value = data_element.to_json_dict(]",
+      "error": null,
+      "isRunFailure": false,
+      "category": "localization-error",
+      "reason": "RCA wrong files"
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1428",
+      "status": "completed",
+      "patchAttempted": true,
+      "closedLoop": false,
+      "testsPassed": false,
+      "durationMs": 19787,
+      "tokenCount": 36441,
+      "attempts": 3,
+      "rcaFiles": null,
+      "goldFiles": [
+        "pydicom/fileset.py"
+      ],
+      "evalDetail": "edit apply failed: pydicom/fileset.py: search block not found (exact and whitespace-normalized match both failed) [search:     def find_values(self, element: str, load: bool = False) -> List[Union[str, int, float]]:\n        \"\"\"Return a list of the values of `element` from the instan]",
+      "error": null,
+      "isRunFailure": false,
+      "category": "localization-error",
+      "reason": "RCA wrong files"
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-839",
+      "status": "completed",
+      "patchAttempted": true,
+      "closedLoop": false,
+      "testsPassed": false,
+      "durationMs": 22647,
+      "tokenCount": 38986,
+      "attempts": 3,
+      "rcaFiles": null,
+      "goldFiles": [
+        "pydicom/filewriter.py"
+      ],
+      "evalDetail": "F2P red; P2P green ",
+      "error": null,
+      "isRunFailure": false,
+      "category": "localization-error",
+      "reason": "RCA wrong files"
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1256",
+      "status": "completed",
+      "patchAttempted": true,
+      "closedLoop": false,
+      "testsPassed": false,
+      "durationMs": 11751,
+      "tokenCount": 30968,
+      "attempts": 3,
+      "rcaFiles": null,
+      "goldFiles": [
+        "pydicom/jsonrep.py"
+      ],
+      "evalDetail": "F2P red; P2P green ",
+      "error": null,
+      "isRunFailure": false,
+      "category": "localization-error",
+      "reason": "RCA wrong files"
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-4151",
+      "status": "completed",
+      "patchAttempted": true,
+      "closedLoop": false,
+      "testsPassed": false,
+      "durationMs": 13823,
+      "tokenCount": 41972,
+      "attempts": 3,
+      "rcaFiles": null,
+      "goldFiles": [
+        "src/sqlfluff/cli/commands.py"
+      ],
+      "evalDetail": "F2P red; P2P green ",
+      "error": null,
+      "isRunFailure": false,
+      "category": "localization-error",
+      "reason": "RCA wrong files"
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-2573",
+      "status": "completed",
+      "patchAttempted": true,
+      "closedLoop": false,
+      "testsPassed": false,
+      "durationMs": 23376,
+      "tokenCount": 53768,
+      "attempts": 3,
+      "rcaFiles": null,
+      "goldFiles": [
+        "src/sqlfluff/core/config.py",
+        "src/sqlfluff/core/linter/linter.py"
+      ],
+      "evalDetail": "edit apply failed: src/sqlfluff/core/linter/linter.py: search block not found (exact and whitespace-normalized match both failed) [search:         # Get the search path\n        if ignore_files:\n            ignore_file_paths = ConfigLoader.find_ignore_config_files(\n                path=path, working]",
+      "error": null,
+      "isRunFailure": false,
+      "category": "localization-error",
+      "reason": "RCA wrong files"
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-884",
+      "status": "completed",
+      "patchAttempted": true,
+      "closedLoop": false,
+      "testsPassed": false,
+      "durationMs": 16390,
+      "tokenCount": 25099,
+      "attempts": 3,
+      "rcaFiles": null,
+      "goldFiles": [
+        "src/sqlfluff/core/dialects/dialect_ansi.py",
+        "src/sqlfluff/core/parser/lexer.py"
+      ],
+      "evalDetail": "F2P red; P2P green ",
+      "error": null,
+      "isRunFailure": false,
+      "category": "localization-error",
+      "reason": "RCA wrong files"
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-2998",
+      "status": "completed",
+      "patchAttempted": true,
+      "closedLoop": false,
+      "testsPassed": false,
+      "durationMs": 148416,
+      "tokenCount": 32709,
+      "attempts": 3,
+      "rcaFiles": null,
+      "goldFiles": [
+        "src/sqlfluff/rules/L027.py"
+      ],
+      "evalDetail": "F2P red; P2P green ",
+      "error": null,
+      "isRunFailure": false,
+      "category": "localization-error",
+      "reason": "RCA wrong files"
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-4778",
+      "status": "completed",
+      "patchAttempted": true,
+      "closedLoop": false,
+      "testsPassed": false,
+      "durationMs": 138107,
+      "tokenCount": 70209,
+      "attempts": 3,
+      "rcaFiles": null,
+      "goldFiles": [
+        "src/sqlfluff/core/linter/linter.py",
+        "src/sqlfluff/core/templaters/slicers/tracer.py"
+      ],
+      "evalDetail": "edit apply failed: src/sqlfluff/core/templaters/slicers/tracer.py: search block not found (exact and whitespace-normalized match both failed) [search:         if block_type == \"block_start\" and trimmed_parts[0] in (\n            \"block\",\n            \"call\",\n            \"do\",\n            \"macro\",\n            \"se]",
+      "error": null,
+      "isRunFailure": false,
+      "category": "localization-error",
+      "reason": "RCA wrong files"
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-3220",
+      "status": "completed",
+      "patchAttempted": true,
+      "closedLoop": false,
+      "testsPassed": false,
+      "durationMs": 14791,
+      "tokenCount": 38759,
+      "attempts": 3,
+      "rcaFiles": null,
+      "goldFiles": [
+        "src/sqlfluff/cli/commands.py"
+      ],
+      "evalDetail": "edit apply failed: src/sqlfluff/cli/commands.py: search block not found (exact and whitespace-normalized match both failed) [search: @click.option(\n    \"--fix-even-unparsable\",\n    is_flag=True,\n    help=\"Enable the fixer even on unparsable files.\",\n)]",
+      "error": null,
+      "isRunFailure": false,
+      "category": "localization-error",
+      "reason": "RCA wrong files"
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-1577",
+      "status": "completed",
+      "patchAttempted": true,
+      "closedLoop": false,
+      "testsPassed": false,
+      "durationMs": 16000,
+      "tokenCount": 42595,
+      "attempts": 3,
+      "rcaFiles": null,
+      "goldFiles": [
+        "src/sqlfluff/core/templaters/base.py"
+      ],
+      "evalDetail": "edit apply failed: src/sqlfluff/__init__.py: search block not found (exact and whitespace-normalized match both failed) [search: try:\n    import pkg_resources\nexcept ImportError:  # pragma: no cover\n    pkg_resources = None]",
+      "error": null,
+      "isRunFailure": false,
+      "category": "localization-error",
+      "reason": "RCA wrong files"
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-1625",
+      "status": "completed",
+      "patchAttempted": true,
+      "closedLoop": false,
+      "testsPassed": false,
+      "durationMs": 15606,
+      "tokenCount": 29198,
+      "attempts": 3,
+      "rcaFiles": null,
+      "goldFiles": [
+        "src/sqlfluff/rules/L031.py"
+      ],
+      "evalDetail": "edit apply failed: src/sqlfluff/__init__.py: search block not found (exact and whitespace-normalized match both failed) [search: try:\n    import pkg_resources\nexcept ImportError:\n    pkg_resources = None]",
+      "error": null,
+      "isRunFailure": false,
+      "category": "localization-error",
+      "reason": "RCA wrong files"
+    },
+    {
+      "caseId": "PUB-PYLINT-DEV__ASTROID-1196",
+      "status": "completed",
+      "patchAttempted": true,
+      "closedLoop": false,
+      "testsPassed": false,
+      "durationMs": 13167,
+      "tokenCount": 31953,
+      "attempts": 3,
+      "rcaFiles": null,
+      "goldFiles": [
+        "astroid/nodes/node_classes.py"
+      ],
+      "evalDetail": "edit apply failed: astroid/nodes/node_classes.py: search block not found (exact and whitespace-normalized match both failed) [search:         for key, value in self.items:\n            if key is None:\n                # {**dict} unpacking.\n                return value.getitem(index, context)\n   ]",
+      "error": null,
+      "isRunFailure": false,
+      "category": "localization-error",
+      "reason": "RCA wrong files"
+    },
+    {
+      "caseId": "PUB-PYLINT-DEV__ASTROID-941",
+      "status": "completed",
+      "patchAttempted": true,
+      "closedLoop": false,
+      "testsPassed": false,
+      "durationMs": 20368,
+      "tokenCount": 31961,
+      "attempts": 3,
+      "rcaFiles": null,
+      "goldFiles": [
+        "astroid/brain/brain_namedtuple_enum.py",
+        "astroid/scoped_nodes.py"
+      ],
+      "evalDetail": "edit apply failed: astroid/scoped_nodes.py: search block not found (exact and whitespace-normalized match both failed) [search:                 if isinstance(stmt, FunctionDef) and stmt.type == \"property\":\n                    if not class_context or metaclass:\n                        yie]",
+      "error": null,
+      "isRunFailure": false,
+      "category": "localization-error",
+      "reason": "RCA wrong files"
+    },
+    {
+      "caseId": "PUB-PYLINT-DEV__ASTROID-2023",
+      "status": "completed",
+      "patchAttempted": true,
+      "closedLoop": false,
+      "testsPassed": false,
+      "durationMs": 21666,
+      "tokenCount": 34175,
+      "attempts": 3,
+      "rcaFiles": null,
+      "goldFiles": [
+        "astroid/nodes/node_classes.py"
+      ],
+      "evalDetail": "F2P red; P2P green ",
+      "error": null,
+      "isRunFailure": false,
+      "category": "localization-error",
+      "reason": "RCA wrong files"
+    },
+    {
+      "caseId": "PUB-MARSHMALLOW-CODE__MARSHMALLOW-1359",
+      "status": "completed",
+      "patchAttempted": true,
+      "closedLoop": false,
+      "testsPassed": false,
+      "durationMs": 12363,
+      "tokenCount": 31694,
+      "attempts": 3,
+      "rcaFiles": null,
+      "goldFiles": [
+        "src/marshmallow/fields.py"
+      ],
+      "evalDetail": "F2P red; P2P green ",
+      "error": null,
+      "isRunFailure": false,
+      "category": "localization-error",
+      "reason": "RCA wrong files"
+    },
+    {
+      "caseId": "PUB-MARSHMALLOW-CODE__MARSHMALLOW-1810",
+      "status": "completed",
+      "patchAttempted": true,
+      "closedLoop": false,
+      "testsPassed": false,
+      "durationMs": 12151,
+      "tokenCount": 29805,
+      "attempts": 3,
+      "rcaFiles": null,
+      "goldFiles": [
+        "src/marshmallow/base.py",
+        "src/marshmallow/fields.py"
+      ],
+      "evalDetail": "F2P red; P2P green ",
+      "error": null,
+      "isRunFailure": false,
+      "category": "localization-error",
+      "reason": "RCA wrong files"
+    },
+    {
+      "caseId": "PUB-MARSHMALLOW-CODE__MARSHMALLOW-1252",
+      "status": "completed",
+      "patchAttempted": true,
+      "closedLoop": false,
+      "testsPassed": false,
+      "durationMs": 41917,
+      "tokenCount": 32432,
+      "attempts": 3,
+      "rcaFiles": null,
+      "goldFiles": [
+        "src/marshmallow/utils.py"
+      ],
+      "evalDetail": "F2P red; P2P green ",
+      "error": null,
+      "isRunFailure": false,
+      "category": "localization-error",
+      "reason": "RCA wrong files"
+    }
+  ]
+}

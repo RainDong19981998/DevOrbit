@@ -1,0 +1,37 @@
+{
+  "caseId": "PUB-SQLFLUFF__SQLFLUFF-884",
+  "method": "single-agent",
+  "attempts": 3,
+  "rca": null,
+  "edits": [
+    {
+      "path": "src/sqlfluff/core/parser/segments/raw.py",
+      "search": "class WhitespaceSegment(RawSegment):\n    \"\"\"Whitespace segment.\n\n    Derives from a RawSegment, but with the `whitespace` type.\n    \"\"\"\n\n    type = \"whitespace\"",
+      "replace": "class WhitespaceSegment(RawSegment):\n    \"\"\"Whitespace segment.\n\n    Derives from a RawSegment, but with the `whitespace` type.\n    \"\"\"\n\n    type = \"whitespace\"\n    is_whitespace = True"
+    },
+    {
+      "path": "src/sqlfluff/core/parser/segments/raw.py",
+      "search": "class NewlineSegment(RawSegment):\n    \"\"\"Newline segment.\n\n    Derives from a RawSegment, but with the `newline` type.\n    \"\"\"\n\n    type = \"newline\"",
+      "replace": "class NewlineSegment(RawSegment):\n    \"\"\"Newline segment.\n\n    Derives from a RawSegment, but with the `newline` type.\n    \"\"\"\n\n    type = \"newline\"\n    is_whitespace = True"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "edit apply failed: src/sqlfluff/core/parser/segments/raw.py: search block not found (exact and whitespace-normalized match both failed) [search: class WhitespaceSegment(RawSegment):\n    \"\"\"Whitespace segment.\n\n    Derives from a RawSegment, but with the `whitespace` type.\n    \"\"\"\n\n    type = \"whitespace\"]; src/sqlfluff/core/parser/segments/raw.py: search block not found (exact and whitespace-normalized match both failed) [search: class NewlineSegment(RawSegment):\n    \"\"\"Newline segment.\n\n    Derives from a RawSegment, but with the `newline` type.\n    \"\"\"\n\n    type = \"newline\"]",
+    "changedPaths": [
+      "src/sqlfluff/core/parser/segments/raw.py"
+    ]
+  },
+  "patchSha256": null,
+  "contextBytes": 11155,
+  "baselineTail": "er -x test/core/dialects/ansi_test.py::test__dialect__ansi_is_whitespace\nImportError while loading conftest '/tmp/zhanlu/bench-work/sqlfluff__sqlfluff-884/source/test/conftest.py'.\ntest/conftest.py:6: in <module>\n    from sqlfluff.core.parser.markers import FilePositionMarker\nsrc/sqlfluff/__init__.py:21: in <module>\n    import pkg_resources\nE   ModuleNotFoundError: No module named 'pkg_resources'\n",
+  "goldFiles": [
+    "src/sqlfluff/core/dialects/dialect_ansi.py",
+    "src/sqlfluff/core/parser/lexer.py"
+  ],
+  "model": "glm",
+  "modelCalls": 3
+}

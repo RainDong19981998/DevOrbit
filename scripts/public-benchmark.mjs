@@ -1,5 +1,6 @@
 import { createHash } from 'node:crypto';
 import { readFile, writeFile } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import { metricFromBoolean, metricFromNumber, pairedBinaryComparison, validateJsonSchema } from '../src/evaluation/public-benchmark.js';
 
 const args = process.argv.slice(2);
@@ -9,7 +10,7 @@ function option(name, fallback) {
 }
 
 const manifestPath = option('manifest', 'evaluation/public-benchmark.manifest.json');
-const resultsPath = option('results', null);
+const resultsPath = option('results', existsSync('evaluation/public-benchmark-results.json') ? 'evaluation/public-benchmark-results.json' : null);
 const outputPath = option('output', 'reports/public-benchmark.json');
 const markdownPath = option('markdown', 'reports/public-benchmark.md');
 const manifestBytes = await readFile(manifestPath);

@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devorbit.example/schemas/public-model-pilot-v4.schema.json",
+  "title": "DevOrbit Pre-registered Protected Public Model Repair Run",
+  "type": "object",
+  "required": ["protocolVersion", "pilotId", "runId", "status", "registeredAt", "disclosure", "priorRuns", "priorRunFeedback", "case", "model", "workflow", "leakagePolicy", "evidence"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "protocolVersion": { "const": "1.0" },
+    "pilotId": { "const": "devorbit-public-model-pilot-v4" },
+    "runId": { "const": "run-004" },
+    "status": { "const": "pre-registered-validation-tuning-protected-repair-run" },
+    "registeredAt": { "type": "string", "minLength": 20 },
+    "disclosure": { "type": "string", "minLength": 180 },
+    "priorRuns": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "required": ["runId", "status", "evidencePath", "evidenceSha256"],
+        "properties": {
+          "runId": { "type": "string", "enum": ["run-001", "run-002", "run-003"] },
+          "status": { "type": "string", "enum": ["blocked-before-apply", "failed"] },
+          "evidencePath": { "type": "string" },
+          "evidenceSha256": { "$ref": "#/$defs/digest" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "priorRunFeedback": { "type": "array", "minItems": 5, "items": { "type": "string", "minLength": 30 } },
+    "case": {
+      "type": "object",
+      "required": ["instanceId", "dataset", "datasetSnapshot", "split", "repository", "baseCommit", "sourceArchiveUrl", "sourceArchiveSha256", "issuePath", "issueSha256", "commentsPath", "commentsSha256", "testPatchPath", "testPatchSha256"],
+      "properties": {
+        "instanceId": { "const": "sqlfluff__sqlfluff-884" },
+        "dataset": { "const": "princeton-nlp/SWE-bench" },
+        "datasetSnapshot": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "split": { "const": "dev-validation-tuning-protected-repair" },
+        "repository": { "const": "sqlfluff/sqlfluff" },
+        "baseCommit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "sourceArchiveUrl": { "type": "string", "pattern": "^https://codeload\\.github\\.com/" },
+        "sourceArchiveSha256": { "$ref": "#/$defs/digest" },
+        "issuePath": { "type": "string" },
+        "issueSha256": { "$ref": "#/$defs/digest" },
+        "commentsPath": { "type": "string" },
+        "commentsSha256": { "$ref": "#/$defs/digest" },
+        "testPatchPath": { "type": "string" },
+        "testPatchSha256": { "$ref": "#/$defs/digest" }
+      },
+      "additionalProperties": false
+    },
+    "model": {
+      "type": "object",
+      "required": ["provider", "name", "digest", "parameterSize", "quantization", "temperature", "seed", "contextTokens", "maxOutputTokens", "thinking"],
+      "properties": {
+        "provider": { "const": "local-ollama" },
+        "name": { "const": "qwen3:8b" },
+        "digest": { "$ref": "#/$defs/digest" },
+        "parameterSize": { "const": "8.2B" },
+        "quantization": { "const": "Q4_K_M" },
+        "temperature": { "const": 0 },
+        "seed": { "const": 847 },
+        "contextTokens": { "type": "integer", "minimum": 8192 },
+        "maxOutputTokens": { "type": "integer", "minimum": 512 },
+        "thinking": { "const": false }
+      },
+      "additionalProperties": false
+    },
+    "workflow": {
+      "type": "object",
+      "required": ["agents", "patchAttemptLimit", "patchContract", "repairPolicy", "verificationAuthority", "acceptanceRule", "allowedWritePrefix", "forbiddenWritePrefixes", "protectedSourceInvariants", "targetCommand", "regressionCommand", "classificationCommand", "successCriteria"],
+      "properties": {
+        "agents": { "type": "array", "minItems": 3, "maxItems": 3, "items": { "type": "string", "enum": ["rca-worker", "patch-worker", "verify-worker"] } },
+        "patchAttemptLimit": { "const": 2 },
+        "patchContract": { "const": "unique-exact-source-replacement" },
+        "repairPolicy": { "type": "string", "minLength": 80 },
+        "verificationAuthority": { "const": "deterministic-machine-gate" },
+        "acceptanceRule": { "const": "machineGatePassed && modelAccept" },
+        "allowedWritePrefix": { "const": "src/" },
+        "forbiddenWritePrefixes": { "type": "array", "minItems": 3, "items": { "type": "string" } },
+        "protectedSourceInvariants": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["path", "requiredText", "reason"],
+            "properties": {
+              "path": { "const": "src/sqlfluff/core/parser/segments/base.py" },
+              "requiredText": { "const": "    is_whitespace = False" },
+              "reason": { "type": "string", "minLength": 40 }
+            },
+            "additionalProperties": false
+          }
+        },
+        "targetCommand": { "type": "string" },
+        "regressionCommand": { "type": "string" },
+        "classificationCommand": { "type": "string" },
+        "successCriteria": { "type": "array", "minItems": 8, "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    "leakagePolicy": {
+      "type": "object",
+      "required": ["runnerMayRead", "runnerMustNotRead", "goldComparison"],
+      "properties": {
+        "runnerMayRead": { "type": "array", "minItems": 8, "items": { "type": "string" } },
+        "runnerMustNotRead": { "type": "array", "minItems": 6, "items": { "type": "string" } },
+        "goldComparison": { "type": "string", "minLength": 40 }
+      },
+      "additionalProperties": false
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["transcriptPath", "patchPath", "targetLogPath", "regressionLogPath", "classificationLogPath", "reportPath", "attempts"],
+      "properties": {
+        "transcriptPath": { "type": "string" },
+        "patchPath": { "type": "string" },
+        "targetLogPath": { "type": "string" },
+        "regressionLogPath": { "type": "string" },
+        "classificationLogPath": { "type": "string" },
+        "reportPath": { "const": "reports/public-model-pilot-v4.json" },
+        "attempts": { "type": "array", "minItems": 2, "maxItems": 2, "items": { "$ref": "#/$defs/attemptArtifacts" } }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "attemptArtifacts": {
+      "type": "object",
+      "required": ["patchPath", "targetLogPath", "regressionLogPath", "classificationLogPath"],
+      "properties": {
+        "patchPath": { "type": "string" },
+        "targetLogPath": { "type": "string" },
+        "regressionLogPath": { "type": "string" },
+        "classificationLogPath": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

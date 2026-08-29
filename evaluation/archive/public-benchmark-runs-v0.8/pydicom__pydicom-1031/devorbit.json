@@ -1,0 +1,23 @@
+{
+  "caseId": "PUB-PYDICOM__PYDICOM-1031",
+  "method": "devorbit",
+  "attempts": 2,
+  "rca": {
+    "files": [
+      "pydicom/filewriter.py"
+    ]
+  },
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "git apply --check failed: \nerror: patch failed: pydicom/filewriter.py:460\nerror: pydicom/filewriter.py: patch does not apply\n\nCommand failed: git apply --check model.patch\nerror: patch failed: pydicom/filewriter.py:460\nerror: pydicom/filewriter.py: patch does not apply\n"
+  },
+  "patchSha256": "sha256:ad35a43f5d1813fd0410820dd4b2fe7006d954e066aa5cea8042bef70f0d8fc1",
+  "contextBytes": 8000,
+  "baselineTail": "test_filewriter.py::TestWriteFile::test_write_empty_sequence\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.48s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x pydicom/tests/test_filewriter.py::TestWriteFile::test_write_empty_sequence pydicom/tests/test_filewriter.py::TestScratchWriteDateTime::test_write_empty_sequence\n",
+  "goldFiles": [
+    "pydicom/dataelem.py"
+  ]
+}

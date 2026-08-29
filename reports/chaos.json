@@ -1,0 +1,48 @@
+{
+  "fault": "pool-shrink",
+  "title": "连接池缩容（poolSize 80→8）",
+  "injectedAt": "2026-08-27T09:51:19.277Z",
+  "restoredAt": "2026-08-27T09:51:19.766Z",
+  "gitHead": "e587280cc9ddf12d77b7a9e683ccbde03b88e20d",
+  "targets": [
+    "src/redisPool.js"
+  ],
+  "serverStarted": true,
+  "loop": {
+    "caseId": "CASE-B597F18D",
+    "traceId": "TRACE-0ef0e185-72fa-439c-93be-fa502123c91e",
+    "status": "learned",
+    "closedLoop": true,
+    "outcome": "promoted",
+    "patchAttempts": 1,
+    "tests": {
+      "gate": "passed",
+      "passed": 4,
+      "failed": 0
+    },
+    "release": {
+      "decision": "promoted"
+    },
+    "knowledge": {
+      "episodeId": "EP-B597F18D",
+      "recovered": true
+    },
+    "stages": {
+      "detect": "支付页提交后持续转圈，订单偶发重复创建 (confidence 0.94, 5 sources)",
+      "diagnose": "连接池容量从 80 缩减为 8 造成幂等存储排队超时，重试路径未复用已创建订单。 (score 0.91)",
+      "fix": "恢复连接池容量、延长排队超时并在重试路径复用原订单。 (attempts 1/3)",
+      "verify": "passed (4 passed, 0 failed)",
+      "release": "promoted (canary 10%)",
+      "learn": "EP-B597F18D (recovered=true)"
+    }
+  },
+  "restoration": {
+    "verified": true,
+    "gitClean": true,
+    "files": {
+      "src/redisPool.js": true,
+      "src/order.js": true
+    }
+  },
+  "error": null
+}

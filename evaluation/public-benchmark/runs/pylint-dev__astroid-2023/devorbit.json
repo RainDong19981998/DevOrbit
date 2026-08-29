@@ -1,0 +1,52 @@
+{
+  "caseId": "PUB-PYLINT-DEV__ASTROID-2023",
+  "method": "devorbit",
+  "attempts": 3,
+  "rca": {
+    "rootCause": "The `are_exclusive` function in `astroid/nodes/node_classes.py` incorrectly treats a walrus operator (NamedExpr) assignment in an IfExp test as exclusive with the IfExp body and orelse branches. When a walrus operator appears in the test of an IfExp, the assigned variable is always defined in both branches, so the walrus assignment and statements in body/orelse are NOT exclusive. The old pre-Python 3.8 assumption only searched IfExp.body and IfExp.orelse for exclusivity, failing to account for assignments in IfExp.test which are inclusive with both branches. This causes `_filter_stmts` to incorrectly filter out the walrus assignment statement, leaving only 1 statement instead of 2, which leads to the false positive 'undefined-loop-variable' warning.",
+    "confidence": 0.95,
+    "evidence": [
+      "Issue hint: 'Probably there is an invalid (old, before Python 3.8) assumption that ast.IfExp branches are searched only in IfExp.body and IfExp.orelse and therefore they must be exclusive. But it turns out that if assignment is in IfExp.test (i.e. walrus operator), branches are not exclusive - actually there are always inclusive.'",
+      "Issue hint: 'assert not nodes.are_exclusive(node_walrus, node_body)' - demonstrating the expected fix where walrus in test is not exclusive with body",
+      "Test file tests/test_utils.py contains test_not_exclusive_walrus_operator asserting 'nodes.are_exclusive(node_walrus, node_body) is False' and 'nodes.are_exclusive(node_walrus, node_or_else) is False'",
+      "Repo map shows astroid/nodes/node_classes.py contains the are_exclusive function (referenced in issue as line 140)",
+      "Issue hint: 'Until astroid/filter_statements.py:_filter_stmts:201 there are always 2 statements - that is good. So the problem is in astroid.are_exclusive'"
+    ],
+    "filesToChange": [
+      "astroid/nodes/node_classes.py"
+    ]
+  },
+  "edits": [
+    {
+      "path": "astroid/nodes/node_classes.py",
+      "search": "            if isinstance(node, If) and exceptions is None:\n                if (\n                    node.locate_child(previous)[1]\n                    is not node.locate_child(children[node])[1]\n                ):\n                    return True",
+      "replace": "            if isinstance(node, If) and exceptions is None:\n                c2attr = node.locate_child(previous)[0]\n                c1attr = node.locate_child(children[node])[0]\n                if c1attr != c2attr:\n                    # A walrus operator (NamedExpr) in the ``test`` of an ``If``\n                    # is always executed before either the ``body`` or the\n                    # ``orelse`` branch, so a statement in the ``test`` is not\n                    # exclusive with statements in the ``body`` or ``orelse``.\n                    if (c1attr == \"test\" and c2attr in (\"body\", \"orelse\")) or (\n                        c2attr == \"test\" and c1attr in (\"body\", \"orelse\")\n                    ):\n                        return False\n                    return True"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": true,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "F2P red; P2P green ",
+    "f2pLogTail": "\nno tests ran in 0.38s\n\nERROR: not found: /tmp/zhanlu/bench-work/pylint-dev__astroid-2023/source/tests/test_utils.py::InferenceUtil::test_not_exclusive_walrus_multiple\n(no match in any of [<UnitTestCase InferenceUtil>])\n\nERROR: not found: /tmp/zhanlu/bench-work/pylint-dev__astroid-2023/source/tests/test_utils.py::InferenceUtil::test_not_exclusive_walrus_operator\n(no match in any of [<UnitTestCase InferenceUtil>])\n\nERROR: not found: /tmp/zhanlu/bench-work/pylint-dev__astroid-2023/source/tests/test_utils.py::InferenceUtil::test_not_exclusive_walrus_operator_nested\n(no match in any of [<UnitTestCase InferenceUtil>])\n\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x tests/test_utils.py::InferenceUtil::test_not_exclusive_walrus_multiple tests/test_utils.py::InferenceUtil::test_not_exclusive_walrus_operator tests/test_utils.py::InferenceUtil::test_not_exclusive_walrus_operator_nested\nERROR: not found: /tmp/zhanlu/bench-work/pylint-dev__astroid-2023/source/tests/test_utils.py::InferenceUtil::test_not_exclusive_walrus_multiple\n(no match in any of [<UnitTestCase InferenceUtil>])\n\nERROR: not found: /tmp/zhanlu/bench-work/pylint-dev__astroid-2023/source/tests/test_utils.py::InferenceUtil::test_not_exclusive_walrus_operator\n(no match in any of [<UnitTestCase InferenceUtil>])\n\nERROR: not found: /tmp/zhanlu/bench-work/pylint-dev__astroid-2023/source/tests/test_utils.py::InferenceUtil::test_not_exclusive_walrus_operator_nested\n(no match in any of [<UnitTestCase InferenceUtil>])\n\n\n[...]\nRROR: not found: /tmp/zhanlu/bench-work/pylint-dev__astroid-2023/source/tests/test_utils.py::InferenceUtil::test_not_exclusive_walrus_operator\n(no match in any of [<UnitTestCase InferenceUtil>])\n\nERROR: not found: /tmp/zhanlu/bench-work/pylint-dev__astroid-2023/source/tests/test_utils.py::InferenceUtil::test_not_exclusive_walrus_operator_nested\n(no match in any of [<UnitTestCase InferenceUtil>])\n\n",
+    "changedPaths": [
+      "astroid/nodes/node_classes.py"
+    ],
+    "appliedMethods": [
+      {
+        "path": "astroid/nodes/node_classes.py",
+        "method": "exact",
+        "ambiguous": false
+      }
+    ]
+  },
+  "patchSha256": "sha256:e0584f4983eafeb24c65e99dfaf7fba884ff68e6231ae6312d6a86f53b9fda55",
+  "contextBytes": 9809,
+  "baselineTail": "e\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.52s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x tests/test_utils.py::InferenceUtil::test_not_exclusive_walrus_multiple tests/test_utils.py::InferenceUtil::test_not_exclusive_walrus_operator tests/test_utils.py::InferenceUtil::test_not_exclusive_walrus_operator_nested\n",
+  "goldFiles": [
+    "astroid/nodes/node_classes.py"
+  ],
+  "model": "glm",
+  "modelCalls": 4
+}

@@ -1,0 +1,518 @@
+{
+  "protocolVersion": "1.0",
+  "pilotId": "devorbit-public-model-pilot-v6",
+  "runId": "run-006",
+  "startedAt": "2026-08-14T04:09:17.137Z",
+  "completedAt": "2026-08-14T04:14:47.565Z",
+  "stage": "completed",
+  "status": "failed",
+  "error": null,
+  "manifestDigest": "sha256:f8479710630bb3f239a97fbf851240b06181281faccd6fc9ac6f9902989b13c5",
+  "leakageBoundary": {
+    "enforced": true,
+    "runnerManifest": "evaluation/public-model-pilot-v6.manifest.json",
+    "forbiddenArtifactsRead": [],
+    "goldComparisonPerformed": false
+  },
+  "agents": [
+    {
+      "agent": "rca-worker",
+      "inputSha256": "sha256:9ae2bf8688bde135df5c9898b21d3c92cb8eaf9c3d283f679fb1be97f75b666a",
+      "visibleEvidence": [
+        "issue.json",
+        "comments.json",
+        "baseline-target.log",
+        "repository.search",
+        "repository.runtime-class-probe",
+        "src/sqlfluff/core/parser/segments/base.py#L55-L90",
+        "src/sqlfluff/core/parser/segments/raw.py#L1-L145",
+        "src/sqlfluff/core/parser/lexer.py#L145-L320",
+        "src/sqlfluff/core/dialects/dialect_ansi.py#L45-L95",
+        "src/sqlfluff/core/rules/base.py#L395-L425"
+      ],
+      "output": {
+        "rootCause": "The `is_whitespace` attribute is set to `False` for `RawSegment` instances by default in `BaseSegment.is_whitespace = False` (src/sqlfluff/core/parser/segments/base.py#L55-L90). This is a machine-protected invariant because ordinary code segments must remain non-whitespace. The `RawSegment.make` method (src/sqlfluff/core/parser/segments/raw.py#L1-L145) is used to create segment classes, and it passes `is_whitespace` as a keyword argument to the `RawSegment` class. However, the `is_whitespace` flag is not being set correctly for whitespace tokens in the `dialect_ansi` configuration (src/sqlfluff/core/dialects/dialect_ansi.py#L45-L95).",
+        "confidence": 0.95,
+        "evidence": [
+          "src/sqlfluff/core/parser/segments/base.py#L55-L90: is_whitespace = False",
+          "src/sqlfluff/core/parser/segments/raw.py#L1-L145: RawSegment.make() passes is_whitespace to the class",
+          "src/sqlfluff/core/dialects/dialect_ansi.py#L45-L95: whitespace regex is defined but is_whitespace is not explicitly set for the segment class",
+          "src/sqlfluff/core/rules/base.py#L395-L425: make_whitespace() explicitly sets is_whitespace=True for whitespace segments"
+        ],
+        "filesToChange": [
+          "src/sqlfluff/core/parser/segments/base.py#L55-L90: is_whitespace = False",
+          "src/sqlfluff/core/dialects/dialect_ansi.py#L45-L95: Ensure is_whitespace is set for whitespace segment class"
+        ],
+        "risk": "Changing `is_whitespace = False` in `BaseSegment` would break the invariant that ordinary code segments must remain non-whitespace. This could lead to incorrect parsing and analysis of SQL code."
+      },
+      "outputSha256": "sha256:cce9f32f39084f05b580abd9e595207fa910618d4b0174764f27be373d4140d6",
+      "durationMs": 106276,
+      "promptEvalCount": 5434,
+      "evalCount": 440,
+      "model": "qwen3:8b",
+      "modelDigest": "sha256:500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41"
+    },
+    {
+      "agent": "patch-worker",
+      "inputSha256": "sha256:b5e9e68e00149b6aac7bd6c69bbc02aa902554ee0cfffee361c734dc3ee46a4b",
+      "visibleEvidence": [
+        "issue.json",
+        "comments.json",
+        "baseline-target.log",
+        "repository.search",
+        "repository.runtime-class-probe",
+        "src/sqlfluff/core/parser/segments/base.py#L55-L90",
+        "src/sqlfluff/core/parser/segments/raw.py#L1-L145",
+        "src/sqlfluff/core/parser/lexer.py#L145-L320",
+        "src/sqlfluff/core/dialects/dialect_ansi.py#L45-L95",
+        "src/sqlfluff/core/rules/base.py#L395-L425",
+        "rca-worker.output",
+        "prior-run.feedback"
+      ],
+      "output": {
+        "summary": "Fix the `is_whitespace` flag for whitespace and newline segments in the ANSI dialect by setting it explicitly in the lexer configuration.",
+        "file": "src/sqlfluff/core/dialects/dialect_ansi.py",
+        "edits": [
+          {
+            "oldText": "(\"whitespace\", \"regex\", r\"[\\t ]+\", dict(type=\"whitespace\"))",
+            "newText": "(\"whitespace\", \"regex\", r\"[\\t ]+\", dict(type=\"whitespace\", is_whitespace=True))"
+          },
+          {
+            "oldText": "(\"newline\", \"regex\", r\"\\r\\n|\\n\", dict(type=\"newline\"))",
+            "newText": "(\"newline\", \"regex\", r\"\\r\\n|\\n\", dict(type=\"newline\", is_whitespace=True))"
+          }
+        ],
+        "rollback": "Revert the `is_whitespace` flag to `False` for whitespace and newline segments in the ANSI dialect to restore the original behavior."
+      },
+      "outputSha256": "sha256:ed961be2c3e5bd7181020b55c867bb0d5613e85361060005eb47526156c59f30",
+      "durationMs": 72191,
+      "promptEvalCount": 5827,
+      "evalCount": 225,
+      "model": "qwen3:8b",
+      "modelDigest": "sha256:500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41"
+    },
+    {
+      "agent": "verify-worker",
+      "inputSha256": "sha256:354abea8b8d1053e3faef223fc48cb0743585986f8aacfc9e948a41aec641588",
+      "visibleEvidence": [
+        "rca-worker.output",
+        "patch-worker.output",
+        "repository.diff",
+        "ci.target",
+        "ci.regression",
+        "ci.token-classification",
+        "deterministic-machine-gate"
+      ],
+      "output": {
+        "accept": false,
+        "reason": "The deterministic-machine-gate has not passed (passed=false). The patch introduces changes to the `is_whitespace` flag for whitespace and newline segments in the ANSI dialect, but the test `test__dialect__ansi_is_whitespace` is failing, indicating that the change does not correctly address the root cause. Additionally, the regression check also failed, suggesting that the patch may have introduced or exacerbated an issue. The diff does not fully resolve the RCA, which involves ensuring that the `is_whitespace` flag is explicitly set for whitespace tokens in the `dialect_ansi` configuration. Therefore, the patch is not acceptable.",
+        "checks": [],
+        "residualRisk": "The patch may lead to incorrect parsing and analysis of SQL code due to the `is_whitespace` flag not being set correctly for whitespace tokens, potentially breaking the invariant that ordinary code segments must remain non-whitespace."
+      },
+      "outputSha256": "sha256:c91fb2181a0fa8c796523dc59797b438fca7132a3b8e22025277cdc476961052",
+      "durationMs": 31077,
+      "promptEvalCount": 1769,
+      "evalCount": 186,
+      "model": "qwen3:8b",
+      "modelDigest": "sha256:500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41"
+    },
+    {
+      "agent": "patch-worker",
+      "inputSha256": "sha256:ff837337985e5d8636428fe3fca1b1501b27e461e04040b72484ffdfb19773b0",
+      "visibleEvidence": [
+        "issue.json",
+        "comments.json",
+        "baseline-target.log",
+        "repository.search",
+        "repository.runtime-class-probe",
+        "src/sqlfluff/core/parser/segments/base.py#L55-L90",
+        "src/sqlfluff/core/parser/segments/raw.py#L1-L145",
+        "src/sqlfluff/core/parser/lexer.py#L145-L320",
+        "src/sqlfluff/core/dialects/dialect_ansi.py#L45-L95",
+        "src/sqlfluff/core/rules/base.py#L395-L425",
+        "rca-worker.output",
+        "prior-run.feedback",
+        "previous-attempt.diff",
+        "previous-attempt.machine-gate",
+        "previous-attempt.test-evidence"
+      ],
+      "output": {
+        "summary": "Fix the `is_whitespace` flag for whitespace and newline segments in the ANSI dialect by setting it explicitly in the lexer configuration.",
+        "file": "src/sqlfluff/core/dialects/dialect_ansi.py",
+        "edits": [
+          {
+            "oldText": "(\"whitespace\", \"regex\", r\"[\\t ]+\", dict(type=\"whitespace\"))",
+            "newText": "(\"whitespace\", \"regex\", r\"[\\t ]+\", dict(type=\"whitespace\", is_whitespace=True))"
+          },
+          {
+            "oldText": "(\"newline\", \"regex\", r\"\\r\\n|\\n\", dict(type=\"newline\"))",
+            "newText": "(\"newline\", \"regex\", r\"\\r\\n|\\n\", dict(type=\"newline\", is_whitespace=True))"
+          }
+        ],
+        "rollback": "Revert the `is_whitespace` flag to `False` for whitespace and newline segments in the ANSI dialect to restore the original behavior."
+      },
+      "outputSha256": "sha256:ed961be2c3e5bd7181020b55c867bb0d5613e85361060005eb47526156c59f30",
+      "durationMs": 81374,
+      "promptEvalCount": 6719,
+      "evalCount": 223,
+      "model": "qwen3:8b",
+      "modelDigest": "sha256:500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41"
+    },
+    {
+      "agent": "verify-worker",
+      "inputSha256": "sha256:55b62cc2a8147b2f0cf25b7ce6c2d3291cf35b831e93e440e65902539a14e0db",
+      "visibleEvidence": [
+        "rca-worker.output",
+        "patch-worker.output",
+        "repository.diff",
+        "ci.target",
+        "ci.regression",
+        "ci.token-classification",
+        "deterministic-machine-gate"
+      ],
+      "output": {
+        "accept": false,
+        "reason": "The deterministic-machine-gate has not passed (passed=false). The patch introduces changes to the `is_whitespace` flag for whitespace and newline segments in the ANSI dialect, but the test `test__dialect__ansi_is_whitespace` is failing, indicating that the change does not correctly address the root cause. Additionally, the regression check is also failing, suggesting that the patch may have unintended side effects. The diff does not fully resolve the issue with the `is_whitespace` flag for whitespace tokens, and the machine gate requires the patch to pass all checks including target and regression tests.",
+        "checks": [],
+        "residualRisk": "The patch does not fully address the root cause, and the test failures indicate that the change may not be correct. The machine gate is not passed, and the patch should be reconsidered."
+      },
+      "outputSha256": "sha256:8ce292dde581bcad7317623029735b7d31b66313d2cdf715b32bfddf2b78b190",
+      "durationMs": 29735,
+      "promptEvalCount": 1769,
+      "evalCount": 174,
+      "model": "qwen3:8b",
+      "modelDigest": "sha256:500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41"
+    }
+  ],
+  "tools": [
+    {
+      "tool": "source.cache-hit",
+      "args": [
+        "sha256:8484d90c290fc06b8c331991605300a692266a6f71536d1cf1612e4dca8c4fbb"
+      ],
+      "cwd": null,
+      "exitCode": 0,
+      "durationMs": 0,
+      "outputSha256": "sha256:8484d90c290fc06b8c331991605300a692266a6f71536d1cf1612e4dca8c4fbb",
+      "outputTail": "verified content-addressed cache"
+    },
+    {
+      "tool": "source.extract",
+      "args": [
+        "-xzf",
+        "/tmp/devorbit-public-model-pilot-sqlfluff-884/source.tar.gz",
+        "-C",
+        "/tmp/devorbit-public-model-pilot-sqlfluff-884/source",
+        "--strip-components=1"
+      ],
+      "cwd": null,
+      "exitCode": 0,
+      "durationMs": 55,
+      "outputSha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputTail": ""
+    },
+    {
+      "tool": "environment.lock-probe",
+      "args": [
+        "<dependency-directory>"
+      ],
+      "cwd": null,
+      "exitCode": 0,
+      "durationMs": 76,
+      "outputSha256": "sha256:4bd43badcb7c823565f30e93282c08fd1ceb7cc57625b1b4fe207411b4f702d2",
+      "outputTail": "{\"appdirs\": \"1.4.4\", \"attrs\": \"21.4.0\", \"bench-it\": \"1.0.1\", \"cached-property\": \"1.5.2\", \"chardet\": \"4.0.0\", \"click\": \"8.0.4\", \"colorama\": \"0.4.4\", \"configparser\": \"5.2.0\", \"diff-cover\": \"5.1.2\", \"iniconfig\": \"1.1.1\", \"jinja2\": \"3.0.3\", \"markupsafe\": \"2.0.1\", \"oyaml\": \"1.0\", \"packaging\": \"21.3\", \"pathspec\": \"0.9.0\", \"pluggy\": \"0.13.1\", \"py\": \"1.11.0\", \"pygments\": \"2.11.2\", \"pyparsing\": \"2.4.7\", \"pytest\": \"6.2.5\", \"pyyaml\": \"6.0.3\", \"setuptools\": \"57.5.0\", \"sqlfluff\": \"0.4.1\", \"toml\": \"0.10.2\", \"typing-extensions\": \"4.1.1\"}"
+    },
+    {
+      "tool": "environment.copy-locked-deps",
+      "args": [
+        "<validated-prebuilt-deps>",
+        "$WORK/deps"
+      ],
+      "cwd": null,
+      "exitCode": 0,
+      "durationMs": 165,
+      "outputSha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputTail": ""
+    },
+    {
+      "tool": "environment.lock-accepted",
+      "args": [
+        "sha256:2e191255cf33bc6cac4ed36302eb7ad8df33d0fd4f1440922f46a0fe20f20587"
+      ],
+      "cwd": null,
+      "exitCode": 0,
+      "durationMs": 0,
+      "outputSha256": "sha256:aa434dbaaa9d59528ac090a571c3bc5279c14574ebc34dec8e9dbf837f56beb2",
+      "outputTail": "24 locked distributions matched"
+    },
+    {
+      "tool": "environment.lock-probe",
+      "args": [
+        "<dependency-directory>"
+      ],
+      "cwd": null,
+      "exitCode": 0,
+      "durationMs": 85,
+      "outputSha256": "sha256:4bd43badcb7c823565f30e93282c08fd1ceb7cc57625b1b4fe207411b4f702d2",
+      "outputTail": "{\"appdirs\": \"1.4.4\", \"attrs\": \"21.4.0\", \"bench-it\": \"1.0.1\", \"cached-property\": \"1.5.2\", \"chardet\": \"4.0.0\", \"click\": \"8.0.4\", \"colorama\": \"0.4.4\", \"configparser\": \"5.2.0\", \"diff-cover\": \"5.1.2\", \"iniconfig\": \"1.1.1\", \"jinja2\": \"3.0.3\", \"markupsafe\": \"2.0.1\", \"oyaml\": \"1.0\", \"packaging\": \"21.3\", \"pathspec\": \"0.9.0\", \"pluggy\": \"0.13.1\", \"py\": \"1.11.0\", \"pygments\": \"2.11.2\", \"pyparsing\": \"2.4.7\", \"pytest\": \"6.2.5\", \"pyyaml\": \"6.0.3\", \"setuptools\": \"57.5.0\", \"sqlfluff\": \"0.4.1\", \"toml\": \"0.10.2\", \"typing-extensions\": \"4.1.1\"}"
+    },
+    {
+      "tool": "environment.install-project",
+      "args": [
+        "-m",
+        "pip",
+        "install",
+        "--disable-pip-version-check",
+        "--no-input",
+        "--no-deps",
+        "--no-build-isolation",
+        "--upgrade",
+        "--target",
+        "/tmp/devorbit-public-model-pilot-sqlfluff-884/deps",
+        "."
+      ],
+      "cwd": "$WORK/source",
+      "exitCode": 0,
+      "durationMs": 1529,
+      "outputSha256": "sha256:8091afad38bf431cd91365a29e9dcb8581e34c26ae8a8e7f6a87fd57e4b98ba4",
+      "outputTail": "Looking in indexes: https://mirrors.aliyun.com/pypi/simple/\nProcessing /tmp/devorbit-public-model-pilot-sqlfluff-884/source\n  Preparing metadata (setup.py): started\n  Preparing metadata (setup.py): finished with status 'done'\nBuilding wheels for collected packages: sqlfluff\n  Building wheel for sqlfluff (setup.py): started\n  Building wheel for sqlfluff (setup.py): finished with status 'done'\n  Created wheel for sqlfluff: filename=sqlfluff-0.4.1-py3-none-any.whl size=263870 sha256=212c3184d53ab50c4b360094b0cdcafcd65281977650ccb21598fe2ac5406cf1\n  Stored in directory: /tmp/pip-ephem-wheel-cache-rk4id1ks/wheels/0b/50/f2/33762149e5fb28f7c4486220288c4f6c00d517db256ed21da5\nSuccessfully built sqlfluff\nInstalling collected packages: sqlfluff\nSuccessfully installed sqlfluff-0.4.1"
+    },
+    {
+      "tool": "repository.init",
+      "args": [
+        "init",
+        "-q"
+      ],
+      "cwd": "$WORK/source",
+      "exitCode": 0,
+      "durationMs": 10,
+      "outputSha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputTail": ""
+    },
+    {
+      "tool": "repository.stage-base",
+      "args": [
+        "add",
+        "."
+      ],
+      "cwd": "$WORK/source",
+      "exitCode": 0,
+      "durationMs": 150,
+      "outputSha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputTail": ""
+    },
+    {
+      "tool": "repository.commit-base",
+      "args": [
+        "-c",
+        "user.name=DevOrbit Model Pilot",
+        "-c",
+        "user.email=devorbit-model@localhost",
+        "commit",
+        "-qm",
+        "base"
+      ],
+      "cwd": "$WORK/source",
+      "exitCode": 0,
+      "durationMs": 58,
+      "outputSha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputTail": ""
+    },
+    {
+      "tool": "evaluator.apply-test-patch",
+      "args": [
+        "<frozen-test.patch>"
+      ],
+      "cwd": "$WORK/source",
+      "exitCode": 0,
+      "durationMs": 6,
+      "outputSha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputTail": ""
+    },
+    {
+      "tool": "environment.import-probe",
+      "args": [
+        "-c",
+        "import sqlfluff; print(sqlfluff.__file__)"
+      ],
+      "cwd": "$WORK/source",
+      "exitCode": 0,
+      "durationMs": 538,
+      "outputSha256": "sha256:bd67a2513bc3c58e229e7165fd48aa8851bc9820799055eee7b733c803485164",
+      "outputTail": "/tmp/devorbit-public-model-pilot-sqlfluff-884/source/src/sqlfluff/__init__.py"
+    },
+    {
+      "tool": "ci.baseline-target",
+      "args": [
+        "-m",
+        "pytest",
+        "-q",
+        "test/core/dialects/ansi_test.py::test__dialect__ansi_is_whitespace"
+      ],
+      "cwd": "$WORK/source",
+      "exitCode": 1,
+      "durationMs": 650,
+      "outputSha256": "sha256:72f36ed26029beb004212f0e40a0d03d11b544886e9b5b8b68f6ecab9d46bb7f",
+      "outputTail": "F                                                                        [100%]\n=================================== FAILURES ===================================\n______________________ test__dialect__ansi_is_whitespace _______________________\n\n    def test__dialect__ansi_is_whitespace():\n        \"\"\"Test proper tagging with is_whitespace.\"\"\"\n        lnt = Linter()\n        with open(\"test/fixtures/parser/ansi/select_in_multiline_comment.sql\") as f:\n            parsed = lnt.parse_string(f.read())\n        # Check all the segments that *should* be whitespace, ARE\n        for raw_seg in parsed.tree.iter_raw_seg():\n            if raw_seg.type in (\"whitespace\", \"newline\"):\n>               assert raw_seg.is_whitespace\nE               AssertionError: assert False\nE                +  where False = <whitespace_RawSegment: ([4](1, 1, 5)) ' '>.is_whitespace\n\ntest/core/dialects/ansi_test.py:175: AssertionError\n=========================== short test summary info ============================\nFAILED test/core/dialects/ansi_test.py::test__dialect__ansi_is_whitespace - A...\n1 failed in 0.08s"
+    },
+    {
+      "tool": "repository.search",
+      "args": [
+        "-n",
+        "is_whitespace|type=[\"'\"](?:whitespace|newline)[\"'\"]|name=[\"'\"](?:whitespace|newline)[\"'\"]",
+        "src/sqlfluff"
+      ],
+      "cwd": "$WORK/source",
+      "exitCode": 0,
+      "durationMs": 18,
+      "outputSha256": "sha256:18a04ef596a8a2dc8be50577251bfdcd6782b86f4ff72452d2701235872b99fc",
+      "outputTail": "src/sqlfluff/core/rules/base.py:408:            \" \", name=\"whitespace\", type=\"whitespace\", is_whitespace=True\nsrc/sqlfluff/core/rules/base.py:417:        nls = RawSegment.make(\"\\n\", name=\"newline\", type=\"newline\")\nsrc/sqlfluff/core/dialects/dialect_ansi.py:53:        (\"whitespace\", \"regex\", r\"[\\t ]+\", dict(type=\"whitespace\")),\nsrc/sqlfluff/core/dialects/dialect_ansi.py:67:                subdivide=dict(type=\"newline\", name=\"newline\", regex=r\"\\r\\n|\\n\"),\nsrc/sqlfluff/core/dialects/dialect_ansi.py:69:                    type=\"whitespace\", name=\"whitespace\", regex=r\"[\\t ]+\"\nsrc/sqlfluff/core/dialects/dialect_ansi.py:86:        (\"newline\", \"regex\", r\"\\r\\n|\\n\", dict(type=\"newline\")),\nsrc/sqlfluff/core/dialects/dialect_exasol_fs.py:55:                    type=\"newline\", name=\"newline\", regex=r\"(\\n|\\r\\n)*\"\nsrc/sqlfluff/core/parser/segments/base.py:72:    is_whitespace = False"
+    },
+    {
+      "tool": "repository.runtime-class-probe",
+      "args": [
+        "-c",
+        "from sqlfluff.core import FluffConfig\nfrom sqlfluff.core.parser import Lexer\nlexer = Lexer(config=FluffConfig(overrides={'dialect':'ansi'}))\nfor matcher in lexer.matcher.submatchers:\n    cls = matcher.target_seg_class\n    if matcher.name in ('whitespace', 'newline', 'code'):\n        print(matcher.name, cls.__name__, cls.type, cls.is_whitespace)"
+      ],
+      "cwd": "$WORK/source",
+      "exitCode": 0,
+      "durationMs": 479,
+      "outputSha256": "sha256:f10a6c9d286108a8598b176a1a0391810e5f38186754f9066dd2be3a58409d39",
+      "outputTail": "whitespace whitespace_RawSegment whitespace False\nnewline newline_RawSegment newline False\ncode code_RawSegment raw False"
+    },
+    {
+      "tool": "repository.generate-diff.attempt-1",
+      "args": [
+        "diff",
+        "--",
+        "src/sqlfluff/core/dialects/dialect_ansi.py"
+      ],
+      "cwd": "$WORK/source",
+      "exitCode": 0,
+      "durationMs": 18,
+      "outputSha256": "sha256:06942b06f75cf37ad0a619f6b6d14390b4a398434f983671ff09566c341b095e",
+      "outputTail": "--- a/src/sqlfluff/core/dialects/dialect_ansi.py\n+++ b/src/sqlfluff/core/dialects/dialect_ansi.py\n@@ -50,7 +50,7 @@ ansi_dialect = Dialect(\"ansi\", root_segment_name=\"FileSegment\")\n ansi_dialect.set_lexer_struct(\n     [\n         # name, type, pattern, kwargs\n-        (\"whitespace\", \"regex\", r\"[\\t ]+\", dict(type=\"whitespace\")),\n+        (\"whitespace\", \"regex\", r\"[\\t ]+\", dict(type=\"whitespace\", is_whitespace=True)),\n         (\n             \"inline_comment\",\n             \"regex\",\n@@ -83,7 +83,7 @@ ansi_dialect.set_lexer_struct(\n         (\"not_equal\", \"regex\", r\"!=|<>\", dict(is_code=True)),\n         (\"greater_than_or_equal\", \"regex\", r\">=\", dict(is_code=True)),\n         (\"less_than_or_equal\", \"regex\", r\"<=\", dict(is_code=True)),\n-        (\"newline\", \"regex\", r\"\\r\\n|\\n\", dict(type=\"newline\")),\n+        (\"newline\", \"regex\", r\"\\r\\n|\\n\", dict(type=\"newline\", is_whitespace=True)),\n         (\"casting_operator\", \"regex\", r\"::\", dict(is_code=True)),\n         (\"concat_operator\", \"regex\", r\"\\|\\|\", dict(is_code=True)),\n         (\"equals\", \"singleton\", \"=\", dict(is_code=True)),"
+    },
+    {
+      "tool": "repository.diff.attempt-1",
+      "args": [
+        "diff",
+        "--",
+        "src"
+      ],
+      "cwd": "$WORK/source",
+      "exitCode": 0,
+      "durationMs": 20,
+      "outputSha256": "sha256:06942b06f75cf37ad0a619f6b6d14390b4a398434f983671ff09566c341b095e",
+      "outputTail": "--- a/src/sqlfluff/core/dialects/dialect_ansi.py\n+++ b/src/sqlfluff/core/dialects/dialect_ansi.py\n@@ -50,7 +50,7 @@ ansi_dialect = Dialect(\"ansi\", root_segment_name=\"FileSegment\")\n ansi_dialect.set_lexer_struct(\n     [\n         # name, type, pattern, kwargs\n-        (\"whitespace\", \"regex\", r\"[\\t ]+\", dict(type=\"whitespace\")),\n+        (\"whitespace\", \"regex\", r\"[\\t ]+\", dict(type=\"whitespace\", is_whitespace=True)),\n         (\n             \"inline_comment\",\n             \"regex\",\n@@ -83,7 +83,7 @@ ansi_dialect.set_lexer_struct(\n         (\"not_equal\", \"regex\", r\"!=|<>\", dict(is_code=True)),\n         (\"greater_than_or_equal\", \"regex\", r\">=\", dict(is_code=True)),\n         (\"less_than_or_equal\", \"regex\", r\"<=\", dict(is_code=True)),\n-        (\"newline\", \"regex\", r\"\\r\\n|\\n\", dict(type=\"newline\")),\n+        (\"newline\", \"regex\", r\"\\r\\n|\\n\", dict(type=\"newline\", is_whitespace=True)),\n         (\"casting_operator\", \"regex\", r\"::\", dict(is_code=True)),\n         (\"concat_operator\", \"regex\", r\"\\|\\|\", dict(is_code=True)),\n         (\"equals\", \"singleton\", \"=\", dict(is_code=True)),"
+    },
+    {
+      "tool": "ci.target.attempt-1",
+      "args": [
+        "-m",
+        "pytest",
+        "-q",
+        "test/core/dialects/ansi_test.py::test__dialect__ansi_is_whitespace"
+      ],
+      "cwd": "$WORK/source",
+      "exitCode": 1,
+      "durationMs": 662,
+      "outputSha256": "sha256:3ddd8d7e8adea4dccd9eb319279700719d27b562a76116aa9df6b348a808c40d",
+      "outputTail": "F                                                                        [100%]\n=================================== FAILURES ===================================\n______________________ test__dialect__ansi_is_whitespace _______________________\n\n    def test__dialect__ansi_is_whitespace():\n        \"\"\"Test proper tagging with is_whitespace.\"\"\"\n        lnt = Linter()\n        with open(\"test/fixtures/parser/ansi/select_in_multiline_comment.sql\") as f:\n            parsed = lnt.parse_string(f.read())\n        # Check all the segments that *should* be whitespace, ARE\n        for raw_seg in parsed.tree.iter_raw_seg():\n            if raw_seg.type in (\"whitespace\", \"newline\"):\n>               assert raw_seg.is_whitespace\nE               AssertionError: assert False\nE                +  where False = <newline_RawSegment: ([50](1, 8, 3)) '\\n'>.is_whitespace\n\ntest/core/dialects/ansi_test.py:175: AssertionError\n=========================== short test summary info ============================\nFAILED test/core/dialects/ansi_test.py::test__dialect__ansi_is_whitespace - A...\n1 failed in 0.08s"
+    },
+    {
+      "tool": "ci.regression.attempt-1",
+      "args": [
+        "-m",
+        "pytest",
+        "-q",
+        "test/core/parser",
+        "test/core/dialects/ansi_test.py"
+      ],
+      "cwd": "$WORK/source",
+      "exitCode": 1,
+      "durationMs": 1707,
+      "outputSha256": "sha256:fdf01fa83bf8c03e0e0ad024ff67e351203f1c617e24d3ba092609d4ec687233",
+      "outputTail": "F                                                                        [100%]\n=================================== FAILURES ===================================\n______________________ test__dialect__ansi_is_whitespace _______________________\n\n    def test__dialect__ansi_is_whitespace():\n        \"\"\"Test proper tagging with is_whitespace.\"\"\"\n        lnt = Linter()\n        with open(\"test/fixtures/parser/ansi/select_in_multiline_comment.sql\") as f:\n            parsed = lnt.parse_string(f.read())\n        # Check all the segments that *should* be whitespace, ARE\n        for raw_seg in parsed.tree.iter_raw_seg():\n            if raw_seg.type in (\"whitespace\", \"newline\"):\n>               assert raw_seg.is_whitespace\nE               AssertionError: assert False\nE                +  where False = <newline_RawSegment: ([50](1, 8, 3)) '\\n'>.is_whitespace\n\ntest/core/dialects/ansi_test.py:175: AssertionError\n=========================== short test summary info ============================\nFAILED test/core/dialects/ansi_test.py::test__dialect__ansi_is_whitespace - A...\n1 failed, 144 passed in 1.15s"
+    },
+    {
+      "tool": "ci.token-classification.attempt-1",
+      "args": [
+        "-c",
+        "from sqlfluff.core import FluffConfig\nfrom sqlfluff.core.parser import Lexer\ntokens, errors = Lexer(config=FluffConfig(overrides={'dialect':'ansi'})).lex('select x\\n')\nobserved = [(x.type, x.is_whitespace) for x in tokens]\nexpected = [('raw', False), ('whitespace', True), ('raw', False), ('newline', True)]\nprint('observed=', observed)\nprint('expected=', expected)\nassert not errors\nassert observed == expected\nprint('PASS token classification')"
+      ],
+      "cwd": "$WORK/source",
+      "exitCode": 0,
+      "durationMs": 479,
+      "outputSha256": "sha256:7d48f512f958c15b5ef0e2c2848f3c79553f7cb4ff1a6bb5bdcd2b086fa95618",
+      "outputTail": "observed= [('raw', False), ('whitespace', True), ('raw', False), ('newline', True)]\nexpected= [('raw', False), ('whitespace', True), ('raw', False), ('newline', True)]\nPASS token classification"
+    },
+    {
+      "tool": "repository.generate-diff.attempt-2",
+      "args": [
+        "diff",
+        "--",
+        "src/sqlfluff/core/dialects/dialect_ansi.py"
+      ],
+      "cwd": "$WORK/source",
+      "exitCode": 0,
+      "durationMs": 38,
+      "outputSha256": "sha256:06942b06f75cf37ad0a619f6b6d14390b4a398434f983671ff09566c341b095e",
+      "outputTail": "--- a/src/sqlfluff/core/dialects/dialect_ansi.py\n+++ b/src/sqlfluff/core/dialects/dialect_ansi.py\n@@ -50,7 +50,7 @@ ansi_dialect = Dialect(\"ansi\", root_segment_name=\"FileSegment\")\n ansi_dialect.set_lexer_struct(\n     [\n         # name, type, pattern, kwargs\n-        (\"whitespace\", \"regex\", r\"[\\t ]+\", dict(type=\"whitespace\")),\n+        (\"whitespace\", \"regex\", r\"[\\t ]+\", dict(type=\"whitespace\", is_whitespace=True)),\n         (\n             \"inline_comment\",\n             \"regex\",\n@@ -83,7 +83,7 @@ ansi_dialect.set_lexer_struct(\n         (\"not_equal\", \"regex\", r\"!=|<>\", dict(is_code=True)),\n         (\"greater_than_or_equal\", \"regex\", r\">=\", dict(is_code=True)),\n         (\"less_than_or_equal\", \"regex\", r\"<=\", dict(is_code=True)),\n-        (\"newline\", \"regex\", r\"\\r\\n|\\n\", dict(type=\"newline\")),\n+        (\"newline\", \"regex\", r\"\\r\\n|\\n\", dict(type=\"newline\", is_whitespace=True)),\n         (\"casting_operator\", \"regex\", r\"::\", dict(is_code=True)),\n         (\"concat_operator\", \"regex\", r\"\\|\\|\", dict(is_code=True)),\n         (\"equals\", \"singleton\", \"=\", dict(is_code=True)),"
+    },
+    {
+      "tool": "repository.diff.attempt-2",
+      "args": [
+        "diff",
+        "--",
+        "src"
+      ],
+      "cwd": "$WORK/source",
+      "exitCode": 0,
+      "durationMs": 32,
+      "outputSha256": "sha256:06942b06f75cf37ad0a619f6b6d14390b4a398434f983671ff09566c341b095e",
+      "outputTail": "--- a/src/sqlfluff/core/dialects/dialect_ansi.py\n+++ b/src/sqlfluff/core/dialects/dialect_ansi.py\n@@ -50,7 +50,7 @@ ansi_dialect = Dialect(\"ansi\", root_segment_name=\"FileSegment\")\n ansi_dialect.set_lexer_struct(\n     [\n         # name, type, pattern, kwargs\n-        (\"whitespace\", \"regex\", r\"[\\t ]+\", dict(type=\"whitespace\")),\n+        (\"whitespace\", \"regex\", r\"[\\t ]+\", dict(type=\"whitespace\", is_whitespace=True)),\n         (\n             \"inline_comment\",\n             \"regex\",\n@@ -83,7 +83,7 @@ ansi_dialect.set_lexer_struct(\n         (\"not_equal\", \"regex\", r\"!=|<>\", dict(is_code=True)),\n         (\"greater_than_or_equal\", \"regex\", r\">=\", dict(is_code=True)),\n         (\"less_than_or_equal\", \"regex\", r\"<=\", dict(is_code=True)),\n-        (\"newline\", \"regex\", r\"\\r\\n|\\n\", dict(type=\"newline\")),\n+        (\"newline\", \"regex\", r\"\\r\\n|\\n\", dict(type=\"newline\", is_whitespace=True)),\n         (\"casting_operator\", \"regex\", r\"::\", dict(is_code=True)),\n         (\"concat_operator\", \"regex\", r\"\\|\\|\", dict(is_code=True)),\n         (\"equals\", \"singleton\", \"=\", dict(is_code=True)),"
+    },
+    {
+      "tool": "ci.target.attempt-2",
+      "args": [
+        "-m",
+        "pytest",
+        "-q",
+        "test/core/dialects/ansi_test.py::test__dialect__ansi_is_whitespace"
+      ],
+      "cwd": "$WORK/source",
+      "exitCode": 1,
+      "durationMs": 646,
+      "outputSha256": "sha256:3ddd8d7e8adea4dccd9eb319279700719d27b562a76116aa9df6b348a808c40d",
+      "outputTail": "F                                                                        [100%]\n=================================== FAILURES ===================================\n______________________ test__dialect__ansi_is_whitespace _______________________\n\n    def test__dialect__ansi_is_whitespace():\n        \"\"\"Test proper tagging with is_whitespace.\"\"\"\n        lnt = Linter()\n        with open(\"test/fixtures/parser/ansi/select_in_multiline_comment.sql\") as f:\n            parsed = lnt.parse_string(f.read())\n        # Check all the segments that *should* be whitespace, ARE\n        for raw_seg in parsed.tree.iter_raw_seg():\n            if raw_seg.type in (\"whitespace\", \"newline\"):\n>               assert raw_seg.is_whitespace\nE               AssertionError: assert False\nE                +  where False = <newline_RawSegment: ([50](1, 8, 3)) '\\n'>.is_whitespace\n\ntest/core/dialects/ansi_test.py:175: AssertionError\n=========================== short test summary info ============================\nFAILED test/core/dialects/ansi_test.py::test__dialect__ansi_is_whitespace - A...\n1 failed in 0.08s"
+    },
+    {
+      "tool": "ci.regression.attempt-2",
+      "args": [
+        "-m",
+        "pytest",
+        "-q",
+        "test/core/parser",
+        "test/core/dialects/ansi_test.py"
+      ],
+      "cwd": "$WORK/source",
+      "exitCode": 1,
+      "durationMs": 1690,
+      "outputSha256": "sha256:cc31dc28d2dfb561af1dee6ce70c660fa31eff40928ac596ff2e4fd1077fe2a2",
+      "outputTail": "F                                                                        [100%]\n=================================== FAILURES ===================================\n______________________ test__dialect__ansi_is_whitespace _______________________\n\n    def test__dialect__ansi_is_whitespace():\n        \"\"\"Test proper tagging with is_whitespace.\"\"\"\n        lnt = Linter()\n        with open(\"test/fixtures/parser/ansi/select_in_multiline_comment.sql\") as f:\n            parsed = lnt.parse_string(f.read())\n        # Check all the segments that *should* be whitespace, ARE\n        for raw_seg in parsed.tree.iter_raw_seg():\n            if raw_seg.type in (\"whitespace\", \"newline\"):\n>               assert raw_seg.is_whitespace\nE               AssertionError: assert False\nE                +  where False = <newline_RawSegment: ([50](1, 8, 3)) '\\n'>.is_whitespace\n\ntest/core/dialects/ansi_test.py:175: AssertionError\n=========================== short test summary info ============================\nFAILED test/core/dialects/ansi_test.py::test__dialect__ansi_is_whitespace - A...\n1 failed, 144 passed in 1.11s"
+    },
+    {
+      "tool": "ci.token-classification.attempt-2",
+      "args": [
+        "-c",
+        "from sqlfluff.core import FluffConfig\nfrom sqlfluff.core.parser import Lexer\ntokens, errors = Lexer(config=FluffConfig(overrides={'dialect':'ansi'})).lex('select x\\n')\nobserved = [(x.type, x.is_whitespace) for x in tokens]\nexpected = [('raw', False), ('whitespace', True), ('raw', False), ('newline', True)]\nprint('observed=', observed)\nprint('expected=', expected)\nassert not errors\nassert observed == expected\nprint('PASS token classification')"
+      ],
+      "cwd": "$WORK/source",
+      "exitCode": 0,
+      "durationMs": 494,
+      "outputSha256": "sha256:7d48f512f958c15b5ef0e2c2848f3c79553f7cb4ff1a6bb5bdcd2b086fa95618",
+      "outputTail": "observed= [('raw', False), ('whitespace', True), ('raw', False), ('newline', True)]\nexpected= [('raw', False), ('whitespace', True), ('raw', False), ('newline', True)]\nPASS token classification"
+    }
+  ]
+}

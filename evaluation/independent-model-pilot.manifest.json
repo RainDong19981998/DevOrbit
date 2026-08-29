@@ -1,0 +1,122 @@
+{
+  "$schema": "../schemas/independent-model-pilot.schema.json",
+  "protocolVersion": "1.0",
+  "pilotId": "devorbit-independent-model-pilot-v1",
+  "runId": "independent-run-001",
+  "status": "pre-registered-independent-single-run",
+  "registeredAt": "2026-08-14T05:49:08Z",
+  "disclosure": "This is one pre-registered validation run on a SWE-bench dev case from a repository not used by the eleven earlier SQLFluff tuning runs. The candidate and deterministic acceptance protocol were frozen before the model was invoked. The local model receives the issue, baseline failure, bounded source search results and base-commit source excerpts, but never receives the hidden test patch, classification probe, expected implementation patch, pull request, fix commit, dataset patch field, or network access. The result is a single-case independent validation result, not an aggregate SWE-bench score, test-set result, production success rate, vendor-platform claim, or ranking claim. Failure remains a valid terminal result and the selected case cannot be replaced after observing it.",
+  "selection": {
+    "recordPath": "evaluation/independent-model-pilot/candidate-selection.json",
+    "recordSha256": "sha256:0ac3e8d2f2d93b61a126c008c218a38d463c0c58d62e15a293a2bf80e3b4a742",
+    "selectedBeforeModelInvocation": true,
+    "replacementAfterOutcomeForbidden": true
+  },
+  "case": {
+    "instanceId": "pydicom__pydicom-965",
+    "dataset": "princeton-nlp/SWE-bench",
+    "datasetSnapshot": "sha256:d758d54540aa4140d0274ed0cc93b8288aa6f323c3c603e2557e7666a47fc41b",
+    "split": "dev-independent-validation",
+    "repository": "pydicom/pydicom",
+    "license": "MIT",
+    "baseCommit": "ee775c8a137cd8e0b69b46dc24c23648c31fe34c",
+    "sourceArchiveUrl": "https://codeload.github.com/pydicom/pydicom/tar.gz/ee775c8a137cd8e0b69b46dc24c23648c31fe34c",
+    "sourceArchiveSha256": "sha256:2530c36a62db5563119e63432418171aed2201a9c4e374c9fc8224764816e678",
+    "issuePath": "evaluation/independent-model-pilot/pydicom__pydicom-965/issue.json",
+    "issueSha256": "sha256:5443b002ee093ea21063027b277e9cb16d0f85f96225110332e1451421a92bd6",
+    "testPatchPath": "evaluation/independent-model-pilot/pydicom__pydicom-965/test.patch",
+    "testPatchSha256": "sha256:c1135c9df885fa82fabcdb10da8d0bd60fad33ea752d1f86f02e65cb0b491b46",
+    "requirementsPath": "evaluation/independent-model-pilot/pydicom__pydicom-965/requirements.lock",
+    "requirementsSha256": "sha256:8261c81553fdd160e3b00c19e0de48a458e123677e200c034e8a3e8cf452ff25",
+    "classificationProbePath": "evaluation/independent-model-pilot/pydicom__pydicom-965/classification_probe.py",
+    "classificationProbeSha256": "sha256:900fc356279dd5ae188a6a5d2d1d823de4da6e95f2a2c63a7a1059fc50020612"
+  },
+  "model": {
+    "provider": "local-ollama",
+    "name": "qwen3:8b",
+    "digest": "sha256:500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+    "parameterSize": "8.2B",
+    "quantization": "Q4_K_M",
+    "temperature": 0,
+    "seed": 847,
+    "contextTokens": 16384,
+    "maxOutputTokens": 3072,
+    "thinking": false
+  },
+  "runtime": {
+    "platform": "linux-x86_64-local",
+    "pythonPath": "/usr/bin/python3.10",
+    "pythonVersion": "3.10.12",
+    "dependencyMode": "exact-version-lock-no-transitive-resolution"
+  },
+  "implementation": {
+    "runnerPath": "scripts/run-independent-model-pilot.mjs",
+    "runnerSha256": "sha256:503382f8ff18d5baea7b6478af4981aed5f03ad8a4ef0cfe503a8a866007dff0"
+  },
+  "workflow": {
+    "agents": ["triage-worker", "rca-worker", "patch-worker", "verify-worker"],
+    "patchAttemptLimit": 1,
+    "responseTimeoutMs": 600000,
+    "patchContract": "one-shot-one-or-two-files-exact-source-replacements",
+    "exploration": {
+      "maxSearchQueries": 5,
+      "maxFiles": 8,
+      "maxExcerptChars": 24000,
+      "network": "disabled-for-agent-tools"
+    },
+    "verificationAuthority": "deterministic-machine-gate",
+    "acceptanceRule": "machineGatePassed && modelAccept",
+    "allowedWritePrefix": "pydicom/",
+    "forbiddenWritePrefixes": ["pydicom/tests/", "tests/", ".github/", "evaluation/", "scripts/", "docs/"],
+    "maxChangedFiles": 2,
+    "maxDiffLines": 120,
+    "targetArgs": ["-m", "pytest", "-q", "pydicom/tests/test_dataelem.py::TestDataElement::test_empty_sequence_is_handled_as_array"],
+    "regressionArgs": ["-m", "pytest", "-q", "pydicom/tests/test_dataelem.py"],
+    "baselineExpected": {
+      "exitCode": 1,
+      "requiredText": "assert None == []"
+    },
+    "successCriteria": [
+      "all manifest-bound source, issue, test, dependency, classification and selection digests match",
+      "the exact hidden FAIL_TO_PASS test fails at the base commit with the frozen expected assertion",
+      "the model source workspace never contains the hidden test patch or classification probe",
+      "four distinct model roles complete triage, root-cause analysis, patch generation and verification",
+      "the patch is produced once with no repair feedback or retry and changes only allowed production source paths",
+      "the hidden FAIL_TO_PASS target exits zero after the model patch",
+      "the complete test_dataelem regression file exits zero apart from declared skips",
+      "the hidden cross-mode classification and control probe exits zero",
+      "the deterministic gate passes path, size, executable-change and test checks",
+      "the advisory verify-worker does not veto a machine-passing patch"
+    ]
+  },
+  "leakagePolicy": {
+    "modelMayRead": [
+      "frozen issue snapshot",
+      "base-commit Python source tree paths",
+      "base-commit target failure tail without hidden test source",
+      "bounded fixed-string repository search results selected by triage-worker",
+      "bounded base-commit production source excerpts",
+      "outputs of prior agents in this run",
+      "model-generated patch diff and post-patch test summaries only for verify-worker"
+    ],
+    "modelMustNotRead": [
+      "SWE-bench implementation patch field or any gold patch",
+      "expected fix commit, pull request, issue comments, hints, or web resources",
+      "hidden test.patch contents or hidden test source",
+      "hidden classification_probe.py contents",
+      "any prior model attempt or outcome for this candidate",
+      "network, package registry, or remote repository content during agent work"
+    ],
+    "workspaceIsolation": "The model-facing source is extracted from the frozen base archive and never receives evaluator-only artifacts. Baseline and post-patch tests run in separate evaluator copies where the hidden test patch is applied only after the model-facing copy is complete.",
+    "goldComparison": "No expected implementation patch is stored, read, hashed, compared, or used by the runner, prompts, validators, reports, or acceptance gate."
+  },
+  "evidence": {
+    "transcriptPath": "evaluation/independent-model-pilot/pydicom__pydicom-965/evidence/transcript.json",
+    "patchPath": "evaluation/independent-model-pilot/pydicom__pydicom-965/evidence/model.patch",
+    "baselineLogPath": "evaluation/independent-model-pilot/pydicom__pydicom-965/evidence/baseline-target.log",
+    "targetLogPath": "evaluation/independent-model-pilot/pydicom__pydicom-965/evidence/target.log",
+    "regressionLogPath": "evaluation/independent-model-pilot/pydicom__pydicom-965/evidence/regression.log",
+    "classificationLogPath": "evaluation/independent-model-pilot/pydicom__pydicom-965/evidence/classification.log",
+    "reportPath": "reports/independent-model-pilot.json"
+  }
+}

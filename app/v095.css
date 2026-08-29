@@ -1,0 +1,63 @@
+/* V0.9.5 新增样式 */
+.confidence-trajectory{margin:12px 0;padding:10px 14px;background:#f0ede3;border-radius:6px;border-left:3px solid var(--green)}
+.confidence-trajectory .artifact-kicker{display:block;margin-bottom:8px}
+.trajectory-line{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.trajectory-node{display:flex;flex-direction:column;align-items:center;gap:2px}
+.trajectory-node b{font:700 18px ui-monospace,monospace}
+.trajectory-node b.before{color:var(--orange)}
+.trajectory-node b.after{color:var(--green)}
+.trajectory-node span{font-size:9px;color:var(--muted)}
+.trajectory-node.final span{color:var(--green)}
+.trajectory-line .arrow{color:var(--muted);font-size:16px}
+
+.rework-badge{display:inline-block;background:var(--orange);color:#fff;font:700 10px ui-monospace,monospace;padding:4px 10px;border-radius:4px;margin-right:8px}
+.rework-badge:empty{display:none}
+
+.warning-card{border-left:3px solid var(--orange);background:#fff3ec;border-radius:4px;padding:14px 16px;margin-bottom:10px}
+.warning-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.warning-id{font:700 12px ui-monospace,monospace;color:var(--ink)}
+.badge{display:inline-block;font:9px ui-monospace,monospace;padding:3px 8px;border-radius:3px}
+.badge-red{background:#c0392b;color:#fff}
+.badge-gray{background:var(--muted);color:#fff}
+.warning-message{font-size:13px;line-height:1.6;color:var(--ink);margin:0}
+
+.chain-nodes{display:flex;align-items:center;gap:4px;flex-wrap:wrap;padding:16px 0}
+.chain-node{display:flex;flex-direction:column;align-items:center;gap:4px;background:var(--card);border:2px solid var(--green);border-radius:6px;padding:10px 14px;min-width:80px}
+.chain-node.broken{border-color:#c0392b;background:#fdf0ee}
+.chain-node b{font:9px ui-monospace,monospace;color:var(--green);text-transform:uppercase}
+.chain-node.broken b{color:#c0392b}
+.chain-node code{font:10px ui-monospace,monospace;color:var(--muted)}
+.chain-link{width:16px;height:2px;background:var(--green)}
+.chain-node.broken+.chain-link{background:#c0392b}
+.chain-status{font:10px ui-monospace,monospace;padding:4px 10px;border-radius:4px}
+.chain-status.idle{background:#e7ebdd;color:var(--muted)}
+.chain-status.verified{background:var(--green);color:#fff}
+.chain-status.tampered{background:var(--orange);color:#fff}
+.chain-status.broken{background:#c0392b;color:#fff}
+.chain-actions{display:flex;gap:8px;margin-top:12px}
+.chain-btn{background:var(--navy);color:#fff;border:1px solid #31505a;border-radius:4px;padding:8px 16px;font-size:12px;cursor:pointer;box-shadow:none}
+.chain-btn:disabled{opacity:.4;cursor:not-allowed}
+.chain-note{font-size:11px;color:var(--muted);margin-top:8px;min-height:16px}
+.evidence-chain-wrap{margin-top:20px}
+.evidence-chain-head{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.evidence-chain-head h3{font-size:16px;margin:0}
+/* V0.9.6 公开基准大盘 */
+.benchmark-section{border-top:1px solid var(--line,#e3e7da)}
+.benchmark-board{margin-top:16px}
+.bench-table{border:1px solid #dfe4d5;border-radius:8px;overflow:hidden;background:#fff}
+.bench-row{display:grid;grid-template-columns:2fr 1.4fr 1fr 1fr;gap:8px;align-items:center;padding:9px 14px;border-bottom:1px solid #eef1e7;font-size:12px}
+.bench-row:last-child{border-bottom:none}
+.bench-head{background:#f2f5ec;font-weight:600;color:var(--navy,#17323c);font-size:11px;text-transform:uppercase;letter-spacing:.03em}
+.bench-label{color:var(--navy,#17323c);font-weight:500}
+.bench-bar-cell{display:flex;align-items:center;gap:8px;min-width:0}
+.bench-bar{display:block;height:8px;border-radius:4px;background:var(--green,#2e7d32);min-width:2px}
+.bench-row b{font:11px ui-monospace,monospace;color:var(--navy,#17323c)}
+.bench-na{color:var(--muted,#7a8577);font-style:italic}
+.bench-note{font-size:11px;color:var(--muted,#7a8577);margin-top:10px}
+/* V0.9.6 演示导览字幕 */
+.tour-caption{position:fixed;left:50%;bottom:34px;transform:translateX(-50%) translateY(12px);max-width:1080px;padding:12px 26px;border-radius:10px;background:rgba(14,26,22,.88);color:#f4f7ef;font-size:19px;line-height:1.55;letter-spacing:.02em;text-align:center;opacity:0;transition:opacity .45s ease,transform .45s ease;z-index:99;pointer-events:none;box-shadow:0 6px 24px rgba(10,20,16,.35)}
+.tour-caption.visible{opacity:1;transform:translateX(-50%) translateY(0)}
+.tour-progress{position:fixed;left:0;bottom:0;height:4px;width:0;background:var(--green,#2e7d32);z-index:99;transition:width .2s linear}
+/* V1.0.0 Skill 版本溯源标记 */
+.skill-version{font:9px ui-monospace;font-style:normal;color:var(--orange,#f06a3a);background:#f06a3a14;padding:2px 5px;border-radius:3px;margin-left:5px}
+.skill-digest{font:8px ui-monospace;color:#98a39c;margin-left:5px}

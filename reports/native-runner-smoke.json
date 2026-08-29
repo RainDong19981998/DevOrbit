@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-08-13T14:16:25.606Z",
+  "generatedAt": "2026-08-29T12:01:01.823Z",
   "status": "passed",
   "boundary": "Build and runtime evidence for the native connector image. Vendor credentials and production cluster execution are not claimed.",
-  "image": "devorbit:0.6.0-native-smoke",
-  "imageId": "sha256:5a6db879900fd7238a92ac589b0f9b93bcb9f6066f690857f6220fba41650f79",
-  "baseImage": "devorbit-node:22.18.0-bookworm-offline",
+  "image": "devorbit:0.8.0-native-smoke",
+  "imageId": "sha256:30ea0e39df85b32a8a0633f177e3b395a0130c5915ac63b88a2d02a4e7f1f1b6",
+  "baseImage": "node:22.18.0-bookworm-slim",
   "gitVersion": "git version 2.39.5",
-  "cloneCommit": "bc9c278c373bf76ba991033990bc8389e19e8543",
+  "cloneCommit": "c373df3f0dfaa9db7b5ad77b8f6b173f7c42ce31",
   "hardening": {
     "uid": 10001,
     "readOnlyRootfs": true,

@@ -1,0 +1,69 @@
+{
+  "caseId": "PUB-SQLFLUFF__SQLFLUFF-2907",
+  "method": "devorbit",
+  "attempts": 3,
+  "rca": {
+    "rootCause": "SQLFluff's Jinja templater has custom code that attempts to detect undeclared Jinja variables and provide better error handling. This custom undefined-variable check does not account for Jinja 'block assignment' syntax (e.g. `{% set some_var %}1{% endset %}`), which was introduced in Jinja 2.8. When a variable is defined using block assignment inside an `{% if %}` block, SQLFluff's static analysis fails to recognize it as a defined variable and incorrectly reports 'Undefined jinja template variable' for subsequent references to that variable. The fix needs to make the undefined variable detection logic more sophisticated to recognize block-style `{% set %}...{% endset %}` variable declarations.",
+    "confidence": 0.9,
+    "evidence": [
+      "Issue title: 'sqlfluff doesn't recognise a jinja variable set inside of \"if\" statement'",
+      "Reproduction case: `{% if True %}\\n    {% set some_var %}1{% endset %}\\n    SELECT {{some_var}}\\n{% endif %}` produces 'Undefined jinja template variable: some_var'",
+      "Hint: 'SQLFluff contains some additional code that attempts to detect undeclared Jinja variables and provide better error handling. The \"issue\" is being detected and reported by that code, not by Jinja itself.'",
+      "Hint: 'Need to do this carefully so we don't break error reporting for real errors.'",
+      "Hint: 'I think I have a fix. Just need to make the undefined variable check more sophisticated.'",
+      "Hint: 'It was added in Jinja 2.8: https://jinja.palletsprojects.com/en/3.0.x/templates/#block-assignments'",
+      "Repo map shows the Jinja templater implementation is at src/sqlfluff/core/templaters/jinja.py"
+    ],
+    "filesToChange": [
+      "src/sqlfluff/core/templaters/jinja.py"
+    ]
+  },
+  "edits": [
+    {
+      "path": "src/sqlfluff/core/templaters/jinja.py",
+      "search": "    @classmethod\n    def _crawl_tree(cls, tree, variable_names, raw):\n        \"\"\"Crawl the tree looking for occurrences of the undeclared values.\"\"\"\n        # First iterate through children\n        for elem in tree.iter_child_nodes():\n            yield from cls._crawl_tree(elem, variable_names, raw)\n        # Then assess self\n        if isinstance(tree, jinja2.nodes.Name) and tree.name in variable_names:",
+      "replace": "    @classmethod\n    def _crawl_tree(cls, tree, variable_names, raw):\n        \"\"\"Crawl the tree looking for occurrences of the undeclared values.\"\"\"\n        # First iterate through children\n        for elem in tree.iter_child_nodes():\n            yield from cls._crawl_tree(elem, variable_names, raw)\n        # Then assess self\n        if isinstance(tree, jinja2.nodes.AssignBlock):\n            # Block assignment (e.g. {% set x %}...{% endset %}). The target\n            # is a Name node; remove it from undefined_variables if present.\n            target = tree.target\n            if isinstance(target, jinja2.nodes.Name) and target.name in variable_names:\n                variable_names.remove(target.name)\n        elif isinstance(tree, jinja2.nodes.Name) and tree.name in variable_names:"
+    },
+    {
+      "path": "test/core/templaters/jinja_test.py",
+      "search": "JINJA_STRING = (\n    \"SELECT * FROM {% for c in blah %}{{c}}{% if not loop.last %}, \"\n    \"{% endif %}{% endfor %} WHERE {{condition}}\\n\\n\"\n)\n\n\n@pytest.mark.parametrize(",
+      "replace": "JINJA_STRING = (\n    \"SELECT * FROM {% for c in blah %}{{c}}{% if not loop.last %}, \"\n    \"{% endif %}{% endfor %} WHERE {{condition}}\\n\\n\"\n)\n\n\ndef test__templater_jinja_dynamic_variable_no_violations():\n    \"\"\"Test that block-style set inside if doesn't raise undefined variable.\"\"\"\n    in_str = (\n        \"{% if True %}\\n\"\n        \"    {% set some_var %}1{% endset %}\\n\"\n        \"    SELECT {{some_var}}\\n\"\n        \"{% endif %}\"\n    )\n    t = JinjaTemplater(override_context=dict(blah=\"foo\", condition=\"a < 10\"))\n    _, violations = t.process(in_str=in_str, fname=\"test\", config=FluffConfig())\n    assert not violations\n\n\n@pytest.mark.parametrize("
+    }
+  ],
+  "warningsRecalled": [
+    "BENCH-EP-043919a5a51f1274",
+    "BENCH-EP-1b1555b459d55d97",
+    "BENCH-EP-25952be65a5102bd",
+    "BENCH-EP-2a8ddfad805f1bcd",
+    "BENCH-EP-5082320c38365c62",
+    "BENCH-EP-52d6065e91c81777",
+    "BENCH-EP-7698e33e1820dc2b",
+    "BENCH-EP-78b7565af30b46ea",
+    "BENCH-EP-85921afd61b80019",
+    "BENCH-EP-99fcda943a468e8c",
+    "BENCH-EP-a92e794abcd5ec90",
+    "BENCH-EP-ca59dff7cda8511b",
+    "BENCH-EP-d255d4478ab019c9",
+    "BENCH-EP-e3e9299e0878c22f",
+    "BENCH-EP-ff3e7fe0ff3b4f76"
+  ],
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": true,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "edit apply failed: test/core/templaters/jinja_test.py: path policy violation (test file, traversal, or non-source)",
+    "changedPaths": [
+      "src/sqlfluff/core/templaters/jinja.py",
+      "test/core/templaters/jinja_test.py"
+    ]
+  },
+  "patchSha256": "sha256:b5a1081c249a11cac694742277173845b91cb772abd811a935dfcc75d94e9964",
+  "contextBytes": 14336,
+  "baselineTail": "ry info ============================\nFAILED test/core/templaters/jinja_test.py::test__templater_jinja_dynamic_variable_no_violations\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.10s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x test/core/templaters/jinja_test.py::test__templater_jinja_dynamic_variable_no_violations\n",
+  "goldFiles": [
+    "src/sqlfluff/core/templaters/jinja.py"
+  ],
+  "model": "glm",
+  "modelCalls": 4
+}

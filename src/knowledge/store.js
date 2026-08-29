@@ -28,12 +28,12 @@ export class KnowledgeStore {
   }
 
   search({ query, tags = [], topK = 3 }) {
+    return this.scoreAll({ query, tags }).filter(card => card.score > 0).sort((a, b) => b.score - a.score || a.id.localeCompare(b.id)).slice(0, Math.max(1, Math.min(Number(topK) || 3, 10)));
+  }
+
+  scoreAll({ query, tags = [] }) {
     const queryTokens = tokens(`${query} ${tags.join(' ')}`);
-    return this.cards
-      .map(card => ({ ...structuredClone(card), score: Number(score(queryTokens, card).toFixed(4)), citation: `knowledge://${card.id}` }))
-      .filter(card => card.score > 0)
-      .sort((a, b) => b.score - a.score || a.id.localeCompare(b.id))
-      .slice(0, Math.max(1, Math.min(Number(topK) || 3, 10)));
+    return this.cards.map(card => ({ ...structuredClone(card), score: Number(score(queryTokens, card).toFixed(4)), citation: `knowledge://${card.id}` }));
   }
 
   write(card) {

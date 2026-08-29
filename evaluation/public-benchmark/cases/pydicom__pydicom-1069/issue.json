@@ -1,0 +1,8 @@
+{
+  "instanceId": "pydicom__pydicom-1069",
+  "repository": "pydicom/pydicom",
+  "version": "1.4",
+  "createdAt": "2020-03-14T00:02:52Z",
+  "problemStatement": "apply_color_lut() incorrect exception when missing RedPaletteColorLUTDescriptor\n**Describe the bug**\r\n`AttributeError` when used on a dataset without `RedPaletteColorLookupTableDescriptor `\r\n\r\n**Expected behavior**\r\nShould raise `ValueError` for consistency with later exceptions\r\n\r\n**Steps To Reproduce**\r\n```python\r\nfrom pydicom.pixel_data_handlers.util import apply_color_lut\r\nds = dcmread(\"CT_small.dcm\")\r\narr = ds.apply_color_lut(arr, ds)\r\n```\r\n```\r\nTraceback (most recent call last):\r\n  File \"<stdin>\", line 1, in <module>\r\n  File \".../pydicom/pixel_data_handlers/util.py\", line 116, in apply_color_lut\r\n    lut_desc = ds.RedPaletteColorLookupTableDescriptor\r\n  File \".../pydicom/dataset.py\", line 768, in __getattr__\r\n    return object.__getattribute__(self, name)\r\nAttributeError: 'FileDataset' object has no attribute 'RedPaletteColorLookupTableDescriptor'\r\n```\n",
+  "hintsText": ""
+}

@@ -1,0 +1,19 @@
+{
+  "caseId": "PUB-PYDICOM__PYDICOM-1694",
+  "method": "single-agent",
+  "attempts": 2,
+  "rca": null,
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "git apply --check failed: \nerror: corrupt patch at line 22\n\nCommand failed: git apply --check model.patch\nerror: corrupt patch at line 22\n"
+  },
+  "patchSha256": "sha256:358586ae677608962d040edaf7fbbf1fe433689adf93062c81d75dabe3f03b65",
+  "contextBytes": 8000,
+  "baselineTail": "=======\nFAILED pydicom/tests/test_json.py::TestDataSetToJson::test_suppress_invalid_tags_with_failed_dataelement\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 1 warning in 0.21s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x pydicom/tests/test_json.py::TestDataSetToJson::test_suppress_invalid_tags_with_failed_dataelement\n",
+  "goldFiles": [
+    "pydicom/dataset.py"
+  ]
+}

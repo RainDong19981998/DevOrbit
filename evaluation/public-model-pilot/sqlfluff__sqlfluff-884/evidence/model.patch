@@ -1,0 +1,13 @@
+diff --git a/src/sqlfluff/core/parser/segments/base.py b/src/sqlfluff/core/parser/segments/base.py
+index 1234567..89abcde 100644
+--- a/src/sqlfluff/core/parser/segments/base.py
++++ b/src/sqlfluff/core/parser/segments/base.py
+@@ -72,7 +72,7 @@ class BaseSegment:
+     # `type` should be the *category* of this kind of segment
+     type = "base"
+     parse_grammar: Optional[Matchable] = None
+-    is_whitespace = False
++    is_whitespace = True
+     optional = False  # NB: See the sequence grammar for details
+     is_segment = True
+     _name = None

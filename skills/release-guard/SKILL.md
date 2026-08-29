@@ -1,5 +1,6 @@
 ---
 name: release-guard
+version: 1.0.0
 description: Enforce software release risk classification, approval, idempotency, canary health, promotion, and deterministic rollback. Use for any deployment or configuration action where execution evidence and human authorization boundaries matter.
 ---
 

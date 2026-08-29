@@ -1,0 +1,8 @@
+{
+  "instanceId": "pylint-dev__astroid-941",
+  "repository": "pylint-dev/astroid",
+  "version": "2.5",
+  "createdAt": "2021-04-11T11:57:22Z",
+  "problemStatement": "@property members defined in metaclasses of a base class are not correctly inferred\nRef https://github.com/PyCQA/astroid/issues/927#issuecomment-817244963\r\n\r\nInference works on the parent class but not the child in the following example:\r\n\r\n```python\r\nclass BaseMeta(type):\r\n    @property\r\n    def __members__(cls):\r\n        return ['a', 'property']\r\nclass Parent(metaclass=BaseMeta):\r\n    pass\r\nclass Derived(Parent):\r\n    pass\r\nParent.__members__  # [<Set.set l.10 at 0x...>]\r\nDerived.__members__  # [<Property.__members__ l.8 at 0x...>]\r\n```\n",
+  "hintsText": "Looks like this is caused by https://github.com/PyCQA/astroid/blob/f2b197a4f8af0ceeddf435747a5c937c8632872a/astroid/scoped_nodes.py#L2590-L2603. When we are inferring an attribute on a derived class then `class_context` is `True` but `metaclass` is `False` so the property itself is returned."
+}

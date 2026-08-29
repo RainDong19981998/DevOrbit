@@ -1,0 +1,24 @@
+{
+  "caseId": "PUB-PYLINT-DEV__ASTROID-941",
+  "method": "devorbit",
+  "attempts": 2,
+  "rca": {
+    "files": [
+      "astroid/scoped_nodes.py"
+    ]
+  },
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "git apply --check failed: \nerror: corrupt patch at line 20\n\nCommand failed: git apply --check model.patch\nerror: corrupt patch at line 20\n"
+  },
+  "patchSha256": "sha256:97fc02d5cd70ccacb1c36cc2ae0bcc0ce10ea2c777cc712f40b9885156eb2177",
+  "contextBytes": 8000,
+  "baselineTail": "y tests/unittest_scoped_nodes.py::test_issue940_enums_as_a_real_world_usecase\nERROR: found no collectors for /tmp/zhanlu/bench-work/pylint-dev__astroid-941/source/tests/unittest_scoped_nodes.py::test_issue940_metaclass_subclass_property\n\nERROR: found no collectors for /tmp/zhanlu/bench-work/pylint-dev__astroid-941/source/tests/unittest_scoped_nodes.py::test_issue940_enums_as_a_real_world_usecase\n\n",
+  "goldFiles": [
+    "astroid/brain/brain_namedtuple_enum.py",
+    "astroid/scoped_nodes.py"
+  ]
+}

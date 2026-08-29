@@ -1,0 +1,43 @@
+{
+  "generatedAt": "2026-08-13T15:00:49Z",
+  "status": "blocked-before-apply",
+  "runId": "run-001",
+  "case": {
+    "instanceId": "sqlfluff__sqlfluff-884",
+    "split": "dev-validation-pilot"
+  },
+  "model": {
+    "name": "qwen3:8b",
+    "digest": "sha256:500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+    "temperature": 0,
+    "seed": 847
+  },
+  "workflow": {
+    "agentsStarted": ["rca-worker", "patch-worker"],
+    "patchAttempts": 1,
+    "patchApplied": false,
+    "targetExitCode": null,
+    "regressionExitCode": null,
+    "verifyAccepted": false,
+    "closedLoop": false
+  },
+  "gate": {
+    "name": "git apply --check",
+    "exitCode": 1,
+    "reason": "model patch failed to apply"
+  },
+  "leakage": {
+    "forbiddenArtifactsRead": [],
+    "goldComparisonPerformed": false
+  },
+  "artifacts": {
+    "patch": {
+      "path": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/model.patch",
+      "sha256": "sha256:75b04516d76c3be955f64a98f65e204975385b30520a15b3a451c08e23aa343f"
+    },
+    "failure": {
+      "path": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-001-failure.json"
+    }
+  },
+  "boundary": "Failed pre-registered SWE-bench dev validation run. No aggregate, test-set, production, gold-equivalence, or ranking claim."
+}

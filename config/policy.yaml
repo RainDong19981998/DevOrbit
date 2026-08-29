@@ -10,13 +10,41 @@ release_gate:
     - rca.confidence >= 0.80
     - rollback.ready == true
     - approval.state == approved
+    - db_assertions.all_passed == true  # conditional: only enforced when state.artifacts.dbAssertions exists
   canary_abort:
     - error_rate_delta > 1%
     - p95_delta > 20%
     - business_kpi_regression == true
+self_healing:
+  max_resampling_rounds: 2
+  max_patch_attempts: 3
+  circuit_breaker: needs_human
+  degradation: stop_and_request_human
+knowledge_lifecycle:
+  write_recall_status: pending
+  promote_to_active: observation_window_passed && business_assertions_passed
+  negative_on_relapse: true
+  default_recall_filter: [active, negative]
 secrets:
   workers_hold_real_credentials: false
   gateway_injects_scoped_credentials: true
+context_governance:
+  versioning: case_state.revision            # Case State 单调递增 revision，每次委派随消息广播
+  layers:
+    task_context: artifacts+messages         # 单案例任务上下文（Worker 只经 Manager 委派读写）
+    shared_state: case_state                 # Agent 间唯一事实源，JSON Schema 约束
+    long_term_memory: knowledge_episodes     # 长期记忆：准入生命周期 pending/active/negative
+  isolation:
+    tenant_cross_recall: hard_filter         # 租户→服务→环境→git/config 版本硬过滤，防止跨任务/租户串扰
+    stale_context: block_recall              # gitRevision/configRevision 漂移即不召回，触发补证或重评分
+  retention:
+    session_max: 100                         # 控制面会话 LRU 上限，超限先销毁工作区再逐出
+    session_ttl_minutes: 30                  # 过期会话清理：销毁工作区并删除状态快照
+    state_snapshots: terminal_state_cleanup  # 终态快照自动清理；非终态快照保留供重启恢复与审计
+  conflict_handling:
+    retrieval_failure: needs_human_degradation
+    conflicting_evidence: stop_and_request_human
 audit:
   append_only: true
   redact: [token, password, personal_data]
+  hash_chain: true

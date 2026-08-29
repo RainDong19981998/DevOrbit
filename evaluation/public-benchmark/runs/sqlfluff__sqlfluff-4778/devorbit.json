@@ -1,0 +1,45 @@
+{
+  "caseId": "PUB-SQLFLUFF__SQLFLUFF-4778",
+  "method": "devorbit",
+  "attempts": 3,
+  "rca": {
+    "rootCause": "In the Jinja templater's tracer slicer, the `extract_block_type` method does not recognize the Jinja `do` statement (from the Expression Statement extension) as a self-contained templated expression. Instead, it classifies `{% do ... %}` as a `block_start`, which opens a block that is never closed (there is no `{% enddo %}`). This unclosed block throws off the block tracking in `_handle_zero_length_slice()` in lexer.py, preventing the correct insertion of indent/dedent meta tokens around subsequent Jinja `if` blocks, causing false LT02 indentation errors. The fix is to add `do` to the list of tag names treated as `templated` (like `set`) in `extract_block_type`.",
+    "confidence": 0.95,
+    "evidence": [
+      "The issue states that SQLFluff v2.0.2 gives LT02 indentation errors for Jinja if-blocks when a `{% do ... %}` statement is present, and removing the `do` line fixes it.",
+      "Parse output shows that with the `do` line, the `{% do cols.remove('a') %}` is classified as `Type: 'block_start'` with no corresponding `block_end`, and the `if` block is missing its indent/dedent meta tokens.",
+      "Without the `do` line, the `if` block correctly gets `indent` and `dedent` meta tokens with block IDs, and linting passes.",
+      "The hint confirms: 'If I add `do` to the list of tag names in `extract_block_type` at tracer.py#L527 it regards it as a `templated` element instead of `block_start`, and the indent is added where I want it.'",
+      "The hint also confirms: 'based on the docs for jinja it looks like we should never get a do block (i.e. {% do ... %} ... {% enddo %}), it's only ever just {% do ... %}. That means that treating it like a templated section is the right route, i.e. we should add it in extract_block_type.'"
+    ],
+    "filesToChange": [
+      "src/sqlfluff/core/templaters/slicers/tracer.py"
+    ]
+  },
+  "edits": [
+    {
+      "path": "src/sqlfluff/core/templaters/slicers/tracer.py",
+      "search": "        if block_type == \"block_start\" and trimmed_parts[0] in (\n            \"block\",\n            \"call\",\n            \"do\",\n            \"macro\",\n            \"set\",\n        ):",
+      "replace": "        if block_type == \"block_start\" and trimmed_parts[0] in (\n            \"block\",\n            \"call\",\n            \"macro\",\n            \"set\",\n        ):"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "edit apply failed: src/sqlfluff/core/templaters/slicers/tracer.py: search block not found (exact and whitespace-normalized match both failed) [search:         if block_type == \"block_start\" and trimmed_parts[0] in (\n            \"block\",\n            \"call\",\n            \"do\",\n            \"macro\",\n            \"se]",
+    "changedPaths": [
+      "src/sqlfluff/core/templaters/slicers/tracer.py"
+    ]
+  },
+  "patchSha256": "sha256:f692b1c96aa9de4e69cdf69b35eb2f0a5426b32cb46e2f32178ffa6271340583",
+  "contextBytes": 16000,
+  "baselineTail": "ja_slice_file\n(no match in any of [<Module jinja_test.py>])\n\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x test/core/templaters/jinja_test.py::test__templater_jinja_slice_file[{%\nERROR: not found: /tmp/zhanlu/bench-work/sqlfluff__sqlfluff-4778/source/test/core/templaters/jinja_test.py::test__templater_jinja_slice_file\n(no match in any of [<Module jinja_test.py>])\n\n",
+  "goldFiles": [
+    "src/sqlfluff/core/linter/linter.py",
+    "src/sqlfluff/core/templaters/slicers/tracer.py"
+  ],
+  "model": "glm",
+  "modelCalls": 4
+}

@@ -1,0 +1,8 @@
+{
+  "instanceId": "pydicom__pydicom-1428",
+  "repository": "pydicom/pydicom",
+  "version": "2.1",
+  "createdAt": "2021-06-28T08:57:19Z",
+  "problemStatement": "Allow to search a list of elements in a `FileSet` while only loading instances once, to drastically improve execution time\n**Is your feature request related to a problem? Please describe.**\r\nCurrently, `fileset.FileSet.find_values` only allows for elements to be searched for one at a time. When executing this action while setting `load` to `True`, this results in a substantial overhead.\r\n\r\n**Describe the solution you'd like**\r\nThe following example code allows loading the instances once, and iterating over a list of elements to find:\r\n```python\r\ndef find_values_quick(self, elements, instances=None):\r\n    results = {element: [] for element in elements}\r\n    instances = instances or iter(self)\r\n    for instance in instances:\r\n        instance = instance.load()\r\n        for element in elements:\r\n            if element not in instance:\r\n                continue\r\n            val = instance[element].value\r\n            if val not in results[element]:\r\n                results[element].append(val)\r\n    return results\r\n```\n",
+  "hintsText": "Sounds good, do you want to do the PR? Just change `FileSet.find_values` to support an element or iterable of elements."
+}

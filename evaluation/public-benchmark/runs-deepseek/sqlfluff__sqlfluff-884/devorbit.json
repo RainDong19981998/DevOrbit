@@ -1,0 +1,45 @@
+{
+  "caseId": "PUB-SQLFLUFF__SQLFLUFF-884",
+  "method": "devorbit",
+  "attempts": 3,
+  "rca": {
+    "rootCause": "The `is_whitespace` attribute is defined as a class-level attribute on the base `BaseSegment` class and is set to `False` by default. However, the `WhitespaceSegment` and `NewlineSegment` classes that previously set it to `True` have been removed, and the current lexer creates raw segments for whitespace and newline tokens without setting `is_whitespace` to `True`. The attribute is only used in the base class definition and never updated for whitespace/newline segments, causing `segment.is_whitespace` to be `False` for whitespace tokens.",
+    "confidence": 0.9,
+    "evidence": [
+      "The only use of `is_whitespace` in the codebase is `src/sqlfluff/core/parser/segments/base.py:72: is_whitespace = False`.",
+      "The issue states that `segment.is_whitespace` of a Whitespace token is `False` but expected `True`.",
+      "The hint mentions that `WhitespaceSegment` and `NewlineSegment` classes existed in 2019 but are now removed, and whitespace is defined in `src/sqlfluff/core/rules/base.py`.",
+      "The test `test__dialect__ansi_is_whitespace` checks that raw segments of type 'whitespace' and 'newline' have `is_whitespace` set to `True`, but this fails because the attribute is never set."
+    ],
+    "filesToChange": [
+      "src/sqlfluff/core/parser/segments/base.py",
+      "src/sqlfluff/core/parser/lexer.py"
+    ]
+  },
+  "edits": [
+    {
+      "path": "src/sqlfluff/core/parser/segments/raw.py",
+      "search": "    @classmethod\n    def make(cls, template, name=None, **kwargs):\n        \"\"\"Make a new subclass of RawSegment.\n\n        This is the primary way of creating new RawSegment classes.\n        The template is the regex or string that the segment will match.\n        The name is the name of the segment, and any additional kwargs\n        are passed to the class as class attributes.\n        \"\"\"\n        # Create the new class\n        new_class = type(\n            name or \"RawSegment\",\n            (cls,),\n            {\"template\": template, \"name\": name, **kwargs},\n        )\n        return new_class",
+      "replace": "    @classmethod\n    def make(cls, template, name=None, **kwargs):\n        \"\"\"Make a new subclass of RawSegment.\n\n        This is the primary way of creating new RawSegment classes.\n        The template is the regex or string that the segment will match.\n        The name is the name of the segment, and any additional kwargs\n        are passed to the class as class attributes.\n        \"\"\"\n        # If the type is whitespace or newline, set is_whitespace to True\n        if kwargs.get(\"type\") in (\"whitespace\", \"newline\"):\n            kwargs[\"is_whitespace\"] = True\n        # Create the new class\n        new_class = type(\n            name or \"RawSegment\",\n            (cls,),\n            {\"template\": template, \"name\": name, **kwargs},\n        )\n        return new_class"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "edit apply failed: src/sqlfluff/core/parser/segments/raw.py: search block not found (exact and whitespace-normalized match both failed) [search:     @classmethod\n    def make(cls, template, name=None, **kwargs):\n        \"\"\"Make a new subclass of RawSegment.\n\n        This is the primary way of creating ne]",
+    "changedPaths": [
+      "src/sqlfluff/core/parser/segments/raw.py"
+    ]
+  },
+  "patchSha256": null,
+  "contextBytes": 11155,
+  "baselineTail": "-x test/core/dialects/ansi_test.py::test__dialect__ansi_is_whitespace\nImportError while loading conftest '/tmp/zhanlu/bench-work-ds/sqlfluff__sqlfluff-884/source/test/conftest.py'.\ntest/conftest.py:6: in <module>\n    from sqlfluff.core.parser.markers import FilePositionMarker\nsrc/sqlfluff/__init__.py:21: in <module>\n    import pkg_resources\nE   ModuleNotFoundError: No module named 'pkg_resources'\n",
+  "goldFiles": [
+    "src/sqlfluff/core/dialects/dialect_ansi.py",
+    "src/sqlfluff/core/parser/lexer.py"
+  ],
+  "model": "deepseek-v4-flash-0731",
+  "modelCalls": 4
+}

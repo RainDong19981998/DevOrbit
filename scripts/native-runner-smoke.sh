@@ -4,7 +4,7 @@ set -euo pipefail
 root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 cd "$root"
 
-image=${DEVORBIT_NATIVE_IMAGE:-devorbit:0.6.0-native-smoke}
+image=${DEVORBIT_NATIVE_IMAGE:-devorbit:0.8.0-native-smoke}
 node_image=${DEVORBIT_NODE_IMAGE:-node:22.18.0-bookworm-slim}
 debian_mirror=${DEVORBIT_DEBIAN_MIRROR:-https://deb.debian.org}
 report=${DEVORBIT_NATIVE_RUNNER_REPORT:-reports/native-runner-smoke.json}

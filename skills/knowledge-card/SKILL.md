@@ -1,5 +1,6 @@
 ---
 name: knowledge-card
+version: 1.0.0
 description: Convert a completed or rolled-back software delivery trace into a redacted, searchable postmortem card with cause, fix, validation, release outcome, prevention rules, and linked evidence. Use at case termination or when retrieving reusable engineering knowledge.
 ---
 

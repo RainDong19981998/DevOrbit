@@ -1,0 +1,26 @@
+import { createHash } from 'node:crypto';
+import { readFile } from 'node:fs/promises';
+import { validateJsonSchema } from '../src/evaluation/public-benchmark.js';
+
+const manifest = JSON.parse(await readFile(new URL('../evaluation/public-model-pilot.manifest.json', import.meta.url)));
+const schema = JSON.parse(await readFile(new URL('../schemas/public-model-pilot.schema.json', import.meta.url)));
+const report = JSON.parse(await readFile(new URL('../reports/public-model-pilot.json', import.meta.url)));
+const failurePath = new URL('../evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-001-failure.json', import.meta.url);
+const failure = JSON.parse(await readFile(failurePath));
+const patch = await readFile(new URL('../evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/model.patch', import.meta.url));
+const shaRef = value => `sha256:${createHash('sha256').update(value).digest('hex')}`;
+const checks = [];
+const check = (label, ok) => checks.push([label, Boolean(ok)]);
+check('run 1 manifest schema', validateJsonSchema(manifest, schema).length === 0);
+check('failed run preserved', report.runId === 'run-001' && report.status === 'blocked-before-apply' && failure.status === 'blocked-before-apply');
+check('real pinned model', report.model.digest === manifest.model.digest && report.model.name === 'qwen3:8b' && report.model.temperature === 0 && report.model.seed === 847);
+check('one model patch attempt', report.workflow.patchAttempts === 1 && report.workflow.patchApplied === false);
+check('deterministic gate blocked patch', report.gate.name === 'git apply --check' && report.gate.exitCode === 1 && failure.gateExitCode === 1);
+check('failed patch digest bound', shaRef(patch) === report.artifacts.patch.sha256 && shaRef(patch) === failure.patchSha256);
+check('no source write or post-patch tests', failure.sourceModified === false && failure.testsAfterPatchRun === false && failure.humanRepairApplied === false);
+check('no gold access or comparison', report.leakage.forbiddenArtifactsRead.length === 0 && report.leakage.goldComparisonPerformed === false);
+check('honest non-score boundary', report.workflow.closedLoop === false && report.boundary.includes('No aggregate') && failure.boundary.includes('not a DevOrbit success'));
+for (const [label, ok] of checks) console.log(`${ok ? 'PASS' : 'FAIL'} ${label}`);
+const passed = checks.filter(([, ok]) => ok).length;
+if (passed !== checks.length) process.exit(1);
+console.log(`PASS public model run-001 failure evidence: ${passed}/${checks.length}, gate blocked before apply`);

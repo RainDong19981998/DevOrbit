@@ -1,0 +1,31 @@
+{
+  "caseId": "PUB-PYDICOM__PYDICOM-1694",
+  "method": "single-agent",
+  "attempts": 3,
+  "rca": null,
+  "edits": [
+    {
+      "path": "pydicom/dataset.py",
+      "search": "                if tag.undef:\n                    # Group Length tag added to dataset\n                    continue\n                data_element = self[key]\n                if data_element.VR == 'UN':",
+      "replace": "                if tag.undef:\n                    # Group Length tag added to dataset\n                    continue\n                try:\n                    data_element = self[key]\n                except Exception as exc:\n                    logger.debug(\n                        \"Exception raised while accessing tag {}\",\n                        key,\n                    )\n                    if not suppress_invalid_tags:\n                        raise\n                    logger.warning(\n                        \"Failed to access tag {}: {}\", key, exc\n                    )\n                    continue\n                if data_element.VR == 'UN':"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "edit apply failed: pydicom/dataset.py: search block not found (exact and whitespace-normalized match both failed) [search:                 if tag.undef:\n                    # Group Length tag added to dataset\n                    continue\n                data_element = self[key]\n    ]",
+    "changedPaths": [
+      "pydicom/dataset.py"
+    ]
+  },
+  "patchSha256": null,
+  "contextBytes": 10934,
+  "baselineTail": "=======\nFAILED pydicom/tests/test_json.py::TestDataSetToJson::test_suppress_invalid_tags_with_failed_dataelement\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 1 warning in 0.16s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x pydicom/tests/test_json.py::TestDataSetToJson::test_suppress_invalid_tags_with_failed_dataelement\n",
+  "goldFiles": [
+    "pydicom/dataset.py"
+  ],
+  "model": "glm",
+  "modelCalls": 3
+}

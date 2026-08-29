@@ -42,6 +42,11 @@ try {
 
   const unauthorized = await fetch(`${base}/api/runs`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' });
   if (unauthorized.status !== 401) throw new Error(`unauthorized control request returned ${unauthorized.status}`);
+  const unauthorizedAudit = await fetch(`${base}/api/mcp/audit`);
+  if (unauthorizedAudit.status !== 401) throw new Error(`unauthorized MCP audit returned ${unauthorizedAudit.status}`);
+  const audit = await fetch(`${base}/api/mcp/audit?after=0`, { headers: { authorization: `Bearer ${token}` } });
+  const auditBody = await audit.json();
+  if (audit.status !== 200 || auditBody.total !== 0 || auditBody.audit.length !== 0 || !auditBody.protocolVersions.includes('2025-11-25')) throw new Error('authorized MCP audit contract failed');
 
   const page = await fetch(`${base}/`);
   if (page.headers.get('content-security-policy') !== "default-src 'self'; base-uri 'self'; connect-src 'self'; img-src 'self' data:; object-src 'none'; frame-ancestors 'none'") throw new Error('strict CSP is missing');
@@ -61,7 +66,7 @@ try {
   const oversized = await fetch(`${base}/api/runs`, { method: 'POST', headers: { authorization: `Bearer ${token}`, 'content-type': 'application/json' }, body: JSON.stringify({ padding: 'x'.repeat(1024 * 1024 + 1) }) });
   if (oversized.status !== 413) throw new Error(`oversized body returned ${oversized.status}`);
 
-  console.log('PASS API security smoke: auth, CSP, approval bypass, MCP, static allowlist, body limit');
+  console.log('PASS API security smoke: auth, audit, CSP, approval bypass, MCP, static allowlist, body limit');
 } finally {
   server.kill('SIGTERM');
   await Promise.race([new Promise(resolve => server.once('exit', resolve)), delay(5000)]);

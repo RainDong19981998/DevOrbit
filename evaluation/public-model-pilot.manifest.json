@@ -1,0 +1,62 @@
+{
+  "protocolVersion": "1.0",
+  "pilotId": "devorbit-public-model-pilot-v1",
+  "status": "pre-registered-validation-pilot",
+  "registeredAt": "2026-08-13T14:45:00Z",
+  "disclosure": "One SWE-bench dev case is used to test a real local-model DevOrbit workflow. This is a pre-registered validation pilot, not a test-set score, aggregate benchmark, production claim, or ranking claim.",
+  "case": {
+    "instanceId": "sqlfluff__sqlfluff-884",
+    "dataset": "princeton-nlp/SWE-bench",
+    "datasetSnapshot": "e48e2bd1e9fecd5bbd641e9414ac59da9f2e69f6",
+    "split": "dev-validation-pilot",
+    "repository": "sqlfluff/sqlfluff",
+    "baseCommit": "c0bad78f3fa9549591738c77f869724f721e6830",
+    "sourceArchiveUrl": "https://codeload.github.com/sqlfluff/sqlfluff/tar.gz/c0bad78f3fa9549591738c77f869724f721e6830",
+    "sourceArchiveSha256": "sha256:8484d90c290fc06b8c331991605300a692266a6f71536d1cf1612e4dca8c4fbb",
+    "issuePath": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/issue.json",
+    "issueSha256": "sha256:7db1d09d0c560c0fd2b3974d60fbe9d202a019c9fc26bf689a7acda02553d4c9",
+    "commentsPath": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/comments.json",
+    "commentsSha256": "sha256:303ac24d32a6f1d3388cfa12963bf5da73ce80c73f5f2bd6c2a9ac351cfaa8be",
+    "testPatchPath": "evaluation/public-pilot/sqlfluff__sqlfluff-884/test.patch",
+    "testPatchSha256": "sha256:3e799cc71e656fffdd8d6215dd5561cbdbe0808cfac7352f69b2e86067d8de50"
+  },
+  "model": {
+    "provider": "local-ollama",
+    "name": "qwen3:8b",
+    "digest": "sha256:500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+    "parameterSize": "8.2B",
+    "quantization": "Q4_K_M",
+    "temperature": 0,
+    "seed": 847,
+    "contextTokens": 16384,
+    "maxOutputTokens": 3072,
+    "thinking": false
+  },
+  "workflow": {
+    "agents": ["rca-worker", "patch-worker", "verify-worker"],
+    "patchAttemptLimit": 1,
+    "allowedWritePrefix": "src/",
+    "forbiddenWritePrefixes": ["test/", ".github/", "evaluation/"],
+    "targetCommand": "/usr/bin/python3.10 -m pytest -q test/core/dialects/ansi_test.py::test__dialect__ansi_is_whitespace",
+    "regressionCommand": "/usr/bin/python3.10 -m pytest -q test/core/dialects/ansi_test.py",
+    "successCriteria": [
+      "baseline reproduces the exact target assertion",
+      "the model produces and applies a source-only patch",
+      "FAIL_TO_PASS exits zero",
+      "the ANSI regression file exits zero",
+      "verify-worker accepts evidence that is bound to the applied diff"
+    ]
+  },
+  "leakagePolicy": {
+    "runnerMayRead": ["frozen issue snapshot", "frozen issue comments", "baseline failure", "repository search results", "base-commit source files", "model-generated diff", "post-patch test output"],
+    "runnerMustNotRead": ["pull request page or patch", "expected fix commit", "gold patch", "gold patch digest", "gold verification logs", "SWE-bench model patch field"],
+    "goldComparison": "No gold comparison is performed by the runner or reported as a model score."
+  },
+  "evidence": {
+    "transcriptPath": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/transcript.json",
+    "patchPath": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/model.patch",
+    "targetLogPath": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/target.log",
+    "regressionLogPath": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/regression.log",
+    "reportPath": "reports/public-model-pilot.json"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "caseId": "PUB-PYLINT-DEV__ASTROID-2023",
+  "method": "devorbit",
+  "attempts": 3,
+  "rca": {
+    "rootCause": "The `are_exclusive` function in `astroid/nodes/node_classes.py` incorrectly assumes that statements in the `test` of an `If` node are exclusive with the `body` and `orelse` branches. When a walrus operator (NamedExpr) is used in the `test`, the variable it assigns is available in both branches, so they are not exclusive. The function needs to handle `NamedExpr` nodes in the `test` by treating them as non-exclusive with the branches.",
+    "confidence": 0.95,
+    "evidence": [
+      "The issue description and hints point to `astroid.are_exclusive` in `astroid/nodes/node_classes.py` as the source of the problem.",
+      "The test file `tests/test_utils.py` includes new tests like `test_not_exclusive_walrus_operator` that assert `nodes.are_exclusive(node_walrus, node_body) is False` and `nodes.are_exclusive(node_walrus, node_or_else) is False`, which currently fail.",
+      "The hints mention that the problem is in `astroid.are_exclusive` and that there is an invalid assumption about `IfExp` branches being exclusive when assignment is in the test."
+    ],
+    "filesToChange": [
+      "astroid/nodes/node_classes.py"
+    ]
+  },
+  "edits": [
+    {
+      "path": "astroid/nodes/node_classes.py",
+      "search": "            if isinstance(node, If) and exceptions is None:\n                if (\n                    node.locate_child(previous)[1]\n                    is not node.locate_child(children[node])[1]\n                ):\n                    return True",
+      "replace": "            if isinstance(node, If) and exceptions is None:\n                if (\n                    node.locate_child(previous)[1]\n                    is not node.locate_child(children[node])[1]\n                ):\n                    # If the test contains a walrus operator, the variable is\n                    # available in both branches, so they are not exclusive.\n                    if next(node.test.nodes_of_class(NamedExpr), None):\n                        return False\n                    return True"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": true,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "F2P red; P2P green ",
+    "f2pLogTail": "\nno tests ran in 0.37s\n\nERROR: not found: /tmp/zhanlu/bench-work-ds/pylint-dev__astroid-2023/source/tests/test_utils.py::InferenceUtil::test_not_exclusive_walrus_multiple\n(no match in any of [<UnitTestCase InferenceUtil>])\n\nERROR: not found: /tmp/zhanlu/bench-work-ds/pylint-dev__astroid-2023/source/tests/test_utils.py::InferenceUtil::test_not_exclusive_walrus_operator\n(no match in any of [<UnitTestCase InferenceUtil>])\n\nERROR: not found: /tmp/zhanlu/bench-work-ds/pylint-dev__astroid-2023/source/tests/test_utils.py::InferenceUtil::test_not_exclusive_walrus_operator_nested\n(no match in any of [<UnitTestCase InferenceUtil>])\n\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x tests/test_utils.py::InferenceUtil::test_not_exclusive_walrus_multiple tests/test_utils.py::InferenceUtil::test_not_exclusive_walrus_operator tests/test_utils.py::InferenceUtil::test_not_exclusive_walrus_operator_nested\nERROR: not found: /tmp/zhanlu/bench-work-ds/pylint-dev__astroid-2023/source/tests/test_utils.py::InferenceUtil::test_not_exclusive_walrus_multiple\n(no match in any of [<UnitTestCase InferenceUtil>])\n\nERROR: not found: /tmp/zhanlu/bench-work-ds/pylint-dev__astroid-2023/source/tests/test_utils.py::InferenceUtil::test_not_exclusive_walrus_operator\n(no match in any of [<UnitTestCase InferenceUtil>])\n\nERROR: not found: /tmp/zhanlu/bench-work-ds/pylint-dev__astroid-2023/source/tests/test_utils.py::InferenceUtil::test_not_exclusive_walrus_operator_nested\n(no match in any of [<UnitTestCase InferenceUtil>])\n\n\n[...]\nnot found: /tmp/zhanlu/bench-work-ds/pylint-dev__astroid-2023/source/tests/test_utils.py::InferenceUtil::test_not_exclusive_walrus_operator\n(no match in any of [<UnitTestCase InferenceUtil>])\n\nERROR: not found: /tmp/zhanlu/bench-work-ds/pylint-dev__astroid-2023/source/tests/test_utils.py::InferenceUtil::test_not_exclusive_walrus_operator_nested\n(no match in any of [<UnitTestCase InferenceUtil>])\n\n",
+    "changedPaths": [
+      "astroid/nodes/node_classes.py"
+    ],
+    "appliedMethods": [
+      {
+        "path": "astroid/nodes/node_classes.py",
+        "method": "exact",
+        "ambiguous": false
+      }
+    ]
+  },
+  "patchSha256": "sha256:a3b046ceb87216ed6ee476914a040ac2c8ca6d4f9f797fcfc0c8647615167e4d",
+  "contextBytes": 9809,
+  "baselineTail": "e\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.52s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x tests/test_utils.py::InferenceUtil::test_not_exclusive_walrus_multiple tests/test_utils.py::InferenceUtil::test_not_exclusive_walrus_operator tests/test_utils.py::InferenceUtil::test_not_exclusive_walrus_operator_nested\n",
+  "goldFiles": [
+    "astroid/nodes/node_classes.py"
+  ],
+  "model": "deepseek-v4-flash-0731",
+  "modelCalls": 4
+}

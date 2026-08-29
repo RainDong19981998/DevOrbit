@@ -1,0 +1,38 @@
+{
+  "generatedAt": "2026-08-14T04:47:59.848Z",
+  "status": "failed",
+  "runId": "run-008",
+  "stage": "completed",
+  "error": "ENOENT: no such file or directory, open '/home/admin1/hrz/code/goai_lingji/evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-008-model.patch'",
+  "disclosure": "Run 8 reuses the same SWE-bench dev validation case after seven disclosed runs. Run 7 passed its frozen target, 145-test regression, classification, path, invariant, and verifier gates, but a later source-level compatibility audit found duplicate-keyword and name-versus-type residual risks. Run 8 adds that audit as a mandatory factory probe. It remains policy-guided tuning, not independent generalization, a test-set score, an aggregate benchmark, a production claim, or a ranking claim.",
+  "boundary": "Failed pre-registered SWE-bench dev validation run. No aggregate, test-set, production, gold-equivalence, or ranking claim.",
+  "case": {
+    "instanceId": "sqlfluff__sqlfluff-884",
+    "split": "dev-validation-policy-guided-factory-compatibility"
+  },
+  "model": {
+    "provider": "local-ollama",
+    "name": "qwen3:8b",
+    "digest": "sha256:500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+    "parameterSize": "8.2B",
+    "quantization": "Q4_K_M",
+    "temperature": 0,
+    "seed": 847,
+    "contextTokens": 16384,
+    "maxOutputTokens": 3072,
+    "thinking": false
+  },
+  "workflow": {
+    "agentsStarted": [
+      "rca-worker"
+    ],
+    "patchAttempts": 0,
+    "closedLoop": false
+  },
+  "leakage": {
+    "enforced": true,
+    "runnerManifest": "evaluation/public-model-pilot-v8.manifest.json",
+    "forbiddenArtifactsRead": [],
+    "goldComparisonPerformed": false
+  }
+}

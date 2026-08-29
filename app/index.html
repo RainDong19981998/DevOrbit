@@ -6,12 +6,13 @@
   <title>DevOrbit · 多 Agent 研发闭环</title>
   <link rel="stylesheet" href="/app/style.css">
   <link rel="stylesheet" href="/app/approval.css">
+  <link rel="stylesheet" href="/app/v095.css">
 </head>
 <body>
   <header class="topbar">
     <a class="brand" href="#"><span class="mark">D/O</span><span>DevOrbit</span></a>
-    <nav><a href="#workspace">闭环驾驶舱</a><a href="#skills">Skill 资产</a><a href="#evidence">审计证据</a></nav>
-    <div class="runtime"><span class="dot"></span>AgentTeams Contract · Local</div>
+    <nav><a href="#workspace">闭环驾驶舱</a><a href="#artifacts">执行证据</a><a href="#skills">Skill 资产</a><a href="#evidence">验证结果</a></nav>
+    <div class="runtime"><span class="dot"></span>AgentTeams Runtime · Local</div>
   </header>
 
   <main>
@@ -19,11 +20,13 @@
       <div>
         <p class="eyebrow">SOFTWARE DELIVERY CONTROL PLANE</p>
         <h1>把一次线上缺陷，变成<br><em>可验证的研发闭环</em></h1>
-        <p class="lede">七个职能 Agent 协同完成信号归并、代码根因定位、补丁生成、测试门禁、灰度确认和知识沉淀。每个判断都有证据，每个动作都能回滚。</p>
+        <p class="lede">提交问题、仓库和分支，七个职能 Agent 自动完成信号归并、根因定位、补丁生成和测试；发布前由负责人确认，最终交付可回放的证据包。</p>
         <div class="hero-actions">
           <button id="run-button"><span>▶</span> 运行完整案例</button>
           <select id="scenario-select" aria-label="选择演示场景">
             <option value="happy-path">正常修复 + 人工审批</option>
+            <option value="dynamic-resampling">动态补证：置信度 0.58 → 0.91</option>
+            <option value="self-healing">自愈闭环：Red → Red → Green</option>
             <option value="low-confidence">根因低置信停止</option>
             <option value="test-failure">真实测试失败阻断</option>
             <option value="canary-regression">灰度退化自动回滚</option>
@@ -41,6 +44,13 @@
 
     <section id="workspace" class="workspace">
       <div class="section-title"><div><p class="eyebrow">LIVE WORKSPACE</p><h2>闭环驾驶舱</h2></div><div id="run-state" class="run-state idle"><span></span>等待运行</div></div>
+      <div class="task-input">
+        <div><p>CASE INPUT</p><h3>研发任务输入</h3></div>
+        <label><span>问题标题</span><input id="incident-title" value="支付页提交后持续转圈，订单偶发重复创建"></label>
+        <label><span>目标仓库</span><input id="incident-repository" value="checkout-service"></label>
+        <label><span>目标分支</span><input id="incident-branch" value="release/2026.08"></label>
+        <div class="input-boundary"><b>LOCAL FIXTURE</b><span>接口契约可切换 GitHub / Jenkins / Argo</span></div>
+      </div>
       <div class="pipeline" id="pipeline">
         <article data-stage="0"><b>01</b><span>信号归并</span><small>Intake</small></article>
         <i>→</i><article data-stage="1"><b>02</b><span>影响分析</span><small>Impact</small></article>
@@ -55,8 +65,22 @@
         <article class="panel signals"><header><div><p>INPUT STREAM</p><h3>多源信号</h3></div><span>5 条</span></header><div id="signals"><p class="empty">运行后加载案例输入</p></div></article>
         <article class="panel trace"><header><div><p>AGENT TRACE</p><h3>协同轨迹</h3></div><span id="trace-count">0 / --</span></header><div id="trace"><p class="empty">Agent 执行轨迹将在这里实时出现</p></div></article>
         <article class="panel finding"><header><div><p>EVIDENCE RCA</p><h3>根因与影响面</h3></div><span class="confidence" id="confidence">--</span></header><div id="finding"><p class="empty">等待证据分析</p></div></article>
-        <article class="panel release"><header><div><p>CONTROLLED RELEASE</p><h3>修复与发布门禁</h3></div><span class="lock">🔒 审批保护</span></header><div id="release"><p class="empty">等待修复方案</p></div></article>
+        <article class="panel release"><header><div><p>CONTROLLED RELEASE</p><h3>修复与发布门禁</h3></div><span class="rework-badge" id="rework-badge"></span><span class="lock">🔒 审批保护</span></header><div id="release"><p class="empty">等待修复方案</p></div></article>
       </div>
+
+      <section id="artifacts" class="artifact-console">
+        <header>
+          <div><p>RUN EVIDENCE</p><h3>执行证据工作台</h3></div>
+          <div class="artifact-tabs" role="tablist" aria-label="执行证据视图">
+            <button class="artifact-tab active" data-evidence-tab="patch" role="tab">代码 Diff</button>
+            <button class="artifact-tab" data-evidence-tab="tests" role="tab">测试门禁</button>
+            <button class="artifact-tab" data-evidence-tab="mcp" role="tab">MCP 审计</button>
+            <button class="artifact-tab" data-evidence-tab="trace" role="tab">Agent Trace</button>
+            <button class="artifact-tab" data-evidence-tab="knowledge" role="tab">知识卡</button><button class="artifact-tab" data-evidence-tab="warnings" role="tab">⚠ 负面警示</button>
+          </div>
+        </header>
+        <div id="artifact-view" class="artifact-view"><p class="empty">运行案例后可检查补丁、测试、工具调用和审计引用</p></div>
+      </section>
     </section>
 
     <section id="skills" class="assets">
@@ -66,10 +90,16 @@
 
     <section id="evidence" class="evidence-section">
       <div class="evidence-copy"><p class="eyebrow">PROOF, NOT PROMISES</p><h2>一次运行，一条完整证据链</h2><p>统一 Run ID 串联 Agent 决策、Skill 调用、工具访问、审批记录、测试制品、灰度指标和复盘知识卡，支持回放与审计。</p></div>
-      <div class="metrics"><div><b id="metric-agents">7</b><span>独立 Worker</span></div><div><b id="metric-mcp">--</b><span>MCP tools/call</span></div><div><b id="metric-otel">--</b><span>OTLP Span</span></div><div><b id="metric-eval">7/7</b><span>Golden Case</span></div><div><b id="metric-security">6/6</b><span>安全案例</span></div><div><b>7</b><span>对照/消融</span></div></div>
+      <div class="metrics"><div><b id="metric-agents">7</b><span>独立 Worker</span></div><div><b id="metric-mcp">--</b><span>MCP tools/call</span></div><div><b id="metric-otel">--</b><span>OTLP Span</span></div><div><b id="metric-eval">7/7</b><span>Golden Case</span></div><div><b id="metric-security">6/6</b><span>安全案例</span></div><div><b>1</b><span>独立负例留痕</span></div></div><div class="evidence-chain-wrap"><div class="evidence-chain-head"><p class="eyebrow">TAMPER-EVIDENT CHAIN</p><h3>证据链 Hash 验证</h3><span id="chain-status" class="chain-status idle">等待运行</span></div><div id="evidence-chain" class="evidence-chain"><p class="empty">运行案例后生成证据链</p></div><div class="chain-actions"><button id="tamper-button" class="chain-btn" disabled>演示篡改</button><button id="reverify-button" class="chain-btn" disabled>重新验证</button></div><p id="chain-note" class="chain-note"></p></div>
+    </section>
+
+    <section id="benchmark" class="evidence-section benchmark-section">
+      <div class="evidence-copy"><p class="eyebrow">PUBLIC BENCHMARK · SWE-BENCH DEV 30</p><h2>公开基准：从 0% 到可验证的闭环</h2><p>同一冻结的 30 案例 test split，比较 diff-based（V0.8）与 edit-based（V0.9.6）管道、三个模型与多 Agent/单 Agent 架构。全部区间为 95% Wilson，失败样本全披露。</p></div>
+      <div id="benchmark-board" class="benchmark-board"><p class="empty">加载基准数据…（需先运行 npm run public-benchmark 与 npm run model-ablation）</p></div>
     </section>
   </main>
-  <footer><span>DevOrbit v0.6.0 · 本地可复现演示</span><span>AgentTeams Contract + Skill + MCP 2025-06-18 + RAG + OTLP</span></footer>
+  <footer><span>DevOrbit v0.9.6 · 2026年8月28日</span><span>AgentTeams Runtime + Skill + MCP 2025-06-18 / 2025-11-25 + Episode + DB Branch + Hash Chain</span></footer>
+  <script src="/app/tour-timeline.js"></script>
   <script type="module" src="/app/app.js"></script>
 </body>
 </html>

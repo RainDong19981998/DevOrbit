@@ -1,0 +1,31 @@
+{
+  "caseId": "PUB-SQLFLUFF__SQLFLUFF-4151",
+  "method": "single-agent",
+  "attempts": 3,
+  "rca": null,
+  "edits": [
+    {
+      "path": "src/sqlfluff/cli/commands.py",
+      "search": "@click.option(\n    \"--disable-progress-bar\",\n    is_flag=True,\n    default=False,\n    help=\"\"\"Disables progress bars.\"\"\",\n)\n@click.option(\n    \"--fix\",\n    is_flag=True,\n    default=False,\n    help=\"\"\"Apply any fixes available for the configured rules. \"\"\"\n    \"\"\"Use this option as a shortcut for '--rules-fix'\"\"\",\n)\n@click.pass_context\ndef fix(ctx, nofail, force, paths, stdin=False, fix_even_unparsable=False,",
+      "replace": "@click.option(\n    \"--disable-progress-bar\",\n    is_flag=True,\n    default=False,\n    help=\"\"\"Disables progress bars.\"\"\",\n)\n@core_deprecated_option(\n    \"--disable_progress_bar\",\n    deprecated=\"--disable-progress-bar\",\n    message_prefix=\"Deprecated option: \",\n)\n@click.option(\n    \"--fix\",\n    is_flag=True,\n    default=False,\n    help=\"\"\"Apply any fixes available for the configured rules. \"\"\"\n    \"\"\"Use this option as a shortcut for '--rules-fix'\"\"\",\n)\n@click.pass_context\ndef fix(ctx, nofail, force, paths, stdin=False, fix_even_unparsable=False,"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "edit apply failed: src/sqlfluff/cli/commands.py: search block not found (exact and whitespace-normalized match both failed) [search: @click.option(\n    \"--disable-progress-bar\",\n    is_flag=True,\n    default=False,\n    help=\"\"\"Disables progress bars.\"\"\",\n)\n@click.option(\n    \"--fix\",\n    is_f]",
+    "changedPaths": [
+      "src/sqlfluff/cli/commands.py"
+    ]
+  },
+  "patchSha256": null,
+  "contextBytes": 15417,
+  "baselineTail": "======\nFAILED test/cli/commands_test.py::TestProgressBars::test_cli_fix_disabled_progress_bar_deprecated_option\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 4 warnings in 0.15s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x test/cli/commands_test.py::TestProgressBars::test_cli_fix_disabled_progress_bar_deprecated_option\n",
+  "goldFiles": [
+    "src/sqlfluff/cli/commands.py"
+  ],
+  "model": "glm",
+  "modelCalls": 3
+}

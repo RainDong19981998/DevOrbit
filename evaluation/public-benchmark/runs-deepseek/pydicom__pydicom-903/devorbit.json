@@ -1,0 +1,47 @@
+{
+  "caseId": "PUB-PYDICOM__PYDICOM-903",
+  "method": "devorbit",
+  "attempts": 3,
+  "rca": {
+    "rootCause": "When writing a DS (or other short-VR) data element with a value length exceeding 65534 bytes in Explicit VR transfer syntax, the writer attempts to pack the length into an unsigned short, which overflows and raises a struct.error. The correct behavior per DICOM standard is to change the VR to UN (Unknown) for such oversized elements, as noted in issue #900. The current code does not handle this conversion, causing the raw struct error instead of a meaningful exception or proper VR conversion.",
+    "confidence": 0.85,
+    "evidence": [
+      "The issue describes the exception 'ushort format requires 0 <= number <= (0x7fff * 2 + 1)' raised by write_leUS when writing a DS element with length > 65534 bytes in explicit VR.",
+      "The hint states 'Reopen as the fix is incorrect - the VR shall be changed to UN instead (see #900).'",
+      "The DICOM standard PS3.5 Table 6.2-1 notes that DS elements with multiple values may not be properly encoded if VL exceeds 65534 bytes in Explicit-VR, implying a need for VR conversion to UN."
+    ],
+    "filesToChange": [
+      "pydicom/filewriter.py"
+    ]
+  },
+  "edits": [
+    {
+      "path": "pydicom/filewriter.py",
+      "search": "    if data_element.is_raw:\n        # raw data element values can be written as they are\n        buffer.write(data_element.value)\n        is_undefined_length = data_element.length == 0xFFFFFFFF\n    else:\n        # If the VR is a short VR (not in extra_length_VRs) and the value\n        # length exceeds 65534 bytes, the VR shall be changed to UN\n        # (see PS3.5 Table 6.2-1 and issue #900)\n        if (not fp.is_implicit_VR and VR not in extra_length_VRs and\n                VR not in ['UN', 'SQ', 'OB', 'OW', 'OF', 'UT', 'OD']):\n            # write the value to the buffer first to determine its length\n            write_func = globals().get('write_' + VR)\n            if write_func is not None:\n                write_func(buffer, data_element, encodings)\n                if buffer.tell() > 65534:\n                    # change VR to UN and rewrite\n                    VR = 'UN'\n                    data_element.VR = 'UN'\n                    buffer = DicomBytesIO()\n                    buffer.is_little_endian = fp.is_little_endian\n                    buffer.is_implicit_VR = fp.is_implicit_VR\n                    write_OBvalue(buffer, data_element.value)\n            else:\n                write_OBvalue(buffer, data_element.value)\n        else:\n            write_func = globals().get('write_' + VR)\n            if write_func is not None:\n                write_func(buffer, data_element, encodings)\n            else:\n                write_OBvalue(buffer, data_element.value)\n        is_undefined_length = False",
+      "replace": "    if data_element.is_raw:\n        # raw data element values can be written as they are\n        buffer.write(data_element.value)\n        is_undefined_length = data_element.length == 0xFFFFFFFF\n    else:\n        # If the VR is a short VR (not in extra_length_VRs) and the value\n        # length exceeds 65534 bytes, the VR shall be changed to UN\n        # (see PS3.5 Table 6.2-1 and issue #900)\n        if (not fp.is_implicit_VR and VR not in extra_length_VRs and\n                VR not in ['UN', 'SQ', 'OB', 'OW', 'OF', 'UT', 'OD']):\n            # write the value to the buffer first to determine its length\n            write_func = globals().get('write_' + VR)\n            if write_func is not None:\n                write_func(buffer, data_element, encodings)\n                if buffer.tell() > 65534:\n                    # change VR to UN and rewrite\n                    VR = 'UN'\n                    data_element.VR = 'UN'\n                    buffer = DicomBytesIO()\n                    buffer.is_little_endian = fp.is_little_endian\n                    buffer.is_implicit_VR = fp.is_implicit_VR\n                    write_OBvalue(buffer, data_element.value)\n            else:\n                write_OBvalue(buffer, data_element.value)\n        else:\n            write_func = globals().get('write_' + VR)\n            if write_func is not None:\n                write_func(buffer, data_element, encodings)\n            else:\n                write_OBvalue(buffer, data_element.value)\n        is_undefined_length = False"
+    },
+    {
+      "path": "pydicom/filewriter.py",
+      "search": "    # Write element's tag\n    fp.write_tag(data_element.tag)\n\n    # If explicit VR, write the VR\n    VR = data_element.VR\n    if not fp.is_implicit_VR:\n        if len(VR) != 2:\n            msg = (\"Cannot write ambiguous VR of '{}' for data element with \"\n                   \"tag {}.\\nSet the correct VR before writing, or use an \"\n                   \"implicit VR transfer syntax\".format(\n                       VR, repr(data_element.tag)))\n            raise ValueError(msg)\n        if not in_py2:\n            fp.write(bytes(VR, default_encoding))\n        else:\n            fp.write(VR)\n        if VR in extra_length_VRs:\n            fp.write_US(0)  # reserved 2 bytes",
+      "replace": "    # Write element's tag\n    fp.write_tag(data_element.tag)\n\n    # If explicit VR, write the VR\n    VR = data_element.VR\n    if not fp.is_implicit_VR:\n        if len(VR) != 2:\n            msg = (\"Cannot write ambiguous VR of '{}' for data element with \"\n                   \"tag {}.\\nSet the correct VR before writing, or use an \"\n                   \"implicit VR transfer syntax\".format(\n                       VR, repr(data_element.tag)))\n            raise ValueError(msg)\n        if not in_py2:\n            fp.write(bytes(VR, default_encoding))\n        else:\n            fp.write(VR)\n        if VR in extra_length_VRs:\n            fp.write_US(0)  # reserved 2 bytes"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "edit apply failed: pydicom/filewriter.py: search block not found (exact and whitespace-normalized match both failed) [search:     if data_element.is_raw:\n        # raw data element values can be written as they are\n        buffer.write(data_element.value)\n        is_undefined_length = ]",
+    "changedPaths": [
+      "pydicom/filewriter.py"
+    ]
+  },
+  "patchSha256": "sha256:c5c8853bc1522c03a11bf424a40537becb9ee9bb692b46b80a49c48351024121",
+  "contextBytes": 10280,
+  "baselineTail": "sts/test_filewriter.py::TestWriteUndefinedLengthPixelData::test_writing_too_big_data_in_explicit_encoding\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.47s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x pydicom/tests/test_filewriter.py::TestWriteUndefinedLengthPixelData::test_writing_too_big_data_in_explicit_encoding\n",
+  "goldFiles": [
+    "pydicom/filewriter.py"
+  ],
+  "model": "deepseek-v4-flash-0731",
+  "modelCalls": 4
+}

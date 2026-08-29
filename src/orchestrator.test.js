@@ -16,7 +16,7 @@ test('independent workers close the loop using real patch tests', async () => {
   assert.equal(result.approval.state, 'approved');
   assert.equal(result.release.decision, 'promoted');
   assert.equal(result.state.status, 'learned');
-  assert.ok(result.knowledge.cardId);
+  assert.ok(result.knowledge.cardId || result.knowledge.episodeId);
   assert.ok(result.messages.some(message => message.to === 'verify-worker'));
   await access(result.tests ? new URL('../fixtures/checkout-service/test/order.test.js', import.meta.url) : '');
 });
@@ -89,4 +89,41 @@ test('release worker cannot mint or bypass a manager gate receipt', async () => 
   manager.context.approvalReceipt = null;
   await assert.rejects(() => manager.dispatch(releaseAgent, 'release'), /manager-signed gate receipt/);
   assert.equal(manager.state.artifacts.release.toolCalled, false);
+});
+
+test('dynamic resampling upgrades confidence and proceeds to patch', async () => {
+  const result = await runPipeline({ scenario: 'dynamic-resampling' });
+  assert.equal(result.rca.resampling.rounds, 1);
+  assert.ok(result.rca.causes[0].score >= 0.8);
+  assert.equal(result.state.status, 'learned');
+  assert.ok(result.rca.resampling.trace.length > 0);
+});
+
+test('self-healing loop retries patch after verify failure and succeeds', async () => {
+  const result = await runPipeline({ scenario: 'self-healing' });
+  assert.ok(result.metrics.patchAttempts >= 2, `expected >=2 attempts, got ${result.metrics.patchAttempts}`);
+  assert.equal(result.tests.gate, 'passed');
+  assert.equal(result.state.status, 'learned');
+});
+
+test('circuit breaker stops after max patch attempts', async () => {
+  const result = await runPipeline({ scenario: 'circuit-breaker' });
+  assert.equal(result.state.status, 'needs_human');
+  assert.ok(result.metrics.patchAttempts >= 3, `expected >=3 attempts, got ${result.metrics.patchAttempts}`);
+});
+
+test('evidence chain is verified and tamper-evident', async () => {
+  const result = await runPipeline();
+  assert.ok(result.evidenceChain);
+  assert.equal(result.evidenceChain.verified, true);
+  assert.ok(result.evidenceChain.linkCount >= 5);
+  assert.equal(result.evidenceChain.head.length, 16);
+});
+
+test('rca retrieves negative evidence warnings from episodes', async () => {
+  const result = await runPipeline();
+  assert.ok(result.rca);
+  assert.ok(Array.isArray(result.rca.warnings));
+  assert.ok(result.rca.warnings.length > 0, 'expected negative evidence warning for checkout-service redis context');
+  assert.ok(result.rca.warnings.some(w => w.recallStatus === 'negative' && w.warningMessage));
 });

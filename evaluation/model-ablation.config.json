@@ -1,0 +1,38 @@
+{
+  "protocolVersion": "1.0",
+  "description": "V0.9.6 three-dimensional ablation configuration. Each entry is a labeled benchmark results file on the same frozen 30-case test split. Dimensions: pipeline (diff-based vs edit-based, same model), model (same edit-based pipeline across models), architecture (devorbit vs single-agent, same model and pipeline).",
+  "runs": [
+    {
+      "label": "V0.8 diff-based · deepseek-v4-flash",
+      "results": "evaluation/archive/public-benchmark-results-v0.8-diff-based.json",
+      "dimension": "pipeline",
+      "patchMode": "diff-based",
+      "model": "deepseek-v4-flash-0731",
+      "methods": ["devorbit", "single-agent"]
+    },
+    {
+      "label": "V0.9.6 edit-based · deepseek-v4-flash",
+      "results": "evaluation/public-benchmark-results-deepseek.json",
+      "dimension": "pipeline+model",
+      "patchMode": "edit-based",
+      "model": "deepseek-v4-flash-0731",
+      "methods": ["devorbit"]
+    },
+    {
+      "label": "V0.9.6 edit-based · glm (local gateway)",
+      "results": "evaluation/public-benchmark-results.json",
+      "dimension": "model+architecture",
+      "patchMode": "edit-based",
+      "model": "glm",
+      "methods": ["devorbit", "single-agent"]
+    },
+    {
+      "label": "V0.9.6 edit-based · qwen3:8b (local)",
+      "results": "evaluation/public-benchmark-results-qwen3-8b.json",
+      "dimension": "model",
+      "patchMode": "edit-based",
+      "model": "qwen3:8b",
+      "methods": ["devorbit"]
+    }
+  ]
+}

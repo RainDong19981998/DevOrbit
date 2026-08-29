@@ -1,0 +1,193 @@
+{
+  "schema": "devorbit.scenario-migration/v1",
+  "version": "0.9.6",
+  "generatedAt": "2026-08-29T11:21:20.083Z",
+  "summary": {
+    "checkoutClosedLoop": true,
+    "inventoryClosedLoop": true,
+    "mechanismsIdentical": true
+  },
+  "unchanged": {
+    "workerSkillSequence": {
+      "checkout": [
+        "intake-worker:SignalFusion",
+        "impact-worker:ImpactMap",
+        "rca-worker:EvidenceRCA",
+        "patch-worker:PatchPlan",
+        "verify-worker:TestGate",
+        "release-worker:ReleaseGuard",
+        "learning-worker:KnowledgeCard"
+      ],
+      "inventory": [
+        "intake-worker:SignalFusion",
+        "impact-worker:ImpactMap",
+        "rca-worker:EvidenceRCA",
+        "patch-worker:PatchPlan",
+        "verify-worker:TestGate",
+        "release-worker:ReleaseGuard",
+        "learning-worker:KnowledgeCard"
+      ],
+      "identical": true
+    },
+    "stateMachinePath": {
+      "checkout": [
+        "triaged",
+        "diagnosed",
+        "planned",
+        "verified",
+        "canary",
+        "confirmed",
+        "learned"
+      ],
+      "inventory": [
+        "triaged",
+        "diagnosed",
+        "planned",
+        "verified",
+        "canary",
+        "confirmed",
+        "learned"
+      ],
+      "identical": true
+    },
+    "mcpToolSet": {
+      "checkout": [
+        "ci.run_tests",
+        "issue.fetch_signals",
+        "knowledge.search_cases",
+        "knowledge.write_case",
+        "observability.fetch_signals",
+        "release.canary",
+        "repository.create_workspace",
+        "repository.dispose_workspace",
+        "repository.read_file",
+        "repository.write_file"
+      ],
+      "inventory": [
+        "ci.run_tests",
+        "issue.fetch_signals",
+        "knowledge.search_cases",
+        "knowledge.write_case",
+        "observability.fetch_signals",
+        "release.canary",
+        "repository.create_workspace",
+        "repository.dispose_workspace",
+        "repository.read_file",
+        "repository.write_file"
+      ],
+      "identical": true
+    },
+    "sharedMechanisms": [
+      "case-lifecycle 状态机（received→…→learned，同一转移表）",
+      "7 职能 Worker 边界与 Manager 委派",
+      "Skill 版本化调用（trace 记录 skillVersion + skillDigest）",
+      "MCP 工具策略与签名审批门禁（L2 灰度需审批）",
+      "司法级 Hash 证据链",
+      "Episode 知识库硬过滤召回",
+      "幂等键与隔离工作区"
+    ],
+    "skillVersions": [
+      {
+        "id": "evidence-rca",
+        "version": "1.0.0",
+        "digest": "sha256:b2603bc3ec0513699e345ea489b2cb7761f253775ab500acf702b11aeb558b42"
+      },
+      {
+        "id": "impact-map",
+        "version": "1.0.0",
+        "digest": "sha256:357ee194d6032d958541c2e9a52e7779d9e7b073d56b78fdb996faaa89d08624"
+      },
+      {
+        "id": "knowledge-card",
+        "version": "1.0.0",
+        "digest": "sha256:712f723b75865c5c896fb2c33a875710f68b944725c451b7fae17ad1e9665bc0"
+      },
+      {
+        "id": "patch-plan",
+        "version": "1.0.0",
+        "digest": "sha256:163cc0dd0211847f75fccbe248afe2919130c5ad8bf0339989b76875acccf6c2"
+      },
+      {
+        "id": "release-guard",
+        "version": "1.0.0",
+        "digest": "sha256:6cbf5b9bd0f31dea284a7466255d812fdb7e755ecfb475fec85028655c1991cc"
+      },
+      {
+        "id": "signal-fusion",
+        "version": "1.0.0",
+        "digest": "sha256:5ed67b275ab80ce0c913aeb4cbf3f28a0772eb6773cc450e0557cd57fe0ff6ec"
+      },
+      {
+        "id": "test-gate",
+        "version": "1.0.0",
+        "digest": "sha256:af6f74bbae9075eca2979479dbc307a206b65fee256304661788175695f27e19"
+      }
+    ]
+  },
+  "replaced": {
+    "fixtureRepository": {
+      "checkout": "fixtures/checkout-service",
+      "inventory": "fixtures/inventory-service"
+    },
+    "signalPool": {
+      "checkout": "支付转圈/重复下单 5 类信号",
+      "inventory": "秒杀超卖/负库存 6 类信号"
+    },
+    "businessAssertions": {
+      "checkout": "幂等 409 + 连接池容量/排队超时阈值",
+      "inventory": "余量不足 409 + 并发不超卖 + 台账非负"
+    },
+    "fixTemplate": {
+      "checkout": "恢复连接池容量 + 幂等复用",
+      "inventory": "恢复扣减非负校验（乐观锁等价）"
+    },
+    "knowledgeDomain": {
+      "checkout": "redis/idempotency Episode",
+      "inventory": "inventory/oversell Episode（EP-007）"
+    },
+    "releaseVersion": {
+      "checkout": "checkout-service@2026.08.12-rc3",
+      "inventory": "inventory-service@2026.08.29-rc1"
+    },
+    "migrationSteps": [
+      "1. 新增目标域 fixture（带真实失败测试）与分层信号池",
+      "2. 在 fixture-profiles 声明目标域 profile（服务拓扑/影响面/根因假设/修复模板）",
+      "3. 知识库补充目标域 Episode（对齐租户/服务/环境/版本硬过滤字段）",
+      "4. 运行闭环并按业务断言验收；状态机、门禁、证据链、审批不需要改动"
+    ]
+  },
+  "cases": {
+    "checkout": {
+      "status": "learned",
+      "baseline": {
+        "failed": 3,
+        "passed": 1
+      },
+      "patched": {
+        "failed": 0,
+        "passed": 4
+      },
+      "release": "promoted",
+      "rcaScore": 0.91,
+      "evidenceChainVerified": true,
+      "mcpCalls": 15
+    },
+    "inventory": {
+      "status": "learned",
+      "baseline": {
+        "failed": 3,
+        "passed": 1
+      },
+      "patched": {
+        "failed": 0,
+        "passed": 4
+      },
+      "release": "promoted",
+      "rcaScore": 0.91,
+      "ragTop": "EP-007",
+      "episodeService": "inventory-service",
+      "evidenceChainVerified": true,
+      "mcpCalls": 12
+    }
+  }
+}

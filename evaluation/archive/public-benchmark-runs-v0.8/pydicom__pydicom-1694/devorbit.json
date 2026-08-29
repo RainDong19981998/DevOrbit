@@ -1,0 +1,23 @@
+{
+  "caseId": "PUB-PYDICOM__PYDICOM-1694",
+  "method": "devorbit",
+  "attempts": 2,
+  "rca": {
+    "files": [
+      "pydicom/dataset.py"
+    ]
+  },
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "git apply --check failed: \nerror: patch failed: pydicom/dataset.py:2489\nerror: pydicom/dataset.py: patch does not apply\n\nCommand failed: git apply --check model.patch\nerror: patch failed: pydicom/dataset.py:2489\nerror: pydicom/dataset.py: patch does not apply\n"
+  },
+  "patchSha256": "sha256:5dd4340f30ab0316e822518129e06fa422d0719008f39762a8bbdd17bfaaadd9",
+  "contextBytes": 8000,
+  "baselineTail": "=======\nFAILED pydicom/tests/test_json.py::TestDataSetToJson::test_suppress_invalid_tags_with_failed_dataelement\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 1 warning in 0.21s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x pydicom/tests/test_json.py::TestDataSetToJson::test_suppress_invalid_tags_with_failed_dataelement\n",
+  "goldFiles": [
+    "pydicom/dataset.py"
+  ]
+}

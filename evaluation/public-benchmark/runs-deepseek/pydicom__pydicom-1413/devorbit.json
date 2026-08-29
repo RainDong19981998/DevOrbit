@@ -1,0 +1,51 @@
+{
+  "caseId": "PUB-PYDICOM__PYDICOM-1413",
+  "method": "devorbit",
+  "attempts": 3,
+  "rca": {
+    "rootCause": "The error occurs because when assigning a bytes value to a data element with VR 'OL' (or other O* VRs), the value is being split on the backslash character (0x5C) during conversion, turning it into a MultiValue. This happens because the conversion logic in `pydicom.values.convert_value` treats bytes as a string-like value and splits it on the backslash delimiter, which is incorrect for binary VRs. The issue is triggered when the byte sequence contains the byte 0x5C, as in the example with array.array('H', range(100)).tobytes(). The fix should ensure that bytes values for O* VRs are not split and are kept as a single bytes object.",
+    "confidence": 0.9,
+    "evidence": [
+      "The issue report states: 'TypeError: a bytes-like object is required, not MultiValue' when using VR 'OL' with bytes data, and the error is reproduced when the byte value contains the hex for backslash (0x5C).",
+      "The maintainer's reproduction shows that `ds.LongPrimitivePointIndexList = b` where `b = array.array('H', range(100)).tobytes()` results in a MultiValue with two bytes objects split at the backslash byte, indicating the splitting behavior.",
+      "The error occurs only for O* VRs (like OL) and not for OB/OF, suggesting that the conversion logic for these VRs incorrectly treats bytes as a string and splits on backslash.",
+      "The relevant code is in `pydicom/values.py` where `convert_value` handles VRs, and the splitting logic likely uses `split` on the value, which for bytes should not be done."
+    ],
+    "filesToChange": [
+      "pydicom/values.py"
+    ]
+  },
+  "edits": [
+    {
+      "path": "pydicom/values.py",
+      "search": "def convert_OBvalue(\n    byte_string: bytes,\n    is_little_endian: bool,\n    struct_format: Optional[str] = None\n) -> bytes:\n    \"\"\"Return encoded 'OB' value as :class:`bytes`.\"\"\"\n    return byte_string\n\n\ndef convert_OWvalue(\n    byte_string: bytes,\n    is_little_endian: bool,\n    struct_format: Optional[str] = None\n) -> bytes:\n    \"\"\"Return the encoded 'OW' value as :class:`bytes`.\n\n    No byte swapping will be performed.\n    \"\"\"\n    # for now, Maybe later will have own routine\n    return convert_OBvalue(byte_string, is_little_endian)\n\n\ndef convert_OVvalue(\n    byte_string: bytes,\n    is_little_endian: bool,\n    struct_format: Optional[str] = None\n) -> bytes:\n    \"\"\"Return the encoded 'OV' value as :class:`bytes`.\n\n    .. versionadded:: 1.4\n\n    No byte swapping will be performed.\n    \"\"\"\n    # for now, Maybe later will have own routine\n    return convert_OBvalue(byte_string, is_little_endian)",
+      "replace": "def convert_OBvalue(\n    byte_string: bytes,\n    is_little_endian: bool,\n    struct_format: Optional[str] = None\n) -> bytes:\n    \"\"\"Return encoded 'OB' value as :class:`bytes`.\"\"\"\n    return byte_string\n\n\ndef convert_OLvalue(\n    byte_string: bytes,\n    is_little_endian: bool,\n    struct_format: Optional[str] = None\n) -> bytes:\n    \"\"\"Return the encoded 'OL' value as :class:`bytes`.\n\n    .. versionadded:: 1.4\n\n    No byte swapping will be performed.\n    \"\"\"\n    # for now, Maybe later will have own routine\n    return convert_OBvalue(byte_string, is_little_endian)\n\n\ndef convert_ODvalue(\n    byte_string: bytes,\n    is_little_endian: bool,\n    struct_format: Optional[str] = None\n) -> bytes:\n    \"\"\"Return the encoded 'OD' value as :class:`bytes`.\n\n    .. versionadded:: 1.4\n\n    No byte swapping will be performed.\n    \"\"\"\n    # for now, Maybe later will have own routine\n    return convert_OBvalue(byte_string, is_little_endian)\n\n\ndef convert_OWvalue(\n    byte_string: bytes,\n    is_little_endian: bool,\n    struct_format: Optional[str] = None\n) -> bytes:\n    \"\"\"Return the encoded 'OW' value as :class:`bytes`.\n\n    No byte swapping will be performed.\n    \"\"\"\n    # for now, Maybe later will have own routine\n    return convert_OBvalue(byte_string, is_little_endian)\n\n\ndef convert_OVvalue(\n    byte_string: bytes,\n    is_little_endian: bool,\n    struct_format: Optional[str] = None\n) -> bytes:\n    \"\"\"Return the encoded 'OV' value as :class:`bytes`.\n\n    .. versionadded:: 1.4\n\n    No byte swapping will be performed.\n    \"\"\"\n    # for now, Maybe later will have own routine\n    return convert_OBvalue(byte_string, is_little_endian)"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": true,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "F2P red; P2P green ",
+    "f2pLogTail": "\nno tests ran in 0.27s\n\nERROR: not found: /tmp/zhanlu/bench-work-ds/pydicom__pydicom-1413/source/pydicom/tests/test_valuerep.py::test_assigning_bytes\n(no match in any of [<Module test_valuerep.py>])\n\nERROR: not found: /tmp/zhanlu/bench-work-ds/pydicom__pydicom-1413/source/pydicom/tests/test_valuerep.py::test_assigning_bytes\n(no match in any of [<Module test_valuerep.py>])\n\nERROR: not found: /tmp/zhanlu/bench-work-ds/pydicom__pydicom-1413/source/pydicom/tests/test_valuerep.py::test_assigning_bytes\n(no match in any of [<Module test_valuerep.py>])\n\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x pydicom/tests/test_valuerep.py::test_assigning_bytes[OD-bytes-vm017-vmN17-DoubleFloatPixelData] pydicom/tests/test_valuerep.py::test_assigning_bytes[OL-bytes-vm019-vmN19-TrackPointIndexList] pydicom/tests/test_valuerep.py::test_assigning_bytes[OV-bytes-vm020-vmN20-SelectorOVValue]\nERROR: not found: /tmp/zhanlu/bench-work-ds/pydicom__pydicom-1413/source/pydicom/tests/test_valuerep.py::test_assigning_bytes\n(no match in any of [<Module test_valuerep.py>])\n\nERROR: not found: /tmp/zhanlu/bench-work-ds/pydicom__pydicom-1413/source/pydicom/tests/test_valuerep.py::test_assigning_bytes\n(no match in any of [<Module test_valuerep.py>])\n\nERROR: not found: /tmp/zhanlu/bench-work-ds/pydicom__pydicom-1413/source/pydicom/tests/test_valuerep.py::test_assigning_bytes\n(no match in any of [<Module test_valuerep.py>])\n\n\n[...]\no match in any of [<Module test_valuerep.py>])\n\nERROR: not found: /tmp/zhanlu/bench-work-ds/pydicom__pydicom-1413/source/pydicom/tests/test_valuerep.py::test_assigning_bytes\n(no match in any of [<Module test_valuerep.py>])\n\nERROR: not found: /tmp/zhanlu/bench-work-ds/pydicom__pydicom-1413/source/pydicom/tests/test_valuerep.py::test_assigning_bytes\n(no match in any of [<Module test_valuerep.py>])\n\n",
+    "changedPaths": [
+      "pydicom/values.py"
+    ],
+    "appliedMethods": [
+      {
+        "path": "pydicom/values.py",
+        "method": "exact",
+        "ambiguous": false
+      }
+    ]
+  },
+  "patchSha256": "sha256:765eeca40c2b9cc9aadbb9c7c4b9990e31e1804bdcfa60ba7d33f830dad78fd9",
+  "contextBytes": 10966,
+  "baselineTail": "!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.30s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x pydicom/tests/test_valuerep.py::test_assigning_bytes[OD-bytes-vm017-vmN17-DoubleFloatPixelData] pydicom/tests/test_valuerep.py::test_assigning_bytes[OL-bytes-vm019-vmN19-TrackPointIndexList] pydicom/tests/test_valuerep.py::test_assigning_bytes[OV-bytes-vm020-vmN20-SelectorOVValue]\n",
+  "goldFiles": [
+    "pydicom/dataelem.py"
+  ],
+  "model": "deepseek-v4-flash-0731",
+  "modelCalls": 4
+}

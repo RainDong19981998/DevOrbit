@@ -1,0 +1,140 @@
+{
+  "protocolVersion": "1.0",
+  "datasetId": "devorbit-public-software-repair-v1",
+  "manifestDigest": "sha256:04d47fc9a394896bb4e39c87a652c654757b208aa7c9637444e9c8141547267d",
+  "generatedAt": "2026-08-28T06:15:09.401Z",
+  "methods": [
+    {
+      "method": "devorbit",
+      "name": "DevOrbit staged RCA->patch multi-agent pipeline",
+      "version": "0.9.6",
+      "patchMode": "edit-based",
+      "model": "qwen3:8b",
+      "commit": "e587280cc9ddf12d77b7a9e683ccbde03b88e20d",
+      "configurationDigest": "sha256:81ecff25685174e77e9b3b8919371c475b925c7dd78ed3c36d6f3774881b5e3b",
+      "environmentDigest": "sha256:60aeca7d263d8441f68b91d978f9fd13f3a2678e800b525e1ed6384b854da518"
+    }
+  ],
+  "runs": [
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-903",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": true,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 46753,
+      "tokenCount": 43679,
+      "evidenceRefs": [
+        "runs/pydicom__pydicom-903/devorbit.json"
+      ],
+      "artifactDigests": [
+        "sha256:90fadb96719789095277a11b6af68265b6e0ff5d23e81e147e785945c61735c4"
+      ],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1069",
+      "method": "devorbit",
+      "split": "test",
+      "status": "skipped",
+      "rootCauseRank": null,
+      "patchAttempted": false,
+      "compilePassed": null,
+      "testsPassed": null,
+      "closedLoop": null,
+      "humanIntervention": false,
+      "safetyViolation": null,
+      "durationMs": 9629,
+      "tokenCount": 0,
+      "evidenceRefs": [],
+      "artifactDigests": [],
+      "error": "baseline FAIL_TO_PASS already green on base commit; case excluded as environment_error"
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1076",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 15010,
+      "tokenCount": 45349,
+      "evidenceRefs": [
+        "runs/pydicom__pydicom-1076/devorbit.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1031",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 2,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 46210,
+      "tokenCount": 65650,
+      "evidenceRefs": [
+        "runs/pydicom__pydicom-1031/devorbit.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-955",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 3,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 59995,
+      "tokenCount": 75899,
+      "evidenceRefs": [
+        "runs/pydicom__pydicom-955/devorbit.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1694",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 34427,
+      "tokenCount": 69579,
+      "evidenceRefs": [
+        "runs/pydicom__pydicom-1694/devorbit.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    }
+  ]
+}

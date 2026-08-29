@@ -1,0 +1,41 @@
+{
+  "generatedAt": "2026-08-14T03:40:38.165Z",
+  "status": "failed",
+  "runId": "run-004",
+  "stage": "patch-agent-attempt-2",
+  "error": "model oldText must occur exactly once, observed 0",
+  "disclosure": "Run 4 reuses the same SWE-bench dev validation case after three disclosed failures. It evaluates machine-enforced source invariants, diagnostic classification output, and one bounded patch-repair loop. It is not independent generalization, a test-set score, an aggregate benchmark, a production claim, or a ranking claim.",
+  "boundary": "Failed pre-registered SWE-bench dev validation run. No aggregate, test-set, production, gold-equivalence, or ranking claim.",
+  "case": {
+    "instanceId": "sqlfluff__sqlfluff-884",
+    "split": "dev-validation-tuning-protected-repair"
+  },
+  "model": {
+    "provider": "local-ollama",
+    "name": "qwen3:8b",
+    "digest": "sha256:500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+    "parameterSize": "8.2B",
+    "quantization": "Q4_K_M",
+    "temperature": 0,
+    "seed": 847,
+    "contextTokens": 16384,
+    "maxOutputTokens": 3072,
+    "thinking": false
+  },
+  "workflow": {
+    "agentsStarted": [
+      "rca-worker",
+      "patch-worker",
+      "verify-worker",
+      "patch-worker"
+    ],
+    "patchAttempts": 1,
+    "closedLoop": false
+  },
+  "leakage": {
+    "enforced": true,
+    "runnerManifest": "evaluation/public-model-pilot-v4.manifest.json",
+    "forbiddenArtifactsRead": [],
+    "goldComparisonPerformed": false
+  }
+}

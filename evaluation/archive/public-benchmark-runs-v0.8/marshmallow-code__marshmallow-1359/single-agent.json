@@ -1,0 +1,19 @@
+{
+  "caseId": "PUB-MARSHMALLOW-CODE__MARSHMALLOW-1359",
+  "method": "single-agent",
+  "attempts": 2,
+  "rca": null,
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "git apply --check failed: \nerror: corrupt patch at line 12\n\nCommand failed: git apply --check model.patch\nerror: corrupt patch at line 12\n"
+  },
+  "patchSha256": "sha256:1f0af97f00cb0287e1b819980a6e7949768bc4b0b9fad9f99192b65c61422c7e",
+  "contextBytes": 8000,
+  "baselineTail": "-q --no-header -x tests/test_fields.py::TestParentAndName::test_datetime_list_inner_format\nImportError while loading conftest '/tmp/zhanlu/bench-work/marshmallow-code__marshmallow-1359/source/tests/conftest.py'.\ntests/conftest.py:4: in <module>\n    from tests.base import User, UserSchema, Blog\ntests/base.py:5: in <module>\n    import simplejson\nE   ModuleNotFoundError: No module named 'simplejson'\n",
+  "goldFiles": [
+    "src/marshmallow/fields.py"
+  ]
+}

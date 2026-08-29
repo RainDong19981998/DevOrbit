@@ -1,0 +1,6 @@
+[
+  { "source": "变更", "id": "CHG-402", "text": "redis.client.poolSize changed 80 -> 8 in release/2026.08", "time": "10:02:11" },
+  { "source": "Trace", "id": "TRACE-771", "text": "checkout-service -> idempotency-store span: redis GET idempotency:pay-101 queue_wait=2840ms; pool_available=0; total_connections=8", "time": "10:15:20" },
+  { "source": "指标", "id": "METRIC-POOL", "text": "redis_pool_connections_active=8/8; redis_pool_connections_idle=0; redis_command_wait_seconds_p99=2.9", "time": "10:15:22" },
+  { "source": "Trace", "id": "TRACE-772", "text": "checkout-service -> order-service span: POST /orders retries=2; second attempt created ORD-2 instead of returning original ORD-1", "time": "10:15:26" }
+]

@@ -1,5 +1,6 @@
 ---
 name: patch-plan
+version: 1.0.0
 description: Create the smallest reversible software fix, associated tests, impact checks, and rollback point for a sufficiently supported root cause. Use after evidence-based diagnosis when changes must be bounded, reviewable, and safe to apply in a sandbox branch.
 ---
 

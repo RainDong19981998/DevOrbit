@@ -1,0 +1,43 @@
+{
+  "caseId": "PUB-PYDICOM__PYDICOM-903",
+  "method": "devorbit",
+  "attempts": 3,
+  "rca": {
+    "rootCause": "When writing a dataset in Explicit VR transfer syntax, VRs like DS use a 2-byte length field (write_leUS/pack with 'H' format). If a multi-value DS element's total value length exceeds 65534 bytes, the pack call raises an unhelpful struct.error. The fix should catch this condition and re-raise a meaningful error message explaining that the data is too long for Explicit VR encoding and suggesting truncation or using Implicit VR. The hints also note that the VR should be changed to UN instead (see referenced PR #900).",
+    "confidence": 0.85,
+    "evidence": [
+      "Issue describes exception 'ushort format requires 0 <= number <= (0x7fff * 2 + 1)' raised by pack call in write_leUS while writing DS tag with overall length exceeding 2 bytes in explicit encoding",
+      "Hints say: 'I say we catch the exception and re-raise with a meaningful error message'",
+      "Hints also say: 'Reopen as the fix is incorrect - the VR shall be changed to UN instead (see #900)'",
+      "Repo map shows pydicom/filewriter.py contains write_data_element and related write functions where length encoding happens"
+    ],
+    "filesToChange": [
+      "pydicom/filewriter.py"
+    ]
+  },
+  "edits": [
+    {
+      "path": "pydicom/filewriter.py",
+      "search": "    if data_element.is_undefined_length:\n        fp.write_UL(0xFFFFFFFF)\n    else:\n        fp.write_US(len(buffer.parent.parent.getvalue()))\n\n    fp.write(buffer.parent.parent.getvalue())",
+      "replace": "    if data_element.is_undefined_length:\n        fp.write_UL(0xFFFFFFFF)\n    else:\n        try:\n            fp.write_US(len(buffer.parent.parent.getvalue()))\n        except struct.error:\n            raise ValueError(\n                \"The value for the data element {0} is too large for the \"\n                \"2-byte length field of the Explicit VR transfer syntax \"\n                \"(maximum length 65534 bytes). You can either truncate the \"\n                \"value to fit, or save the dataset using an Implicit VR \"\n                \"transfer syntax which uses a 4-byte length \"\n                \"field.\".format(data_element.tag))\n\n    fp.write(buffer.parent.parent.getvalue())"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "edit apply failed: pydicom/filewriter.py: search block not found (exact and whitespace-normalized match both failed) [search:     if data_element.is_undefined_length:\n        fp.write_UL(0xFFFFFFFF)\n    else:\n        fp.write_US(len(buffer.parent.parent.getvalue()))\n\n    fp.write(buffe]",
+    "changedPaths": [
+      "pydicom/filewriter.py"
+    ]
+  },
+  "patchSha256": "sha256:6d96a5af82c5bdc55bf8c70c99bca5af18c410fb767d3ac1ec717352d47bf71a",
+  "contextBytes": 10280,
+  "baselineTail": "sts/test_filewriter.py::TestWriteUndefinedLengthPixelData::test_writing_too_big_data_in_explicit_encoding\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.46s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x pydicom/tests/test_filewriter.py::TestWriteUndefinedLengthPixelData::test_writing_too_big_data_in_explicit_encoding\n",
+  "goldFiles": [
+    "pydicom/filewriter.py"
+  ],
+  "model": "glm",
+  "modelCalls": 4
+}

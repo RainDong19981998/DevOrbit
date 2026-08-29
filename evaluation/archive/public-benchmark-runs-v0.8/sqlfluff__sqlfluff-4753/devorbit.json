@@ -1,0 +1,28 @@
+{
+  "caseId": "PUB-SQLFLUFF__SQLFLUFF-4753",
+  "method": "devorbit",
+  "attempts": 2,
+  "rca": {
+    "files": [
+      "src/sqlfluff/rules/layout/LT12.py",
+      "src/sqlfluff/rules/layout/__init__.py",
+      "src/sqlfluff/core/rules/config_info.py",
+      "src/sqlfluff/core/rules/loader.py",
+      "test/api/simple_test.py"
+    ]
+  },
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "git apply --check failed: \nerror: patch failed: src/sqlfluff/rules/layout/LT12.py:1\nerror: src/sqlfluff/rules/layout/LT12.py: patch does not apply\n\nCommand failed: git apply --check model.patch\nerror: patch failed: src/sqlfluff/rules/layout/LT12.py:1\nerror: src/sqlfluff/rules/layout/LT12.py: patch does not apply\n"
+  },
+  "patchSha256": "sha256:c4dbbccb79c0c2f98e42f96d72dcb8e56b24e614082ceb88612eb0046f8c9ab1",
+  "contextBytes": 8000,
+  "baselineTail": "=========================== short test summary info ============================\nFAILED test/api/simple_test.py::test__api__lint_string - AssertionError: asse...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 4 warnings in 0.14s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x test/api/simple_test.py::test__api__lint_string\n",
+  "goldFiles": [
+    "docs/generate-rule-docs.py",
+    "src/sqlfluff/rules/layout/LT12.py"
+  ]
+}

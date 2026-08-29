@@ -1,0 +1,23 @@
+{
+  "caseId": "PUB-MARSHMALLOW-CODE__MARSHMALLOW-1359",
+  "method": "devorbit",
+  "attempts": 2,
+  "rca": {
+    "files": [
+      "src/marshmallow/fields.py"
+    ]
+  },
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "git apply --check failed: \nerror: patch failed: src/marshmallow/fields.py:1114\nerror: src/marshmallow/fields.py: patch does not apply\n\nCommand failed: git apply --check model.patch\nerror: patch failed: src/marshmallow/fields.py:1114\nerror: src/marshmallow/fields.py: patch does not apply\n"
+  },
+  "patchSha256": "sha256:f78021819f4387303ec668f332400e70f7c3dd3c9c3c77dcb48dd5166478a52c",
+  "contextBytes": 8000,
+  "baselineTail": "-q --no-header -x tests/test_fields.py::TestParentAndName::test_datetime_list_inner_format\nImportError while loading conftest '/tmp/zhanlu/bench-work/marshmallow-code__marshmallow-1359/source/tests/conftest.py'.\ntests/conftest.py:4: in <module>\n    from tests.base import User, UserSchema, Blog\ntests/base.py:5: in <module>\n    import simplejson\nE   ModuleNotFoundError: No module named 'simplejson'\n",
+  "goldFiles": [
+    "src/marshmallow/fields.py"
+  ]
+}

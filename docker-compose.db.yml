@@ -1,0 +1,17 @@
+services:
+  devorbit-postgres:
+    image: postgres:16
+    container_name: devorbit-postgres
+    environment:
+      POSTGRES_USER: devorbit
+      POSTGRES_PASSWORD: devorbit
+      POSTGRES_DB: devorbit_baseline
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./scripts/db-init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U devorbit -d devorbit_baseline"]
+      interval: 5s
+      timeout: 3s
+      retries: 10

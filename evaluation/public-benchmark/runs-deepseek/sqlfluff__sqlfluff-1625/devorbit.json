@@ -1,0 +1,50 @@
+{
+  "caseId": "PUB-SQLFLUFF__SQLFLUFF-1625",
+  "method": "devorbit",
+  "attempts": 3,
+  "rca": {
+    "rootCause": "The issue is a false positive in rule L031 (Avoid aliases in from clauses and join conditions) for TSQL dialect. The rule incorrectly flags aliases in the SELECT clause (e.g., `a.[hello]`) as being in a join condition, even when there is no JOIN present. The rule's logic likely checks for aliases in the FROM clause or join conditions but fails to distinguish between aliases used in the SELECT list and those in actual join conditions. The TSQL dialect's parsing of `FROM mytable AS a` followed by `SELECT a.[hello]` causes the rule to misinterpret the alias usage as part of a join condition, leading to the false positive. The fix should ensure L031 only triggers when an alias is actually used in a JOIN condition, not in the SELECT clause or other non-join contexts.",
+    "confidence": 0.85,
+    "evidence": [
+      "The issue reports that adding an alias 'a' to the table and using it in the SELECT clause (e.g., `SELECT a.[hello]`) triggers L031, while the same query without the alias passes. This indicates the rule is incorrectly flagging alias usage outside of join conditions.",
+      "The rule L031 is described as 'Avoid aliases in from clauses and join conditions', but the observed behavior shows it triggers on a simple SELECT with an alias, suggesting the rule's detection logic is too broad and doesn't properly scope to join conditions.",
+      "The TSQL dialect is specifically mentioned, and the issue occurs only with TSQL, suggesting a dialect-specific parsing or rule interaction that causes the false positive."
+    ],
+    "filesToChange": [
+      "src/sqlfluff/rules/L031.py"
+    ]
+  },
+  "edits": [
+    {
+      "path": "src/sqlfluff/rules/L031.py",
+      "search": "            # Find all references to alias in select clause\n            alias_name = alias_info.alias_identifier_ref.raw\n            for alias_with_column in select_clause.recursive_crawl(\"object_reference\"):\n                used_alias_ref = alias_with_column.get_child(\"identifier\")\n                if used_alias_ref and used_alias_ref.raw == alias_name:\n                    ids_refs.append(used_alias_ref)\n\n            # Find all references to alias in column references\n            for exp_ref in column_reference_segments:\n                used_alias_ref = exp_ref.get_child(\"identifier\")\n                # exp_ref.get_child('dot') ensures that the column reference includes a table reference\n                if used_alias_ref.raw == alias_name and exp_ref.get_child(\"dot\"):\n                    ids_refs.append(used_alias_ref)",
+      "replace": "            # Find all references to alias in select clause\n            alias_name = alias_info.alias_identifier_ref.raw\n            for alias_with_column in select_clause.recursive_crawl(\"object_reference\"):\n                used_alias_ref = alias_with_column.get_child(\"identifier\")\n                if used_alias_ref and used_alias_ref.raw == alias_name:\n                    ids_refs.append(used_alias_ref)\n\n            # Find all references to alias in column references\n            for exp_ref in column_reference_segments:\n                used_alias_ref = exp_ref.get_child(\"identifier\")\n                # exp_ref.get_child('dot') ensures that the column reference includes a table reference\n                if used_alias_ref and used_alias_ref.raw == alias_name and exp_ref.get_child(\"dot\"):\n                    ids_refs.append(used_alias_ref)"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": true,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "F2P red; P2P green ",
+    "f2pLogTail": "\nImportError while loading conftest '/tmp/zhanlu/bench-work-ds/sqlfluff__sqlfluff-1625/source/test/conftest.py'.\ntest/conftest.py:9: in <module>\n    from sqlfluff.cli.commands import quoted_presenter\nsrc/sqlfluff/__init__.py:9: in <module>\n    import pkg_resources\nE   ModuleNotFoundError: No module named 'pkg_resources'\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x test/cli/commands_test.py::test__cli__command_directed\nImportError while loading conftest '/tmp/zhanlu/bench-work-ds/sqlfluff__sqlfluff-1625/source/test/conftest.py'.\ntest/conftest.py:9: in <module>\n    from sqlfluff.cli.commands import quoted_presenter\nsrc/sqlfluff/__init__.py:9: in <module>\n    import pkg_resources\nE   ModuleNotFoundError: No module named 'pkg_resources'\n\n[...]\nytest -q --no-header -x test/cli/commands_test.py::test__cli__command_directed\nImportError while loading conftest '/tmp/zhanlu/bench-work-ds/sqlfluff__sqlfluff-1625/source/test/conftest.py'.\ntest/conftest.py:9: in <module>\n    from sqlfluff.cli.commands import quoted_presenter\nsrc/sqlfluff/__init__.py:9: in <module>\n    import pkg_resources\nE   ModuleNotFoundError: No module named 'pkg_resources'\n",
+    "changedPaths": [
+      "src/sqlfluff/rules/L031.py"
+    ],
+    "appliedMethods": [
+      {
+        "path": "src/sqlfluff/rules/L031.py",
+        "method": "exact",
+        "ambiguous": false
+      }
+    ]
+  },
+  "patchSha256": "sha256:11c564288256f6f6bfa9cae5c9f0911ce2efc28bf37c5a3f1eef20371a761294",
+  "contextBytes": 13102,
+  "baselineTail": "ytest -q --no-header -x test/cli/commands_test.py::test__cli__command_directed\nImportError while loading conftest '/tmp/zhanlu/bench-work-ds/sqlfluff__sqlfluff-1625/source/test/conftest.py'.\ntest/conftest.py:9: in <module>\n    from sqlfluff.cli.commands import quoted_presenter\nsrc/sqlfluff/__init__.py:9: in <module>\n    import pkg_resources\nE   ModuleNotFoundError: No module named 'pkg_resources'\n",
+  "goldFiles": [
+    "src/sqlfluff/rules/L031.py"
+  ],
+  "model": "deepseek-v4-flash-0731",
+  "modelCalls": 4
+}

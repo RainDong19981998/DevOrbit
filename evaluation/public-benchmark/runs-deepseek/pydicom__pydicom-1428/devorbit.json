@@ -1,0 +1,42 @@
+{
+  "caseId": "PUB-PYDICOM__PYDICOM-1428",
+  "method": "devorbit",
+  "attempts": 3,
+  "rca": {
+    "rootCause": "The `FileSet.find_values` method only supports searching for a single element at a time, causing repeated loading of instances when multiple elements are queried. The feature request asks to extend it to accept an iterable of elements and load each instance only once.",
+    "confidence": 0.95,
+    "evidence": [
+      "Issue description: 'Currently, fileset.FileSet.find_values only allows for elements to be searched for one at a time. When executing this action while setting load to True, this results in a substantial overhead.'",
+      "Hint: 'Just change FileSet.find_values to support an element or iterable of elements.'",
+      "The provided example code in the issue shows a method that loads each instance once and iterates over a list of elements."
+    ],
+    "filesToChange": [
+      "pydicom/fileset.py"
+    ]
+  },
+  "edits": [
+    {
+      "path": "pydicom/fileset.py",
+      "search": "    def find_values(self, element: Union[str, BaseTag], load: bool = False) -> List[Any]:\n        \"\"\"Return the values for `element` found in the File-set.\n\n        Parameters\n        ----------\n        element : str or BaseTag\n            The element to find values for.\n        load : bool, optional\n            If ``True`` then load the instances and return the values from\n            the loaded instances, otherwise return the values from the\n            directory records (default ``False``).\n\n        Returns\n        -------\n        list\n            The unique values for `element` found in the File-set.\n        \"\"\"\n        values: List[Any] = []\n        for instance in self:\n            if load:\n                instance = instance.load()\n\n            if element in instance:\n                value = instance[element].value\n                if value not in values:\n                    values.append(value)\n\n        return values",
+      "replace": "    def find_values(\n        self, element: Union[str, BaseTag, Iterable[Union[str, BaseTag]]],\n        load: bool = False\n    ) -> Union[List[Any], Dict[Union[str, BaseTag], List[Any]]]:\n        \"\"\"Return the values for `element` found in the File-set.\n\n        Parameters\n        ----------\n        element : str or BaseTag or iterable of str or BaseTag\n            The element(s) to find values for.\n        load : bool, optional\n            If ``True`` then load the instances and return the values from\n            the loaded instances, otherwise return the values from the\n            directory records (default ``False``).\n\n        Returns\n        -------\n        list or dict\n            If `element` is a single element, a list of the unique values\n            for `element` found in the File-set. If `element` is an iterable,\n            a dict mapping each element to a list of its unique values.\n        \"\"\"\n        if isinstance(element, (str, BaseTag)):\n            elements = [element]\n            single = True\n        else:\n            elements = list(element)\n            single = False\n\n        results: Dict[Union[str, BaseTag], List[Any]] = {\n            ee: [] for ee in elements\n        }\n        for instance in self:\n            if load:\n                instance = instance.load()\n\n            for ee in elements:\n                if ee in instance:\n                    value = instance[ee].value\n                    if value not in results[ee]:\n                        results[ee].append(value)\n\n        if single:\n            return results[elements[0]]\n\n        return results"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "edit apply failed: pydicom/fileset.py: search block not found (exact and whitespace-normalized match both failed) [search:     def find_values(self, element: Union[str, BaseTag], load: bool = False) -> List[Any]:\n        \"\"\"Return the values for `element` found in the File-set.\n\n   ]",
+    "changedPaths": [
+      "pydicom/fileset.py"
+    ]
+  },
+  "patchSha256": null,
+  "contextBytes": 10966,
+  "baselineTail": "===\nFAILED pydicom/tests/test_fileset.py::TestFileSet_Load::test_find_values - Va...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.52s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x pydicom/tests/test_fileset.py::TestFileSet_Load::test_find_values pydicom/tests/test_fileset.py::TestFileSet_Load::test_find_values_load\n",
+  "goldFiles": [
+    "pydicom/fileset.py"
+  ],
+  "model": "deepseek-v4-flash-0731",
+  "modelCalls": 4
+}

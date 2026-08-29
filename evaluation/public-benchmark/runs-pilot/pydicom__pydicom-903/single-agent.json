@@ -1,0 +1,24 @@
+{
+  "caseId": "PUB-PYDICOM__PYDICOM-903",
+  "method": "single-agent",
+  "attempts": 3,
+  "rca": null,
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "edit apply failed: pydicom/filewriter.py: search block not found (exact and whitespace-normalized match both failed) [search: def write_data_element(fp, data_element, encodings=None):\n    \"\"\"Write a single DICOM data element to the file-like object.\n\n    Parameters\n    ----------\n    f]",
+    "changedPaths": [
+      "pydicom/filewriter.py"
+    ]
+  },
+  "patchSha256": null,
+  "contextBytes": 10280,
+  "baselineTail": "sts/test_filewriter.py::TestWriteUndefinedLengthPixelData::test_writing_too_big_data_in_explicit_encoding\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.45s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x pydicom/tests/test_filewriter.py::TestWriteUndefinedLengthPixelData::test_writing_too_big_data_in_explicit_encoding\n",
+  "goldFiles": [
+    "pydicom/filewriter.py"
+  ],
+  "model": "deepseek-v4-flash-0731",
+  "modelCalls": 3
+}

@@ -1,0 +1,232 @@
+{
+  "generatedAt": "2026-08-14T04:23:40.528Z",
+  "status": "passed",
+  "runId": "run-007",
+  "disclosure": "Run 7 reuses the same SWE-bench dev validation case after six disclosed failures. It is explicitly policy-guided tuning: Run 6 repeated a rejected lexer-configuration patch, so the runner now machine-restricts writes to the runtime RawSegment factory file derived from prior test evidence. It is not independent generalization, a test-set score, an aggregate benchmark, a production claim, or a ranking claim.",
+  "boundary": "One pre-registered SWE-bench dev validation policy-guided tuning factory-repair case with a real local model. No independent-generalization, aggregate, test-set, production, gold-equivalence, or ranking claim.",
+  "priorRun": null,
+  "priorRuns": [
+    {
+      "runId": "run-001",
+      "status": "blocked-before-apply",
+      "evidencePath": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-001-failure.json",
+      "evidenceSha256": "sha256:a41fd5a152abaf9a49e738f16ddbd8be909e04a38c862fdc7afc5b530b015664"
+    },
+    {
+      "runId": "run-002",
+      "status": "failed",
+      "evidencePath": "reports/public-model-pilot-v2.json",
+      "evidenceSha256": "sha256:caf9b21e973db95026388d4d9fb05bacda1dd940e781ba7416554632d9b0b0ca"
+    },
+    {
+      "runId": "run-003",
+      "status": "failed",
+      "evidencePath": "reports/public-model-pilot-v3.json",
+      "evidenceSha256": "sha256:35abde2a8d7622706924aab2a3a85e5fbce18b9f862656731e286215ba2e5c76"
+    },
+    {
+      "runId": "run-004",
+      "status": "failed",
+      "evidencePath": "reports/public-model-pilot-v4.json",
+      "evidenceSha256": "sha256:62a8a537fc5e5daa5485d3ad93544da3afcd303dd737a67c97e8c2a80cf764c5"
+    },
+    {
+      "runId": "run-005",
+      "status": "failed",
+      "evidencePath": "reports/public-model-pilot-v5.json",
+      "evidenceSha256": "sha256:e4229f5895cf86ca111852015d2c300eacabe8679363cf17aefff8abb6b69720"
+    },
+    {
+      "runId": "run-006",
+      "status": "failed",
+      "evidencePath": "reports/public-model-pilot-v6.json",
+      "evidenceSha256": "sha256:3411bb695077c01bfc39100476c58d225e5c399e42ed6270dbf3612296faabc6"
+    }
+  ],
+  "infrastructureRetries": [],
+  "case": {
+    "instanceId": "sqlfluff__sqlfluff-884",
+    "split": "dev-validation-policy-guided-tuning",
+    "baseCommit": "c0bad78f3fa9549591738c77f869724f721e6830"
+  },
+  "model": {
+    "provider": "local-ollama",
+    "name": "qwen3:8b",
+    "digest": "sha256:500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+    "parameterSize": "8.2B",
+    "quantization": "Q4_K_M",
+    "temperature": 0,
+    "seed": 847,
+    "contextTokens": 16384,
+    "maxOutputTokens": 3072,
+    "thinking": false
+  },
+  "workflow": {
+    "agents": [
+      "rca-worker",
+      "patch-worker",
+      "verify-worker"
+    ],
+    "patchAttempts": 1,
+    "importPath": "/tmp/devorbit-public-model-pilot-sqlfluff-884/source/src/sqlfluff/__init__.py",
+    "targetExitCode": 0,
+    "regressionExitCode": 0,
+    "classificationExitCode": 0,
+    "machineGatePassed": true,
+    "modelVerifierAccepted": true,
+    "verifyAccepted": true,
+    "acceptanceRule": "machineGatePassed && modelAccept",
+    "closedLoop": true,
+    "durationMs": 232627,
+    "promptTokens": 12279,
+    "outputTokens": 1070
+  },
+  "leakage": {
+    "enforced": true,
+    "runnerManifest": "evaluation/public-model-pilot-v7.manifest.json",
+    "forbiddenArtifactsRead": [],
+    "goldComparisonPerformed": false
+  },
+  "rootCause": {
+    "rootCause": "The `is_whitespace` attribute is set to `False` for all `RawSegment` instances by default in `BaseSegment.is_whitespace = False` (src/sqlfluff/core/parser/segments/base.py#L55-L90). This is a machine-protected invariant because ordinary code segments must remain non-whitespace. The `WhitespaceSegment` and `newline` segments are defined in `src/sqlfluff/core/rules/base.py#L395-L425` with `is_whitespace=True` and `type='whitespace'`/`type='newline'`, but these are not inherited by the runtime-generated segment classes due to the default `is_whitespace=False` in `BaseSegment`. The `RawSegment.make` method (src/sqlfluff/core/parser/segments/raw.py#L1-L145) does not override this default unless explicitly provided in `kwargs`, which is not done for whitespace tokens in the ANSI dialect (src/sqlfluff/core/dialects/dialect_ansi.py#L45-L95).",
+    "confidence": 0.95,
+    "evidence": [
+      "src/sqlfluff/core/parser/segments/base.py#L55-L90",
+      "src/sqlfluff/core/rules/base.py#L395-L425",
+      "src/sqlfluff/core/parser/segments/raw.py#L1-L145",
+      "src/sqlfluff/core/dialects/dialect_ansi.py#L45-L95"
+    ],
+    "filesToChange": [],
+    "risk": "Changing `is_whitespace=False` to `True` for whitespace tokens would violate the machine-protected invariant that ordinary code segments must remain non-whitespace. This could lead to incorrect parsing and analysis of SQL code."
+  },
+  "patch": {
+    "summary": "Fix the `is_whitespace` attribute for whitespace tokens by deriving it from the segment type in `RawSegment.make`.",
+    "files": [
+      "src/sqlfluff/core/parser/segments/raw.py"
+    ],
+    "changedPaths": [
+      "src/sqlfluff/core/parser/segments/raw.py"
+    ],
+    "diffSha256": "sha256:6d249ff16d0f82e3478e37433cb0a90be1869c386ce37bbc8a38ecf43732ea93",
+    "rollback": "Revert the `is_whitespace` attribute to its original state if the fix causes unintended side effects."
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "patch": {
+        "summary": "Fix the `is_whitespace` attribute for whitespace tokens by deriving it from the segment type in `RawSegment.make`.",
+        "files": [
+          "src/sqlfluff/core/parser/segments/raw.py"
+        ],
+        "changedPaths": [
+          "src/sqlfluff/core/parser/segments/raw.py"
+        ],
+        "diffSha256": "sha256:6d249ff16d0f82e3478e37433cb0a90be1869c386ce37bbc8a38ecf43732ea93",
+        "rollback": "Revert the `is_whitespace` attribute to its original state if the fix causes unintended side effects."
+      },
+      "testEvidence": {
+        "targetExitCode": 0,
+        "regressionExitCode": 0,
+        "classificationExitCode": 0
+      },
+      "machineGate": {
+        "authority": "deterministic-machine-gate",
+        "passed": true,
+        "checks": {
+          "targetPassed": true,
+          "regressionPassed": true,
+          "classificationPassed": true,
+          "diffPresent": true,
+          "sourceOnly": true,
+          "executableChange": true,
+          "policy:protected-source-invariant-1": true,
+          "policy:allowedWritePaths": true
+        },
+        "failedChecks": []
+      },
+      "modelVerification": {
+        "accept": true,
+        "reason": "The patch addresses the root cause by correctly setting the `is_whitespace` attribute for whitespace tokens in `RawSegment.make` based on the segment type. The deterministic-machine-gate confirms that the target, regression, and classification checks have passed, and the diff is valid and does not violate any protected invariants. The change is safe and aligns with the expected behavior.",
+        "checks": [],
+        "residualRisk": "The risk of violating the machine-protected invariant is mitigated by the patch, which correctly derives `is_whitespace` from the segment type rather than setting it explicitly. This avoids unintended side effects while ensuring proper parsing behavior."
+      },
+      "effectiveVerdict": {
+        "accepted": true,
+        "machineGatePassed": true,
+        "modelAccept": true,
+        "rule": "machineGatePassed && modelAccept"
+      }
+    }
+  ],
+  "verification": {
+    "machineGate": {
+      "authority": "deterministic-machine-gate",
+      "passed": true,
+      "checks": {
+        "targetPassed": true,
+        "regressionPassed": true,
+        "classificationPassed": true,
+        "diffPresent": true,
+        "sourceOnly": true,
+        "executableChange": true,
+        "policy:protected-source-invariant-1": true,
+        "policy:allowedWritePaths": true
+      },
+      "failedChecks": []
+    },
+    "model": {
+      "accept": true,
+      "reason": "The patch addresses the root cause by correctly setting the `is_whitespace` attribute for whitespace tokens in `RawSegment.make` based on the segment type. The deterministic-machine-gate confirms that the target, regression, and classification checks have passed, and the diff is valid and does not violate any protected invariants. The change is safe and aligns with the expected behavior.",
+      "checks": [],
+      "residualRisk": "The risk of violating the machine-protected invariant is mitigated by the patch, which correctly derives `is_whitespace` from the segment type rather than setting it explicitly. This avoids unintended side effects while ensuring proper parsing behavior."
+    },
+    "effectiveVerdict": {
+      "accepted": true,
+      "machineGatePassed": true,
+      "modelAccept": true,
+      "rule": "machineGatePassed && modelAccept"
+    }
+  },
+  "artifacts": {
+    "transcript": {
+      "path": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-007-transcript.json",
+      "sha256": "sha256:b8c0660a5d6ba165386c0bcf95f77b8a1976987f234903adffeda8366f26eb98"
+    },
+    "patch": {
+      "path": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-007-model.patch",
+      "sha256": "sha256:6d249ff16d0f82e3478e37433cb0a90be1869c386ce37bbc8a38ecf43732ea93"
+    },
+    "targetLog": {
+      "path": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-007-target.log",
+      "sha256": "sha256:5b19689a97d618d5cdfce632de67285a8efa3c57100a80350a5bb7ca9e05ae34"
+    },
+    "regressionLog": {
+      "path": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-007-regression.log",
+      "sha256": "sha256:d18e8dcb8690f11d65ba235ea307a07af595e8b3958fa84e607ee75ecb5d420a"
+    },
+    "classificationLog": {
+      "path": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-007-classification.log",
+      "sha256": "sha256:7d48f512f958c15b5ef0e2c2848f3c79553f7cb4ff1a6bb5bdcd2b086fa95618"
+    }
+  },
+  "attemptArtifacts": [
+    {
+      "patchPath": {
+        "path": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-007-attempt-1.patch",
+        "sha256": "sha256:6d249ff16d0f82e3478e37433cb0a90be1869c386ce37bbc8a38ecf43732ea93"
+      },
+      "targetLogPath": {
+        "path": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-007-attempt-1-target.log",
+        "sha256": "sha256:5b19689a97d618d5cdfce632de67285a8efa3c57100a80350a5bb7ca9e05ae34"
+      },
+      "regressionLogPath": {
+        "path": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-007-attempt-1-regression.log",
+        "sha256": "sha256:d18e8dcb8690f11d65ba235ea307a07af595e8b3958fa84e607ee75ecb5d420a"
+      },
+      "classificationLogPath": {
+        "path": "evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-007-attempt-1-classification.log",
+        "sha256": "sha256:7d48f512f958c15b5ef0e2c2848f3c79553f7cb4ff1a6bb5bdcd2b086fa95618"
+      }
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "caseId": "PUB-PYDICOM__PYDICOM-1076",
+  "method": "single-agent",
+  "attempts": 3,
+  "rca": null,
+  "edits": [
+    {
+      "path": "pydicom/filewriter.py",
+      "search": "    'OD': write_OWvalue,\n    'OF': write_numbers,\n    'OL': write_OWvalue,",
+      "replace": "    'OD': write_OWvalue,\n    'OF': write_OWvalue,\n    'OL': write_OWvalue,"
+    },
+    {
+      "path": "pydicom/values.py",
+      "search": "    VRs = ['OB', 'OD', 'OF', 'OL', 'OW']\n    return convert_OBvalue(raw_string, VR_lengths)",
+      "replace": "    VRs = ['OB', 'OD', 'OF', 'OL', 'OW']\n    return convert_OBvalue(raw_string, VR_lengths)\n\n\ndef convert_OFvalue(raw_string, VR_lengths):\n    \"\"\"Convert a raw OF (Other Float) value.\n\n    .. versionadded:: 1.4\n\n    Return value is an array of floats or bytes (if numpy not installed).\n    \"\"\"\n    return convert_OBvalue(raw_string, VR_lengths)"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "edit apply failed: pydicom/filewriter.py: search block not found (exact and whitespace-normalized match both failed) [search:     'OD': write_OWvalue,\n    'OF': write_numbers,\n    'OL': write_OWvalue,]; pydicom/values.py: search block not found (exact and whitespace-normalized match both failed) [search:     VRs = ['OB', 'OD', 'OF', 'OL', 'OW']\n    return convert_OBvalue(raw_string, VR_lengths)]",
+    "changedPaths": [
+      "pydicom/filewriter.py",
+      "pydicom/values.py"
+    ]
+  },
+  "patchSha256": null,
+  "contextBytes": 18457,
+  "baselineTail": "ing_of - Assert...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.56s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x pydicom/tests/test_filereader.py::TestReader::test_reading_of pydicom/tests/test_filewriter.py::TestWriteOtherVRs::test_write_of_dataset pydicom/tests/test_values.py::TestConvertOValues::test_convert_of\n",
+  "goldFiles": [
+    "pydicom/filewriter.py",
+    "pydicom/values.py"
+  ],
+  "model": "glm",
+  "modelCalls": 3
+}

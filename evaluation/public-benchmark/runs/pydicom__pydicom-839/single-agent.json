@@ -1,0 +1,31 @@
+{
+  "caseId": "PUB-PYDICOM__PYDICOM-839",
+  "method": "single-agent",
+  "attempts": 3,
+  "rca": null,
+  "edits": [
+    {
+      "path": "pydicom/filewriter.py",
+      "search": "    if tag == 0x00280120 and 'PixelRepresentation' in ds:\n        # Pixel Padding Value\n        if ds.PixelRepresentation == 0:\n            elem.VR = 'US'\n        else:\n            elem.VR = 'SS'\n        return elem\n\n    reason = 'Failed to resolve ambiguous VR for tag ' \\\n             '({}, {}): '.format(tag.group, tag.elem)\n    reason += \"'{}' object has no attribute '\" \\\n              \"PixelRepresentation'\".format(type(ds).__name__)\n    raise AttributeError(reason)",
+      "replace": "    if tag == 0x00280120:\n        # Pixel Padding Value\n        if 'PixelRepresentation' in ds:\n            if ds.PixelRepresentation == 0:\n                elem.VR = 'US'\n            else:\n                elem.VR = 'SS'\n            return elem\n        elif 'PixelData' not in ds:\n            # No PixelData so no need to resolve PixelPaddingValue\n            elem.VR = 'US'\n            return elem\n\n        reason = 'Failed to resolve ambiguous VR for tag ' \\\n                 '({}, {}): '.format(tag.group, tag.elem)\n        reason += \"'{}' object has no attribute '\" \\\n                  \"PixelRepresentation'\".format(type(ds).__name__)\n        raise AttributeError(reason)\n\n    reason = 'Failed to resolve ambiguous VR for tag ' \\\n             '({}, {})'.format(tag.group, tag.elem)\n    raise AttributeError(reason)"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "edit apply failed: pydicom/filewriter.py: search block not found (exact and whitespace-normalized match both failed) [search:     if tag == 0x00280120 and 'PixelRepresentation' in ds:\n        # Pixel Padding Value\n        if ds.PixelRepresentation == 0:\n            elem.VR = 'US'\n     ]",
+    "changedPaths": [
+      "pydicom/filewriter.py"
+    ]
+  },
+  "patchSha256": null,
+  "contextBytes": 10261,
+  "baselineTail": "!!!!!!!!!!!!!!!!!\n1 failed in 0.49s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x pydicom/tests/test_filewriter.py::TestCorrectAmbiguousVR::test_pixel_representation_vm_one pydicom/tests/test_filewriter.py::TestCorrectAmbiguousVR::test_pixel_representation_vm_three pydicom/tests/test_filewriter.py::TestCorrectAmbiguousVRElement::test_correct_ambiguous_data_element\n",
+  "goldFiles": [
+    "pydicom/filewriter.py"
+  ],
+  "model": "glm",
+  "modelCalls": 3
+}

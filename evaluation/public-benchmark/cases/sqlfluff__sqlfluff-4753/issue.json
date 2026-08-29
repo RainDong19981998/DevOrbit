@@ -1,0 +1,8 @@
+{
+  "instanceId": "sqlfluff__sqlfluff-4753",
+  "repository": "sqlfluff/sqlfluff",
+  "version": "1.4",
+  "createdAt": "2023-04-14T12:49:53Z",
+  "problemStatement": "layout.end-of-file is the only rule in kebab case\n### Search before asking\n\n- [X] I searched the [issues](https://github.com/sqlfluff/sqlfluff/issues) and found no similar issues.\n\n\n### What Happened\n\nOur rules are all in `snake_case`, except for `layout.end-of-file`\n\n### Expected Behaviour\n\nAll rules should be in snake case\n\n### Observed Behaviour\n\nAs above\n\n### How to reproduce\n\n-\n\n### Dialect\n\nNA\n\n### Version\n\nMain\n\n### Configuration\n\nNA\n\n### Are you willing to work on and submit a PR to address the issue?\n\n- [X] Yes I am willing to submit a PR!\n\n### Code of Conduct\n\n- [X] I agree to follow this project's [Code of Conduct](https://github.com/sqlfluff/sqlfluff/blob/main/CODE_OF_CONDUCT.md)\n\n",
+  "hintsText": ""
+}

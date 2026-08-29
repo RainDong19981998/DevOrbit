@@ -1,0 +1,62 @@
+{
+  "caseId": "PUB-PYDICOM__PYDICOM-903",
+  "method": "devorbit",
+  "attempts": 3,
+  "rca": {
+    "rootCause": "The issue arises from attempting to write a DICOM dataset with a DS tag that has a length exceeding the 2-byte limit in explicit VR encoding, which is not supported. The current behavior raises an exception, but the standard allows for this as valid DICOM data that cannot be converted to explicit encoding without data loss.",
+    "confidence": 0.95,
+    "evidence": [
+      "The standard (PS3.5, Table 6.2-1) indicates that data elements with multiple values using DS VR may not be properly encoded in explicit VR if the VL exceeds 65534 bytes.",
+      "The exception is raised by the `pack` call in `write_leUS` when trying to write the length, which is due to the DS tag's length not fitting into 2 bytes.",
+      "The user suggests handling this by catching the exception and re-raising it with a meaningful message, or by allowing the user to choose between truncating the data or using implicit VR."
+    ],
+    "filesToChange": [
+      "pydicom/filewriter.py",
+      "pydicom/errors.py"
+    ]
+  },
+  "edits": [
+    {
+      "path": "pydicom/errors.py",
+      "search": "class InvalidDicomError(Exception):\n    \"\"\"Exception that is raised when the the file does not seem\n    to be a valid dicom file, usually when the four characters\n    \"DICM\" are not present at position 128 in the file.\n    (According to the dicom specification, each dicom file should\n    have this.)\n\n    To force reading the file (because maybe it is a dicom file without\n    a header), use dcmread(..., force=True).\n    \"\"\"\n\n    def __init__(self, *args):\n        if not args:\n            args = ('The specified file is not a valid DICOM file.', )\n        Exception.__init__(self, *args)",
+      "replace": "class InvalidDicomError(Exception):\n    \"\"\"Exception that is raised when the the file does not seem\n    to be a valid dicom file, usually when the four characters\n    \"DICM\" are not present at position 128 in the file.\n    (According to the dicom specification, each dicom file should\n    have this.)\n\n    To force reading the file (because maybe it is a dicom file without\n    a header), use dcmread(..., force=True).\n    \"\"\"\n\n    def __init__(self, *args):\n        if not args:\n            args = ('The specified file is not a valid DICOM file.', )\n        Exception.__init__(self, *args)\n\nclass ExplicitVRLengthError(InvalidDicomError):\n    \"\"\"Raised when attempting to write a DICOM dataset with a DS tag that has a length exceeding the 2-byte limit in explicit VR encoding.\n    This is valid DICOM data that cannot be converted to explicit encoding without data loss. Consider using Implicit VR or truncating the data.\n    \"\"\""
+    },
+    {
+      "path": "pydicom/filewriter.py",
+      "search": "def write_data_element(fp, data_element, encodings=None):\n    \"\"\"Write the data_element to file fp according to\n    dicom media storage rules.\n    \"\"\"\n    # Write element's tag\n    fp.write_tag(data_element.tag)\n\n    # If explicit VR, write the VR\n    VR = data_element.VR\n    if not fp.is_implicit_VR:\n        if len(VR) != 2:\n            msg = (\"Cannot write ambiguous VR of '{}' for data element with \"\n                   \"tag {}.\\nSet the correct VR before writing, or use an \"\n                   \"implicit VR transfer syntax\".format(\n                       VR, repr(data_element.tag)))\n            raise ValueError(msg)\n        if not in_py2:\n            fp.write(bytes(VR, default_encoding))\n        else:\n            fp.write(VR)\n        if VR in extra_length_VRs:\n            fp.write_US(0)  # reserved 2 bytes\n\n    # write into a buffer to avoid seeking back which can be expansive\n    buffer = DicomBytesIO()\n    buffer.is_little_endian = fp.is_little_endian\n    buffer.is_implicit_VR = fp.is_implicit_VR\n\n    if data_element.is_raw:\n        # raw data element values can be written as they are\n        buffer.write(data_element.value)\n        is_undefined_length = data_element.length == 0xFFFFFFFF",
+      "replace": "def write_data_element(fp, data_element, encodings=None):\n    \"\"\"Write the data_element to file fp according to\n    dicom media storage rules.\n    \"\"\"\n    # Write element's tag\n    fp.write_tag(data_element.tag)\n\n    # If explicit VR, write the VR\n    VR = data_element.VR\n    if not fp.is_implicit_VR:\n        if len(VR) != 2:\n            msg = (\"Cannot write ambiguous VR of '{}' for data element with \"\n                   \"tag {}.\\nSet the correct VR before writing, or use an \"\n                   \"implicit VR transfer syntax\".format(\n                       VR, repr(data_element.tag)))\n            raise ValueError(msg)\n        if not in_py2:\n            fp.write(bytes(VR, default_encoding))\n        else:\n            fp.write(VR)\n        if VR in extra_length_VRs:\n            fp.write_US(0)  # reserved 2 bytes\n\n    # write into a buffer to avoid seeking back which can be expansive\n    buffer = DicomBytesIO()\n    buffer.is_little_endian = fp.is_little_endian\n    buffer.is_implicit_VR = fp.is_implicit_VR\n\n    if data_element.is_raw:\n        # raw data element values can be written as they are\n        buffer.write(data_element.value)\n        is_undefined_length = data_element.length == 0xFFFFFFFF\n\n    try:\n        # Write the value of the data element\n        if data_element.VR in ('DS', 'IS'):\n            # Handle DS/IS VR with length exceeding 2-byte limit\n            if data_element.length > 65534:\n                raise ExplicitVRLengthError(\n                    \"Length of DS/IS tag exceeds 2-byte limit in explicit VR encoding.\"\n                    \" Consider using Implicit VR or truncating the data.\")\n        if data_element.is_undefined_length:\n            buffer.write_US(0xFFFF)\n        else:\n            buffer.write_US(data_element.length)\n        buffer.write(data_element.value)\n    except Exception as e:\n        raise ExplicitVRLengthError(str(e)) from e"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": true,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "F2P red; P2P green ",
+    "f2pLogTail": "F\n=================================== FAILURES ===================================\n_ TestWriteUndefinedLengthPixelData.test_writing_too_big_data_in_explicit_encoding _\n\nself = <pydicom.tests.test_filewriter.TestWriteUndefinedLengthPixelData object at 0x716ee6d2bac0>\n\n    def test_writing_too_big_data_in_explicit_encoding(self):\n        \"\"\"Data too large to be written in explicit transfer syntax.\"\"\"\n>       self.fp.is_little_endian = True\n        ^^^^^^^\nE       AttributeError: 'TestWriteUndefinedLengthPixelData' object has no attribute 'fp'\n\npydicom/tests/test_filewriter.py:2505: AttributeError\n=========================== short test summary info ============================\nFAILED pydicom/tests/test_filewriter.py::TestWriteUndefinedLengthPixelData::test_writing_too_big_data_in_explicit_encoding\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.11s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x pydicom/tests/test_filewriter.py::TestWriteUndefinedLengthPixelData::test_writing_too_big_data_in_explicit_encoding\n\n[...]\nsts/test_filewriter.py::TestWriteUndefinedLengthPixelData::test_writing_too_big_data_in_explicit_encoding\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.11s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x pydicom/tests/test_filewriter.py::TestWriteUndefinedLengthPixelData::test_writing_too_big_data_in_explicit_encoding\n",
+    "changedPaths": [
+      "pydicom/errors.py",
+      "pydicom/filewriter.py"
+    ],
+    "appliedMethods": [
+      {
+        "path": "pydicom/errors.py",
+        "method": "exact",
+        "ambiguous": false
+      },
+      {
+        "path": "pydicom/filewriter.py",
+        "method": "exact",
+        "ambiguous": false
+      }
+    ]
+  },
+  "patchSha256": "sha256:90fadb96719789095277a11b6af68265b6e0ff5d23e81e147e785945c61735c4",
+  "contextBytes": 10280,
+  "baselineTail": "sts/test_filewriter.py::TestWriteUndefinedLengthPixelData::test_writing_too_big_data_in_explicit_encoding\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.46s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x pydicom/tests/test_filewriter.py::TestWriteUndefinedLengthPixelData::test_writing_too_big_data_in_explicit_encoding\n",
+  "goldFiles": [
+    "pydicom/filewriter.py"
+  ],
+  "model": "qwen3:8b",
+  "modelCalls": 4
+}

@@ -1,0 +1,8 @@
+{
+  "instanceId": "pydicom__pydicom-1256",
+  "repository": "pydicom/pydicom",
+  "version": "2.1",
+  "createdAt": "2020-11-04T21:13:33Z",
+  "problemStatement": "from_json does not correctly convert BulkDataURI's in SQ data elements\n**Describe the bug**\r\nWhen a DICOM object contains large data elements in SQ elements and is converted to JSON, those elements are correctly turned into BulkDataURI's. However, when the JSON is converted back to DICOM using from_json, the BulkDataURI's in SQ data elements are not converted back and warnings are thrown.\r\n\r\n**Expected behavior**\r\nThe BulkDataURI's in SQ data elements get converted back correctly.\r\n\r\n**Steps To Reproduce**\r\nTake the `waveform_ecg.dcm` in the test data, convert it to JSON, and then convert the JSON to DICOM\r\n\r\n**Your environment**\r\nmodule       | version\r\n------       | -------\r\nplatform     | macOS-10.15.7-x86_64-i386-64bit\r\nPython       | 3.8.2 (v3.8.2:7b3ab5921f, Feb 24 2020, 17:52:18)  [Clang 6.0 (clang-600.0.57)]\r\npydicom      | 2.1.0\r\ngdcm         | _module not found_\r\njpeg_ls      | _module not found_\r\nnumpy        | _module not found_\r\nPIL          | _module not found_\r\n\r\nThe problem is in `jsonrep.py` at line 227. I plan on submitting a pull-request today for this.\n",
+  "hintsText": ""
+}

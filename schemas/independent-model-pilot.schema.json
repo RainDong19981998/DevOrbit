@@ -1,0 +1,154 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devorbit.example/schemas/independent-model-pilot.schema.json",
+  "title": "DevOrbit Independent Public Defect Model Pilot",
+  "type": "object",
+  "required": ["protocolVersion", "pilotId", "runId", "status", "registeredAt", "disclosure", "selection", "case", "model", "runtime", "implementation", "workflow", "leakagePolicy", "evidence"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "protocolVersion": { "const": "1.0" },
+    "pilotId": { "const": "devorbit-independent-model-pilot-v1" },
+    "runId": { "const": "independent-run-001" },
+    "status": { "const": "pre-registered-independent-single-run" },
+    "registeredAt": { "type": "string", "minLength": 20 },
+    "disclosure": { "type": "string", "minLength": 300 },
+    "selection": {
+      "type": "object",
+      "required": ["recordPath", "recordSha256", "selectedBeforeModelInvocation", "replacementAfterOutcomeForbidden"],
+      "properties": {
+        "recordPath": { "const": "evaluation/independent-model-pilot/candidate-selection.json" },
+        "recordSha256": { "$ref": "#/$defs/digest" },
+        "selectedBeforeModelInvocation": { "const": true },
+        "replacementAfterOutcomeForbidden": { "const": true }
+      },
+      "additionalProperties": false
+    },
+    "case": {
+      "type": "object",
+      "required": ["instanceId", "dataset", "datasetSnapshot", "split", "repository", "license", "baseCommit", "sourceArchiveUrl", "sourceArchiveSha256", "issuePath", "issueSha256", "testPatchPath", "testPatchSha256", "requirementsPath", "requirementsSha256", "classificationProbePath", "classificationProbeSha256"],
+      "properties": {
+        "instanceId": { "const": "pydicom__pydicom-965" },
+        "dataset": { "const": "princeton-nlp/SWE-bench" },
+        "datasetSnapshot": { "$ref": "#/$defs/digest" },
+        "split": { "const": "dev-independent-validation" },
+        "repository": { "const": "pydicom/pydicom" },
+        "license": { "const": "MIT" },
+        "baseCommit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "sourceArchiveUrl": { "type": "string", "pattern": "^https://codeload\\.github\\.com/" },
+        "sourceArchiveSha256": { "$ref": "#/$defs/digest" },
+        "issuePath": { "type": "string" },
+        "issueSha256": { "$ref": "#/$defs/digest" },
+        "testPatchPath": { "type": "string" },
+        "testPatchSha256": { "$ref": "#/$defs/digest" },
+        "requirementsPath": { "type": "string" },
+        "requirementsSha256": { "$ref": "#/$defs/digest" },
+        "classificationProbePath": { "type": "string" },
+        "classificationProbeSha256": { "$ref": "#/$defs/digest" }
+      },
+      "additionalProperties": false
+    },
+    "model": {
+      "type": "object",
+      "required": ["provider", "name", "digest", "parameterSize", "quantization", "temperature", "seed", "contextTokens", "maxOutputTokens", "thinking"],
+      "properties": {
+        "provider": { "const": "local-ollama" },
+        "name": { "const": "qwen3:8b" },
+        "digest": { "$ref": "#/$defs/digest" },
+        "parameterSize": { "const": "8.2B" },
+        "quantization": { "const": "Q4_K_M" },
+        "temperature": { "const": 0 },
+        "seed": { "const": 847 },
+        "contextTokens": { "type": "integer", "minimum": 8192 },
+        "maxOutputTokens": { "type": "integer", "minimum": 1024 },
+        "thinking": { "const": false }
+      },
+      "additionalProperties": false
+    },
+    "runtime": {
+      "type": "object",
+      "required": ["platform", "pythonPath", "pythonVersion", "dependencyMode"],
+      "properties": {
+        "platform": { "const": "linux-x86_64-local" },
+        "pythonPath": { "const": "/usr/bin/python3.10" },
+        "pythonVersion": { "const": "3.10.12" },
+        "dependencyMode": { "const": "exact-version-lock-no-transitive-resolution" }
+      },
+      "additionalProperties": false
+    },
+    "implementation": {
+      "type": "object",
+      "required": ["runnerPath", "runnerSha256"],
+      "properties": {
+        "runnerPath": { "const": "scripts/run-independent-model-pilot.mjs" },
+        "runnerSha256": { "$ref": "#/$defs/digest" }
+      },
+      "additionalProperties": false
+    },
+    "workflow": {
+      "type": "object",
+      "required": ["agents", "patchAttemptLimit", "responseTimeoutMs", "patchContract", "exploration", "verificationAuthority", "acceptanceRule", "allowedWritePrefix", "forbiddenWritePrefixes", "maxChangedFiles", "maxDiffLines", "targetArgs", "regressionArgs", "baselineExpected", "successCriteria"],
+      "properties": {
+        "agents": { "type": "array", "minItems": 4, "maxItems": 4, "uniqueItems": true },
+        "patchAttemptLimit": { "const": 1 },
+        "responseTimeoutMs": { "type": "integer", "minimum": 120000 },
+        "patchContract": { "const": "one-shot-one-or-two-files-exact-source-replacements" },
+        "exploration": {
+          "type": "object",
+          "required": ["maxSearchQueries", "maxFiles", "maxExcerptChars", "network"],
+          "properties": {
+            "maxSearchQueries": { "type": "integer", "minimum": 1, "maximum": 8 },
+            "maxFiles": { "type": "integer", "minimum": 1, "maximum": 10 },
+            "maxExcerptChars": { "type": "integer", "minimum": 1000, "maximum": 30000 },
+            "network": { "const": "disabled-for-agent-tools" }
+          },
+          "additionalProperties": false
+        },
+        "verificationAuthority": { "const": "deterministic-machine-gate" },
+        "acceptanceRule": { "const": "machineGatePassed && modelAccept" },
+        "allowedWritePrefix": { "const": "pydicom/" },
+        "forbiddenWritePrefixes": { "type": "array", "minItems": 4 },
+        "maxChangedFiles": { "type": "integer", "minimum": 1, "maximum": 3 },
+        "maxDiffLines": { "type": "integer", "minimum": 20, "maximum": 200 },
+        "targetArgs": { "type": "array", "minItems": 2, "items": { "type": "string" } },
+        "regressionArgs": { "type": "array", "minItems": 2, "items": { "type": "string" } },
+        "baselineExpected": {
+          "type": "object",
+          "required": ["exitCode", "requiredText"],
+          "properties": { "exitCode": { "const": 1 }, "requiredText": { "type": "string", "minLength": 5 } },
+          "additionalProperties": false
+        },
+        "successCriteria": { "type": "array", "minItems": 8, "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    "leakagePolicy": {
+      "type": "object",
+      "required": ["modelMayRead", "modelMustNotRead", "workspaceIsolation", "goldComparison"],
+      "properties": {
+        "modelMayRead": { "type": "array", "minItems": 5 },
+        "modelMustNotRead": { "type": "array", "minItems": 5 },
+        "workspaceIsolation": { "type": "string", "minLength": 100 },
+        "goldComparison": { "type": "string", "minLength": 60 }
+      },
+      "additionalProperties": false
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["transcriptPath", "patchPath", "baselineLogPath", "targetLogPath", "regressionLogPath", "classificationLogPath", "reportPath"],
+      "properties": {
+        "transcriptPath": { "type": "string" },
+        "patchPath": { "type": "string" },
+        "baselineLogPath": { "type": "string" },
+        "targetLogPath": { "type": "string" },
+        "regressionLogPath": { "type": "string" },
+        "classificationLogPath": { "type": "string" },
+        "reportPath": { "const": "reports/independent-model-pilot.json" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }
+  },
+  "additionalProperties": false
+}

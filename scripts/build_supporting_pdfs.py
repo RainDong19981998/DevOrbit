@@ -42,6 +42,7 @@ MUTED = colors.HexColor("#60716a")
 pdfmetrics.registerFont(UnicodeCIDFont(FONT_NAME))
 
 JOBS = [
+    ("docs/AgentTeams本地运行验证.md", "DevOrbit_AgentTeams本地运行验证.pdf"),
     ("docs/Agent-Identity清单.md", "DevOrbit_Agent-Identity清单.pdf"),
     ("docs/Skill清单.md", "DevOrbit_Skill清单.pdf"),
     ("docs/工具与云产品清单.md", "DevOrbit_工具与云产品清单.pdf"),
@@ -176,7 +177,7 @@ def render(source: Path, destination: Path):
         canvas.line(margin_x, height - 8 * mm, width - margin_x, height - 8 * mm)
         canvas.setFont(FONT_NAME, 7.5)
         canvas.setFillColor(MUTED)
-        canvas.drawString(margin_x, 7 * mm, f"DevOrbit V0.6.0 | {title}")
+        canvas.drawString(margin_x, 7 * mm, f"DevOrbit V0.8.0 | 2026-08-25 | {title}")
         canvas.drawRightString(width - margin_x, 7 * mm, f"{doc.page} | 证据边界见正文")
         canvas.restoreState()
 

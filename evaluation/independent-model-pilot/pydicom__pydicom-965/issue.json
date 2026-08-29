@@ -1,0 +1,7 @@
+{
+  "instanceId": "pydicom__pydicom-965",
+  "title": "Empty data elements with value representation SQ are set to None",
+  "body": "In the current master, empty data elements are not read correctly from files. The attribute value is set to None instead of []. Expected behavior: create empty list [] for an empty sequence, i.e. a sequence with zero items. To reproduce: create a Dataset, assign AcquisitionContextSequence = [], write it as implicit VR little endian, read it back, and inspect the sequence value. The reloaded empty SQ value must remain an empty sequence rather than None.",
+  "source": "princeton-nlp/SWE-bench dev problem_statement",
+  "createdAt": "2019-11-01T14:43:06Z"
+}

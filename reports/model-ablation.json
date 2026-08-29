@@ -1,0 +1,351 @@
+{
+  "protocolVersion": "1.0",
+  "generatedAt": "2026-08-28T06:24:03.781Z",
+  "disclosure": "Three-dimensional ablation on the same frozen 30-case SWE-bench dev test split (manifest digest checked per entry). Pipeline dimension compares diff-based V0.8 archive vs edit-based V0.9.6 under the same model; model dimension compares edit-based runs across models; architecture dimension compares devorbit vs single-agent under the same model and pipeline. All intervals are 95% Wilson. Missing entries are disclosed, not imputed.",
+  "entries": [
+    {
+      "label": "V0.8 diff-based · deepseek-v4-flash",
+      "results": "evaluation/archive/public-benchmark-results-v0.8-diff-based.json",
+      "dimension": "pipeline",
+      "patchMode": "diff-based",
+      "model": "deepseek-v4-flash-0731",
+      "methods": {
+        "devorbit": {
+          "method": "devorbit",
+          "runs": 30,
+          "completed": 20,
+          "errored": 9,
+          "skipped": 1,
+          "rootCauseTop3": {
+            "successes": 0,
+            "total": 30,
+            "mean": 0,
+            "low": 0,
+            "high": 0.113517091390478
+          },
+          "patchApplyRate": {
+            "successes": 0,
+            "total": 30,
+            "mean": 0,
+            "low": 0,
+            "high": 0.113517091390478
+          },
+          "testPassRate": {
+            "successes": 0,
+            "total": 30,
+            "mean": 0,
+            "low": 0,
+            "high": 0.113517091390478
+          },
+          "closedLoopRate": {
+            "successes": 0,
+            "total": 30,
+            "mean": 0,
+            "low": 0,
+            "high": 0.113517091390478
+          },
+          "humanInterventionRate": {
+            "successes": 0,
+            "total": 30,
+            "mean": 0,
+            "low": 0,
+            "high": 0.113517091390478
+          },
+          "durationMs": {
+            "mean": 29081.95,
+            "n": 20
+          },
+          "tokenCount": {
+            "mean": 13342.7,
+            "n": 20
+          }
+        },
+        "single-agent": {
+          "method": "single-agent",
+          "runs": 30,
+          "completed": 15,
+          "errored": 14,
+          "skipped": 1,
+          "rootCauseTop3": {
+            "successes": 0,
+            "total": 30,
+            "mean": 0,
+            "low": 0,
+            "high": 0.113517091390478
+          },
+          "patchApplyRate": {
+            "successes": 0,
+            "total": 30,
+            "mean": 0,
+            "low": 0,
+            "high": 0.113517091390478
+          },
+          "testPassRate": {
+            "successes": 0,
+            "total": 30,
+            "mean": 0,
+            "low": 0,
+            "high": 0.113517091390478
+          },
+          "closedLoopRate": {
+            "successes": 0,
+            "total": 30,
+            "mean": 0,
+            "low": 0,
+            "high": 0.113517091390478
+          },
+          "humanInterventionRate": {
+            "successes": 0,
+            "total": 30,
+            "mean": 0,
+            "low": 0,
+            "high": 0.113517091390478
+          },
+          "durationMs": {
+            "mean": 17659.133333333335,
+            "n": 15
+          },
+          "tokenCount": {
+            "mean": 12218.466666666667,
+            "n": 15
+          }
+        }
+      },
+      "status": "completed",
+      "manifestDigest": "sha256:04d47fc9a394896bb4e39c87a652c654757b208aa7c9637444e9c8141547267d"
+    },
+    {
+      "label": "V0.9.6 edit-based · deepseek-v4-flash",
+      "results": "evaluation/public-benchmark-results-deepseek.json",
+      "dimension": "pipeline+model",
+      "patchMode": "edit-based",
+      "model": "deepseek-v4-flash-0731",
+      "methods": {
+        "devorbit": {
+          "method": "devorbit",
+          "runs": 30,
+          "completed": 26,
+          "errored": 3,
+          "skipped": 1,
+          "rootCauseTop3": {
+            "successes": 24,
+            "total": 30,
+            "mean": 0.8,
+            "low": 0.6269395261897256,
+            "high": 0.9049502189759876
+          },
+          "patchApplyRate": {
+            "successes": 15,
+            "total": 30,
+            "mean": 0.5,
+            "low": 0.33153851227173764,
+            "high": 0.6684614877282624
+          },
+          "testPassRate": {
+            "successes": 3,
+            "total": 30,
+            "mean": 0.1,
+            "low": 0.034599259959716175,
+            "high": 0.2562144131526662
+          },
+          "closedLoopRate": {
+            "successes": 3,
+            "total": 30,
+            "mean": 0.1,
+            "low": 0.034599259959716175,
+            "high": 0.2562144131526662
+          },
+          "humanInterventionRate": {
+            "successes": 0,
+            "total": 30,
+            "mean": 0,
+            "low": 0,
+            "high": 0.113517091390478
+          },
+          "durationMs": {
+            "mean": 15857.615384615385,
+            "n": 26
+          },
+          "tokenCount": {
+            "mean": 39638.230769230766,
+            "n": 26
+          }
+        }
+      },
+      "status": "completed",
+      "manifestDigest": "sha256:04d47fc9a394896bb4e39c87a652c654757b208aa7c9637444e9c8141547267d"
+    },
+    {
+      "label": "V0.9.6 edit-based · glm (local gateway)",
+      "results": "evaluation/public-benchmark-results.json",
+      "dimension": "model+architecture",
+      "patchMode": "edit-based",
+      "model": "glm",
+      "methods": {
+        "devorbit": {
+          "method": "devorbit",
+          "runs": 30,
+          "completed": 25,
+          "errored": 4,
+          "skipped": 1,
+          "rootCauseTop3": {
+            "successes": 22,
+            "total": 30,
+            "mean": 0.7333333333333333,
+            "low": 0.5555169795568831,
+            "high": 0.8581750444608938
+          },
+          "patchApplyRate": {
+            "successes": 14,
+            "total": 30,
+            "mean": 0.4666666666666667,
+            "low": 0.30232127224128236,
+            "high": 0.6385798671847496
+          },
+          "testPassRate": {
+            "successes": 3,
+            "total": 30,
+            "mean": 0.1,
+            "low": 0.034599259959716175,
+            "high": 0.2562144131526662
+          },
+          "closedLoopRate": {
+            "successes": 3,
+            "total": 30,
+            "mean": 0.1,
+            "low": 0.034599259959716175,
+            "high": 0.2562144131526662
+          },
+          "humanInterventionRate": {
+            "successes": 0,
+            "total": 30,
+            "mean": 0,
+            "low": 0,
+            "high": 0.113517091390478
+          },
+          "durationMs": {
+            "mean": 27692.4,
+            "n": 25
+          },
+          "tokenCount": {
+            "mean": 37179.92,
+            "n": 25
+          }
+        },
+        "single-agent": {
+          "method": "single-agent",
+          "runs": 30,
+          "completed": 26,
+          "errored": 3,
+          "skipped": 1,
+          "rootCauseTop3": {
+            "successes": 0,
+            "total": 30,
+            "mean": 0,
+            "low": 0,
+            "high": 0.113517091390478
+          },
+          "patchApplyRate": {
+            "successes": 2,
+            "total": 30,
+            "mean": 0.06666666666666667,
+            "low": 0.018476635327693364,
+            "high": 0.2132381772107209
+          },
+          "testPassRate": {
+            "successes": 0,
+            "total": 30,
+            "mean": 0,
+            "low": 0,
+            "high": 0.113517091390478
+          },
+          "closedLoopRate": {
+            "successes": 0,
+            "total": 30,
+            "mean": 0,
+            "low": 0,
+            "high": 0.113517091390478
+          },
+          "humanInterventionRate": {
+            "successes": 0,
+            "total": 30,
+            "mean": 0,
+            "low": 0,
+            "high": 0.113517091390478
+          },
+          "durationMs": {
+            "mean": 26494.26923076923,
+            "n": 26
+          },
+          "tokenCount": {
+            "mean": 19947.03846153846,
+            "n": 26
+          }
+        }
+      },
+      "status": "completed",
+      "manifestDigest": "sha256:04d47fc9a394896bb4e39c87a652c654757b208aa7c9637444e9c8141547267d"
+    },
+    {
+      "label": "V0.9.6 edit-based · qwen3:8b (local)",
+      "results": "evaluation/public-benchmark-results-qwen3-8b.json",
+      "dimension": "model",
+      "patchMode": "edit-based",
+      "model": "qwen3:8b",
+      "methods": {
+        "devorbit": {
+          "method": "devorbit",
+          "runs": 6,
+          "completed": 5,
+          "errored": 0,
+          "skipped": 1,
+          "rootCauseTop3": {
+            "successes": 5,
+            "total": 6,
+            "mean": 0.8333333333333334,
+            "low": 0.43649056343635395,
+            "high": 0.9699474141282697
+          },
+          "patchApplyRate": {
+            "successes": 1,
+            "total": 6,
+            "mean": 0.16666666666666666,
+            "low": 0.03005258587173032,
+            "high": 0.563509436563646
+          },
+          "testPassRate": {
+            "successes": 0,
+            "total": 6,
+            "mean": 0,
+            "low": 0,
+            "high": 0.3903430336530645
+          },
+          "closedLoopRate": {
+            "successes": 0,
+            "total": 6,
+            "mean": 0,
+            "low": 0,
+            "high": 0.3903430336530645
+          },
+          "humanInterventionRate": {
+            "successes": 0,
+            "total": 6,
+            "mean": 0,
+            "low": 0,
+            "high": 0.3903430336530645
+          },
+          "durationMs": {
+            "mean": 40479,
+            "n": 5
+          },
+          "tokenCount": {
+            "mean": 60031.2,
+            "n": 5
+          }
+        }
+      },
+      "status": "completed",
+      "manifestDigest": "sha256:04d47fc9a394896bb4e39c87a652c654757b208aa7c9637444e9c8141547267d"
+    }
+  ]
+}

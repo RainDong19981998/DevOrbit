@@ -3,11 +3,13 @@ import { timingSafeEqual } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { extname, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { runPipeline, getDemoCase } from './src/orchestrator.js';
+import { runPipeline, getDemoCase, getCaseForFixture } from './src/orchestrator.js';
 import { DeliveryManager } from './src/runtime/manager.js';
+import { FileCaseStateStore } from './src/runtime/state-store.js';
+import { fixturePathForRepository } from './src/fixture-profiles.js';
 import { skills } from './src/skills.js';
 import { adapters } from './src/adapters.js';
-import { KnowledgeStore } from './src/knowledge/store.js';
+import { EpisodeStore } from './src/knowledge/episode-store.js';
 import { McpToolServer } from './src/mcp/tool-server.js';
 import { createTools } from './src/mcp/tools.js';
 import { createStreamableHttpHandler } from './src/mcp/http-transport.js';
@@ -15,7 +17,7 @@ import { fileURLToPath as toPath } from 'node:url';
 import { ApprovalAuthority, ToolPolicy } from './src/security/tool-policy.js';
 import { createHttpProvidersFromEnv } from './src/adapters/http.js';
 import { createNativePlatformProvidersFromEnv } from './src/adapters/platforms.js';
-import { DEVORBIT_VERSION, MCP_PROTOCOL_VERSION } from './src/version.js';
+import { DEVORBIT_VERSION, MCP_PROTOCOL_VERSION, MCP_PROTOCOL_VERSIONS } from './src/version.js';
 
 const root = fileURLToPath(new URL('.', import.meta.url));
 const appRoot = resolve(root, 'app');
@@ -30,9 +32,10 @@ const securityHeaders = {
   'x-content-type-options': 'nosniff',
   'x-frame-options': 'DENY'
 };
-const publicReports = new Set(['/reports/evaluation.json', '/reports/security-evaluation.json']);
+const publicReports = new Set(['/reports/evaluation.json', '/reports/security-evaluation.json', '/reports/public-benchmark.json', '/reports/model-ablation.json']);
 const sessions = new Map();
-const runtimeKnowledgeStore = new KnowledgeStore();
+const stateStore = new FileCaseStateStore(resolve(root, 'reports', 'runs', 'state'));
+const runtimeKnowledgeStore = new EpisodeStore();
 const mcpApprovalAuthority = new ApprovalAuthority();
 const nativePlatformProviders = createNativePlatformProvidersFromEnv();
 const externalProviders = nativePlatformProviders || createHttpProvidersFromEnv();
@@ -42,7 +45,7 @@ if (!loopbackHost && !controlToken) throw new Error('DEVORBIT_CONTROL_TOKEN is r
 if (externalProviders && !outboundToken) throw new Error('an outbound adapter or platform token is required when external providers are enabled');
 if (externalProviders && !controlToken) throw new Error('DEVORBIT_CONTROL_TOKEN is required when external adapters are enabled');
 if (externalProviders && controlToken === outboundToken) throw new Error('control-plane and outbound provider tokens must be different');
-const mcpServer = new McpToolServer({ tools: createTools({ fixturePath: toPath(new URL('./fixtures/checkout-service', import.meta.url)), workspaceRegistry: new Map(), knowledgeStore: new KnowledgeStore(), signals: getDemoCase().signals, providers: externalProviders || {} }), policy: new ToolPolicy({ approvalAuthority: mcpApprovalAuthority }) });
+const mcpServer = new McpToolServer({ tools: createTools({ fixturePath: toPath(new URL('./fixtures/checkout-service', import.meta.url)), workspaceRegistry: new Map(), knowledgeStore: new EpisodeStore(), signals: getDemoCase().signals, providers: externalProviders || {} }), policy: new ToolPolicy({ approvalAuthority: mcpApprovalAuthority }) });
 const handleMcp = createStreamableHttpHandler(mcpServer, { maxBodyBytes });
 
 function authorized(req) {
@@ -86,8 +89,26 @@ async function cleanupExpiredSessions(maxAgeMs = 30 * 60 * 1000) {
   for (const [caseId, session] of sessions) {
     if (now - session.createdAt <= maxAgeMs) continue;
     await session.manager.disposeWorkspace();
+    await stateStore.remove(caseId).catch(() => {});
     sessions.delete(caseId);
   }
+}
+
+async function restorePersistedSessions() {
+  const restored = [];
+  for (const summary of await stateStore.list()) {
+    if (summary.status !== 'approval_pending') continue;
+    const snapshot = await stateStore.load(summary.caseId);
+    if (!snapshot) continue;
+    try {
+      const manager = DeliveryManager.restore(snapshot, { knowledgeStore: runtimeKnowledgeStore, providers: externalProviders || {}, stateStore });
+      sessions.set(summary.caseId, { manager, createdAt: Date.now(), restored: true });
+      restored.push(summary.caseId);
+    } catch {
+      // 损坏或不可恢复的快照不阻塞启动；文件保留供审计
+    }
+  }
+  return restored;
 }
 
 function json(res, status, value, headers = {}) {
@@ -101,16 +122,24 @@ const server = http.createServer(async (req, res) => {
       if (!authorized(req)) return unauthorized(res);
       return await handleMcp(req, res);
     }
-    if (req.method === 'GET' && req.url === '/api/health') return json(res, 200, { status: 'ok', version: DEVORBIT_VERSION, environment: process.env.DEVORBIT_ENVIRONMENT || 'local', mcpProtocol: MCP_PROTOCOL_VERSION, externalAdapters: Boolean(externalProviders), providerMode: nativePlatformProviders ? 'github-jenkins-argo' : externalProviders ? 'http-spi' : 'fixture', authRequired: Boolean(controlToken) });
+    if (req.method === 'GET' && req.url === '/api/health') return json(res, 200, { status: 'ok', version: DEVORBIT_VERSION, environment: process.env.DEVORBIT_ENVIRONMENT || 'local', mcpProtocol: MCP_PROTOCOL_VERSION, mcpProtocols: MCP_PROTOCOL_VERSIONS, externalAdapters: Boolean(externalProviders), providerMode: nativePlatformProviders ? 'github-jenkins-argo' : externalProviders ? 'http-spi' : 'fixture', authRequired: Boolean(controlToken), statePersistence: 'file-snapshot', restoredSessions });
+    if (req.method === 'GET' && req.url.startsWith('/api/mcp/audit')) {
+      if (!authorized(req)) return unauthorized(res);
+      const auditUrl = new URL(req.url, 'http://localhost');
+      const after = Number(auditUrl.searchParams.get('after') || 0);
+      if (!Number.isInteger(after) || after < 0 || after > mcpServer.audit.length) return json(res, 400, { error: 'after must be an audit offset within the current log' });
+      return json(res, 200, { protocolVersions: MCP_PROTOCOL_VERSIONS, total: mcpServer.audit.length, after, audit: mcpServer.audit.slice(after) });
+    }
     if (req.method === 'GET' && req.url === '/api/case') return json(res, 200, getDemoCase());
-    if (req.method === 'GET' && req.url === '/api/meta') return json(res, 200, { skills, adapters, scenarios: ['happy-path', 'low-confidence', 'test-failure', 'canary-regression'] });
+    if (req.method === 'GET' && req.url === '/api/meta') return json(res, 200, { skills, adapters, scenarios: ['happy-path', 'dynamic-resampling', 'self-healing', 'low-confidence', 'test-failure', 'canary-regression'], fixtures: ['checkout', 'inventory'] });
     if (req.method === 'POST' && req.url === '/api/runs') {
       if (!authorized(req)) return unauthorized(res);
       await cleanupExpiredSessions();
       const input = await readJsonBody(req);
-      const { scenario = 'happy-path', signals, ...incidentOverrides } = input;
-      const incident = { ...getDemoCase(), ...incidentOverrides, signals: signals || getDemoCase().signals };
-      const manager = new DeliveryManager({ incident, scenario, approvalState: 'pending', knowledgeStore: runtimeKnowledgeStore, providers: externalProviders || {} });
+      const { scenario = 'happy-path', signals, fixture, ...incidentOverrides } = input;
+      const baseCase = getCaseForFixture(fixture);
+      const incident = { ...baseCase, ...incidentOverrides, signals: signals || baseCase.signals };
+      const manager = new DeliveryManager({ incident, scenario, approvalState: 'pending', knowledgeStore: runtimeKnowledgeStore, providers: externalProviders || {}, stateStore, fixturePath: fixturePathForRepository(incident.repository) });
       let result;
       try {
         result = await manager.run();
@@ -122,9 +151,23 @@ const server = http.createServer(async (req, res) => {
       while (sessions.size > 100) {
         const oldest = sessions.keys().next().value;
         await sessions.get(oldest).manager.disposeWorkspace();
+        await stateStore.remove(oldest).catch(() => {});
         sessions.delete(oldest);
       }
       return json(res, 200, result);
+    }
+    if (req.method === 'GET' && req.url === '/api/runs') {
+      if (!authorized(req)) return unauthorized(res);
+      const pending = [...sessions.entries()].map(([caseId, session]) => ({
+        caseId,
+        status: session.manager.state.state,
+        revision: session.manager.state.revision,
+        scenario: session.manager.state.scenario,
+        restored: Boolean(session.restored),
+        createdAt: new Date(session.createdAt).toISOString()
+      }));
+      const snapshots = await stateStore.list();
+      return json(res, 200, { sessions: pending, snapshots });
     }
     const approvalMatch = req.url.match(/^\/api\/runs\/([^/]+)\/approval$/);
     if (req.method === 'POST' && approvalMatch) {
@@ -139,10 +182,14 @@ const server = http.createServer(async (req, res) => {
         if (session.manager.state.state !== 'approval_pending') {
           await session.manager.disposeWorkspace().catch(() => {});
           sessions.delete(session.manager.state.case_id);
+          await stateStore.remove(session.manager.state.case_id).catch(() => {});
         }
         throw error;
       }
-      if (result.state.status !== 'approval_pending') sessions.delete(result.state.caseId);
+      if (result.state.status !== 'approval_pending') {
+        sessions.delete(result.state.caseId);
+        await stateStore.remove(result.state.caseId).catch(() => {});
+      }
       return json(res, 200, result);
     }
     if (req.method === 'POST' && req.url === '/api/run') {
@@ -167,7 +214,11 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
-server.listen(port, host, () => console.log(`DevOrbit demo: http://${host}:${port}`));
+const restoredSessions = await restorePersistedSessions();
+server.listen(port, host, () => {
+  console.log(`DevOrbit demo: http://${host}:${port}`);
+  if (restoredSessions.length) console.log(`restored ${restoredSessions.length} approval-pending session(s) from state snapshots: ${restoredSessions.join(', ')}`);
+});
 
 let shuttingDown = false;
 async function shutdown(signal) {

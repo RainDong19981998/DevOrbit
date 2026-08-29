@@ -24,8 +24,8 @@ if [[ "$1 $2" == "apply worker" ]]; then
 elif [[ "$1 $2" == "apply -f" ]]; then
   manifest=$3
   [[ -f "$manifest" ]]
-  [[ $(rg -o 'https://smoke.example/devorbit/mcp' "$manifest" | wc -l) -eq 10 ]]
-  ! rg -q 'devorbit\.example' "$manifest"
+  [[ $(grep -o 'https://smoke.example/devorbit/mcp' "$manifest" | wc -l) -eq 10 ]]
+  ! grep -q 'devorbit\.example' "$manifest"
 elif [[ "$1 $2 $3" == "get team devorbit-delivery-team" ]]; then
   printf 'team/devorbit-delivery-team Active\n'
 fi
@@ -35,9 +35,9 @@ chmod +x "$fake"
 FAKE_AGT_LOG="$log" AGT_BIN="$fake" MCP_URL='https://smoke.example/devorbit/mcp' \
   bash "$root/scripts/deploy_agentteams.sh" >/dev/null
 
-[[ $(rg -c '^apply worker ' "$log") -eq 7 ]]
-[[ $(rg -c '^apply -f ' "$log") -eq 1 ]]
-[[ $(rg -c '^get team devorbit-delivery-team$' "$log") -eq 1 ]]
+[[ $(grep -c '^apply worker ' "$log") -eq 7 ]]
+[[ $(grep -c '^apply -f ' "$log") -eq 1 ]]
+[[ $(grep -c '^get team devorbit-delivery-team$' "$log") -eq 1 ]]
 [[ $(sed -n '1p' "$log") == apply\ worker* ]]
 [[ $(tail -n 1 "$log") == 'get team devorbit-delivery-team' ]]
 

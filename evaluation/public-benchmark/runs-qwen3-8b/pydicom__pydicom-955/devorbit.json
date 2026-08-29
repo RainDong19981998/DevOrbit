@@ -1,0 +1,51 @@
+{
+  "caseId": "PUB-PYDICOM__PYDICOM-955",
+  "method": "devorbit",
+  "attempts": 3,
+  "rca": {
+    "rootCause": "Incorrect handling of LUT Descriptor values when Pixel Representation is 1 (2s complement), leading to signed interpretation of values that should always be unsigned.",
+    "confidence": 0.95,
+    "evidence": [
+      "The LUT Descriptor (0028,3002) has VM = 3, with value as [number of entries in LUT, first stored pixel value mapped, LUT entry bit depth]. The VR for the element is ambiguous and may be US or SS depending on the value of (0028,0103) Pixel Representation, however this only affects the second value, not the first or last which are always US.",
+      "The problem is that a Pixel Representation value of 1 (i.e. 2s complement) gives a LUT Descriptor value 1 as signed when it should always be unsigned.",
+      "Since LUT Descriptor (0028,3002) is multi-valued, in an Explicit VR Transfer Syntax, only one value representation (US or SS) may be specified, even though the first and third values are always by definition interpreted as unsigned. The explicit VR actually used is dictated by the VR needed to represent the second value, which will be consistent with Pixel Representation (0028,0103)."
+    ],
+    "filesToChange": [
+      "pydicom/valuerep.py",
+      "pydicom/dataset.py",
+      "pydicom/dataelem.py"
+    ]
+  },
+  "edits": [
+    {
+      "path": "pydicom/valuerep.py",
+      "search": "        if isinstance(val, (str, compat.text_type)):\n            val = val.strip()\n            # If the input string is actually invalid that we relax the valid\n            # value constraint for this particular instance\n            if len(val) <= 16:\n                enforce_length = False\n        if val == '':\n            return val\n        if isinstance(val, float) and not config.allow_DS_float:\n            msg = (\"DS cannot be instantiated with a float value, \"\n                   \"unless config.allow_DS_float is set to True. \"\n                   \"It is recommended to convert to a string instead, \"\n                   \"with the desired number of digits, or use \"\n                   \"Decimal.quantize and pass a Decimal instance.\")\n            raise TypeError(msg)\n        if not isinstance(val, Decimal):\n            val = super(DSdecimal, cls).__new__(cls, val)\n        if len(str(val)) > 16 and enforce_length:\n            msg = (\"DS value representation must be <= 16 \"\n                   \"characters by DICOM standard. Initialize with \"\n                   \"a smaller string, or set config.enforce_valid_values \"\n                   \"to False to override, or use Decimal.quantize() and \"\n                   \"initialize with a Decimal instance.\")\n            raise OverflowError(msg)\n        return val",
+      "replace": "        if isinstance(val, (str, compat.text_type)):\n            val = val.strip()\n            # If the input string is actually invalid that we relax the valid\n            # value constraint for this particular instance\n            if len(val) <= 16:\n                enforce_length = False\n        if val == '':\n            return val\n        if isinstance(val, float) and not config.allow_DS_float:\n            msg = (\"DS cannot be instantiated with a float value, \"\n                   \"unless config.allow_DS_float is set to True. \"\n                   \"It is recommended to convert to a string instead, \"\n                   \"with the desired number of digits, or use \"\n                   \"Decimal.quantize and pass a Decimal instance.\")\n            raise TypeError(msg)\n        if not isinstance(val, Decimal):\n            val = super(DSdecimal, cls).__new__(cls, val)\n        if len(str(val)) > 16 and enforce_length:\n            msg = (\"DS value representation must be <= 16 \"\n                   \"characters by DICOM standard. Initialize with \"\n                   \"a smaller string, or set config.enforce_valid_values \"\n                   \"to False to override, or use Decimal.quantize() and \"\n                   \"initialize with a Decimal instance.\")\n            raise OverflowError(msg)\n        return val"
+    },
+    {
+      "path": "pydicom/dataelem.py",
+      "search": "        if not isinstance(val, Decimal):\n            val = super(DSdecimal, cls).__new__(cls, val)\n        if len(str(val)) > 16 and enforce_length:\n            msg = (\"DS value representation must be <= 16 \"\n                   \"characters by DICOM standard. Initialize with \"\n                   \"a smaller string, or set config.enforce_valid_values \"\n                   \"to False to override, or use Decimal.quantize() and \"\n                   \"initialize with a Decimal instance.\")\n            raise OverflowError(msg)\n        return val",
+      "replace": "        if not isinstance(val, Decimal):\n            val = super(DSdecimal, cls).__new__(cls, val)\n        if len(str(val)) > 16 and enforce_length:\n            msg = (\"DS value representation must be <= 16 \"\n                   \"characters by DICOM standard. Initialize with \"\n                   \"a smaller string, or set config.enforce_valid_values \"\n                   \"to False to override, or use Decimal.quantize() and \"\n                   \"initialize with a Decimal instance.\")\n            raise OverflowError(msg)\n        return val"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "edit apply failed: pydicom/dataelem.py: search block not found (exact and whitespace-normalized match both failed) [search:         if not isinstance(val, Decimal):\n            val = super(DSdecimal, cls).__new__(cls, val)\n        if len(str(val)) > 16 and enforce_length:\n           ]",
+    "changedPaths": [
+      "pydicom/valuerep.py",
+      "pydicom/dataelem.py"
+    ]
+  },
+  "patchSha256": null,
+  "contextBytes": 18294,
+  "baselineTail": "===================== short test summary info ============================\nFAILED pydicom/tests/test_filereader.py::TestReader::test_lut_descriptor - as...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.37s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x pydicom/tests/test_filereader.py::TestReader::test_lut_descriptor\n",
+  "goldFiles": [
+    "pydicom/dataelem.py",
+    "pydicom/pixel_data_handlers/util.py"
+  ],
+  "model": "qwen3:8b",
+  "modelCalls": 4
+}

@@ -1,0 +1,23 @@
+{
+  "caseId": "PUB-MARSHMALLOW-CODE__MARSHMALLOW-1343",
+  "method": "devorbit",
+  "attempts": 2,
+  "rca": {
+    "files": [
+      "marshmallow/schema.py"
+    ]
+  },
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "git apply --check failed: \nerror: marshmallow/schema.py: No such file or directory\n\nCommand failed: git apply --check model.patch\nerror: marshmallow/schema.py: No such file or directory\n"
+  },
+  "patchSha256": "sha256:b50bbdcaa85404c2d5c21255c15df990662ae67b98c6f1012c7641ec6741016e",
+  "contextBytes": 8000,
+  "baselineTail": "marshalling.py::TestUnmarshaller::test_deserialize_wrong_nested_type_with_validates_method\nImportError while loading conftest '/tmp/zhanlu/bench-work/marshmallow-code__marshmallow-1343/source/tests/conftest.py'.\ntests/conftest.py:5: in <module>\n    from tests.base import User, UserSchema, Blog\ntests/base.py:6: in <module>\n    import simplejson\nE   ModuleNotFoundError: No module named 'simplejson'\n",
+  "goldFiles": [
+    "src/marshmallow/schema.py"
+  ]
+}

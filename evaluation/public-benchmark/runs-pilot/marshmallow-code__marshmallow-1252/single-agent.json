@@ -1,0 +1,24 @@
+{
+  "caseId": "PUB-MARSHMALLOW-CODE__MARSHMALLOW-1252",
+  "method": "single-agent",
+  "attempts": 3,
+  "rca": null,
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "edit apply failed: src/marshmallow/utils.py: search block not found (exact and whitespace-normalized match both failed) [search:     regex = r'^(\\d{4})-(\\d{2})-(\\d{2})[T ](\\d{2}):(\\d{2}):(\\d{2})(?:\\.(\\d{6}))?(?:Z|[+-]\\d{2}:?\\d{2})?$'\n    match = regex.match(value)\n    if not match:]",
+    "changedPaths": [
+      "src/marshmallow/utils.py"
+    ]
+  },
+  "patchSha256": null,
+  "contextBytes": 8489,
+  "baselineTail": "n -m pytest -q --no-header -x tests/test_utils.py::test_from_iso_datetime[timezone1-False]\nImportError while loading conftest '/tmp/zhanlu/bench-work/marshmallow-code__marshmallow-1252/source/tests/conftest.py'.\ntests/conftest.py:5: in <module>\n    from tests.base import User, UserSchema, Blog\ntests/base.py:6: in <module>\n    import simplejson\nE   ModuleNotFoundError: No module named 'simplejson'\n",
+  "goldFiles": [
+    "src/marshmallow/utils.py"
+  ],
+  "model": "deepseek-v4-flash-0731",
+  "modelCalls": 3
+}

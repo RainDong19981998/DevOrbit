@@ -1,0 +1,646 @@
+{
+  "protocolVersion": "1.0",
+  "datasetId": "devorbit-public-software-repair-v1",
+  "manifestDigest": "sha256:04d47fc9a394896bb4e39c87a652c654757b208aa7c9637444e9c8141547267d",
+  "generatedAt": "2026-08-28T03:24:08.163Z",
+  "methods": [
+    {
+      "method": "devorbit",
+      "name": "DevOrbit staged RCA->patch multi-agent pipeline",
+      "version": "0.9.6",
+      "patchMode": "edit-based",
+      "model": "deepseek-v4-flash-0731",
+      "commit": "e587280cc9ddf12d77b7a9e683ccbde03b88e20d",
+      "configurationDigest": "sha256:5f3a330497215db0da18c83a8c6d25f7c61d318427fcd21299a1305178c05e0c",
+      "environmentDigest": "sha256:60aeca7d263d8441f68b91d978f9fd13f3a2678e800b525e1ed6384b854da518"
+    }
+  ],
+  "runs": [
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-903",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 34103,
+      "tokenCount": 45580,
+      "evidenceRefs": [
+        "runs/pydicom__pydicom-903/devorbit.json"
+      ],
+      "artifactDigests": [
+        "sha256:c5c8853bc1522c03a11bf424a40537becb9ee9bb692b46b80a49c48351024121"
+      ],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1069",
+      "method": "devorbit",
+      "split": "test",
+      "status": "skipped",
+      "rootCauseRank": null,
+      "patchAttempted": false,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 9576,
+      "tokenCount": 0,
+      "evidenceRefs": [],
+      "artifactDigests": [],
+      "error": "baseline FAIL_TO_PASS already green on base commit; case excluded as environment_error"
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1076",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 10650,
+      "tokenCount": 46125,
+      "evidenceRefs": [
+        "runs/pydicom__pydicom-1076/devorbit.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1031",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": null,
+      "patchAttempted": true,
+      "compilePassed": true,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 23190,
+      "tokenCount": 40254,
+      "evidenceRefs": [
+        "runs/pydicom__pydicom-1031/devorbit.json"
+      ],
+      "artifactDigests": [
+        "sha256:9ec850dc377c76815620d10903b029d2037446fc2668c74f6b207c28f388afc7"
+      ],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-955",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 2,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 26010,
+      "tokenCount": 64226,
+      "evidenceRefs": [
+        "runs/pydicom__pydicom-955/devorbit.json"
+      ],
+      "artifactDigests": [
+        "sha256:95be3cbf763c455f41e7c6658cbc43f7c57f3cbb42f6329c8cbf6d0c58b39221"
+      ],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1694",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 10192,
+      "tokenCount": 37497,
+      "evidenceRefs": [
+        "runs/pydicom__pydicom-1694/devorbit.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1428",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 17965,
+      "tokenCount": 37597,
+      "evidenceRefs": [
+        "runs/pydicom__pydicom-1428/devorbit.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-839",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": true,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 15607,
+      "tokenCount": 40286,
+      "evidenceRefs": [
+        "runs/pydicom__pydicom-839/devorbit.json"
+      ],
+      "artifactDigests": [
+        "sha256:f5065b4b6080f15ac417eea88118e4d0215e9a3be56a03f55974b7581ad259a6"
+      ],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1413",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": null,
+      "patchAttempted": true,
+      "compilePassed": true,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 26669,
+      "tokenCount": 48027,
+      "evidenceRefs": [
+        "runs/pydicom__pydicom-1413/devorbit.json"
+      ],
+      "artifactDigests": [
+        "sha256:765eeca40c2b9cc9aadbb9c7c4b9990e31e1804bdcfa60ba7d33f830dad78fd9"
+      ],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1256",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": true,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 10399,
+      "tokenCount": 30391,
+      "evidenceRefs": [
+        "runs/pydicom__pydicom-1256/devorbit.json"
+      ],
+      "artifactDigests": [
+        "sha256:66bf123a8685a0e114bfa777ff92fb842ce1aa44f9422f1130ad1c59ac48390c"
+      ],
+      "error": null
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-4151",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 10657,
+      "tokenCount": 44496,
+      "evidenceRefs": [
+        "runs/sqlfluff__sqlfluff-4151/devorbit.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-2907",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": true,
+      "testsPassed": true,
+      "closedLoop": true,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 13409,
+      "tokenCount": 18785,
+      "evidenceRefs": [
+        "runs/sqlfluff__sqlfluff-2907/devorbit.json"
+      ],
+      "artifactDigests": [
+        "sha256:8b682e46890b17b90df9ba1d400dadbc219a8718c2083281fbea7ae6199d76e7"
+      ],
+      "error": null
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-2573",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": true,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 18164,
+      "tokenCount": 58620,
+      "evidenceRefs": [
+        "runs/sqlfluff__sqlfluff-2573/devorbit.json"
+      ],
+      "artifactDigests": [
+        "sha256:0109e0c7042759a25f06fa0c872626eb733cd82335e4960323aea50b484fa3c1"
+      ],
+      "error": null
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-884",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 2,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 16897,
+      "tokenCount": 48482,
+      "evidenceRefs": [
+        "runs/sqlfluff__sqlfluff-884/devorbit.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-2998",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": true,
+      "testsPassed": true,
+      "closedLoop": true,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 10869,
+      "tokenCount": 15518,
+      "evidenceRefs": [
+        "runs/sqlfluff__sqlfluff-2998/devorbit.json"
+      ],
+      "artifactDigests": [
+        "sha256:a061f0c6422bb1849d7360b0ada53c6edfa6d13cb98576cd3fb0256c0a9a6f7c"
+      ],
+      "error": null
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-4778",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": true,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 16026,
+      "tokenCount": 74043,
+      "evidenceRefs": [
+        "runs/sqlfluff__sqlfluff-4778/devorbit.json"
+      ],
+      "artifactDigests": [
+        "sha256:598a82ef0699016e6a4ff25d90cb928db6b95010fa887f8dca68c3acc93611de"
+      ],
+      "error": null
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-4753",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": true,
+      "testsPassed": true,
+      "closedLoop": true,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 6462,
+      "tokenCount": 14916,
+      "evidenceRefs": [
+        "runs/sqlfluff__sqlfluff-4753/devorbit.json"
+      ],
+      "artifactDigests": [
+        "sha256:ec89ad2bbea439c75f704689438c0615f59bf4deb8e43563da0e70abf3fe2906"
+      ],
+      "error": null
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-3220",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 11943,
+      "tokenCount": 42149,
+      "evidenceRefs": [
+        "runs/sqlfluff__sqlfluff-3220/devorbit.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-1577",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": true,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 14498,
+      "tokenCount": 45593,
+      "evidenceRefs": [
+        "runs/sqlfluff__sqlfluff-1577/devorbit.json"
+      ],
+      "artifactDigests": [
+        "sha256:7a424c03b44eb68f8ca3a3464eb86ff7fbe1a3ce95f0b8d3852b0fc4b8de3a81"
+      ],
+      "error": null
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-1625",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": true,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 13991,
+      "tokenCount": 32187,
+      "evidenceRefs": [
+        "runs/sqlfluff__sqlfluff-1625/devorbit.json"
+      ],
+      "artifactDigests": [
+        "sha256:11c564288256f6f6bfa9cae5c9f0911ce2efc28bf37c5a3f1eef20371a761294"
+      ],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYLINT-DEV__ASTROID-1262",
+      "method": "devorbit",
+      "split": "test",
+      "status": "error",
+      "rootCauseRank": null,
+      "patchAttempted": false,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 5896,
+      "tokenCount": 0,
+      "evidenceRefs": [],
+      "artifactDigests": [],
+      "error": "dependency install failed: in1/miniconda3/lib/python3.13/inspect.py). Did you mean: 'formatargvalues'?\n      [end of output]\n  \n  note: This error originates from a subprocess, and is likely not a problem with pip.\nerror: metadata-generation-failed\n\n× Encountered error while generating package metad"
+    },
+    {
+      "caseId": "PUB-PYLINT-DEV__ASTROID-1962",
+      "method": "devorbit",
+      "split": "test",
+      "status": "error",
+      "rootCauseRank": null,
+      "patchAttempted": false,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 3004,
+      "tokenCount": 0,
+      "evidenceRefs": [],
+      "artifactDigests": [],
+      "error": "dependency install failed: as no attribute 'ImpImporter'. Did you mean: 'zipimporter'?\n      [end of output]\n  \n  note: This error originates from a subprocess, and is likely not a problem with pip.\nerror: subprocess-exited-with-error\n\n× Getting requirements to build wheel did not run successfully.\n"
+    },
+    {
+      "caseId": "PUB-PYLINT-DEV__ASTROID-1196",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 16326,
+      "tokenCount": 34727,
+      "evidenceRefs": [
+        "runs/pylint-dev__astroid-1196/devorbit.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYLINT-DEV__ASTROID-941",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 12181,
+      "tokenCount": 33304,
+      "evidenceRefs": [
+        "runs/pylint-dev__astroid-941/devorbit.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYLINT-DEV__ASTROID-2023",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": true,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 14938,
+      "tokenCount": 35059,
+      "evidenceRefs": [
+        "runs/pylint-dev__astroid-2023/devorbit.json"
+      ],
+      "artifactDigests": [
+        "sha256:a3b046ceb87216ed6ee476914a040ac2c8ca6d4f9f797fcfc0c8647615167e4d"
+      ],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYLINT-DEV__ASTROID-1959",
+      "method": "devorbit",
+      "split": "test",
+      "status": "error",
+      "rootCauseRank": null,
+      "patchAttempted": false,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 2791,
+      "tokenCount": 0,
+      "evidenceRefs": [],
+      "artifactDigests": [],
+      "error": "dependency install failed: as no attribute 'ImpImporter'. Did you mean: 'zipimporter'?\n      [end of output]\n  \n  note: This error originates from a subprocess, and is likely not a problem with pip.\nerror: subprocess-exited-with-error\n\n× Getting requirements to build wheel did not run successfully.\n"
+    },
+    {
+      "caseId": "PUB-MARSHMALLOW-CODE__MARSHMALLOW-1343",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 19441,
+      "tokenCount": 44229,
+      "evidenceRefs": [
+        "runs/marshmallow-code__marshmallow-1343/devorbit.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-MARSHMALLOW-CODE__MARSHMALLOW-1359",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": true,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 12664,
+      "tokenCount": 33792,
+      "evidenceRefs": [
+        "runs/marshmallow-code__marshmallow-1359/devorbit.json"
+      ],
+      "artifactDigests": [
+        "sha256:477340e020e912f5fe2ed2cf2e20647467a061be8cf94a6ec50fcbb07d7573b6"
+      ],
+      "error": null
+    },
+    {
+      "caseId": "PUB-MARSHMALLOW-CODE__MARSHMALLOW-1810",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": true,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 12632,
+      "tokenCount": 32533,
+      "evidenceRefs": [
+        "runs/marshmallow-code__marshmallow-1810/devorbit.json"
+      ],
+      "artifactDigests": [
+        "sha256:3ae86dc9b0090bc12dbd8bf1aaf8ea48cb2a85af5143ee1d878de874519f55c9"
+      ],
+      "error": null
+    },
+    {
+      "caseId": "PUB-MARSHMALLOW-CODE__MARSHMALLOW-1252",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": true,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 16415,
+      "tokenCount": 32178,
+      "evidenceRefs": [
+        "runs/marshmallow-code__marshmallow-1252/devorbit.json"
+      ],
+      "artifactDigests": [
+        "sha256:24c784bf6352fbc25fd64ddf969fb0159c9094b84a071ec3e1cc69f0880b56fe"
+      ],
+      "error": null
+    }
+  ]
+}

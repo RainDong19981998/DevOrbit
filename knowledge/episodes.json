@@ -1,0 +1,233 @@
+[
+  {
+    "id": "EP-001",
+    "title": "连接池缩容导致幂等存储超时与重复订单",
+    "summary": "结算服务的 Redis 连接池被从 80 缩减为 8，峰值期间幂等键查询排队。客户端在超时后重试，而旧实现没有复用已创建订单。恢复容量、延长排队超时并增加重复提交保护后恢复。",
+    "pattern": "连接池缩容 + 幂等重试放大",
+    "tags": ["redis", "idempotency", "checkout", "pool", "timeout", "duplicate-order"],
+    "evidence": ["配置变更", "连接池超时日志", "接口错误率", "重复提交测试"],
+    "prevention": ["容量策略校验", "连接池水位告警", "幂等回归门禁"],
+    "tenant": "acme-commerce",
+    "service": "checkout-service",
+    "environment": "production",
+    "gitRevision": "a1b2c3d4",
+    "configRevision": "release/2026.08",
+    "topology": [
+      { "from": "checkout-web", "to": "checkout-service", "type": "http" },
+      { "from": "checkout-service", "to": "idempotency-store", "type": "redis" },
+      { "from": "checkout-service", "to": "order-service", "type": "http" }
+    ],
+    "hypotheses": [
+      { "statement": "网关 502 是首因", "verdict": "rejected", "evidence": ["METRIC-55"] },
+      { "statement": "连接池缩容导致幂等存储排队超时", "verdict": "confirmed", "evidence": ["CHG-402", "TRACE-771", "METRIC-POOL"] },
+      { "statement": "订单重试未复用已创建订单", "verdict": "confirmed", "evidence": ["TRACE-772"] }
+    ],
+    "evidenceChain": ["CHG-402", "LOG-10A", "METRIC-55", "TRACE-771", "METRIC-POOL", "TRACE-772"],
+    "patches": [
+      { "digest": "sha256:poolfix001", "outcome": "success", "notes": "恢复 poolSize=80, queueTimeoutMs=800" },
+      { "digest": "sha256:idempotencyfix001", "outcome": "success", "notes": "重复请求返回 409 + 原订单" }
+    ],
+    "negativeLessons": [],
+    "observation": { "windowMinutes": 15, "metricsVerdict": "healthy", "reviewedBy": "sre-oncall", "recovered": true },
+    "confidence": "high",
+    "recallStatus": "active",
+    "createdAt": "2026-07-15T08:30:00Z"
+  },
+  {
+    "id": "EP-002",
+    "title": "支付回调签名密钥轮换不一致",
+    "summary": "支付回调方已切换新密钥，但部分实例仍缓存旧版本，造成间歇性签名验证失败。通过双密钥过渡与缓存版本检查修复。",
+    "pattern": "密钥轮换 + 实例缓存不一致",
+    "tags": ["payment", "signature", "cache", "key-rotation"],
+    "evidence": ["签名失败日志", "实例配置版本"],
+    "prevention": ["双密钥窗口", "配置版本一致性检查"],
+    "tenant": "acme-commerce",
+    "service": "payment-service",
+    "environment": "production",
+    "gitRevision": "e5f6a7b8",
+    "configRevision": "release/2026.06",
+    "topology": [
+      { "from": "payment-gateway", "to": "payment-service", "type": "webhook" },
+      { "from": "payment-service", "to": "config-center", "type": "http" }
+    ],
+    "hypotheses": [
+      { "statement": "密钥本身有误", "verdict": "rejected", "evidence": ["签名失败日志"] },
+      { "statement": "实例缓存旧密钥版本", "verdict": "confirmed", "evidence": ["实例配置版本"] }
+    ],
+    "evidenceChain": ["SIG-FAIL-001", "CONFIG-VER-002"],
+    "patches": [
+      { "digest": "sha256:dualkey001", "outcome": "success", "notes": "双密钥过渡窗口 + 缓存版本检查" }
+    ],
+    "negativeLessons": [],
+    "observation": { "windowMinutes": 10, "metricsVerdict": "healthy", "reviewedBy": "payment-oncall", "recovered": true },
+    "confidence": "high",
+    "recallStatus": "active",
+    "createdAt": "2026-06-20T14:00:00Z"
+  },
+  {
+    "id": "EP-003",
+    "title": "库存查询慢 SQL 导致下单尾延迟",
+    "summary": "库存表新增过滤条件后未命中联合索引，订单链路 p99 上升。增加索引并限制查询扫描行数后恢复。",
+    "pattern": "索引缺失 + 下游尾延迟",
+    "tags": ["mysql", "inventory", "slow-sql", "checkout"],
+    "evidence": ["慢查询日志", "执行计划", "调用链"],
+    "prevention": ["SQL 执行计划门禁", "扫描行数告警"],
+    "tenant": "acme-commerce",
+    "service": "inventory-service",
+    "environment": "production",
+    "gitRevision": "c9d0e1f2",
+    "configRevision": "release/2026.07",
+    "topology": [
+      { "from": "checkout-service", "to": "inventory-service", "type": "http" },
+      { "from": "inventory-service", "to": "inventory-db", "type": "mysql" }
+    ],
+    "hypotheses": [
+      { "statement": "下游服务容量不足", "verdict": "rejected", "evidence": ["调用链"] },
+      { "statement": "慢 SQL 未命中联合索引", "verdict": "confirmed", "evidence": ["慢查询日志", "执行计划"] }
+    ],
+    "evidenceChain": ["SLOW-SQL-001", "EXPLAIN-001", "TRACE-INV-001"],
+    "patches": [
+      { "digest": "sha256:indexfix001", "outcome": "success", "notes": "增加联合索引 + 限制扫描行数" },
+      { "digest": "sha256:badpoolfix001", "outcome": "failed", "notes": "曾尝试调大连接池参数试图缓解，未解决根因" }
+    ],
+    "negativeLessons": [
+      { "description": "调大连接池参数无法解决慢 SQL 问题，反而掩盖了真正的根因，延误修复", "severity": "medium" }
+    ],
+    "observation": { "windowMinutes": 15, "metricsVerdict": "healthy", "reviewedBy": "dba-oncall", "recovered": true },
+    "confidence": "high",
+    "recallStatus": "active",
+    "createdAt": "2026-07-05T10:15:00Z"
+  },
+  {
+    "id": "EP-004",
+    "title": "网关重试放大下游限流",
+    "summary": "网关对可重试错误使用固定间隔重试，在下游容量降低时形成同步重试峰值。增加指数退避和重试预算后恢复。",
+    "pattern": "同步重试 + 下游容量下降",
+    "tags": ["gateway", "retry", "rate-limit", "backoff"],
+    "evidence": ["网关指标", "下游限流日志"],
+    "prevention": ["重试预算", "指数退避", "熔断门禁"],
+    "tenant": "acme-commerce",
+    "service": "api-gateway",
+    "environment": "production",
+    "gitRevision": "f3a4b5c6",
+    "configRevision": "release/2026.05",
+    "topology": [
+      { "from": "api-gateway", "to": "order-service", "type": "http" },
+      { "from": "api-gateway", "to": "payment-service", "type": "http" }
+    ],
+    "hypotheses": [
+      { "statement": "下游服务故障", "verdict": "rejected", "evidence": ["下游限流日志"] },
+      { "statement": "网关固定间隔重试放大了下游压力", "verdict": "confirmed", "evidence": ["网关指标"] }
+    ],
+    "evidenceChain": ["GW-METRIC-001", "RATE-LIMIT-001"],
+    "patches": [
+      { "digest": "sha256:backoff001", "outcome": "success", "notes": "指数退避 + 重试预算" }
+    ],
+    "negativeLessons": [],
+    "observation": { "windowMinutes": 12, "metricsVerdict": "healthy", "reviewedBy": "gateway-oncall", "recovered": true },
+    "confidence": "high",
+    "recallStatus": "active",
+    "createdAt": "2026-05-28T16:00:00Z"
+  },
+  {
+    "id": "EP-005",
+    "title": "调大连接池参数导致下游数据库级联崩溃（负面方案）",
+    "summary": "曾尝试将 Redis 连接池从 80 调至 200 试图缓解超时问题，结果下游 Redis 集群因连接数激增触发内存溢出，导致级联崩溃。正确方案是恢复至合理容量并优化查询。",
+    "pattern": "连接池过度调大 + 下游级联崩溃",
+    "tags": ["redis", "pool", "cascade-failure", "negative-evidence"],
+    "evidence": ["Redis OOM 日志", "连接池水位指标", "级联告警"],
+    "prevention": ["连接池上限策略", "容量变更回归测试"],
+    "tenant": "acme-commerce",
+    "service": "checkout-service",
+    "environment": "production",
+    "gitRevision": "a1b2c3d4",
+    "configRevision": "release/2026.08",
+    "topology": [
+      { "from": "checkout-service", "to": "idempotency-store", "type": "redis" },
+      { "from": "idempotency-store", "to": "redis-cluster", "type": "redis" }
+    ],
+    "hypotheses": [
+      { "statement": "调大连接池可缓解超时", "verdict": "rejected", "evidence": ["Redis OOM 日志"] },
+      { "statement": "连接池过度调大致下游级联崩溃", "verdict": "confirmed", "evidence": ["级联告警", "连接池水位指标"] }
+    ],
+    "evidenceChain": ["POOL-200-001", "REDIS-OOM-001", "CASCADE-001"],
+    "patches": [
+      { "digest": "sha256:badpool200", "outcome": "harmful", "notes": "poolSize 80→200 致 Redis OOM 级联崩溃，已回滚" },
+      { "digest": "sha256:correctfix001", "outcome": "success", "notes": "恢复 poolSize=80 + 幂等保护" }
+    ],
+    "negativeLessons": [
+      { "description": "曾尝试调大连接池参数（80→200），导致下游 Redis 集群 OOM 级联崩溃，已自动规避", "severity": "high" }
+    ],
+    "observation": { "windowMinutes": 5, "metricsVerdict": "degraded", "reviewedBy": "sre-oncall", "recovered": false, "rollbackReason": "Redis OOM 级联崩溃" },
+    "confidence": "high",
+    "recallStatus": "negative",
+    "createdAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "id": "EP-006",
+    "title": "数据库迁移缺少索引致慢查询（数据库类事故）",
+    "summary": "库存服务新增查询条件未命中索引，导致订单链路 p99 飙升。通过 PolarDB Agentic Database Branch 验证两种修复方案后择优合并。",
+    "pattern": "Schema 变更 + 索引缺失 + 慢查询",
+    "tags": ["mysql", "inventory", "slow-sql", "schema", "db-branch"],
+    "evidence": ["慢查询日志", "执行计划", "调用链", "DB Branch 验证报告"],
+    "prevention": ["SQL 执行计划门禁", "Schema 变更回归测试", "Database Branch 验证"],
+    "tenant": "acme-commerce",
+    "service": "inventory-service",
+    "environment": "production",
+    "gitRevision": "c9d0e1f2",
+    "configRevision": "release/2026.08",
+    "topology": [
+      { "from": "checkout-service", "to": "inventory-service", "type": "http" },
+      { "from": "inventory-service", "to": "inventory-db", "type": "mysql" }
+    ],
+    "hypotheses": [
+      { "statement": "网络延迟导致慢查询", "verdict": "rejected", "evidence": ["调用链"] },
+      { "statement": "Schema 变更后索引缺失", "verdict": "confirmed", "evidence": ["慢查询日志", "执行计划"] }
+    ],
+    "evidenceChain": ["SLOW-SQL-002", "EXPLAIN-002", "DB-BRANCH-001"],
+    "patches": [
+      { "digest": "sha256:indexbranch001", "outcome": "success", "notes": "Branch-A: 增加联合索引，执行开销最低" },
+      { "digest": "sha256:pagingbranch001", "outcome": "failed", "notes": "Branch-B: 分页改写方案，在高并发下引发锁等待" }
+    ],
+    "negativeLessons": [
+      { "description": "分页改写方案在高并发下引发锁等待，已被 DB Branch 验证淘汰", "severity": "medium" }
+    ],
+    "observation": { "windowMinutes": 15, "metricsVerdict": "healthy", "reviewedBy": "dba-oncall", "recovered": true, "dataAssertions": { "foreignKeyIntegrity": true, "noDeadlock": true, "transactionLatencyNormal": true } },
+    "confidence": "high",
+    "recallStatus": "active",
+    "createdAt": "2026-08-10T11:00:00Z"
+  },
+  {
+    "id": "EP-007",
+    "title": "库存扣减乐观锁条件被移除导致超卖（库存域历史事故）",
+    "summary": "库存服务一次重构移除了扣减语句的 qty >= ? 乐观锁条件，秒杀期间并发扣减导致超卖与台账负库存。恢复条件更新并在扣减路径增加非负校验，配合台账非负断言门禁后恢复。",
+    "pattern": "乐观锁缺失 + 并发扣减超卖",
+    "tags": ["inventory", "oversell", "concurrency", "optimistic-lock"],
+    "evidence": ["台账负库存告警", "变更 diff", "并发扣减 Trace"],
+    "prevention": ["台账非负断言门禁", "条件更新回归测试", "大促前并发扣减演练"],
+    "tenant": "acme-commerce",
+    "service": "inventory-service",
+    "environment": "production",
+    "gitRevision": "e5f6a7b8",
+    "configRevision": "release/2026.08",
+    "topology": [
+      { "from": "inventory-web", "to": "inventory-service", "type": "http" },
+      { "from": "inventory-service", "to": "stock-ledger-db", "type": "sql" }
+    ],
+    "hypotheses": [
+      { "statement": "缓存扣减异常导致超卖", "verdict": "rejected", "evidence": ["缓存指标正常"] },
+      { "statement": "扣减路径乐观锁条件缺失", "verdict": "confirmed", "evidence": ["变更 diff", "并发扣减 Trace"] }
+    ],
+    "evidenceChain": ["CHG-501", "TRACE-9C21", "DB-77"],
+    "patches": [
+      { "digest": "sha256:stockguard001", "outcome": "success", "notes": "恢复非负校验：余量不足拒绝并返回 409" }
+    ],
+    "negativeLessons": [
+      { "description": "仅靠前端限购限流缓解无效：压测中再次出现超卖，必须修复扣减路径自身不变量", "severity": "high" }
+    ],
+    "observation": { "windowMinutes": 15, "metricsVerdict": "healthy", "reviewedBy": "sre-oncall", "recovered": true },
+    "confidence": "high",
+    "recallStatus": "active",
+    "createdAt": "2026-08-20T10:00:00Z"
+  }
+]

@@ -1,0 +1,1820 @@
+{
+  "protocolVersion": "1.0",
+  "runId": "agentteams-local-runtime-v3",
+  "caseId": "CASE-V3-MTBD3WXE",
+  "startedAt": "2026-08-27T10:10:43.442Z",
+  "completedAt": "2026-08-27T10:10:43.655Z",
+  "status": "passed",
+  "boundary": "Leader self-healing decisions (DM-001 supplement-evidence, DM-002 rework-patch) are driven by deterministic code, not by an LLM. This is a deterministic evidence path with fixture-backed Matrix events and MCP audit entries, honestly disclosed. It is not a live LLM autonomous run, not a cloud-account run, and not a production-cluster claim. When DASHSCOPE_API_KEY and AgentTeams are available, the same script path can be upgraded to real LLM-driven decisions.",
+  "runtime": {
+    "team": {
+      "name": "devorbit-delivery-team",
+      "phase": "Active",
+      "leaderReady": true,
+      "readyWorkers": 7,
+      "totalWorkers": 7
+    },
+    "workers": [
+      {
+        "name": "devorbit-lead",
+        "phase": "Running",
+        "model": "deepseek-v4-flash-0731",
+        "runtime": "qwenpaw",
+        "role": "team_leader"
+      },
+      {
+        "name": "intake-worker",
+        "phase": "Running",
+        "model": "deepseek-v4-flash-0731",
+        "runtime": "qwenpaw",
+        "role": "worker",
+        "skill": "signal-fusion"
+      },
+      {
+        "name": "impact-worker",
+        "phase": "Running",
+        "model": "deepseek-v4-flash-0731",
+        "runtime": "qwenpaw",
+        "role": "worker",
+        "skill": "impact-map"
+      },
+      {
+        "name": "rca-worker",
+        "phase": "Running",
+        "model": "deepseek-v4-flash-0731",
+        "runtime": "qwenpaw",
+        "role": "worker",
+        "skill": "evidence-rca"
+      },
+      {
+        "name": "patch-worker",
+        "phase": "Running",
+        "model": "deepseek-v4-flash-0731",
+        "runtime": "qwenpaw",
+        "role": "worker",
+        "skill": "patch-plan"
+      },
+      {
+        "name": "verify-worker",
+        "phase": "Running",
+        "model": "deepseek-v4-flash-0731",
+        "runtime": "qwenpaw",
+        "role": "worker",
+        "skill": "test-gate"
+      },
+      {
+        "name": "release-worker",
+        "phase": "Running",
+        "model": "deepseek-v4-flash-0731",
+        "runtime": "qwenpaw",
+        "role": "worker",
+        "skill": "release-guard"
+      },
+      {
+        "name": "learning-worker",
+        "phase": "Running",
+        "model": "deepseek-v4-flash-0731",
+        "runtime": "qwenpaw",
+        "role": "worker",
+        "skill": "knowledge-card"
+      }
+    ],
+    "matrix": {
+      "adminId": "@devorbit-admin:matrix-local.agentteams.io:18080",
+      "leaderId": "@devorbit-lead:matrix-local.agentteams.io:18080",
+      "teamRoomId": "!FOy2kVzrLdT7MGyTfn:matrix-local.agentteams.io:18080",
+      "leaderDmRoomId": "!7NadyxBWWERgbFJvfP:matrix-local.agentteams.io:18080",
+      "roomCount": 2,
+      "deterministic": true
+    },
+    "mcp": {
+      "baselineOffset": 0,
+      "protocolVersions": [
+        "2025-11-25"
+      ],
+      "totalCalls": 18
+    }
+  },
+  "task": {
+    "eventId": "$v3-case-v3-mtbd3wxe-000",
+    "completionMarker": "DEVORBIT_RUNTIME_RESULT_V3",
+    "teamHarnessProjectId": "agentteams-local-runtime-v3",
+    "finalMessageId": "$v3-case-v3-mtbd3wxe-024",
+    "taskPlan": [
+      {
+        "id": "intake",
+        "title": "Aggregate defect signals",
+        "owner": "intake-worker",
+        "dependsOn": [],
+        "tools": [
+          "issue.fetch_signals",
+          "observability.fetch_signals"
+        ]
+      },
+      {
+        "id": "impact",
+        "title": "Map repository impact",
+        "owner": "impact-worker",
+        "dependsOn": [
+          "intake"
+        ],
+        "tools": [
+          "repository.read_file"
+        ]
+      },
+      {
+        "id": "rca-initial",
+        "title": "Produce initial evidence-grounded RCA",
+        "owner": "rca-worker",
+        "dependsOn": [
+          "impact"
+        ],
+        "tools": [
+          "observability.fetch_signals",
+          "knowledge.search_cases"
+        ]
+      },
+      {
+        "id": "rca-supplement",
+        "title": "Supplement RCA with deep evidence (Leader-triggered)",
+        "owner": "rca-worker",
+        "dependsOn": [
+          "rca-initial"
+        ],
+        "tools": [
+          "observability.fetch_signals",
+          "knowledge.search_cases"
+        ]
+      },
+      {
+        "id": "patch-v1",
+        "title": "Create initial patch (incomplete)",
+        "owner": "patch-worker",
+        "dependsOn": [
+          "rca-supplement"
+        ],
+        "tools": [
+          "repository.create_workspace",
+          "repository.read_file",
+          "ci.run_tests",
+          "repository.write_file"
+        ]
+      },
+      {
+        "id": "verify-v1",
+        "title": "Run regression quality gate (expected red)",
+        "owner": "verify-worker",
+        "dependsOn": [
+          "patch-v1"
+        ],
+        "tools": [
+          "ci.run_tests"
+        ]
+      },
+      {
+        "id": "patch-v2",
+        "title": "Create complete patch (rework)",
+        "owner": "patch-worker",
+        "dependsOn": [
+          "verify-v1"
+        ],
+        "tools": [
+          "repository.write_file"
+        ]
+      },
+      {
+        "id": "verify-v2",
+        "title": "Run regression quality gate (expected green)",
+        "owner": "verify-worker",
+        "dependsOn": [
+          "patch-v2"
+        ],
+        "tools": [
+          "ci.run_tests"
+        ]
+      },
+      {
+        "id": "release",
+        "title": "Verify L2 approval boundary",
+        "owner": "release-worker",
+        "dependsOn": [
+          "verify-v2"
+        ],
+        "tools": [
+          "release.canary"
+        ]
+      },
+      {
+        "id": "learning",
+        "title": "Persist safe terminal knowledge",
+        "owner": "learning-worker",
+        "dependsOn": [
+          "release"
+        ],
+        "tools": [
+          "knowledge.write_case"
+        ]
+      }
+    ]
+  },
+  "evidence": {
+    "seenWorkers": [
+      "impact-worker",
+      "intake-worker",
+      "learning-worker",
+      "patch-worker",
+      "rca-worker",
+      "release-worker",
+      "verify-worker"
+    ],
+    "requiredWorkers": [
+      "intake-worker",
+      "impact-worker",
+      "rca-worker",
+      "patch-worker",
+      "verify-worker",
+      "release-worker",
+      "learning-worker"
+    ],
+    "auditChecks": [
+      {
+        "caller": "intake-worker",
+        "tool": "issue.fetch_signals",
+        "status": "ok",
+        "observed": true
+      },
+      {
+        "caller": "intake-worker",
+        "tool": "observability.fetch_signals",
+        "status": "ok",
+        "observed": true
+      },
+      {
+        "caller": "impact-worker",
+        "tool": "repository.read_file",
+        "status": "ok",
+        "observed": true
+      },
+      {
+        "caller": "rca-worker",
+        "tool": "observability.fetch_signals",
+        "status": "ok",
+        "observed": true
+      },
+      {
+        "caller": "rca-worker",
+        "tool": "knowledge.search_cases",
+        "status": "ok",
+        "observed": true
+      },
+      {
+        "caller": "patch-worker",
+        "tool": "repository.create_workspace",
+        "status": "ok",
+        "observed": true
+      },
+      {
+        "caller": "patch-worker",
+        "tool": "repository.write_file",
+        "status": "ok",
+        "observed": true
+      },
+      {
+        "caller": "verify-worker",
+        "tool": "ci.run_tests",
+        "status": "ok",
+        "observed": true
+      },
+      {
+        "caller": "release-worker",
+        "tool": "release.canary",
+        "status": "denied",
+        "observed": true
+      },
+      {
+        "caller": "learning-worker",
+        "tool": "knowledge.write_case",
+        "status": "ok",
+        "observed": true
+      }
+    ],
+    "taskPlan": [
+      {
+        "id": "intake",
+        "title": "Aggregate defect signals",
+        "owner": "intake-worker",
+        "dependsOn": [],
+        "tools": [
+          "issue.fetch_signals",
+          "observability.fetch_signals"
+        ]
+      },
+      {
+        "id": "impact",
+        "title": "Map repository impact",
+        "owner": "impact-worker",
+        "dependsOn": [
+          "intake"
+        ],
+        "tools": [
+          "repository.read_file"
+        ]
+      },
+      {
+        "id": "rca-initial",
+        "title": "Produce initial evidence-grounded RCA",
+        "owner": "rca-worker",
+        "dependsOn": [
+          "impact"
+        ],
+        "tools": [
+          "observability.fetch_signals",
+          "knowledge.search_cases"
+        ]
+      },
+      {
+        "id": "rca-supplement",
+        "title": "Supplement RCA with deep evidence (Leader-triggered)",
+        "owner": "rca-worker",
+        "dependsOn": [
+          "rca-initial"
+        ],
+        "tools": [
+          "observability.fetch_signals",
+          "knowledge.search_cases"
+        ]
+      },
+      {
+        "id": "patch-v1",
+        "title": "Create initial patch (incomplete)",
+        "owner": "patch-worker",
+        "dependsOn": [
+          "rca-supplement"
+        ],
+        "tools": [
+          "repository.create_workspace",
+          "repository.read_file",
+          "ci.run_tests",
+          "repository.write_file"
+        ]
+      },
+      {
+        "id": "verify-v1",
+        "title": "Run regression quality gate (expected red)",
+        "owner": "verify-worker",
+        "dependsOn": [
+          "patch-v1"
+        ],
+        "tools": [
+          "ci.run_tests"
+        ]
+      },
+      {
+        "id": "patch-v2",
+        "title": "Create complete patch (rework)",
+        "owner": "patch-worker",
+        "dependsOn": [
+          "verify-v1"
+        ],
+        "tools": [
+          "repository.write_file"
+        ]
+      },
+      {
+        "id": "verify-v2",
+        "title": "Run regression quality gate (expected green)",
+        "owner": "verify-worker",
+        "dependsOn": [
+          "patch-v2"
+        ],
+        "tools": [
+          "ci.run_tests"
+        ]
+      },
+      {
+        "id": "release",
+        "title": "Verify L2 approval boundary",
+        "owner": "release-worker",
+        "dependsOn": [
+          "verify-v2"
+        ],
+        "tools": [
+          "release.canary"
+        ]
+      },
+      {
+        "id": "learning",
+        "title": "Persist safe terminal knowledge",
+        "owner": "learning-worker",
+        "dependsOn": [
+          "release"
+        ],
+        "tools": [
+          "knowledge.write_case"
+        ]
+      }
+    ],
+    "teamHarness": [
+      {
+        "at": "2026-08-27T10:10:43.442Z",
+        "tool": "projectflow",
+        "ok": true,
+        "action": "create_project",
+        "projectId": "agentteams-local-runtime-v3",
+        "taskId": null,
+        "nodeStatus": null,
+        "effective": null,
+        "eventId": null,
+        "error": null
+      },
+      {
+        "at": "2026-08-27T10:10:45.442Z",
+        "tool": "projectflow",
+        "ok": true,
+        "action": "plan_dag",
+        "projectId": "agentteams-local-runtime-v3",
+        "taskId": null,
+        "nodeStatus": "planned",
+        "effective": null,
+        "eventId": null,
+        "error": null
+      },
+      {
+        "at": "2026-08-27T10:10:53.442Z",
+        "tool": "taskflow",
+        "ok": true,
+        "action": "delegate_task",
+        "projectId": "agentteams-local-runtime-v3",
+        "taskId": "agentteams-local-runtime-v3-intake",
+        "nodeStatus": null,
+        "effective": null,
+        "eventId": null,
+        "error": null
+      },
+      {
+        "at": "2026-08-27T10:10:57.442Z",
+        "tool": "taskflow",
+        "ok": true,
+        "action": "check_task",
+        "projectId": "agentteams-local-runtime-v3",
+        "taskId": "agentteams-local-runtime-v3-intake",
+        "nodeStatus": null,
+        "effective": true,
+        "eventId": null,
+        "error": null
+      },
+      {
+        "at": "2026-08-27T10:10:57.542Z",
+        "tool": "projectflow",
+        "ok": true,
+        "action": "accept_task_result",
+        "projectId": "agentteams-local-runtime-v3",
+        "taskId": "agentteams-local-runtime-v3-intake",
+        "nodeStatus": "completed",
+        "effective": null,
+        "eventId": null,
+        "error": null
+      },
+      {
+        "at": "2026-08-27T10:10:59.442Z",
+        "tool": "taskflow",
+        "ok": true,
+        "action": "delegate_task",
+        "projectId": "agentteams-local-runtime-v3",
+        "taskId": "agentteams-local-runtime-v3-impact",
+        "nodeStatus": null,
+        "effective": null,
+        "eventId": null,
+        "error": null
+      },
+      {
+        "at": "2026-08-27T10:11:03.442Z",
+        "tool": "taskflow",
+        "ok": true,
+        "action": "check_task",
+        "projectId": "agentteams-local-runtime-v3",
+        "taskId": "agentteams-local-runtime-v3-impact",
+        "nodeStatus": null,
+        "effective": true,
+        "eventId": null,
+        "error": null
+      },
+      {
+        "at": "2026-08-27T10:11:03.542Z",
+        "tool": "projectflow",
+        "ok": true,
+        "action": "accept_task_result",
+        "projectId": "agentteams-local-runtime-v3",
+        "taskId": "agentteams-local-runtime-v3-impact",
+        "nodeStatus": "completed",
+        "effective": null,
+        "eventId": null,
+        "error": null
+      },
+      {
+        "at": "2026-08-27T10:11:05.442Z",
+        "tool": "taskflow",
+        "ok": true,
+        "action": "delegate_task",
+        "projectId": "agentteams-local-runtime-v3",
+        "taskId": "agentteams-local-runtime-v3-rca-initial",
+        "nodeStatus": null,
+        "effective": null,
+        "eventId": null,
+        "error": null
+      },
+      {
+        "at": "2026-08-27T10:11:09.442Z",
+        "tool": "taskflow",
+        "ok": true,
+        "action": "check_task",
+        "projectId": "agentteams-local-runtime-v3",
+        "taskId": "agentteams-local-runtime-v3-rca-initial",
+        "nodeStatus": null,
+        "effective": true,
+        "eventId": null,
+        "error": null
+      },
+      {
+        "at": "2026-08-27T10:11:09.542Z",
+        "tool": "projectflow",
+        "ok": true,
+        "action": "accept_task_result",
+        "projectId": "agentteams-local-runtime-v3",
+        "taskId": "agentteams-local-runtime-v3-rca-initial",
+        "nodeStatus": "completed",
+        "effective": null,
+        "eventId": null,
+        "error": null
+      },
+      {
+        "at": "2026-08-27T10:11:13.442Z",
+        "tool": "taskflow",
+        "ok": true,
+        "action": "delegate_task",
+        "projectId": "agentteams-local-runtime-v3",
+        "taskId": "agentteams-local-runtime-v3-rca-supplement",
+        "nodeStatus": null,
+        "effective": null,
+        "eventId": null,
+        "error": null
+      },
+      {
+        "at": "2026-08-27T10:11:17.442Z",
+        "tool": "taskflow",
+        "ok": true,
+        "action": "check_task",
+        "projectId": "agentteams-local-runtime-v3",
+        "taskId": "agentteams-local-runtime-v3-rca-supplement",
+        "nodeStatus": null,
+        "effective": true,
+        "eventId": null,
+        "error": null
+      },
+      {
+        "at": "2026-08-27T10:11:17.542Z",
+        "tool": "projectflow",
+        "ok": true,
+        "action": "accept_task_result",
+        "projectId": "agentteams-local-runtime-v3",
+        "taskId": "agentteams-local-runtime-v3-rca-supplement",
+        "nodeStatus": "completed",
+        "effective": null,
+        "eventId": null,
+        "error": null
+      },
+      {
+        "at": "2026-08-27T10:11:19.442Z",
+        "tool": "taskflow",
+        "ok": true,
+        "action": "delegate_task",
+        "projectId": "agentteams-local-runtime-v3",
+        "taskId": "agentteams-local-runtime-v3-patch-v1",
+        "nodeStatus": null,
+        "effective": null,
+        "eventId": null,
+        "error": null
+      },
+      {
+        "at": "2026-08-27T10:11:23.442Z",
+        "tool": "taskflow",
+        "ok": true,
+        "action": "check_task",
+        "projectId": "agentteams-local-runtime-v3",
+        "taskId": "agentteams-local-runtime-v3-patch-v1",
+        "nodeStatus": null,
+        "effective": true,
+        "eventId": null,
+        "error": null
+      },
+      {
+        "at": "2026-08-27T10:11:23.542Z",
+        "tool": "projectflow",
+        "ok": true,
+        "action": "accept_task_result",
+        "projectId": "agentteams-local-runtime-v3",
+        "taskId": "agentteams-local-runtime-v3-patch-v1",
+        "nodeStatus": "completed",
+        "effective": null,
+        "eventId": null,
+        "error": null
+      },
+      {
+        "at": "2026-08-27T10:11:25.442Z",
+        "tool": "taskflow",
+        "ok": true,
+        "action": "delegate_task",
+        "projectId": "agentteams-local-runtime-v3",
+        "taskId": "agentteams-local-runtime-v3-verify-v1",
+        "nodeStatus": null,
+        "effective": null,
+        "eventId": null,
+        "error": null
+      },
+      {
+        "at": "2026-08-27T10:11:29.442Z",
+        "tool": "taskflow",
+        "ok": true,
+        "action": "check_task",
+        "projectId": "agentteams-local-runtime-v3",
+        "taskId": "agentteams-local-runtime-v3-verify-v1",
+        "nodeStatus": null,
+        "effective": true,
+        "eventId": null,
+        "error": null
+      },
+      {
+        "at": "2026-08-27T10:11:29.542Z",
+        "tool": "projectflow",
+        "ok": true,
+        "action": "accept_task_result",
+        "projectId": "agentteams-local-runtime-v3",
+        "taskId": "agentteams-local-runtime-v3-verify-v1",
+        "nodeStatus": "completed",
+        "effective": null,
+        "eventId": null,
+        "error": null
+      },
+      {
+        "at": "2026-08-27T10:11:33.442Z",
+        "tool": "taskflow",
+        "ok": true,
+        "action": "delegate_task",
+        "projectId": "agentteams-local-runtime-v3",
+        "taskId": "agentteams-local-runtime-v3-patch-v2",
+        "nodeStatus": null,
+        "effective": null,
+        "eventId": null,
+        "error": null
+      },
+      {
+        "at": "2026-08-27T10:11:37.442Z",
+        "tool": "taskflow",
+        "ok": true,
+        "action": "check_task",
+        "projectId": "agentteams-local-runtime-v3",
+        "taskId": "agentteams-local-runtime-v3-patch-v2",
+        "nodeStatus": null,
+        "effective": true,
+        "eventId": null,
+        "error": null
+      },
+      {
+        "at": "2026-08-27T10:11:37.542Z",
+        "tool": "projectflow",
+        "ok": true,
+        "action": "accept_task_result",
+        "projectId": "agentteams-local-runtime-v3",
+        "taskId": "agentteams-local-runtime-v3-patch-v2",
+        "nodeStatus": "completed",
+        "effective": null,
+        "eventId": null,
+        "error": null
+      },
+      {
+        "at": "2026-08-27T10:11:39.442Z",
+        "tool": "taskflow",
+        "ok": true,
+        "action": "delegate_task",
+        "projectId": "agentteams-local-runtime-v3",
+        "taskId": "agentteams-local-runtime-v3-verify-v2",
+        "nodeStatus": null,
+        "effective": null,
+        "eventId": null,
+        "error": null
+      },
+      {
+        "at": "2026-08-27T10:11:43.442Z",
+        "tool": "taskflow",
+        "ok": true,
+        "action": "check_task",
+        "projectId": "agentteams-local-runtime-v3",
+        "taskId": "agentteams-local-runtime-v3-verify-v2",
+        "nodeStatus": null,
+        "effective": true,
+        "eventId": null,
+        "error": null
+      },
+      {
+        "at": "2026-08-27T10:11:43.542Z",
+        "tool": "projectflow",
+        "ok": true,
+        "action": "accept_task_result",
+        "projectId": "agentteams-local-runtime-v3",
+        "taskId": "agentteams-local-runtime-v3-verify-v2",
+        "nodeStatus": "completed",
+        "effective": null,
+        "eventId": null,
+        "error": null
+      },
+      {
+        "at": "2026-08-27T10:11:45.442Z",
+        "tool": "taskflow",
+        "ok": true,
+        "action": "delegate_task",
+        "projectId": "agentteams-local-runtime-v3",
+        "taskId": "agentteams-local-runtime-v3-release",
+        "nodeStatus": null,
+        "effective": null,
+        "eventId": null,
+        "error": null
+      },
+      {
+        "at": "2026-08-27T10:11:49.442Z",
+        "tool": "taskflow",
+        "ok": true,
+        "action": "check_task",
+        "projectId": "agentteams-local-runtime-v3",
+        "taskId": "agentteams-local-runtime-v3-release",
+        "nodeStatus": null,
+        "effective": true,
+        "eventId": null,
+        "error": null
+      },
+      {
+        "at": "2026-08-27T10:11:49.542Z",
+        "tool": "projectflow",
+        "ok": true,
+        "action": "accept_task_result",
+        "projectId": "agentteams-local-runtime-v3",
+        "taskId": "agentteams-local-runtime-v3-release",
+        "nodeStatus": "completed",
+        "effective": null,
+        "eventId": null,
+        "error": null
+      },
+      {
+        "at": "2026-08-27T10:11:51.442Z",
+        "tool": "taskflow",
+        "ok": true,
+        "action": "delegate_task",
+        "projectId": "agentteams-local-runtime-v3",
+        "taskId": "agentteams-local-runtime-v3-learning",
+        "nodeStatus": null,
+        "effective": null,
+        "eventId": null,
+        "error": null
+      },
+      {
+        "at": "2026-08-27T10:11:55.442Z",
+        "tool": "taskflow",
+        "ok": true,
+        "action": "check_task",
+        "projectId": "agentteams-local-runtime-v3",
+        "taskId": "agentteams-local-runtime-v3-learning",
+        "nodeStatus": null,
+        "effective": true,
+        "eventId": null,
+        "error": null
+      },
+      {
+        "at": "2026-08-27T10:11:55.542Z",
+        "tool": "projectflow",
+        "ok": true,
+        "action": "accept_task_result",
+        "projectId": "agentteams-local-runtime-v3",
+        "taskId": "agentteams-local-runtime-v3-learning",
+        "nodeStatus": "completed",
+        "effective": null,
+        "eventId": null,
+        "error": null
+      },
+      {
+        "at": "2026-08-27T10:11:57.442Z",
+        "tool": "message",
+        "ok": true,
+        "action": "send",
+        "projectId": "agentteams-local-runtime-v3",
+        "taskId": null,
+        "nodeStatus": null,
+        "effective": null,
+        "eventId": "$v3-case-v3-mtbd3wxe-025",
+        "error": null
+      }
+    ],
+    "workerMcp": [
+      {
+        "at": "2026-08-27T10:10:55.442Z",
+        "worker": "intake-worker",
+        "tool": "issue.fetch_signals",
+        "http": 200,
+        "responseBytes": 538
+      },
+      {
+        "at": "2026-08-27T10:10:55.542Z",
+        "worker": "intake-worker",
+        "tool": "observability.fetch_signals",
+        "http": 200,
+        "responseBytes": 910
+      },
+      {
+        "at": "2026-08-27T10:11:01.442Z",
+        "worker": "impact-worker",
+        "tool": "repository.read_file",
+        "http": 200,
+        "responseBytes": 430
+      },
+      {
+        "at": "2026-08-27T10:11:01.542Z",
+        "worker": "impact-worker",
+        "tool": "repository.read_file",
+        "http": 200,
+        "responseBytes": 877
+      },
+      {
+        "at": "2026-08-27T10:11:07.442Z",
+        "worker": "rca-worker",
+        "tool": "observability.fetch_signals",
+        "http": 200,
+        "responseBytes": 910
+      },
+      {
+        "at": "2026-08-27T10:11:07.542Z",
+        "worker": "rca-worker",
+        "tool": "knowledge.search_cases",
+        "http": 200,
+        "responseBytes": 1700
+      },
+      {
+        "at": "2026-08-27T10:11:15.442Z",
+        "worker": "rca-worker",
+        "tool": "observability.fetch_signals",
+        "http": 200,
+        "responseBytes": 2400,
+        "supplement": true
+      },
+      {
+        "at": "2026-08-27T10:11:15.542Z",
+        "worker": "rca-worker",
+        "tool": "knowledge.search_cases",
+        "http": 200,
+        "responseBytes": 3100,
+        "supplement": true
+      },
+      {
+        "at": "2026-08-27T10:11:21.442Z",
+        "worker": "patch-worker",
+        "tool": "repository.create_workspace",
+        "http": 200,
+        "responseBytes": 230
+      },
+      {
+        "at": "2026-08-27T10:11:21.542Z",
+        "worker": "patch-worker",
+        "tool": "repository.read_file",
+        "http": 200,
+        "responseBytes": 430
+      },
+      {
+        "at": "2026-08-27T10:11:21.642Z",
+        "worker": "patch-worker",
+        "tool": "repository.read_file",
+        "http": 200,
+        "responseBytes": 877
+      },
+      {
+        "at": "2026-08-27T10:11:21.742Z",
+        "worker": "patch-worker",
+        "tool": "ci.run_tests",
+        "http": 200,
+        "responseBytes": 1197
+      },
+      {
+        "at": "2026-08-27T10:11:21.842Z",
+        "worker": "patch-worker",
+        "tool": "repository.write_file",
+        "http": 200,
+        "responseBytes": 242
+      },
+      {
+        "at": "2026-08-27T10:11:27.442Z",
+        "worker": "verify-worker",
+        "tool": "ci.run_tests",
+        "http": 200,
+        "responseBytes": 863
+      },
+      {
+        "at": "2026-08-27T10:11:35.442Z",
+        "worker": "patch-worker",
+        "tool": "repository.write_file",
+        "http": 200,
+        "responseBytes": 234,
+        "rework": true
+      },
+      {
+        "at": "2026-08-27T10:11:41.442Z",
+        "worker": "verify-worker",
+        "tool": "ci.run_tests",
+        "http": 200,
+        "responseBytes": 863
+      },
+      {
+        "at": "2026-08-27T10:11:47.442Z",
+        "worker": "release-worker",
+        "tool": "release.canary",
+        "http": 200,
+        "responseBytes": 263
+      },
+      {
+        "at": "2026-08-27T10:11:53.442Z",
+        "worker": "learning-worker",
+        "tool": "knowledge.write_case",
+        "http": 200,
+        "responseBytes": 1026
+      }
+    ],
+    "workerMatrix": [],
+    "audit": [
+      {
+        "auditRef": "audit://ec631e5b-c373-4cdd-ab75-87b4eb9cad0d",
+        "at": "2026-08-27T10:10:55.442Z",
+        "protocolVersion": "2025-11-25",
+        "caller": "intake-worker",
+        "tool": "issue.fetch_signals",
+        "status": "ok",
+        "policyDecision": "allow",
+        "traceId": null,
+        "caseId": "CASE-V3-MTBD3WXE",
+        "inputDigest": "6c66d100a7d26665",
+        "outputDigest": "16840a0cdeeb2814"
+      },
+      {
+        "auditRef": "audit://7ff2c819-085f-4ad8-bc56-1323cd2e303f",
+        "at": "2026-08-27T10:10:55.542Z",
+        "protocolVersion": "2025-11-25",
+        "caller": "intake-worker",
+        "tool": "observability.fetch_signals",
+        "status": "ok",
+        "policyDecision": "allow",
+        "traceId": null,
+        "caseId": "CASE-V3-MTBD3WXE",
+        "inputDigest": "b63c2f08390354b5",
+        "outputDigest": "7623d302389ae593"
+      },
+      {
+        "auditRef": "audit://cfa9bb7c-c2ee-41ba-8c4a-8b8cc9bc94c1",
+        "at": "2026-08-27T10:11:01.442Z",
+        "protocolVersion": "2025-11-25",
+        "caller": "impact-worker",
+        "tool": "repository.read_file",
+        "status": "ok",
+        "policyDecision": "allow",
+        "traceId": null,
+        "caseId": "CASE-V3-MTBD3WXE",
+        "inputDigest": "cd93cd88c1b0a822",
+        "outputDigest": "5a19c53f79cc29ee"
+      },
+      {
+        "auditRef": "audit://d0f25091-7378-4d8c-844f-715e349b01a9",
+        "at": "2026-08-27T10:11:01.542Z",
+        "protocolVersion": "2025-11-25",
+        "caller": "impact-worker",
+        "tool": "repository.read_file",
+        "status": "ok",
+        "policyDecision": "allow",
+        "traceId": null,
+        "caseId": "CASE-V3-MTBD3WXE",
+        "inputDigest": "9dc59c57b20c0bb0",
+        "outputDigest": "02e0f38587a8e792"
+      },
+      {
+        "auditRef": "audit://6e48c483-c97b-4383-85dc-9a63e4019b34",
+        "at": "2026-08-27T10:11:07.442Z",
+        "protocolVersion": "2025-11-25",
+        "caller": "rca-worker",
+        "tool": "observability.fetch_signals",
+        "status": "ok",
+        "policyDecision": "allow",
+        "traceId": null,
+        "caseId": "CASE-V3-MTBD3WXE",
+        "inputDigest": "83f17b8679aa9dbe",
+        "outputDigest": "3854b620a126cf1e"
+      },
+      {
+        "auditRef": "audit://275135ee-d644-4850-a4ff-bbddbc8c8dca",
+        "at": "2026-08-27T10:11:07.542Z",
+        "protocolVersion": "2025-11-25",
+        "caller": "rca-worker",
+        "tool": "knowledge.search_cases",
+        "status": "ok",
+        "policyDecision": "allow",
+        "traceId": null,
+        "caseId": "CASE-V3-MTBD3WXE",
+        "inputDigest": "f915ffdc5590b153",
+        "outputDigest": "863bada3c1bbd3c6"
+      },
+      {
+        "auditRef": "audit://effec69d-0dd3-40b3-89e5-549aca015e80",
+        "at": "2026-08-27T10:11:15.442Z",
+        "protocolVersion": "2025-11-25",
+        "caller": "rca-worker",
+        "tool": "observability.fetch_signals",
+        "status": "ok",
+        "policyDecision": "allow",
+        "traceId": null,
+        "caseId": "CASE-V3-MTBD3WXE",
+        "inputDigest": "85a25d9188f843fc",
+        "outputDigest": "53659a6c98ea2b9c",
+        "supplement": true
+      },
+      {
+        "auditRef": "audit://3caaedf5-3351-4944-834f-28d7265c037f",
+        "at": "2026-08-27T10:11:15.542Z",
+        "protocolVersion": "2025-11-25",
+        "caller": "rca-worker",
+        "tool": "knowledge.search_cases",
+        "status": "ok",
+        "policyDecision": "allow",
+        "traceId": null,
+        "caseId": "CASE-V3-MTBD3WXE",
+        "inputDigest": "3bac92f1a1f498d7",
+        "outputDigest": "82e8b667e63ebaf7",
+        "supplement": true
+      },
+      {
+        "auditRef": "audit://cdda028f-74cc-43c1-9458-35660a05f1af",
+        "at": "2026-08-27T10:11:21.442Z",
+        "protocolVersion": "2025-11-25",
+        "caller": "patch-worker",
+        "tool": "repository.create_workspace",
+        "status": "ok",
+        "policyDecision": "allow",
+        "traceId": null,
+        "caseId": "CASE-V3-MTBD3WXE",
+        "inputDigest": "ab35162ac72d6572",
+        "outputDigest": "cc66de9bdb7f2663"
+      },
+      {
+        "auditRef": "audit://fcfb7a34-d99c-441f-a46f-1a0f1d877ba6",
+        "at": "2026-08-27T10:11:21.542Z",
+        "protocolVersion": "2025-11-25",
+        "caller": "patch-worker",
+        "tool": "repository.read_file",
+        "status": "ok",
+        "policyDecision": "allow",
+        "traceId": null,
+        "caseId": "CASE-V3-MTBD3WXE",
+        "inputDigest": "4b16cebca7277201",
+        "outputDigest": "c6fa3e00009b354d"
+      },
+      {
+        "auditRef": "audit://7db89dc5-74db-4de5-ad6f-f73d85e362e5",
+        "at": "2026-08-27T10:11:21.642Z",
+        "protocolVersion": "2025-11-25",
+        "caller": "patch-worker",
+        "tool": "repository.read_file",
+        "status": "ok",
+        "policyDecision": "allow",
+        "traceId": null,
+        "caseId": "CASE-V3-MTBD3WXE",
+        "inputDigest": "e9c84deb44cdd375",
+        "outputDigest": "fc079bdb2a0dd8b1"
+      },
+      {
+        "auditRef": "audit://cb688b86-0d9e-4d4b-8448-ad8ee500f60e",
+        "at": "2026-08-27T10:11:21.742Z",
+        "protocolVersion": "2025-11-25",
+        "caller": "patch-worker",
+        "tool": "ci.run_tests",
+        "status": "ok",
+        "policyDecision": "allow",
+        "traceId": null,
+        "caseId": "CASE-V3-MTBD3WXE",
+        "inputDigest": "793427f631020036",
+        "outputDigest": "d7418216469dcbab"
+      },
+      {
+        "auditRef": "audit://fb81f844-ff6a-4c2f-b9a1-6214e69ad3a1",
+        "at": "2026-08-27T10:11:21.842Z",
+        "protocolVersion": "2025-11-25",
+        "caller": "patch-worker",
+        "tool": "repository.write_file",
+        "status": "ok",
+        "policyDecision": "allow",
+        "traceId": null,
+        "caseId": "CASE-V3-MTBD3WXE",
+        "inputDigest": "cc2a68423161ce4f",
+        "outputDigest": "7e0e2de5dc264a28"
+      },
+      {
+        "auditRef": "audit://721da4e1-0333-4a8a-a189-840f6dc0e21b",
+        "at": "2026-08-27T10:11:27.442Z",
+        "protocolVersion": "2025-11-25",
+        "caller": "verify-worker",
+        "tool": "ci.run_tests",
+        "status": "ok",
+        "policyDecision": "allow",
+        "traceId": null,
+        "caseId": "CASE-V3-MTBD3WXE",
+        "inputDigest": "8cd4cc282ae7fbed",
+        "outputDigest": "2a9186030b6ffba8",
+        "ciResult": "failed"
+      },
+      {
+        "auditRef": "audit://304145c3-dce3-47dc-a850-ebea16a32fda",
+        "at": "2026-08-27T10:11:35.442Z",
+        "protocolVersion": "2025-11-25",
+        "caller": "patch-worker",
+        "tool": "repository.write_file",
+        "status": "ok",
+        "policyDecision": "allow",
+        "traceId": null,
+        "caseId": "CASE-V3-MTBD3WXE",
+        "inputDigest": "7d013ceab3c06335",
+        "outputDigest": "34fbcf50b192afdb",
+        "rework": true
+      },
+      {
+        "auditRef": "audit://14f900e6-2310-4586-86e3-6d38e2c11b8c",
+        "at": "2026-08-27T10:11:41.442Z",
+        "protocolVersion": "2025-11-25",
+        "caller": "verify-worker",
+        "tool": "ci.run_tests",
+        "status": "ok",
+        "policyDecision": "allow",
+        "traceId": null,
+        "caseId": "CASE-V3-MTBD3WXE",
+        "inputDigest": "65a5cc61adaad6d3",
+        "outputDigest": "d3360bf29911876d",
+        "ciResult": "passed"
+      },
+      {
+        "auditRef": "audit://2c3e8373-6b93-4aa4-8cbc-c671a2c9f70c",
+        "at": "2026-08-27T10:11:47.442Z",
+        "protocolVersion": "2025-11-25",
+        "caller": "release-worker",
+        "tool": "release.canary",
+        "status": "denied",
+        "policyDecision": "deny",
+        "traceId": null,
+        "caseId": "CASE-V3-MTBD3WXE",
+        "inputDigest": "1a3eb262bae266dd",
+        "outputDigest": "b149be7281569991"
+      },
+      {
+        "auditRef": "audit://a878a915-14db-4002-93c3-d11e6c8487d8",
+        "at": "2026-08-27T10:11:53.442Z",
+        "protocolVersion": "2025-11-25",
+        "caller": "learning-worker",
+        "tool": "knowledge.write_case",
+        "status": "ok",
+        "policyDecision": "allow",
+        "traceId": null,
+        "caseId": "CASE-V3-MTBD3WXE",
+        "inputDigest": "173b7e08a57b336f",
+        "outputDigest": "56c4c42451dda9f4"
+      }
+    ],
+    "timeline": [
+      {
+        "eventId": "$v3-case-v3-mtbd3wxe-000",
+        "roomId": "!7NadyxBWWERgbFJvfP:matrix-local.agentteams.io:18080",
+        "sender": "@devorbit-admin:matrix-local.agentteams.io:18080",
+        "at": "2026-08-27T10:10:47.442Z",
+        "body": "@devorbit-lead Case CASE-V3-MTBD3WXE: after 10:15 the payment page keeps spinning and orders are occasionally duplicated. Signals: user feedback FB-1842, Issue ISSUE-771 (order API intermittent 502, retry succeeds), log LOG-10A \"IdempotencyStore timeout after 3000ms; retrying request\", metric POST /orders p95 420ms -> 2.8s, error rate 0.2% -> 7.4%, change CHG-402 redis.client.poolSize 80 -> 8 on release/2026.08."
+      },
+      {
+        "eventId": "$v3-case-v3-mtbd3wxe-001",
+        "roomId": "!7NadyxBWWERgbFJvfP:matrix-local.agentteams.io:18080",
+        "sender": "@devorbit-lead:matrix-local.agentteams.io:18080",
+        "at": "2026-08-27T10:10:49.442Z",
+        "body": "Triage summary for CASE-V3-MTBD3WXE:\n- Symptoms: payment page spinning, duplicate orders (idempotency break).\n- Signal chain: CHG-402 (poolSize 80→8) → Redis pool exhaustion → IdempotencyStore timeout → order API 502 → retry bypasses idempotency → duplicate orders.\n- Plan: 10-node DAG with self-healing branches (intake → impact → rca-initial → rca-supplement → patch-v1 → verify-v1 → patch-v2 → verify-v2 → release → learning).\n- RCA supplement and patch rework are conditional on Leader self-healing decisions."
+      },
+      {
+        "eventId": "$v3-case-v3-mtbd3wxe-002",
+        "roomId": "!FOy2kVzrLdT7MGyTfn:matrix-local.agentteams.io:18080",
+        "sender": "@devorbit-lead:matrix-local.agentteams.io:18080",
+        "at": "2026-08-27T10:10:53.442Z",
+        "body": "@intake-worker:matrix-local.agentteams.io:18080 Task delegated: intake - Aggregate defect signals",
+        "delegation": true
+      },
+      {
+        "eventId": "$v3-case-v3-mtbd3wxe-003",
+        "roomId": "!FOy2kVzrLdT7MGyTfn:matrix-local.agentteams.io:18080",
+        "sender": "@intake-worker:matrix-local.agentteams.io:18080",
+        "at": "2026-08-27T10:10:57.442Z",
+        "body": "@@devorbit-lead:matrix-local.agentteams.io:18080 TASK_COMPLETED: agentteams-local-runtime-v3-intake - Aggregate defect signals; issue+observability signals recorded."
+      },
+      {
+        "eventId": "$v3-case-v3-mtbd3wxe-004",
+        "roomId": "!FOy2kVzrLdT7MGyTfn:matrix-local.agentteams.io:18080",
+        "sender": "@devorbit-lead:matrix-local.agentteams.io:18080",
+        "at": "2026-08-27T10:10:59.442Z",
+        "body": "@impact-worker:matrix-local.agentteams.io:18080 Task delegated: impact - Map repository impact",
+        "delegation": true
+      },
+      {
+        "eventId": "$v3-case-v3-mtbd3wxe-005",
+        "roomId": "!FOy2kVzrLdT7MGyTfn:matrix-local.agentteams.io:18080",
+        "sender": "@impact-worker:matrix-local.agentteams.io:18080",
+        "at": "2026-08-27T10:11:03.442Z",
+        "body": "@@devorbit-lead:matrix-local.agentteams.io:18080 TASK_COMPLETED: agentteams-local-runtime-v3-impact - Map repository impact; affected files: src/redisPool.js, src/order.js."
+      },
+      {
+        "eventId": "$v3-case-v3-mtbd3wxe-006",
+        "roomId": "!FOy2kVzrLdT7MGyTfn:matrix-local.agentteams.io:18080",
+        "sender": "@devorbit-lead:matrix-local.agentteams.io:18080",
+        "at": "2026-08-27T10:11:05.442Z",
+        "body": "@rca-worker:matrix-local.agentteams.io:18080 Task delegated: rca-initial - Produce initial evidence-grounded RCA",
+        "delegation": true
+      },
+      {
+        "eventId": "$v3-case-v3-mtbd3wxe-007",
+        "roomId": "!FOy2kVzrLdT7MGyTfn:matrix-local.agentteams.io:18080",
+        "sender": "@rca-worker:matrix-local.agentteams.io:18080",
+        "at": "2026-08-27T10:11:09.442Z",
+        "body": "@@devorbit-lead:matrix-local.agentteams.io:18080 TASK_COMPLETED: agentteams-local-runtime-v3-rca-initial - initial RCA confidence=0.45; root cause hypothesis: CHG-402 pool exhaustion, but deep evidence not yet pulled."
+      },
+      {
+        "eventId": "$v3-case-v3-mtbd3wxe-008",
+        "roomId": "!7NadyxBWWERgbFJvfP:matrix-local.agentteams.io:18080",
+        "sender": "@devorbit-lead:matrix-local.agentteams.io:18080",
+        "at": "2026-08-27T10:11:11.442Z",
+        "body": "Leader self-healing decision DM-001: RCA confidence 0.45 < 0.60 threshold. Requesting deep evidence supplement (LOG-10A full trace, CHG-402 diff, KB-HIST-001)."
+      },
+      {
+        "eventId": "$v3-case-v3-mtbd3wxe-009",
+        "roomId": "!FOy2kVzrLdT7MGyTfn:matrix-local.agentteams.io:18080",
+        "sender": "@devorbit-lead:matrix-local.agentteams.io:18080",
+        "at": "2026-08-27T10:11:13.442Z",
+        "body": "@rca-worker:matrix-local.agentteams.io:18080 Task delegated: rca-supplement - Pull deep evidence (Leader-triggered supplement)",
+        "delegation": true
+      },
+      {
+        "eventId": "$v3-case-v3-mtbd3wxe-010",
+        "roomId": "!FOy2kVzrLdT7MGyTfn:matrix-local.agentteams.io:18080",
+        "sender": "@rca-worker:matrix-local.agentteams.io:18080",
+        "at": "2026-08-27T10:11:17.442Z",
+        "body": "@@devorbit-lead:matrix-local.agentteams.io:18080 TASK_COMPLETED: agentteams-local-runtime-v3-rca-supplement - deep evidence pulled; confidence upgraded 0.45→0.92. Root cause confirmed: CHG-402 reduced poolSize 80→8 causing IdempotencyStore timeout; createOrder lacks idempotency guard."
+      },
+      {
+        "eventId": "$v3-case-v3-mtbd3wxe-011",
+        "roomId": "!FOy2kVzrLdT7MGyTfn:matrix-local.agentteams.io:18080",
+        "sender": "@devorbit-lead:matrix-local.agentteams.io:18080",
+        "at": "2026-08-27T10:11:19.442Z",
+        "body": "@patch-worker:matrix-local.agentteams.io:18080 Task delegated: patch-v1 - Create initial patch",
+        "delegation": true
+      },
+      {
+        "eventId": "$v3-case-v3-mtbd3wxe-012",
+        "roomId": "!FOy2kVzrLdT7MGyTfn:matrix-local.agentteams.io:18080",
+        "sender": "@patch-worker:matrix-local.agentteams.io:18080",
+        "at": "2026-08-27T10:11:23.442Z",
+        "body": "@@devorbit-lead:matrix-local.agentteams.io:18080 TASK_COMPLETED: agentteams-local-runtime-v3-patch-v1 - initial patch: redisPool.js restored (poolSize=80, queueTimeoutMs=800). order.js NOT modified (idempotency guard still missing)."
+      },
+      {
+        "eventId": "$v3-case-v3-mtbd3wxe-013",
+        "roomId": "!FOy2kVzrLdT7MGyTfn:matrix-local.agentteams.io:18080",
+        "sender": "@devorbit-lead:matrix-local.agentteams.io:18080",
+        "at": "2026-08-27T10:11:25.442Z",
+        "body": "@verify-worker:matrix-local.agentteams.io:18080 Task delegated: verify-v1 - Run regression quality gate",
+        "delegation": true
+      },
+      {
+        "eventId": "$v3-case-v3-mtbd3wxe-014",
+        "roomId": "!FOy2kVzrLdT7MGyTfn:matrix-local.agentteams.io:18080",
+        "sender": "@verify-worker:matrix-local.agentteams.io:18080",
+        "at": "2026-08-27T10:11:29.442Z",
+        "body": "@@devorbit-lead:matrix-local.agentteams.io:18080 TASK_COMPLETED: agentteams-local-runtime-v3-verify-v1 - CI RED. 1 pass, 3 fail. Failure: \"duplicate request returns the original order\" expects status 409, got 201."
+      },
+      {
+        "eventId": "$v3-case-v3-mtbd3wxe-015",
+        "roomId": "!7NadyxBWWERgbFJvfP:matrix-local.agentteams.io:18080",
+        "sender": "@devorbit-lead:matrix-local.agentteams.io:18080",
+        "at": "2026-08-27T10:11:31.442Z",
+        "body": "Leader self-healing decision DM-002: Verify CI red. Patch-v1 only fixed redisPool.js. Requesting rework: add idempotency guard to order.js (duplicate key → 409 + original order)."
+      },
+      {
+        "eventId": "$v3-case-v3-mtbd3wxe-016",
+        "roomId": "!FOy2kVzrLdT7MGyTfn:matrix-local.agentteams.io:18080",
+        "sender": "@devorbit-lead:matrix-local.agentteams.io:18080",
+        "at": "2026-08-27T10:11:33.442Z",
+        "body": "@patch-worker:matrix-local.agentteams.io:18080 Task delegated: patch-v2 - Create complete patch (rework)",
+        "delegation": true
+      },
+      {
+        "eventId": "$v3-case-v3-mtbd3wxe-017",
+        "roomId": "!FOy2kVzrLdT7MGyTfn:matrix-local.agentteams.io:18080",
+        "sender": "@patch-worker:matrix-local.agentteams.io:18080",
+        "at": "2026-08-27T10:11:37.442Z",
+        "body": "@@devorbit-lead:matrix-local.agentteams.io:18080 TASK_COMPLETED: agentteams-local-runtime-v3-patch-v2 - complete patch: order.js idempotency guard added (duplicate idempotencyKey → 409 + original order)."
+      },
+      {
+        "eventId": "$v3-case-v3-mtbd3wxe-018",
+        "roomId": "!FOy2kVzrLdT7MGyTfn:matrix-local.agentteams.io:18080",
+        "sender": "@devorbit-lead:matrix-local.agentteams.io:18080",
+        "at": "2026-08-27T10:11:39.442Z",
+        "body": "@verify-worker:matrix-local.agentteams.io:18080 Task delegated: verify-v2 - Run regression quality gate",
+        "delegation": true
+      },
+      {
+        "eventId": "$v3-case-v3-mtbd3wxe-019",
+        "roomId": "!FOy2kVzrLdT7MGyTfn:matrix-local.agentteams.io:18080",
+        "sender": "@verify-worker:matrix-local.agentteams.io:18080",
+        "at": "2026-08-27T10:11:43.442Z",
+        "body": "@@devorbit-lead:matrix-local.agentteams.io:18080 TASK_COMPLETED: agentteams-local-runtime-v3-verify-v2 - CI GREEN. 4 pass, 0 fail. All tests pass."
+      },
+      {
+        "eventId": "$v3-case-v3-mtbd3wxe-020",
+        "roomId": "!FOy2kVzrLdT7MGyTfn:matrix-local.agentteams.io:18080",
+        "sender": "@devorbit-lead:matrix-local.agentteams.io:18080",
+        "at": "2026-08-27T10:11:45.442Z",
+        "body": "@release-worker:matrix-local.agentteams.io:18080 Task delegated: release - Verify L2 approval boundary",
+        "delegation": true
+      },
+      {
+        "eventId": "$v3-case-v3-mtbd3wxe-021",
+        "roomId": "!FOy2kVzrLdT7MGyTfn:matrix-local.agentteams.io:18080",
+        "sender": "@release-worker:matrix-local.agentteams.io:18080",
+        "at": "2026-08-27T10:11:49.442Z",
+        "body": "@@devorbit-lead:matrix-local.agentteams.io:18080 TASK_COMPLETED: agentteams-local-runtime-v3-release - canary denied (no signed approval token). Terminal state: needs_human. No bypass or guessed credential."
+      },
+      {
+        "eventId": "$v3-case-v3-mtbd3wxe-022",
+        "roomId": "!FOy2kVzrLdT7MGyTfn:matrix-local.agentteams.io:18080",
+        "sender": "@devorbit-lead:matrix-local.agentteams.io:18080",
+        "at": "2026-08-27T10:11:51.442Z",
+        "body": "@learning-worker:matrix-local.agentteams.io:18080 Task delegated: learning - Persist safe terminal knowledge",
+        "delegation": true
+      },
+      {
+        "eventId": "$v3-case-v3-mtbd3wxe-023",
+        "roomId": "!FOy2kVzrLdT7MGyTfn:matrix-local.agentteams.io:18080",
+        "sender": "@learning-worker:matrix-local.agentteams.io:18080",
+        "at": "2026-08-27T10:11:55.442Z",
+        "body": "@@devorbit-lead:matrix-local.agentteams.io:18080 TASK_COMPLETED: agentteams-local-runtime-v3-learning - knowledge card written. Pattern: redis pool exhaustion + duplicate order retry. Terminal: needs_human."
+      },
+      {
+        "eventId": "$v3-case-v3-mtbd3wxe-024",
+        "roomId": "!7NadyxBWWERgbFJvfP:matrix-local.agentteams.io:18080",
+        "sender": "@devorbit-lead:matrix-local.agentteams.io:18080",
+        "at": "2026-08-27T10:11:57.442Z",
+        "body": "DEVORBIT_RUNTIME_RESULT_V3 {\"case_id\":\"CASE-V3-MTBD3WXE\",\"workers\":[\"intake-worker\",\"impact-worker\",\"rca-worker\",\"patch-worker\",\"verify-worker\",\"release-worker\",\"learning-worker\"],\"mcp_tools\":[\"intake-worker:issue.fetch_signals:ok\",\"intake-worker:observability.fetch_signals:ok\",\"impact-worker:repository.read_file:ok\",\"impact-worker:repository.read_file:ok\",\"rca-worker:observability.fetch_signals:ok\",\"rca-worker:knowledge.search_cases:ok\",\"rca-worker:observability.fetch_signals:ok\",\"rca-worker:knowledge.search_cases:ok\",\"patch-worker:repository.create_workspace:ok\",\"patch-worker:repository.read_file:ok\",\"patch-worker:repository.read_file:ok\",\"patch-worker:ci.run_tests:ok\",\"patch-worker:repository.write_file:ok\",\"verify-worker:ci.run_tests:ok\",\"patch-worker:repository.write_file:ok\",\"verify-worker:ci.run_tests:ok\",\"release-worker:release.canary:denied\",\"learning-worker:knowledge.write_case:ok\"],\"terminal_state\":\"needs_human\",\"approval_boundary\":\"release.canary denied because no signed approval token was supplied; no bypass or guessed credential was used\",\"evidence_refs\":[\"audit://ec631e5b-c373-4cdd-ab75-87b4eb9cad0d\",\"audit://7ff2c819-085f-4ad8-bc56-1323cd2e303f\",\"audit://cfa9bb7c-c2ee-41ba-8c4a-8b8cc9bc94c1\",\"audit://d0f25091-7378-4d8c-844f-715e349b01a9\",\"audit://6e48c483-c97b-4383-85dc-9a63e4019b34\",\"audit://275135ee-d644-4850-a4ff-bbddbc8c8dca\",\"audit://effec69d-0dd3-40b3-89e5-549aca015e80\",\"audit://3caaedf5-3351-4944-834f-28d7265c037f\",\"audit://cdda028f-74cc-43c1-9458-35660a05f1af\",\"audit://fcfb7a34-d99c-441f-a46f-1a0f1d877ba6\",\"audit://7db89dc5-74db-4de5-ad6f-f73d85e362e5\",\"audit://cb688b86-0d9e-4d4b-8448-ad8ee500f60e\",\"audit://fb81f844-ff6a-4c2f-b9a1-6214e69ad3a1\",\"audit://721da4e1-0333-4a8a-a189-840f6dc0e21b\",\"audit://304145c3-dce3-47dc-a850-ebea16a32fda\",\"audit://14f900e6-2310-4586-86e3-6d38e2c11b8c\",\"audit://2c3e8373-6b93-4aa4-8cbc-c671a2c9f70c\",\"audit://a878a915-14db-4002-93c3-d11e6c8487d8\"],\"teamharness_project\":\"agentteams-local-runtime-v3\",\"self_healing_decisions\":[{\"id\":\"DM-001\",\"type\":\"supplement-evidence\",\"trigger\":\"rca-confidence-below-threshold (0.45 < 0.60)\",\"outcome\":\"rca-worker pulled deep log traces and change history; confidence upgraded to 0.92\"},{\"id\":\"DM-002\",\"type\":\"rework-patch\",\"trigger\":\"verify-ci-red (order.test.js failure)\",\"outcome\":\"patch-worker regenerated complete patch with idempotency guard; verify-v2 green\"}],\"confidence_tracking\":[{\"taskId\":\"rca-initial\",\"confidence\":0.45,\"at\":\"2026-08-27T10:11:09.442Z\",\"note\":\"initial evidence insufficient; deep log traces and change history not yet pulled\"},{\"taskId\":\"rca-supplement\",\"confidence\":0.92,\"at\":\"2026-08-27T10:11:17.442Z\",\"note\":\"deep evidence: LOG-10A full trace confirms pool exhaustion; CHG-402 diff shows poolSize 80→8; KB-HIST-001 matches pattern\"}],\"rework_cycle\":{\"patch_iterations\":2,\"verify_results\":[\"failed\",\"success\"],\"root_cause\":\"first patch only fixed redisPool.js; idempotency guard in order.js was missing\"}}"
+      }
+    ],
+    "leaderCompletion": {
+      "eventId": "$v3-case-v3-mtbd3wxe-024",
+      "roomId": "!7NadyxBWWERgbFJvfP:matrix-local.agentteams.io:18080",
+      "sender": "@devorbit-lead:matrix-local.agentteams.io:18080",
+      "at": "2026-08-27T10:11:57.442Z",
+      "body": "DEVORBIT_RUNTIME_RESULT_V3 {\"case_id\":\"CASE-V3-MTBD3WXE\",\"workers\":[\"intake-worker\",\"impact-worker\",\"rca-worker\",\"patch-worker\",\"verify-worker\",\"release-worker\",\"learning-worker\"],\"mcp_tools\":[\"intake-worker:issue.fetch_signals:ok\",\"intake-worker:observability.fetch_signals:ok\",\"impact-worker:repository.read_file:ok\",\"impact-worker:repository.read_file:ok\",\"rca-worker:observability.fetch_signals:ok\",\"rca-worker:knowledge.search_cases:ok\",\"rca-worker:observability.fetch_signals:ok\",\"rca-worker:knowledge.search_cases:ok\",\"patch-worker:repository.create_workspace:ok\",\"patch-worker:repository.read_file:ok\",\"patch-worker:repository.read_file:ok\",\"patch-worker:ci.run_tests:ok\",\"patch-worker:repository.write_file:ok\",\"verify-worker:ci.run_tests:ok\",\"patch-worker:repository.write_file:ok\",\"verify-worker:ci.run_tests:ok\",\"release-worker:release.canary:denied\",\"learning-worker:knowledge.write_case:ok\"],\"terminal_state\":\"needs_human\",\"approval_boundary\":\"release.canary denied because no signed approval token was supplied; no bypass or guessed credential was used\",\"evidence_refs\":[\"audit://ec631e5b-c373-4cdd-ab75-87b4eb9cad0d\",\"audit://7ff2c819-085f-4ad8-bc56-1323cd2e303f\",\"audit://cfa9bb7c-c2ee-41ba-8c4a-8b8cc9bc94c1\",\"audit://d0f25091-7378-4d8c-844f-715e349b01a9\",\"audit://6e48c483-c97b-4383-85dc-9a63e4019b34\",\"audit://275135ee-d644-4850-a4ff-bbddbc8c8dca\",\"audit://effec69d-0dd3-40b3-89e5-549aca015e80\",\"audit://3caaedf5-3351-4944-834f-28d7265c037f\",\"audit://cdda028f-74cc-43c1-9458-35660a05f1af\",\"audit://fcfb7a34-d99c-441f-a46f-1a0f1d877ba6\",\"audit://7db89dc5-74db-4de5-ad6f-f73d85e362e5\",\"audit://cb688b86-0d9e-4d4b-8448-ad8ee500f60e\",\"audit://fb81f844-ff6a-4c2f-b9a1-6214e69ad3a1\",\"audit://721da4e1-0333-4a8a-a189-840f6dc0e21b\",\"audit://304145c3-dce3-47dc-a850-ebea16a32fda\",\"audit://14f900e6-2310-4586-86e3-6d38e2c11b8c\",\"audit://2c3e8373-6b93-4aa4-8cbc-c671a2c9f70c\",\"audit://a878a915-14db-4002-93c3-d11e6c8487d8\"],\"teamharness_project\":\"agentteams-local-runtime-v3\",\"self_healing_decisions\":[{\"id\":\"DM-001\",\"type\":\"supplement-evidence\",\"trigger\":\"rca-confidence-below-threshold (0.45 < 0.60)\",\"outcome\":\"rca-worker pulled deep log traces and change history; confidence upgraded to 0.92\"},{\"id\":\"DM-002\",\"type\":\"rework-patch\",\"trigger\":\"verify-ci-red (order.test.js failure)\",\"outcome\":\"patch-worker regenerated complete patch with idempotency guard; verify-v2 green\"}],\"confidence_tracking\":[{\"taskId\":\"rca-initial\",\"confidence\":0.45,\"at\":\"2026-08-27T10:11:09.442Z\",\"note\":\"initial evidence insufficient; deep log traces and change history not yet pulled\"},{\"taskId\":\"rca-supplement\",\"confidence\":0.92,\"at\":\"2026-08-27T10:11:17.442Z\",\"note\":\"deep evidence: LOG-10A full trace confirms pool exhaustion; CHG-402 diff shows poolSize 80→8; KB-HIST-001 matches pattern\"}],\"rework_cycle\":{\"patch_iterations\":2,\"verify_results\":[\"failed\",\"success\"],\"root_cause\":\"first patch only fixed redisPool.js; idempotency guard in order.js was missing\"}}"
+    }
+  },
+  "selfHealing": {
+    "decisions": [
+      {
+        "decisionId": "DM-001",
+        "type": "supplement-evidence",
+        "trigger": "rca-confidence-below-threshold (0.45 < 0.60)",
+        "at": "2026-08-27T10:11:11.442Z",
+        "leaderMessage": "Leader decision: RCA confidence 0.45 is below the 0.60 threshold. Requesting rca-worker to pull deep evidence: full LOG-10A trace, CHG-402 change diff, and historical incident KB-HIST-001.",
+        "outcome": "rca-worker pulled deep log traces and change history; confidence upgraded to 0.92"
+      },
+      {
+        "decisionId": "DM-002",
+        "type": "rework-patch",
+        "trigger": "verify-ci-red (order.test.js failure)",
+        "at": "2026-08-27T10:11:31.442Z",
+        "leaderMessage": "Leader decision: Verify CI is red. The first patch fixed redisPool.js but did not add the idempotency guard to order.js. Requesting patch-worker to rework: add idempotency check (duplicate idempotencyKey returns 409 + original order).",
+        "outcome": "patch-worker regenerated complete patch with idempotency guard; verify-v2 green"
+      }
+    ],
+    "confidenceTracking": [
+      {
+        "taskId": "rca-initial",
+        "confidence": 0.45,
+        "at": "2026-08-27T10:11:09.442Z",
+        "note": "initial evidence insufficient; deep log traces and change history not yet pulled"
+      },
+      {
+        "taskId": "rca-supplement",
+        "confidence": 0.92,
+        "at": "2026-08-27T10:11:17.442Z",
+        "note": "deep evidence: LOG-10A full trace confirms pool exhaustion; CHG-402 diff shows poolSize 80→8; KB-HIST-001 matches pattern"
+      }
+    ],
+    "reworkCycle": {
+      "patchIterations": 2,
+      "verifyResults": [
+        "failed",
+        "success"
+      ],
+      "rootCause": "first patch only fixed redisPool.js (poolSize=80, queueTimeoutMs=800); idempotency guard in order.js was missing (duplicate idempotencyKey returned 201 instead of 409)"
+    }
+  },
+  "matrixEventFlow": {
+    "workerStateChanges": [
+      {
+        "worker": "intake-worker",
+        "states": [
+          {
+            "at": "2026-08-27T10:10:51.442Z",
+            "state": "running",
+            "detail": ""
+          },
+          {
+            "at": "2026-08-27T10:10:57.442Z",
+            "state": "completed",
+            "detail": "signals aggregated"
+          }
+        ]
+      },
+      {
+        "worker": "impact-worker",
+        "states": [
+          {
+            "at": "2026-08-27T10:10:59.442Z",
+            "state": "running",
+            "detail": ""
+          },
+          {
+            "at": "2026-08-27T10:11:03.442Z",
+            "state": "completed",
+            "detail": "src/redisPool.js and src/order.js mapped"
+          }
+        ]
+      },
+      {
+        "worker": "rca-worker",
+        "states": [
+          {
+            "at": "2026-08-27T10:11:05.442Z",
+            "state": "running",
+            "detail": ""
+          },
+          {
+            "at": "2026-08-27T10:11:09.442Z",
+            "state": "completed",
+            "detail": "initial RCA confidence=0.45 (below threshold)"
+          },
+          {
+            "at": "2026-08-27T10:11:13.442Z",
+            "state": "running",
+            "detail": "supplementing RCA with deep evidence"
+          },
+          {
+            "at": "2026-08-27T10:11:17.442Z",
+            "state": "completed",
+            "detail": "supplemented RCA confidence=0.92"
+          }
+        ]
+      },
+      {
+        "worker": "patch-worker",
+        "states": [
+          {
+            "at": "2026-08-27T10:11:19.442Z",
+            "state": "running",
+            "detail": ""
+          },
+          {
+            "at": "2026-08-27T10:11:23.442Z",
+            "state": "completed",
+            "detail": "patch-v1: only redisPool.js fixed (poolSize=80, queueTimeoutMs=800)"
+          },
+          {
+            "at": "2026-08-27T10:11:33.442Z",
+            "state": "running",
+            "detail": "rework: adding idempotency guard to order.js"
+          },
+          {
+            "at": "2026-08-27T10:11:37.442Z",
+            "state": "completed",
+            "detail": "patch-v2: idempotency guard added to order.js"
+          }
+        ]
+      },
+      {
+        "worker": "verify-worker",
+        "states": [
+          {
+            "at": "2026-08-27T10:11:25.442Z",
+            "state": "running",
+            "detail": ""
+          },
+          {
+            "at": "2026-08-27T10:11:29.442Z",
+            "state": "completed",
+            "detail": "CI RED: order.test.js \"duplicate request\" fails (1 pass, 3 fail)"
+          },
+          {
+            "at": "2026-08-27T10:11:39.442Z",
+            "state": "running",
+            "detail": ""
+          },
+          {
+            "at": "2026-08-27T10:11:43.442Z",
+            "state": "completed",
+            "detail": "CI GREEN: 4 pass, 0 fail"
+          }
+        ]
+      },
+      {
+        "worker": "release-worker",
+        "states": [
+          {
+            "at": "2026-08-27T10:11:45.442Z",
+            "state": "running",
+            "detail": ""
+          },
+          {
+            "at": "2026-08-27T10:11:49.442Z",
+            "state": "completed",
+            "detail": "canary denied (no signed approval token) → needs_human"
+          }
+        ]
+      },
+      {
+        "worker": "learning-worker",
+        "states": [
+          {
+            "at": "2026-08-27T10:11:51.442Z",
+            "state": "running",
+            "detail": ""
+          },
+          {
+            "at": "2026-08-27T10:11:55.442Z",
+            "state": "completed",
+            "detail": "knowledge card written (needs_human terminal state)"
+          }
+        ]
+      }
+    ],
+    "leaderDMDecisions": [
+      {
+        "decisionId": "DM-001",
+        "type": "supplement-evidence",
+        "trigger": "rca-confidence-below-threshold (0.45 < 0.60)",
+        "at": "2026-08-27T10:11:11.442Z",
+        "leaderMessage": "Leader decision: RCA confidence 0.45 is below the 0.60 threshold. Requesting rca-worker to pull deep evidence: full LOG-10A trace, CHG-402 change diff, and historical incident KB-HIST-001.",
+        "outcome": "rca-worker pulled deep log traces and change history; confidence upgraded to 0.92"
+      },
+      {
+        "decisionId": "DM-002",
+        "type": "rework-patch",
+        "trigger": "verify-ci-red (order.test.js failure)",
+        "at": "2026-08-27T10:11:31.442Z",
+        "leaderMessage": "Leader decision: Verify CI is red. The first patch fixed redisPool.js but did not add the idempotency guard to order.js. Requesting patch-worker to rework: add idempotency check (duplicate idempotencyKey returns 409 + original order).",
+        "outcome": "patch-worker regenerated complete patch with idempotency guard; verify-v2 green"
+      }
+    ],
+    "mcpCallAudit": [
+      {
+        "auditRef": "audit://ec631e5b-c373-4cdd-ab75-87b4eb9cad0d",
+        "at": "2026-08-27T10:10:55.442Z",
+        "caller": "intake-worker",
+        "tool": "issue.fetch_signals",
+        "status": "ok",
+        "policyDecision": "allow"
+      },
+      {
+        "auditRef": "audit://7ff2c819-085f-4ad8-bc56-1323cd2e303f",
+        "at": "2026-08-27T10:10:55.542Z",
+        "caller": "intake-worker",
+        "tool": "observability.fetch_signals",
+        "status": "ok",
+        "policyDecision": "allow"
+      },
+      {
+        "auditRef": "audit://cfa9bb7c-c2ee-41ba-8c4a-8b8cc9bc94c1",
+        "at": "2026-08-27T10:11:01.442Z",
+        "caller": "impact-worker",
+        "tool": "repository.read_file",
+        "status": "ok",
+        "policyDecision": "allow"
+      },
+      {
+        "auditRef": "audit://d0f25091-7378-4d8c-844f-715e349b01a9",
+        "at": "2026-08-27T10:11:01.542Z",
+        "caller": "impact-worker",
+        "tool": "repository.read_file",
+        "status": "ok",
+        "policyDecision": "allow"
+      },
+      {
+        "auditRef": "audit://6e48c483-c97b-4383-85dc-9a63e4019b34",
+        "at": "2026-08-27T10:11:07.442Z",
+        "caller": "rca-worker",
+        "tool": "observability.fetch_signals",
+        "status": "ok",
+        "policyDecision": "allow"
+      },
+      {
+        "auditRef": "audit://275135ee-d644-4850-a4ff-bbddbc8c8dca",
+        "at": "2026-08-27T10:11:07.542Z",
+        "caller": "rca-worker",
+        "tool": "knowledge.search_cases",
+        "status": "ok",
+        "policyDecision": "allow"
+      },
+      {
+        "auditRef": "audit://effec69d-0dd3-40b3-89e5-549aca015e80",
+        "at": "2026-08-27T10:11:15.442Z",
+        "caller": "rca-worker",
+        "tool": "observability.fetch_signals",
+        "status": "ok",
+        "policyDecision": "allow"
+      },
+      {
+        "auditRef": "audit://3caaedf5-3351-4944-834f-28d7265c037f",
+        "at": "2026-08-27T10:11:15.542Z",
+        "caller": "rca-worker",
+        "tool": "knowledge.search_cases",
+        "status": "ok",
+        "policyDecision": "allow"
+      },
+      {
+        "auditRef": "audit://cdda028f-74cc-43c1-9458-35660a05f1af",
+        "at": "2026-08-27T10:11:21.442Z",
+        "caller": "patch-worker",
+        "tool": "repository.create_workspace",
+        "status": "ok",
+        "policyDecision": "allow"
+      },
+      {
+        "auditRef": "audit://fcfb7a34-d99c-441f-a46f-1a0f1d877ba6",
+        "at": "2026-08-27T10:11:21.542Z",
+        "caller": "patch-worker",
+        "tool": "repository.read_file",
+        "status": "ok",
+        "policyDecision": "allow"
+      },
+      {
+        "auditRef": "audit://7db89dc5-74db-4de5-ad6f-f73d85e362e5",
+        "at": "2026-08-27T10:11:21.642Z",
+        "caller": "patch-worker",
+        "tool": "repository.read_file",
+        "status": "ok",
+        "policyDecision": "allow"
+      },
+      {
+        "auditRef": "audit://cb688b86-0d9e-4d4b-8448-ad8ee500f60e",
+        "at": "2026-08-27T10:11:21.742Z",
+        "caller": "patch-worker",
+        "tool": "ci.run_tests",
+        "status": "ok",
+        "policyDecision": "allow"
+      },
+      {
+        "auditRef": "audit://fb81f844-ff6a-4c2f-b9a1-6214e69ad3a1",
+        "at": "2026-08-27T10:11:21.842Z",
+        "caller": "patch-worker",
+        "tool": "repository.write_file",
+        "status": "ok",
+        "policyDecision": "allow"
+      },
+      {
+        "auditRef": "audit://721da4e1-0333-4a8a-a189-840f6dc0e21b",
+        "at": "2026-08-27T10:11:27.442Z",
+        "caller": "verify-worker",
+        "tool": "ci.run_tests",
+        "status": "ok",
+        "policyDecision": "allow"
+      },
+      {
+        "auditRef": "audit://304145c3-dce3-47dc-a850-ebea16a32fda",
+        "at": "2026-08-27T10:11:35.442Z",
+        "caller": "patch-worker",
+        "tool": "repository.write_file",
+        "status": "ok",
+        "policyDecision": "allow"
+      },
+      {
+        "auditRef": "audit://14f900e6-2310-4586-86e3-6d38e2c11b8c",
+        "at": "2026-08-27T10:11:41.442Z",
+        "caller": "verify-worker",
+        "tool": "ci.run_tests",
+        "status": "ok",
+        "policyDecision": "allow"
+      },
+      {
+        "auditRef": "audit://2c3e8373-6b93-4aa4-8cbc-c671a2c9f70c",
+        "at": "2026-08-27T10:11:47.442Z",
+        "caller": "release-worker",
+        "tool": "release.canary",
+        "status": "denied",
+        "policyDecision": "deny"
+      },
+      {
+        "auditRef": "audit://a878a915-14db-4002-93c3-d11e6c8487d8",
+        "at": "2026-08-27T10:11:53.442Z",
+        "caller": "learning-worker",
+        "tool": "knowledge.write_case",
+        "status": "ok",
+        "policyDecision": "allow"
+      }
+    ]
+  },
+  "checks": [
+    {
+      "label": "teamharness.project.create",
+      "ok": true,
+      "detail": "project agentteams-local-runtime-v3 created"
+    },
+    {
+      "label": "teamharness.plan_dag",
+      "ok": true,
+      "detail": "10-node DAG with self-healing branches"
+    },
+    {
+      "label": "matrix.task.delivered",
+      "ok": true,
+      "detail": "task sent to Leader DM"
+    },
+    {
+      "label": "leader.triage",
+      "ok": true,
+      "detail": "Leader produced triage summary with self-healing DAG plan"
+    },
+    {
+      "label": "leader.delegate.intake",
+      "ok": true,
+      "detail": "delegated intake task"
+    },
+    {
+      "label": "intake-worker.completed",
+      "ok": true,
+      "detail": "intake completed with 2 MCP calls"
+    },
+    {
+      "label": "impact-worker.completed",
+      "ok": true,
+      "detail": "impact completed with 2 MCP calls"
+    },
+    {
+      "label": "rca-worker.initial",
+      "ok": true,
+      "detail": "initial RCA confidence=0.45 (below 0.6 threshold)"
+    },
+    {
+      "label": "leader.decision.supplement-evidence",
+      "ok": true,
+      "detail": "DM-001: RCA confidence low, triggering deep evidence pull"
+    },
+    {
+      "label": "rca-worker.supplemented",
+      "ok": true,
+      "detail": "confidence upgraded 0.45→0.92 after deep evidence pull"
+    },
+    {
+      "label": "patch-worker.v1",
+      "ok": true,
+      "detail": "patch-v1: only redisPool.js fixed, order.js untouched"
+    },
+    {
+      "label": "verify-worker.v1.red",
+      "ok": true,
+      "detail": "CI red: order.test.js duplicate request test fails"
+    },
+    {
+      "label": "leader.decision.rework-patch",
+      "ok": true,
+      "detail": "DM-002: Verify red, triggering patch rework"
+    },
+    {
+      "label": "patch-worker.v2",
+      "ok": true,
+      "detail": "patch-v2: idempotency guard added to order.js"
+    },
+    {
+      "label": "verify-worker.v2.green",
+      "ok": true,
+      "detail": "CI green: all 4 tests pass"
+    },
+    {
+      "label": "release-worker.completed",
+      "ok": true,
+      "detail": "canary denied → needs_human (no bypass)"
+    },
+    {
+      "label": "learning-worker.completed",
+      "ok": true,
+      "detail": "knowledge card written"
+    },
+    {
+      "label": "leader.completion",
+      "ok": true,
+      "detail": "DEVORBIT_RUNTIME_RESULT_V3 published (terminal=needs_human)"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "protocolVersion": "1.0",
+  "pilotId": "devorbit-independent-model-pilot-v1",
+  "runId": "independent-run-001",
+  "analyzedAt": "2026-08-14T06:01:32Z",
+  "manifestSha256": "sha256:14284812f8eaec683845a49c694451910c2daac5e9d9aad09a7badf0f8642d4a",
+  "modelOutputSha256": "sha256:c0a22c7004e784e425dba0d2fcabadf0de9c7652202e28cb26065d6212df4e3b",
+  "rejection": {
+    "stage": "patch-worker",
+    "reason": "oldText occurrence count 0: pydicom/dataelem.py",
+    "proposedEditCount": 2,
+    "uniqueProposedEditCount": 1,
+    "proposedPathCount": 1,
+    "duplicateEditCount": 1,
+    "oldTextSha256": "sha256:ad7ed2b99aa4f8a664308b4c59692116613215b368ba34f709bcfa97a9f8b2c5"
+  },
+  "workspace": {
+    "baseFilePath": "pydicom/dataelem.py",
+    "baseFileSha256": "sha256:6acca5b05390825b9252409259c8f4fc1e285b7db86846d7a4b2f96a6e3d7072",
+    "firstEditAppliedToEphemeralModelWorkspace": true,
+    "ephemeralFileSha256AfterFirstEdit": "sha256:9d4d56a476e239c5c5f55334eded4e65030baa7bdcafe6944e7582280ec20820",
+    "ephemeralDiffSha256": "sha256:a9bea4fdd9f7c8f0645b10983e6c53c800e9cd766a6882725820e7354b858009",
+    "patchedEvaluatorCreated": false,
+    "hiddenTestsExecutedAfterProposal": false,
+    "proposalAccepted": false
+  },
+  "interpretation": "The exact-replacement gate failed closed before an evaluator workspace was created. The v1 runner did mutate its disposable model workspace before validating the duplicate second edit, so this artifact records that limitation explicitly. No post-outcome retry or prompt tuning is permitted for this case."
+}

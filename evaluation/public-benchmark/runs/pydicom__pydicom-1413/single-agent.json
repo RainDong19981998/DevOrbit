@@ -1,0 +1,31 @@
+{
+  "caseId": "PUB-PYDICOM__PYDICOM-1413",
+  "method": "single-agent",
+  "attempts": 3,
+  "rca": null,
+  "edits": [
+    {
+      "path": "pydicom/valuerep.py",
+      "search": "    if vr in (\"OB\", \"OD\", \"OF\", \"OL\", \"OV\", \"OW\", \"UN\"):\n        val = value if isinstance(value, bytes) else encode_string(value)\n        if vr == \"OD\":\n            val = cast(bytes, val)\n        return MultiValue(lambda x: x, val)",
+      "replace": "    if vr in (\"OB\", \"OD\", \"OF\", \"OL\", \"OV\", \"OW\", \"UN\"):\n        if isinstance(value, bytes):\n            return value\n        val = encode_string(value)\n        if vr == \"OD\":\n            val = cast(bytes, val)\n        return MultiValue(lambda x: x, val)"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "edit apply failed: pydicom/valuerep.py: search block not found (exact and whitespace-normalized match both failed) [search:     if vr in (\"OB\", \"OD\", \"OF\", \"OL\", \"OV\", \"OW\", \"UN\"):\n        val = value if isinstance(value, bytes) else encode_string(value)\n        if vr == \"OD\":\n      ]",
+    "changedPaths": [
+      "pydicom/valuerep.py"
+    ]
+  },
+  "patchSha256": null,
+  "contextBytes": 10966,
+  "baselineTail": "!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.29s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x pydicom/tests/test_valuerep.py::test_assigning_bytes[OD-bytes-vm017-vmN17-DoubleFloatPixelData] pydicom/tests/test_valuerep.py::test_assigning_bytes[OL-bytes-vm019-vmN19-TrackPointIndexList] pydicom/tests/test_valuerep.py::test_assigning_bytes[OV-bytes-vm020-vmN20-SelectorOVValue]\n",
+  "goldFiles": [
+    "pydicom/dataelem.py"
+  ],
+  "model": "glm",
+  "modelCalls": 3
+}

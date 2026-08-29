@@ -1,0 +1,22 @@
+diff --git a/src/sqlfluff/core/dialects/dialect_ansi.py b/src/sqlfluff/core/dialects/dialect_ansi.py
+index d0cba1c..7ac00f8 100644
+--- a/src/sqlfluff/core/dialects/dialect_ansi.py
++++ b/src/sqlfluff/core/dialects/dialect_ansi.py
+@@ -50,7 +50,7 @@ ansi_dialect = Dialect("ansi", root_segment_name="FileSegment")
+ ansi_dialect.set_lexer_struct(
+     [
+         # name, type, pattern, kwargs
+-        ("whitespace", "regex", r"[\t ]+", dict(type="whitespace")),
++        ("whitespace", "regex", r"[\t ]+", dict(type="whitespace", is_whitespace=True)),
+         (
+             "inline_comment",
+             "regex",
+@@ -83,7 +83,7 @@ ansi_dialect.set_lexer_struct(
+         ("not_equal", "regex", r"!=|<>", dict(is_code=True)),
+         ("greater_than_or_equal", "regex", r">=", dict(is_code=True)),
+         ("less_than_or_equal", "regex", r"<=", dict(is_code=True)),
+-        ("newline", "regex", r"\r\n|\n", dict(type="newline")),
++        ("newline", "regex", r"\r\n|\n", dict(type="newline", is_whitespace=True)),
+         ("casting_operator", "regex", r"::", dict(is_code=True)),
+         ("concat_operator", "regex", r"\|\|", dict(is_code=True)),
+         ("equals", "singleton", "=", dict(is_code=True)),

@@ -1,0 +1,31 @@
+{
+  "caseId": "PUB-PYDICOM__PYDICOM-1428",
+  "method": "single-agent",
+  "attempts": 3,
+  "rca": null,
+  "edits": [
+    {
+      "path": "pydicom/fileset.py",
+      "search": "    def find_values(self, element: str, load: bool = False) -> list:\n        \"\"\"Return a list of the values in ``element`` from the matching Instances.\n\n        .. versionadded:: 2.1\n\n        Parameters\n        ----------\n        element : str\n            The keyword for the element to return the values of, such as\n            'PatientID'.\n        load : bool, optional\n            If ``True`` (default ``False``) then load the Dataset for each\n            matching Instance before searching for ``element``.\n\n        Returns\n        -------\n        list\n            A list of the values for ``element`` from the matching Instances.\n        \"\"\"\n        results: list = []\n        for instance in self:\n            if load:\n                instance = instance.load()\n\n            if element not in instance:\n                continue\n\n            val = instance[element].value\n            if val not in results:\n                results.append(val)\n\n        return results",
+      "replace": "    def find_values(self, element, load: bool = False):\n        \"\"\"Return the values in ``element`` from the matching Instances.\n\n        .. versionadded:: 2.1\n\n        .. versionchanged:: 3.0\n\n            ``element`` can also be an iterable of element keywords, in which\n            case a ``dict`` of element keywords to a list of values will be\n            returned.\n\n        Parameters\n        ----------\n        element : str or iterable of str\n            The keyword for the element to return the values of, such as\n            'PatientID', or an iterable of keywords.\n        load : bool, optional\n            If ``True`` (default ``False``) then load the Dataset for each\n            matching Instance before searching for ``element``.\n\n        Returns\n        -------\n        list or dict\n            If ``element`` is a single keyword, returns a list of the values\n            for ``element`` from the matching Instances. If ``element`` is an\n            iterable of keywords, returns a ``dict`` mapping each keyword to a\n            list of its values from the matching Instances.\n        \"\"\"\n        if isinstance(element, str):\n            results: list = []\n            for instance in self:\n                if load:\n                    instance = instance.load()\n\n                if element not in instance:\n                    continue\n\n                val = instance[element].value\n                if val not in results:\n                    results.append(val)\n\n            return results\n\n        results = {e: [] for e in element}\n        for instance in self:\n            if load:\n                instance = instance.load()\n\n            for e in element:\n                if e not in instance:\n                    continue\n\n                val = instance[e].value\n                if val not in results[e]:\n                    results[e].append(val)\n\n        return results"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "edit apply failed: pydicom/fileset.py: search block not found (exact and whitespace-normalized match both failed) [search:     def find_values(self, element: str, load: bool = False) -> list:\n        \"\"\"Return a list of the values in ``element`` from the matching Instances.\n\n       ]",
+    "changedPaths": [
+      "pydicom/fileset.py"
+    ]
+  },
+  "patchSha256": null,
+  "contextBytes": 10966,
+  "baselineTail": "===\nFAILED pydicom/tests/test_fileset.py::TestFileSet_Load::test_find_values - Va...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.51s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x pydicom/tests/test_fileset.py::TestFileSet_Load::test_find_values pydicom/tests/test_fileset.py::TestFileSet_Load::test_find_values_load\n",
+  "goldFiles": [
+    "pydicom/fileset.py"
+  ],
+  "model": "glm",
+  "modelCalls": 3
+}

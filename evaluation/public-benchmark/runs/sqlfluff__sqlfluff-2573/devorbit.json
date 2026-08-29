@@ -1,0 +1,45 @@
+{
+  "caseId": "PUB-SQLFLUFF__SQLFLUFF-2573",
+  "method": "devorbit",
+  "attempts": 3,
+  "rca": {
+    "rootCause": "When a user runs `sqlfluff lint path_a` (or any explicit subdirectory/file path), the config loader and linter do not load configuration (including `.sqlfluffignore`) from the current working directory. The `paths_from_path` method only looks for `.sqlfluffignore` files within the explicitly provided path and its children, never checking parent directories (like the cwd). This means the `.sqlfluffignore` at the project root (cwd) is ignored when a subdirectory is passed, causing files that should be ignored to be linted. The fix should ensure the current working directory's configuration/ignore files are loaded and applied even when an explicit subdirectory path is provided.",
+    "confidence": 0.85,
+    "evidence": [
+      "The issue report shows that `sqlfluff lint .` correctly respects `.sqlfluffignore` but `sqlfluff lint path_a` or `sqlfluff lint path_b` does not, indicating the cwd's ignore file is not loaded when a subdirectory is explicitly passed.",
+      "The hint states: 'From putting together the initial configuration code, the config loader, *should* check the current working directory for config loading, but it feels like that isn't working right now.'",
+      "The test file includes `test__linter__path_from_paths__sqlfluffignore_current_directory` which verifies that `.sqlfluffignore` in the current directory is read when a subdirectory is given, confirming this is the intended behavior to fix.",
+      "The repo map shows `src/sqlfluff/core/config.py` and `src/sqlfluff/core/linter/linter.py` as the primary files handling configuration loading and path resolution respectively."
+    ],
+    "filesToChange": [
+      "src/sqlfluff/core/linter/linter.py",
+      "src/sqlfluff/core/config.py"
+    ]
+  },
+  "edits": [
+    {
+      "path": "src/sqlfluff/core/linter/linter.py",
+      "search": "        # Get the search path\n        if ignore_files:\n            ignore_file_paths = ConfigLoader.find_ignore_config_files(\n                path=path, working_path=working_path\n            )",
+      "replace": "        # Get the search path\n        if ignore_files:\n            ignore_file_paths = ConfigLoader.find_ignore_config_files(\n                path=path, working_path=working_path\n            )\n            # Also check the current working directory for ignore files\n            # if it's different from the working_path.\n            cwd = os.getcwd()\n            if cwd != working_path:\n                ignore_file_paths = ignore_file_paths.union(\n                    ConfigLoader.find_ignore_config_files(\n                        path=path, working_path=cwd\n                    )\n                )"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "edit apply failed: src/sqlfluff/core/linter/linter.py: search block not found (exact and whitespace-normalized match both failed) [search:         # Get the search path\n        if ignore_files:\n            ignore_file_paths = ConfigLoader.find_ignore_config_files(\n                path=path, working]",
+    "changedPaths": [
+      "src/sqlfluff/core/linter/linter.py"
+    ]
+  },
+  "patchSha256": null,
+  "contextBytes": 14336,
+  "baselineTail": " info ============================\nFAILED test/core/linter_test.py::test__linter__path_from_paths__sqlfluffignore_current_directory\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.15s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x test/core/linter_test.py::test__linter__path_from_paths__sqlfluffignore_current_directory\n",
+  "goldFiles": [
+    "src/sqlfluff/core/config.py",
+    "src/sqlfluff/core/linter/linter.py"
+  ],
+  "model": "glm",
+  "modelCalls": 4
+}

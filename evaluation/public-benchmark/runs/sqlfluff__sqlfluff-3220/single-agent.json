@@ -1,0 +1,31 @@
+{
+  "caseId": "PUB-SQLFLUFF__SQLFLUFF-3220",
+  "method": "single-agent",
+  "attempts": 3,
+  "rca": null,
+  "edits": [
+    {
+      "path": "src/sqlfluff/cli/commands.py",
+      "search": "@click.option(\n    \"--fix-even-unparsable\",\n    is_flag=True,\n    help=\"Enables fixing of files that have templating or parsing errors.\",\n)",
+      "replace": "@click.option(\n    \"--fix-even-unparsable\",\n    is_flag=True,\n    default=None,\n    help=\"Enables fixing of files that have templating or parsing errors.\",\n)"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "edit apply failed: src/sqlfluff/cli/commands.py: search block not found (exact and whitespace-normalized match both failed) [search: @click.option(\n    \"--fix-even-unparsable\",\n    is_flag=True,\n    help=\"Enables fixing of files that have templating or parsing errors.\",\n)]",
+    "changedPaths": [
+      "src/sqlfluff/cli/commands.py"
+    ]
+  },
+  "patchSha256": null,
+  "contextBytes": 14427,
+  "baselineTail": "============= short test summary info ============================\nFAILED test/cli/commands_test.py::test_cli_fix_even_unparsable[config-file-True]\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.13s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x test/cli/commands_test.py::test_cli_fix_even_unparsable[config-file-True]\n",
+  "goldFiles": [
+    "src/sqlfluff/cli/commands.py"
+  ],
+  "model": "glm",
+  "modelCalls": 3
+}

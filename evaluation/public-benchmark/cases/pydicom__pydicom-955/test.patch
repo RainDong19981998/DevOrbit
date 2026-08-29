@@ -1,0 +1,88 @@
+diff --git a/pydicom/tests/test_filereader.py b/pydicom/tests/test_filereader.py
+--- a/pydicom/tests/test_filereader.py
++++ b/pydicom/tests/test_filereader.py
+@@ -7,6 +7,7 @@
+ from io import BytesIO
+ import os
+ import shutil
++from struct import unpack
+ import sys
+ import tempfile
+ 
+@@ -631,6 +632,27 @@ def test_dcmread_does_not_raise(self):
+         except EOFError:
+             self.fail('Unexpected EOFError raised')
+ 
++    def test_lut_descriptor(self):
++        """Regression test for #942: incorrect first value"""
++        prefixes = [
++            b'\x28\x00\x01\x11',
++            b'\x28\x00\x02\x11',
++            b'\x28\x00\x03\x11',
++            b'\x28\x00\x02\x30'
++        ]
++        suffix = b'\x53\x53\x06\x00\x00\xf5\x00\xf8\x10\x00'
++
++        for raw_tag in prefixes:
++            tag = unpack('<2H', raw_tag)
++            bs = DicomBytesIO(raw_tag + suffix)
++            bs.is_little_endian = True
++            bs.is_implicit_VR = False
++
++            ds = dcmread(bs, force=True)
++            elem = ds[tag]
++            assert elem.VR == 'SS'
++            assert elem.value == [62720, -2048, 16]
++
+ 
+ class TestIncorrectVR(object):
+     def setup(self):
+diff --git a/pydicom/tests/test_handler_util.py b/pydicom/tests/test_handler_util.py
+--- a/pydicom/tests/test_handler_util.py
++++ b/pydicom/tests/test_handler_util.py
+@@ -841,18 +841,6 @@ def test_lut_sequence_zero_entries(self):
+         out = apply_modality_lut(arr, ds)
+         assert [0, 0, 0, 1] == list(out)
+ 
+-    def test_lut_sequence_entries_negative(self):
+-        """Test workaround for #942: SS VR should give uint nr entries."""
+-        ds = dcmread(MOD_16_SEQ)
+-        seq = ds.ModalityLUTSequence[0]
+-        seq.LUTDescriptor = [-32767, 0, 16]  # 32769
+-        seq.LUTData = [0] * 32768 + [1]
+-        arr = np.asarray([-10, 0, 32767, 32768, 32769])
+-        out = apply_modality_lut(arr, ds)
+-        # IV < index 0 -> 0
+-        # IV > index 32768 -> 32768
+-        assert [0, 0, 0, 1, 1] == list(out)
+-
+     def test_unchanged(self):
+         """Test no modality LUT transform."""
+         ds = dcmread(MOD_16)
+@@ -1154,26 +1142,6 @@ def test_first_map_negative(self):
+         assert [60160, 25600, 37376] == list(rgb[arr == 130][0])
+         assert ([60160, 25600, 37376] == rgb[arr == 130]).all()
+ 
+-    def test_nr_entries_negative(self):
+-        """Test workaround for #942: SS VR should give uint nr entries."""
+-        ds = dcmread(PAL_08_200_0_16_1F, force=True)
+-        ds.file_meta = Dataset()
+-        ds.file_meta.TransferSyntaxUID = ImplicitVRLittleEndian
+-        ds.RedPaletteColorLookupTableDescriptor[0] = -32767  # 32769
+-        # 16-bit entries, 32769 entries per LUT
+-        ds.RedPaletteColorLookupTableData = b'\x00\x00' * 32768 + b'\xff\xff'
+-        ds.GreenPaletteColorLookupTableData = b'\x00\x00' * 32768 + b'\xff\xff'
+-        ds.BluePaletteColorLookupTableData = b'\x00\x00' * 32768 + b'\xff\xff'
+-        # IV < index 0 -> 0
+-        # IV > index 32768 -> 32768
+-        arr = np.asarray([-10, 0, 32767, 32768, 32769])
+-        rgb = apply_color_lut(arr, ds)
+-        assert [0, 0, 0] == list(rgb[0])
+-        assert [0, 0, 0] == list(rgb[1])
+-        assert [0, 0, 0] == list(rgb[2])
+-        assert [65535, 65535, 65535] == list(rgb[3])
+-        assert [65535, 65535, 65535] == list(rgb[4])
+-
+ 
+ @pytest.mark.skipif(not HAVE_NP, reason="Numpy is not available")
+ class TestNumpy_ExpandSegmentedLUT(object):

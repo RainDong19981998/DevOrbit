@@ -1,0 +1,87 @@
+{
+  "generatedAt": "2026-08-25T04:36:00.161Z",
+  "status": "passed",
+  "durationMs": 5756,
+  "provider": {
+    "driver": "openai-compat",
+    "model": "deepseek-v4-flash",
+    "baseUrl": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+    "keyFingerprint": "6eaf729dcafe"
+  },
+  "calls": [
+    {
+      "agent": "rca-worker",
+      "model": "deepseek-v4-flash",
+      "latencyMs": 3715,
+      "usage": {
+        "promptTokens": 112,
+        "completionTokens": 282,
+        "reasoningTokens": 205,
+        "totalTokens": 394
+      },
+      "finishReason": "stop",
+      "requestSha256": "sha256:7eeb661d57c20712bd7b795259306282f3fb858350f4a4ec1f125189cbc3480a",
+      "responseSha256": "sha256:1c151135b6a8dafa731f7eaec4c1e7f48d956df13be847cd5962d164a7183be4",
+      "contentPreview": "{\"rootCause\":\"Redis client pool size reduction from 80 to 8 caused connection contention, leading to IdempotencyStore timeouts and 502 responses.\",\"confidence\":0.95,\"evidence\":[\"IdempotencyStore timeout after 3000ms\",\"p95 latency increased from 420ms to 2.8s after pool size change\"]}",
+      "reasoningContentPreview": "We are given: issue: \"POST /orders intermittently returns 502 after redis.client.poolSize changed 80 -> 8\". Logs: [\"IdempotencyStore timeout after 3000ms\"]. Metric: \"p95 420ms -> 2.8s\".\n\nWe need to ou"
+    },
+    {
+      "agent": "triage-worker",
+      "model": "deepseek-v4-flash",
+      "latencyMs": 2039,
+      "usage": {
+        "promptTokens": 52,
+        "completionTokens": 113,
+        "reasoningTokens": 100,
+        "totalTokens": 165
+      },
+      "finishReason": "stop",
+      "requestSha256": "sha256:fb7b41ae5ba8375a605aae469625e67d7b5382c42636a13b6404435df323df8c",
+      "responseSha256": "sha256:af209ff29ec6085763fd67437e150b1c95f22d4722a9ebc8b84b0cc40c8bead1",
+      "contentPreview": "{\"severity\":\"P1\",\"domain\":\"Payment\"}"
+    }
+  ],
+  "boundary": "Real hosted-model smoke against the configured OpenAI-compatible endpoint (default: Alibaba Cloud DashScope, deepseek-v4-flash). Proves connectivity, structured-output behavior, usage accounting and digest capture only. No benchmark, accuracy, or production claim. The API key is never printed; keyFingerprint is the truncated SHA-256 of the key for audit correlation.",
+  "checks": [
+    {
+      "label": "provider created with env credentials",
+      "ok": true,
+      "detail": "driver=openai-compat model=deepseek-v4-flash"
+    },
+    {
+      "label": "structured JSON output parses",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "rca schema keys present",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "first call completed without truncation",
+      "ok": true,
+      "detail": "finishReason=stop"
+    },
+    {
+      "label": "usage accounting present",
+      "ok": true,
+      "detail": "usage={\"promptTokens\":112,\"completionTokens\":282,\"reasoningTokens\":205,\"totalTokens\":394}"
+    },
+    {
+      "label": "request/response digests recorded",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "second structured call parses",
+      "ok": true,
+      "detail": "severity=P1"
+    },
+    {
+      "label": "second call completed without truncation",
+      "ok": true,
+      "detail": "finishReason=stop"
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "caseId": "PUB-MARSHMALLOW-CODE__MARSHMALLOW-1252",
+  "method": "devorbit",
+  "attempts": 3,
+  "rca": {
+    "rootCause": "The `from_iso_datetime` function in `src/marshmallow/utils.py` uses a regex that assumes exactly 6 digits for microseconds, but ISO8601 allows 1-6 digits. When a datetime string like '2019-06-17T00:57:41.000Z' has only 3 digits for microseconds followed by 'Z', the regex fails to match the 'Z' as part of the timezone, leaving 'Z' as unconverted data. The fix should allow any number of digits (1-6) for microseconds and properly handle timezone designators like 'Z', '+hh:mm', '+hhmm', '+hh'.",
+    "confidence": 0.95,
+    "evidence": [
+      "Issue reports that '2019-06-17T00:57:41.000Z' fails with 'unconverted data remains: Z'",
+      "Hints mention the regex was copied from Django and should allow any number of digits in [1;6] for microseconds",
+      "Test file includes a regression test for 3-digit microseconds but not for the 'Z' suffix case",
+      "The problem is in `from_iso_datetime` in `src/marshmallow/utils.py`"
+    ],
+    "filesToChange": [
+      "src/marshmallow/utils.py"
+    ]
+  },
+  "evaluation": {
+    "compilePassed": true,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "F2P red; P2P green ",
+    "f2pLogTail": "\nImportError while loading conftest '/tmp/zhanlu/bench-work/marshmallow-code__marshmallow-1252/source/tests/conftest.py'.\ntests/conftest.py:5: in <module>\n    from tests.base import User, UserSchema, Blog\ntests/base.py:6: in <module>\n    import simplejson\nE   ModuleNotFoundError: No module named 'simplejson'\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x tests/test_utils.py::test_from_iso_datetime[timezone1-False]\nImportError while loading conftest '/tmp/zhanlu/bench-work/marshmallow-code__marshmallow-1252/source/tests/conftest.py'.\ntests/conftest.py:5: in <module>\n    from tests.base import User, UserSchema, Blog\ntests/base.py:6: in <module>\n    import simplejson\nE   ModuleNotFoundError: No module named 'simplejson'\n",
+    "changedPaths": [
+      "src/marshmallow/utils.py"
+    ],
+    "appliedMethods": [
+      {
+        "path": "src/marshmallow/utils.py",
+        "method": "exact",
+        "ambiguous": false
+      }
+    ]
+  },
+  "patchSha256": "sha256:24c784bf6352fbc25fd64ddf969fb0159c9094b84a071ec3e1cc69f0880b56fe",
+  "contextBytes": 8489,
+  "baselineTail": "n -m pytest -q --no-header -x tests/test_utils.py::test_from_iso_datetime[timezone1-False]\nImportError while loading conftest '/tmp/zhanlu/bench-work/marshmallow-code__marshmallow-1252/source/tests/conftest.py'.\ntests/conftest.py:5: in <module>\n    from tests.base import User, UserSchema, Blog\ntests/base.py:6: in <module>\n    import simplejson\nE   ModuleNotFoundError: No module named 'simplejson'\n",
+  "goldFiles": [
+    "src/marshmallow/utils.py"
+  ],
+  "model": "deepseek-v4-flash-0731",
+  "modelCalls": 4
+}

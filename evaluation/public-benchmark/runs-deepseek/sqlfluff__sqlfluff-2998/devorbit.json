@@ -1,0 +1,51 @@
+{
+  "caseId": "PUB-SQLFLUFF__SQLFLUFF-2998",
+  "method": "devorbit",
+  "attempts": 1,
+  "rca": {
+    "rootCause": "L027 rule fails to flag unqualified references when the column reference is a multi-part dotted reference (e.g., `events.id`) in BigQuery, because the rule's logic for detecting unqualified references only checks for a single dot or treats multi-dot references as qualified, even when the first part is not a table alias. The rule should consider a reference unqualified if the first part is not a known table alias, regardless of the number of dots.",
+    "confidence": 0.85,
+    "evidence": [
+      "The issue describes that `events.id` in a multi-table query does not trigger L027, while `t1.col1` and `t2.col2` do.",
+      "The test fixture `test_fail_column_name_not_found_in_table_aliases_bigquery` expects a violation for `this_is.some_struct.id` where `this_is` is not a table alias, but the rule currently passes it.",
+      "The hint states L027 checks for at least one dot but does not validate the qualifier, and L026 (which validates qualifiers) is off by default for BigQuery.",
+      "The rule implementation in `src/sqlfluff/rules/L027.py` likely uses a simple check for the presence of a dot to determine qualification, without verifying the first part against table aliases."
+    ],
+    "filesToChange": [
+      "src/sqlfluff/rules/L027.py"
+    ]
+  },
+  "edits": [
+    {
+      "path": "src/sqlfluff/rules/L027.py",
+      "search": "        for r in references:\n            this_ref_type = r.qualification()\n            # Discard column aliases that\n            # refer to the current column reference.\n            col_alias_names = [\n                c.alias_identifier_name\n                for c in col_aliases\n                if r not in c.column_reference_segments\n            ]\n            if (\n                this_ref_type == \"unqualified\"\n                # Allow unqualified columns that\n                # are actually aliases defined\n                # in a different select clause element.\n                and r.raw not in col_alias_names\n                # Allow columns defined in a USING expression.\n                and r.raw not in using_cols\n            ):",
+      "replace": "        for r in references:\n            this_ref_type = r.qualification()\n            # Discard column aliases that\n            # refer to the current column reference.\n            col_alias_names = [\n                c.alias_identifier_name\n                for c in col_aliases\n                if r not in c.column_reference_segments\n            ]\n            # Check if the first part of a dotted reference is a known table alias.\n            # If not, treat it as unqualified (e.g., struct access like `events.id`).\n            first_part = r.raw.split(\".\")[0] if \".\" in r.raw else r.raw\n            is_qualified = any(\n                first_part == alias.ref_str for alias in table_aliases\n            )\n            if (\n                (this_ref_type == \"unqualified\" or not is_qualified)\n                # Allow unqualified columns that\n                # are actually aliases defined\n                # in a different select clause element.\n                and r.raw not in col_alias_names\n                # Allow columns defined in a USING expression.\n                and r.raw not in using_cols\n            ):"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": true,
+    "safetyViolation": false,
+    "testsPassed": true,
+    "closedLoop": true,
+    "detail": "F2P green; P2P green ........                                                                 [100%]\n8 passed in 0.51s\n",
+    "f2pLogTail": "",
+    "changedPaths": [
+      "src/sqlfluff/rules/L027.py"
+    ],
+    "appliedMethods": [
+      {
+        "path": "src/sqlfluff/rules/L027.py",
+        "method": "exact",
+        "ambiguous": false
+      }
+    ]
+  },
+  "patchSha256": "sha256:a061f0c6422bb1849d7360b0ada53c6edfa6d13cb98576cd3fb0256c0a9a6f7c",
+  "contextBytes": 16334,
+  "baselineTail": "ummary info ============================\nFAILED test/rules/std_test.py::test__rules__std_file[L027-column_references.sql-violations16]\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.21s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x test/rules/std_test.py::test__rules__std_file[L027-column_references.sql-violations16]\n",
+  "goldFiles": [
+    "src/sqlfluff/rules/L027.py"
+  ],
+  "model": "deepseek-v4-flash-0731",
+  "modelCalls": 2
+}

@@ -1,0 +1,268 @@
+{
+  "generatedAt": "2026-08-25T05:37:52.139Z",
+  "status": "passed",
+  "caseId": "CASE-GL-MT88FHOT",
+  "durationMs": 85182,
+  "platform": {
+    "kind": "self-hosted GitLab CE",
+    "version": "18.2.1",
+    "baseUrl": "http://127.0.0.1",
+    "projectId": 36,
+    "projectWebUrl": "http://192.168.0.139/root/devorbit-checkout-demo"
+  },
+  "model": {
+    "driver": "openai-compat",
+    "name": "deepseek-v4-flash-0731",
+    "keyFingerprint": "6eaf729dcafe"
+  },
+  "issue": {
+    "iid": 4,
+    "webUrl": "http://192.168.0.139/root/devorbit-checkout-demo/-/issues/4",
+    "created": true
+  },
+  "pipelines": {
+    "baseline": {
+      "id": 32,
+      "status": "failed",
+      "webUrl": "http://192.168.0.139/root/devorbit-checkout-demo/-/pipelines/32",
+      "jobs": [
+        {
+          "id": 117,
+          "name": "test",
+          "status": "failed",
+          "webUrl": "http://192.168.0.139/root/devorbit-checkout-demo/-/jobs/117"
+        }
+      ],
+      "traces": [
+        {
+          "jobId": 117,
+          "name": "test",
+          "status": "failed",
+          "traceTail": "t/devorbit-checkout-demo/test/redisPool.test.js:10:10)\n2026-08-25T05:36:44.784048Z 01O     Test.runInAsyncScope (node:async_hooks:214:14)\n2026-08-25T05:36:44.784049Z 01O     Test.run (node:internal/test_runner/test:1047:25)\n2026-08-25T05:36:44.784050Z 01O     Test.processPendingSubtests (node:internal/test_runner/test:744:18)\n2026-08-25T05:36:44.784051Z 01O     Test.postRun (node:internal/test_runner/test:1173:19)\n2026-08-25T05:36:44.784052Z 01O     Test.run (node:internal/test_runner/test:1101:12)\n2026-08-25T05:36:44.784053Z 01O     async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)\n2026-08-25T05:36:44.784054Z 01O   ...\n2026-08-25T05:36:44.792605Z 01O 1..4\n2026-08-25T05:36:44.792627Z 01O # tests 4\n2026-08-25T05:36:44.792721Z 01O # suites 0\n2026-08-25T05:36:44.792797Z 01O # pass 1\n2026-08-25T05:36:44.792873Z 01O # fail 3\n2026-08-25T05:36:44.792951Z 01O # cancelled 0\n2026-08-25T05:36:44.793062Z 01O # skipped 0\n2026-08-25T05:36:44.793156Z 01O # todo 0\n2026-08-25T05:36:44.793313Z 01O # duration_ms 98.388557\n2026-08-25T05:36:44.932196Z 00O section_end:1787636204:step_script\r\n2026-08-25T05:36:44.932208Z 00O+\u001b[0Ksection_start:1787636204:cleanup_file_variables\r\n2026-08-25T05:36:44.933111Z 00O+\u001b[0K\u001b[0K\u001b[36;1mCleaning up project directory and file based variables\u001b[0;m\u001b[0;m\n2026-08-25T05:36:45.394028Z 00O section_end:1787636205:cleanup_file_variables\r\n2026-08-25T05:36:45.394039Z 00O+\u001b[0K\n2026-08-25T05:36:45.424098Z 00O \u001b[31;1mERROR: Job failed: exit code 1\u001b[0;m\n",
+          "traceSha256": "sha256:87fc59a2650289ffdc44ccb7f032e24844530188e24818458be4e1cebffcca32"
+        }
+      ]
+    },
+    "fix": {
+      "id": 36,
+      "status": "success",
+      "webUrl": "http://192.168.0.139/root/devorbit-checkout-demo/-/pipelines/36",
+      "jobs": [
+        {
+          "id": 121,
+          "name": "test",
+          "status": "success",
+          "webUrl": "http://192.168.0.139/root/devorbit-checkout-demo/-/jobs/121"
+        }
+      ],
+      "traces": [
+        {
+          "jobId": 121,
+          "name": "test",
+          "status": "success",
+          "traceTail": "est: connection pool preserves checkout peak capacity\n2026-08-25T05:37:47.291960Z 01O ok 3 - connection pool preserves checkout peak capacity\n2026-08-25T05:37:47.292118Z 01O   ---\n2026-08-25T05:37:47.292119Z 01O   duration_ms: 0.790347\n2026-08-25T05:37:47.292119Z 01O   type: 'test'\n2026-08-25T05:37:47.292120Z 01O   ...\n2026-08-25T05:37:47.292236Z 01O # Subtest: queue timeout absorbs short checkout bursts\n2026-08-25T05:37:47.292405Z 01O ok 4 - queue timeout absorbs short checkout bursts\n2026-08-25T05:37:47.292451Z 01O   ---\n2026-08-25T05:37:47.292452Z 01O   duration_ms: 0.136642\n2026-08-25T05:37:47.292452Z 01O   type: 'test'\n2026-08-25T05:37:47.292453Z 01O   ...\n2026-08-25T05:37:47.292765Z 01O 1..4\n2026-08-25T05:37:47.292766Z 01O # tests 4\n2026-08-25T05:37:47.292853Z 01O # suites 0\n2026-08-25T05:37:47.292956Z 01O # pass 4\n2026-08-25T05:37:47.293040Z 01O # fail 0\n2026-08-25T05:37:47.293122Z 01O # cancelled 0\n2026-08-25T05:37:47.293185Z 01O # skipped 0\n2026-08-25T05:37:47.293278Z 01O # todo 0\n2026-08-25T05:37:47.293351Z 01O # duration_ms 78.324808\n2026-08-25T05:37:47.461396Z 00O section_end:1787636267:step_script\r\n2026-08-25T05:37:47.461406Z 00O+\u001b[0Ksection_start:1787636267:cleanup_file_variables\r\n2026-08-25T05:37:47.462282Z 00O+\u001b[0K\u001b[0K\u001b[36;1mCleaning up project directory and file based variables\u001b[0;m\u001b[0;m\n2026-08-25T05:37:47.906599Z 00O section_end:1787636267:cleanup_file_variables\r\n2026-08-25T05:37:47.906609Z 00O+\u001b[0K\n2026-08-25T05:37:47.956273Z 00O \u001b[32;1mJob succeeded\u001b[0;m\n",
+          "traceSha256": "sha256:df5d1c1a71d0c8d10e65ca0399a51e17fd3162b207f00a19b6f157295bf71706"
+        }
+      ]
+    }
+  },
+  "mergeRequest": {
+    "iid": 4,
+    "webUrl": "http://192.168.0.139/root/devorbit-checkout-demo/-/merge_requests/4",
+    "state": "merged",
+    "mergedAt": "2026-08-25T05:37:51.766Z"
+  },
+  "modelCalls": [
+    {
+      "agent": "rca-worker",
+      "usage": {
+        "promptTokens": 1188,
+        "completionTokens": 1553,
+        "reasoningTokens": 944,
+        "totalTokens": 2741
+      },
+      "latencyMs": 18542,
+      "finishReason": "stop",
+      "requestSha256": "sha256:eba32958d8d9b55d187a5475be9ee049a8ea830b78b99f98f3dac7944ba11433",
+      "responseSha256": "sha256:f8a09f81396fe6f7f3d317b8d2b6616f843b128380df5a9c23b30acfa6cddc1d",
+      "output": {
+        "rootCause": "CHG-402 reduced the Redis client pool from 80 to 8 and queueTimeoutMs from a safe value to 250ms, causing IdempotencyStore lookups to time out (LOG-10A: 'timeout after 3000ms; retrying request') and POST /orders latency/errors to spike. Retried requests then hit createOrder(), which is not actually idempotent: it never checks whether idempotencyKey already exists, so each retry inserts a new order, producing duplicate orders and failing the idempotency regression test.",
+        "confidence": 0.93,
+        "evidence": [
+          "CHG-402: redis.client.poolSize reduced from 80 to 8; current src/redisPool.js shows poolSize:8 and queueTimeoutMs:250, below test thresholds of >=64 and >=800",
+          "LOG-10A: 'IdempotencyStore timeout after 3000ms; retrying request' indicates pool starvation/queue timeout during idempotency lookup",
+          "METRIC-55: POST /orders p95 rose from 420ms to 2.8s and error rate from 0.2% to 7.4%, consistent with exhausted Redis pool and retries",
+          "test/redisPool.test.js fails: 'connection pool preserves checkout peak capacity' expects poolSize >=64 and 'queue timeout absorbs short checkout bursts' expects queueTimeoutMs >=800",
+          "src/order.js createOrder() always creates and overwrites ordersByKey; duplicate request does not check existing key and returns a new 201 order instead of 409 with original order, causing duplicate orders on retry",
+          "test/order.test.js 'duplicate request returns the original order without creating another' expects status 409 and same order.id, but current implementation would return 201 and ORD-2; CI baseline is red on both connection-pool and idempotency tests"
+        ],
+        "fixPlan": "1) Revert redisPoolConfig to match pre-CHG-402 capacity: set poolSize back to >=80 (at least satisfy test >=64) and queueTimeoutMs >=800 (or restore original 3000ms timeout) to prevent IdempotencyStore timeouts. 2) Fix createOrder idempotency: at the start, if ordersByKey.has(idempotencyKey), return { status: 409, order: ordersByKey.get(idempotencyKey) }; only create and store a new order when the key is absent. 3) Ensure the payment/order retry path treats 409 as a successful idempotent replay and does not surface it as an error. 4) Add regression tests for duplicate idempotencyKey returning the original order and for pool size/queue timeout meeting peak capacity expectations. 5) Run CI until main is green, then redeploy the fixed release; consider adding Redis pool saturation alerts to catch future pool-size regressions."
+      }
+    },
+    {
+      "agent": "patch-worker",
+      "usage": {
+        "promptTokens": 1356,
+        "completionTokens": 1299,
+        "reasoningTokens": 1008,
+        "totalTokens": 2655
+      },
+      "latencyMs": 14781,
+      "finishReason": "stop",
+      "requestSha256": "sha256:1917bf52b6128e0655d1b308d64a000bbd374e308d38d36677aee76ea0a4cc72",
+      "responseSha256": "sha256:45625891c2b7e2672b0a9fe28a3b7c76f3e25428c3f98c58f2eb09aebbb022bc",
+      "patchSource": "deepseek-v4-flash-0731",
+      "patchSummary": "Restore Redis pool capacity and queue timeout to prevent checkout peak starvation, and make createOrder idempotent by returning 409 with the original order when the idempotencyKey already exists.",
+      "patchRollback": "Run `git revert <commit>` for the CHG-402 change and redeploy the last known-good build. For emergency rollback, set redisPoolConfig.poolSize=80 and queueTimeoutMs=3000, and restore the previous createOrder implementation with duplicate-key 409 handling."
+    }
+  ],
+  "patchSource": "deepseek-v4-flash-0731",
+  "timeline": [
+    {
+      "at": "2026-08-25T05:36:27.064Z",
+      "step": "gitlab.version",
+      "ok": true,
+      "note": "GitLab 18.2.1"
+    },
+    {
+      "at": "2026-08-25T05:36:27.231Z",
+      "step": "gitlab.project.ensure",
+      "ok": true,
+      "note": "reused id=36 (idempotent replay=true)"
+    },
+    {
+      "at": "2026-08-25T05:36:27.338Z",
+      "step": "gitlab.project.enable-ci",
+      "ok": true,
+      "note": "builds_access_level=enabled (idempotent PUT)"
+    },
+    {
+      "at": "2026-08-25T05:36:28.954Z",
+      "step": "gitlab.main.initial-commit",
+      "ok": true,
+      "note": "commit 66058482 (defective baseline, 1 file actions)"
+    },
+    {
+      "at": "2026-08-25T05:36:29.375Z",
+      "step": "gitlab.pipeline.baseline.created",
+      "ok": true,
+      "note": "pipeline 32 on main"
+    },
+    {
+      "at": "2026-08-25T05:36:49.857Z",
+      "step": "gitlab.pipeline.baseline.failed-as-expected",
+      "ok": true,
+      "note": "status=failed; a red baseline on the defective commit is the required precondition"
+    },
+    {
+      "at": "2026-08-25T05:36:50.099Z",
+      "step": "gitlab.issue.ensure",
+      "ok": true,
+      "note": "created issue #4"
+    },
+    {
+      "at": "2026-08-25T05:37:08.642Z",
+      "step": "model.rca.deepseek",
+      "ok": true,
+      "note": "confidence=0.93, tokens=2741, latencyMs=18542"
+    },
+    {
+      "at": "2026-08-25T05:37:23.424Z",
+      "step": "model.patch.deepseek",
+      "ok": true,
+      "note": "model produced full-file patch, tokens=2655, latencyMs=14781"
+    },
+    {
+      "at": "2026-08-25T05:37:24.645Z",
+      "step": "gitlab.branch.fix-commit",
+      "ok": true,
+      "note": "commit f2990b9c on devorbit/case-gl-mt88fhot via deepseek-v4-flash-0731"
+    },
+    {
+      "at": "2026-08-25T05:37:25.122Z",
+      "step": "gitlab.mr.ensure",
+      "ok": true,
+      "note": "created MR !4"
+    },
+    {
+      "at": "2026-08-25T05:37:51.035Z",
+      "step": "gitlab.pipeline.fix.green",
+      "ok": true,
+      "note": "status=success on devorbit/case-gl-mt88fhot"
+    },
+    {
+      "at": "2026-08-25T05:37:52.139Z",
+      "step": "gitlab.mr.merged",
+      "ok": true,
+      "note": "MR !4 state=merged"
+    }
+  ],
+  "boundary": "Real self-hosted GitLab CE end-to-end evidence: real project, issue, branches, commits, merge request and CI pipelines executed by a registered gitlab-runner (docker executor). The red baseline on the defective commit and the green pipeline on the fix branch are both preserved with job trace digests. Model calls are real deepseek-v4-flash-0731 invocations through the OpenAI-compatible endpoint with usage accounting; when the model patch is not contract-valid, a frozen golden fixture patch is used and disclosed via patchSource. No GitLab SaaS, no vendor cloud account, no production cluster claim.",
+  "checks": [
+    {
+      "label": "gitlab.version",
+      "ok": true,
+      "detail": "GitLab 18.2.1"
+    },
+    {
+      "label": "gitlab.project.ensure",
+      "ok": true,
+      "detail": "reused id=36 (idempotent replay=true)"
+    },
+    {
+      "label": "gitlab.project.enable-ci",
+      "ok": true,
+      "detail": "builds_access_level=enabled (idempotent PUT)"
+    },
+    {
+      "label": "gitlab.main.initial-commit",
+      "ok": true,
+      "detail": "commit 66058482 (defective baseline, 1 file actions)"
+    },
+    {
+      "label": "gitlab.pipeline.baseline.created",
+      "ok": true,
+      "detail": "pipeline 32 on main"
+    },
+    {
+      "label": "gitlab.pipeline.baseline.failed-as-expected",
+      "ok": true,
+      "detail": "status=failed; a red baseline on the defective commit is the required precondition"
+    },
+    {
+      "label": "gitlab.issue.ensure",
+      "ok": true,
+      "detail": "created issue #4"
+    },
+    {
+      "label": "model.rca.deepseek",
+      "ok": true,
+      "detail": "confidence=0.93, tokens=2741, latencyMs=18542"
+    },
+    {
+      "label": "model.patch.deepseek",
+      "ok": true,
+      "detail": "model produced full-file patch, tokens=2655, latencyMs=14781"
+    },
+    {
+      "label": "gitlab.branch.fix-commit",
+      "ok": true,
+      "detail": "commit f2990b9c on devorbit/case-gl-mt88fhot via deepseek-v4-flash-0731"
+    },
+    {
+      "label": "gitlab.mr.ensure",
+      "ok": true,
+      "detail": "created MR !4"
+    },
+    {
+      "label": "gitlab.pipeline.fix.green",
+      "ok": true,
+      "detail": "status=success on devorbit/case-gl-mt88fhot"
+    },
+    {
+      "label": "gitlab.mr.merged",
+      "ok": true,
+      "detail": "MR !4 state=merged"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+diff --git a/src/sqlfluff/core/parser/segments/base.py b/src/sqlfluff/core/parser/segments/base.py
+index f1cf04a..e736821 100644
+--- a/src/sqlfluff/core/parser/segments/base.py
++++ b/src/sqlfluff/core/parser/segments/base.py
+@@ -70,6 +70,9 @@ class BaseSegment:
+     match_grammar: Optional[Matchable] = None
+     comment_seperate = False
+     is_whitespace = False
++    # Ensure RawSegment inherits is_whitespace correctly
++    # This is needed for whitespace detection in the parser
++    # See: https://github.com/sqlfluff/sqlfluff/issues/847
+     optional = False  # NB: See the sequence grammar for details
+     is_segment = True
+     _name = None

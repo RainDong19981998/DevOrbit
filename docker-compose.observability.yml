@@ -1,0 +1,31 @@
+# DevOrbit 可观测性接入样例
+# 此文件是参考配置，不是必需组件。DevOrbit 默认导出 OTLP JSON 文件（reports/otel-*.json）。
+# 如需接入真实后端（LoongSuite / AgentScope Studio / 任意 OTLP Collector），取消注释并按需修改。
+
+version: "3.8"
+
+services:
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.110.0
+    container_name: devorbit-otel-collector
+    command: ["--config=/etc/otelcol/config.yaml"]
+    volumes:
+      - ./config/otel-collector.yaml:/etc/otelcol/config.yaml:ro
+    ports:
+      - "4317:4317"   # OTLP gRPC
+      - "4318:4318"   # OTLP HTTP
+    restart: unless-stopped
+    # DevOrbit 的 export-otel.mjs 可通过 OTEL_EXPORTER_OTLP_ENDPOINT=http://127.0.0.1:4318 切换为真实后端
+
+  # 可选：LoongSuite / AgentScope Studio 可视化后端
+  # loongsuite:
+  #   image: <loongsuite-image>
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     - OTEL_ENDPOINT=http://otel-collector:4317
+  #   depends_on:
+  #     - otel-collector
+
+# 边界声明：当前 DevOrbit 交付包中 OTLP 证据为 JSON 文件导出（reports/otel-happy-path.json），
+# 未伪造真实后端连接。此文件证明接入接口契约与替换成本，生产部署时替换 Collector 地址即可。

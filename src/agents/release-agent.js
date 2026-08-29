@@ -29,7 +29,7 @@ export const releaseAgent = {
     const regressed = state.scenario === 'canary-regression' && context.controls.canaryGuard !== false;
     const toolResult = await context.mcp.callTool('release.canary', {
       caseId: state.case_id,
-      version: context.releaseVersion || 'checkout-service@2026.08.12-rc3',
+      version: context.releaseVersion || context.profile.releaseVersion,
       approvalId: approval.approvalId,
       approvalToken: approvalReceipt.token,
       idempotencyKey: `${state.case_id}:promote:rc3`,
@@ -37,7 +37,7 @@ export const releaseAgent = {
     });
     const release = {
       ...toolResult.data,
-      version: context.releaseVersion || 'checkout-service@2026.08.12-rc3',
+      version: context.releaseVersion || context.profile.releaseVersion,
       idempotencyKey: `${state.case_id}:promote:rc3`,
       rollbackReady: true,
       toolCalled: true,

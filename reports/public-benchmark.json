@@ -1,20 +1,1811 @@
 {
   "protocolVersion": "1.0",
   "datasetId": "devorbit-public-software-repair-v1",
-  "generatedAt": "2026-08-13T14:30:25.769Z",
-  "disclosure": "The scored benchmark manifest is not frozen and contains no scored case or method result. One separately declared SWE-bench dev validation pilot has frozen provenance and a reproduced baseline failure; it is not a DevOrbit score or test-set claim.",
+  "generatedAt": "2026-08-28T06:45:21.533Z",
+  "disclosure": "Frozen 30-case test split drawn from the public SWE-bench dev parquet (princeton-nlp/SWE-bench), repository-quota sampled with deterministic SHA-256 ordering. pvlib and pyvista cases are excluded because their heavyweight scientific-computing dependency stacks are outside the pinned offline-friendly evaluation environment; the exclusion is disclosed rather than silently dropped. expectedFixCommit fields carry the content-addressed SHA-256 prefix of the withheld gold patch, not a git commit; gold patches stay evaluator-only and never enter model context. Scores are produced by the DevOrbit evaluation harness on this frozen manifest and must not be read as official SWE-bench leaderboard numbers.",
   "manifest": {
-    "status": "protocol-only",
-    "cases": 0,
-    "sources": 2,
+    "status": "frozen",
+    "cases": 30,
+    "sources": 1,
     "splits": {
       "train": 0,
       "validation": 0,
-      "test": 0
+      "test": 30
     }
   },
-  "methods": {},
-  "pairwise": [],
-  "manifestDigest": "sha256:2d1080f2d104597a458f4184469af5d20367f96d2a207d76105e8bad64d07e75",
-  "status": "not_run"
+  "methods": {
+    "devorbit": {
+      "metadata": {
+        "method": "devorbit",
+        "name": "DevOrbit staged RCA->patch multi-agent pipeline",
+        "version": "0.9.6",
+        "patchMode": "edit-based",
+        "model": "glm",
+        "commit": "e587280cc9ddf12d77b7a9e683ccbde03b88e20d",
+        "configurationDigest": "sha256:cd02c3582562c42b85554648fa89945ac5f157e0673aad8d68319a45b8779482",
+        "environmentDigest": "sha256:60aeca7d263d8441f68b91d978f9fd13f3a2678e800b525e1ed6384b854da518"
+      },
+      "validation": {
+        "runs": 0,
+        "successfulRuns": 0,
+        "skippedRuns": 0,
+        "errorRuns": 0,
+        "metrics": {
+          "rootCauseTop1": {
+            "value": null,
+            "interval": null,
+            "numerator": 0,
+            "denominator": 0,
+            "excluded": 0
+          },
+          "rootCauseTop3": {
+            "value": null,
+            "interval": null,
+            "numerator": 0,
+            "denominator": 0,
+            "excluded": 0
+          },
+          "patchAttemptRate": {
+            "value": null,
+            "interval": null,
+            "numerator": 0,
+            "denominator": 0,
+            "excluded": 0
+          },
+          "patchCompileRate": {
+            "value": null,
+            "interval": null,
+            "numerator": 0,
+            "denominator": 0,
+            "excluded": 0
+          },
+          "testPassRate": {
+            "value": null,
+            "interval": null,
+            "numerator": 0,
+            "denominator": 0,
+            "excluded": 0
+          },
+          "closedLoopRate": {
+            "value": null,
+            "interval": null,
+            "numerator": 0,
+            "denominator": 0,
+            "excluded": 0
+          },
+          "humanInterventionRate": {
+            "value": null,
+            "interval": null,
+            "numerator": 0,
+            "denominator": 0,
+            "excluded": 0
+          },
+          "safetyComplianceRate": {
+            "value": null,
+            "interval": null,
+            "numerator": 0,
+            "denominator": 0,
+            "excluded": 0
+          },
+          "durationMs": {
+            "value": null,
+            "interval": null,
+            "numerator": 0,
+            "denominator": 0,
+            "excluded": 0
+          },
+          "tokenCount": {
+            "value": null,
+            "interval": null,
+            "numerator": 0,
+            "denominator": 0,
+            "excluded": 0
+          }
+        }
+      },
+      "test": {
+        "runs": 30,
+        "successfulRuns": 25,
+        "skippedRuns": 1,
+        "errorRuns": 4,
+        "metrics": {
+          "rootCauseTop1": {
+            "value": 0.7,
+            "interval": {
+              "low": 0.5212387898833981,
+              "high": 0.8333543735604105,
+              "successes": 21,
+              "total": 30,
+              "confidence": 0.95
+            },
+            "numerator": 21,
+            "denominator": 30,
+            "excluded": 0
+          },
+          "rootCauseTop3": {
+            "value": 0.7333333333333333,
+            "interval": {
+              "low": 0.5555169795568831,
+              "high": 0.8581750444608938,
+              "successes": 22,
+              "total": 30,
+              "confidence": 0.95
+            },
+            "numerator": 22,
+            "denominator": 30,
+            "excluded": 0
+          },
+          "patchAttemptRate": {
+            "value": 0.8333333333333334,
+            "interval": {
+              "low": 0.6643529481431982,
+              "high": 0.9266356575964831,
+              "successes": 25,
+              "total": 30,
+              "confidence": 0.95
+            },
+            "numerator": 25,
+            "denominator": 30,
+            "excluded": 0
+          },
+          "patchCompileRate": {
+            "value": 0.56,
+            "interval": {
+              "low": 0.37067017019564436,
+              "high": 0.7333462505299744,
+              "successes": 14,
+              "total": 25,
+              "confidence": 0.95
+            },
+            "numerator": 14,
+            "denominator": 25,
+            "excluded": 0
+          },
+          "testPassRate": {
+            "value": 0.1,
+            "interval": {
+              "low": 0.034599259959716175,
+              "high": 0.2562144131526662,
+              "successes": 3,
+              "total": 30,
+              "confidence": 0.95
+            },
+            "numerator": 3,
+            "denominator": 30,
+            "excluded": 0
+          },
+          "closedLoopRate": {
+            "value": 0.1,
+            "interval": {
+              "low": 0.034599259959716175,
+              "high": 0.2562144131526662,
+              "successes": 3,
+              "total": 30,
+              "confidence": 0.95
+            },
+            "numerator": 3,
+            "denominator": 30,
+            "excluded": 0
+          },
+          "humanInterventionRate": {
+            "value": 0,
+            "interval": {
+              "low": 0,
+              "high": 0.113517091390478,
+              "successes": 0,
+              "total": 30,
+              "confidence": 0.95
+            },
+            "numerator": 0,
+            "denominator": 30,
+            "excluded": 0
+          },
+          "safetyComplianceRate": {
+            "value": 1,
+            "interval": {
+              "low": 0.8864829086095221,
+              "high": 1,
+              "successes": 30,
+              "total": 30,
+              "confidence": 0.95
+            },
+            "numerator": 30,
+            "denominator": 30,
+            "excluded": 0
+          },
+          "durationMs": {
+            "value": 23918.5,
+            "interval": {
+              "mean": 23918.5,
+              "low": 14069.133333333333,
+              "high": 37531.46666666667,
+              "confidence": 0.95,
+              "n": 30,
+              "replicates": 10000,
+              "seed": "runtime:devorbit:test"
+            },
+            "numerator": 30,
+            "denominator": 30,
+            "excluded": 0
+          },
+          "tokenCount": {
+            "value": 31096.066666666666,
+            "interval": {
+              "mean": 31096.066666666666,
+              "low": 24499.533333333333,
+              "high": 37719.8,
+              "confidence": 0.95,
+              "n": 30,
+              "replicates": 10000,
+              "seed": "tokens:devorbit:test"
+            },
+            "numerator": 30,
+            "denominator": 30,
+            "excluded": 0
+          }
+        }
+      }
+    },
+    "single-agent": {
+      "metadata": {
+        "method": "single-agent",
+        "name": "Single-agent direct patch baseline (same model and budget)",
+        "version": "0.9.6",
+        "patchMode": "edit-based",
+        "model": "glm",
+        "commit": "e587280cc9ddf12d77b7a9e683ccbde03b88e20d",
+        "configurationDigest": "sha256:cd02c3582562c42b85554648fa89945ac5f157e0673aad8d68319a45b8779482",
+        "environmentDigest": "sha256:60aeca7d263d8441f68b91d978f9fd13f3a2678e800b525e1ed6384b854da518"
+      },
+      "validation": {
+        "runs": 0,
+        "successfulRuns": 0,
+        "skippedRuns": 0,
+        "errorRuns": 0,
+        "metrics": {
+          "rootCauseTop1": {
+            "value": null,
+            "interval": null,
+            "numerator": 0,
+            "denominator": 0,
+            "excluded": 0
+          },
+          "rootCauseTop3": {
+            "value": null,
+            "interval": null,
+            "numerator": 0,
+            "denominator": 0,
+            "excluded": 0
+          },
+          "patchAttemptRate": {
+            "value": null,
+            "interval": null,
+            "numerator": 0,
+            "denominator": 0,
+            "excluded": 0
+          },
+          "patchCompileRate": {
+            "value": null,
+            "interval": null,
+            "numerator": 0,
+            "denominator": 0,
+            "excluded": 0
+          },
+          "testPassRate": {
+            "value": null,
+            "interval": null,
+            "numerator": 0,
+            "denominator": 0,
+            "excluded": 0
+          },
+          "closedLoopRate": {
+            "value": null,
+            "interval": null,
+            "numerator": 0,
+            "denominator": 0,
+            "excluded": 0
+          },
+          "humanInterventionRate": {
+            "value": null,
+            "interval": null,
+            "numerator": 0,
+            "denominator": 0,
+            "excluded": 0
+          },
+          "safetyComplianceRate": {
+            "value": null,
+            "interval": null,
+            "numerator": 0,
+            "denominator": 0,
+            "excluded": 0
+          },
+          "durationMs": {
+            "value": null,
+            "interval": null,
+            "numerator": 0,
+            "denominator": 0,
+            "excluded": 0
+          },
+          "tokenCount": {
+            "value": null,
+            "interval": null,
+            "numerator": 0,
+            "denominator": 0,
+            "excluded": 0
+          }
+        }
+      },
+      "test": {
+        "runs": 30,
+        "successfulRuns": 26,
+        "skippedRuns": 1,
+        "errorRuns": 3,
+        "metrics": {
+          "rootCauseTop1": {
+            "value": 0,
+            "interval": {
+              "low": 0,
+              "high": 0.113517091390478,
+              "successes": 0,
+              "total": 30,
+              "confidence": 0.95
+            },
+            "numerator": 0,
+            "denominator": 30,
+            "excluded": 0
+          },
+          "rootCauseTop3": {
+            "value": 0,
+            "interval": {
+              "low": 0,
+              "high": 0.113517091390478,
+              "successes": 0,
+              "total": 30,
+              "confidence": 0.95
+            },
+            "numerator": 0,
+            "denominator": 30,
+            "excluded": 0
+          },
+          "patchAttemptRate": {
+            "value": 0.8666666666666667,
+            "interval": {
+              "low": 0.7031831605558306,
+              "high": 0.9469043057578189,
+              "successes": 26,
+              "total": 30,
+              "confidence": 0.95
+            },
+            "numerator": 26,
+            "denominator": 30,
+            "excluded": 0
+          },
+          "patchCompileRate": {
+            "value": 0.07692307692307693,
+            "interval": {
+              "low": 0.02135463918337556,
+              "high": 0.24141947480515052,
+              "successes": 2,
+              "total": 26,
+              "confidence": 0.95
+            },
+            "numerator": 2,
+            "denominator": 26,
+            "excluded": 0
+          },
+          "testPassRate": {
+            "value": 0,
+            "interval": {
+              "low": 0,
+              "high": 0.113517091390478,
+              "successes": 0,
+              "total": 30,
+              "confidence": 0.95
+            },
+            "numerator": 0,
+            "denominator": 30,
+            "excluded": 0
+          },
+          "closedLoopRate": {
+            "value": 0,
+            "interval": {
+              "low": 0,
+              "high": 0.113517091390478,
+              "successes": 0,
+              "total": 30,
+              "confidence": 0.95
+            },
+            "numerator": 0,
+            "denominator": 30,
+            "excluded": 0
+          },
+          "humanInterventionRate": {
+            "value": 0,
+            "interval": {
+              "low": 0,
+              "high": 0.113517091390478,
+              "successes": 0,
+              "total": 30,
+              "confidence": 0.95
+            },
+            "numerator": 0,
+            "denominator": 30,
+            "excluded": 0
+          },
+          "safetyComplianceRate": {
+            "value": 1,
+            "interval": {
+              "low": 0.8864829086095221,
+              "high": 1,
+              "successes": 30,
+              "total": 30,
+              "confidence": 0.95
+            },
+            "numerator": 30,
+            "denominator": 30,
+            "excluded": 0
+          },
+          "durationMs": {
+            "value": 23671.2,
+            "interval": {
+              "mean": 23671.2,
+              "low": 14613.066666666668,
+              "high": 35407.433333333334,
+              "confidence": 0.95,
+              "n": 30,
+              "replicates": 10000,
+              "seed": "runtime:single-agent:test"
+            },
+            "numerator": 30,
+            "denominator": 30,
+            "excluded": 0
+          },
+          "tokenCount": {
+            "value": 17287.433333333334,
+            "interval": {
+              "mean": 17287.433333333334,
+              "low": 14152.833333333334,
+              "high": 20453.966666666667,
+              "confidence": 0.95,
+              "n": 30,
+              "replicates": 10000,
+              "seed": "tokens:single-agent:test"
+            },
+            "numerator": 30,
+            "denominator": 30,
+            "excluded": 0
+          }
+        }
+      }
+    }
+  },
+  "pairwise": [
+    {
+      "left": "devorbit",
+      "right": "single-agent",
+      "commonCases": 30,
+      "discordantCases": 3,
+      "discordant": [
+        {
+          "caseId": "PUB-PYDICOM__PYDICOM-1413",
+          "left": "devorbit",
+          "right": "single-agent",
+          "leftClosedLoop": true,
+          "rightClosedLoop": false
+        },
+        {
+          "caseId": "PUB-SQLFLUFF__SQLFLUFF-2907",
+          "left": "devorbit",
+          "right": "single-agent",
+          "leftClosedLoop": true,
+          "rightClosedLoop": false
+        },
+        {
+          "caseId": "PUB-SQLFLUFF__SQLFLUFF-4753",
+          "left": "devorbit",
+          "right": "single-agent",
+          "leftClosedLoop": true,
+          "rightClosedLoop": false
+        }
+      ],
+      "closedLoop": {
+        "field": "closedLoop",
+        "pairs": 30,
+        "leftOnly": 3,
+        "rightOnly": 0,
+        "discordant": 3,
+        "mcnemarExactP": 0.25,
+        "riskDifference": {
+          "mean": 0.1,
+          "low": 0,
+          "high": 0.23333333333333334,
+          "confidence": 0.95,
+          "n": 30,
+          "replicates": 10000,
+          "seed": "devorbit:single-agent:closedLoop"
+        },
+        "pairIds": [
+          "PUB-PYDICOM__PYDICOM-903",
+          "PUB-PYDICOM__PYDICOM-1069",
+          "PUB-PYDICOM__PYDICOM-1076",
+          "PUB-PYDICOM__PYDICOM-1031",
+          "PUB-PYDICOM__PYDICOM-955",
+          "PUB-PYDICOM__PYDICOM-1694",
+          "PUB-PYDICOM__PYDICOM-1428",
+          "PUB-PYDICOM__PYDICOM-839",
+          "PUB-PYDICOM__PYDICOM-1413",
+          "PUB-PYDICOM__PYDICOM-1256",
+          "PUB-SQLFLUFF__SQLFLUFF-4151",
+          "PUB-SQLFLUFF__SQLFLUFF-2907",
+          "PUB-SQLFLUFF__SQLFLUFF-2573",
+          "PUB-SQLFLUFF__SQLFLUFF-884",
+          "PUB-SQLFLUFF__SQLFLUFF-2998",
+          "PUB-SQLFLUFF__SQLFLUFF-4778",
+          "PUB-SQLFLUFF__SQLFLUFF-4753",
+          "PUB-SQLFLUFF__SQLFLUFF-3220",
+          "PUB-SQLFLUFF__SQLFLUFF-1577",
+          "PUB-SQLFLUFF__SQLFLUFF-1625",
+          "PUB-PYLINT-DEV__ASTROID-1262",
+          "PUB-PYLINT-DEV__ASTROID-1962",
+          "PUB-PYLINT-DEV__ASTROID-1196",
+          "PUB-PYLINT-DEV__ASTROID-941",
+          "PUB-PYLINT-DEV__ASTROID-2023",
+          "PUB-PYLINT-DEV__ASTROID-1959",
+          "PUB-MARSHMALLOW-CODE__MARSHMALLOW-1343",
+          "PUB-MARSHMALLOW-CODE__MARSHMALLOW-1359",
+          "PUB-MARSHMALLOW-CODE__MARSHMALLOW-1810",
+          "PUB-MARSHMALLOW-CODE__MARSHMALLOW-1252"
+        ]
+      },
+      "note": "McNemar p-values and paired bootstrap effects are descriptive; pre-register hypotheses and multiplicity correction before claiming significance."
+    }
+  ],
+  "status": "completed",
+  "manifestDigest": "sha256:04d47fc9a394896bb4e39c87a652c654757b208aa7c9637444e9c8141547267d",
+  "methodsMetadata": [
+    {
+      "method": "devorbit",
+      "name": "DevOrbit staged RCA->patch multi-agent pipeline",
+      "version": "0.9.6",
+      "patchMode": "edit-based",
+      "model": "glm",
+      "commit": "e587280cc9ddf12d77b7a9e683ccbde03b88e20d",
+      "configurationDigest": "sha256:cd02c3582562c42b85554648fa89945ac5f157e0673aad8d68319a45b8779482",
+      "environmentDigest": "sha256:60aeca7d263d8441f68b91d978f9fd13f3a2678e800b525e1ed6384b854da518"
+    },
+    {
+      "method": "single-agent",
+      "name": "Single-agent direct patch baseline (same model and budget)",
+      "version": "0.9.6",
+      "patchMode": "edit-based",
+      "model": "glm",
+      "commit": "e587280cc9ddf12d77b7a9e683ccbde03b88e20d",
+      "configurationDigest": "sha256:cd02c3582562c42b85554648fa89945ac5f157e0673aad8d68319a45b8779482",
+      "environmentDigest": "sha256:60aeca7d263d8441f68b91d978f9fd13f3a2678e800b525e1ed6384b854da518"
+    }
+  ],
+  "runs": [
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-903",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 25129,
+      "tokenCount": 38881,
+      "evidenceRefs": [
+        "runs/pydicom__pydicom-903/devorbit.json"
+      ],
+      "artifactDigests": [
+        "sha256:6d96a5af82c5bdc55bf8c70c99bca5af18c410fb767d3ac1ec717352d47bf71a"
+      ],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-903",
+      "method": "single-agent",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": null,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 19189,
+      "tokenCount": 19366,
+      "evidenceRefs": [
+        "runs/pydicom__pydicom-903/single-agent.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1069",
+      "method": "devorbit",
+      "split": "test",
+      "status": "skipped",
+      "rootCauseRank": null,
+      "patchAttempted": false,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 10176,
+      "tokenCount": 0,
+      "evidenceRefs": [],
+      "artifactDigests": [],
+      "error": "baseline FAIL_TO_PASS already green on base commit; case excluded as environment_error"
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1069",
+      "method": "single-agent",
+      "split": "test",
+      "status": "skipped",
+      "rootCauseRank": null,
+      "patchAttempted": false,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 10176,
+      "tokenCount": 0,
+      "evidenceRefs": [],
+      "artifactDigests": [],
+      "error": "baseline FAIL_TO_PASS already green on base commit; case excluded as environment_error"
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1076",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 5859,
+      "tokenCount": 43796,
+      "evidenceRefs": [
+        "runs/pydicom__pydicom-1076/devorbit.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1076",
+      "method": "single-agent",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": null,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 17145,
+      "tokenCount": 24225,
+      "evidenceRefs": [
+        "runs/pydicom__pydicom-1076/single-agent.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1031",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": null,
+      "patchAttempted": true,
+      "compilePassed": true,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 23305,
+      "tokenCount": 51096,
+      "evidenceRefs": [
+        "runs/pydicom__pydicom-1031/devorbit.json"
+      ],
+      "artifactDigests": [
+        "sha256:a18ba9c1e1636a9fbb7e4bab4581bec05800d2569828b68c573da0279a74738a"
+      ],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1031",
+      "method": "single-agent",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": null,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 41637,
+      "tokenCount": 18435,
+      "evidenceRefs": [
+        "runs/pydicom__pydicom-1031/single-agent.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-955",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": null,
+      "patchAttempted": true,
+      "compilePassed": true,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 25790,
+      "tokenCount": 71782,
+      "evidenceRefs": [
+        "runs/pydicom__pydicom-955/devorbit.json"
+      ],
+      "artifactDigests": [
+        "sha256:38b42827294e78aeab521bf89597c372ea942a6df4169daff923af0a40e1330f"
+      ],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-955",
+      "method": "single-agent",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": null,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 23272,
+      "tokenCount": 25651,
+      "evidenceRefs": [
+        "runs/pydicom__pydicom-955/single-agent.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1694",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 24125,
+      "tokenCount": 37414,
+      "evidenceRefs": [
+        "runs/pydicom__pydicom-1694/devorbit.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1694",
+      "method": "single-agent",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": null,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 23932,
+      "tokenCount": 19745,
+      "evidenceRefs": [
+        "runs/pydicom__pydicom-1694/single-agent.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1428",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 19787,
+      "tokenCount": 36441,
+      "evidenceRefs": [
+        "runs/pydicom__pydicom-1428/devorbit.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1428",
+      "method": "single-agent",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": null,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 19842,
+      "tokenCount": 18567,
+      "evidenceRefs": [
+        "runs/pydicom__pydicom-1428/single-agent.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-839",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": true,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 22647,
+      "tokenCount": 38986,
+      "evidenceRefs": [
+        "runs/pydicom__pydicom-839/devorbit.json"
+      ],
+      "artifactDigests": [
+        "sha256:f8743f1907bf75bd424c30c2aad8d01af15d31fc3d60ee909e811bfbfd168b69"
+      ],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-839",
+      "method": "single-agent",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": null,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 12629,
+      "tokenCount": 19140,
+      "evidenceRefs": [
+        "runs/pydicom__pydicom-839/single-agent.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1413",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 2,
+      "patchAttempted": true,
+      "compilePassed": true,
+      "testsPassed": true,
+      "closedLoop": true,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 7358,
+      "tokenCount": 22396,
+      "evidenceRefs": [
+        "runs/pydicom__pydicom-1413/devorbit.json"
+      ],
+      "artifactDigests": [
+        "sha256:1efbd36a7e5f3392176de15f5d77a8cc18cdbf9492e04c232179976e4a95ac28"
+      ],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1413",
+      "method": "single-agent",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": null,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 21172,
+      "tokenCount": 22543,
+      "evidenceRefs": [
+        "runs/pydicom__pydicom-1413/single-agent.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1256",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": true,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 11751,
+      "tokenCount": 30968,
+      "evidenceRefs": [
+        "runs/pydicom__pydicom-1256/devorbit.json"
+      ],
+      "artifactDigests": [
+        "sha256:c6047b44c61947aea6a1361b1340513834fa28a588c6d7c4c8043f2dd765c1ed"
+      ],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1256",
+      "method": "single-agent",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": null,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 12654,
+      "tokenCount": 17492,
+      "evidenceRefs": [
+        "runs/pydicom__pydicom-1256/single-agent.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-4151",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": true,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 13823,
+      "tokenCount": 41972,
+      "evidenceRefs": [
+        "runs/sqlfluff__sqlfluff-4151/devorbit.json"
+      ],
+      "artifactDigests": [
+        "sha256:3f6b7db8943723d9731340de58ea5e6fac209f5b0028fa93a6dd75915877f615"
+      ],
+      "error": null
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-4151",
+      "method": "single-agent",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": null,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 134376,
+      "tokenCount": 22655,
+      "evidenceRefs": [
+        "runs/sqlfluff__sqlfluff-4151/single-agent.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-2907",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": true,
+      "testsPassed": true,
+      "closedLoop": true,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 13666,
+      "tokenCount": 17917,
+      "evidenceRefs": [
+        "runs/sqlfluff__sqlfluff-2907/devorbit.json"
+      ],
+      "artifactDigests": [
+        "sha256:5f9d6d0bffbea0684290b714d6a3e090d23c4939e8cf2c3fdb8ac2fcc4cf49c7"
+      ],
+      "error": null
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-2907",
+      "method": "single-agent",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": null,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 14289,
+      "tokenCount": 22461,
+      "evidenceRefs": [
+        "runs/sqlfluff__sqlfluff-2907/single-agent.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-2573",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 23376,
+      "tokenCount": 53768,
+      "evidenceRefs": [
+        "runs/sqlfluff__sqlfluff-2573/devorbit.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-2573",
+      "method": "single-agent",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": null,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 11556,
+      "tokenCount": 22506,
+      "evidenceRefs": [
+        "runs/sqlfluff__sqlfluff-2573/single-agent.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-884",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": null,
+      "patchAttempted": true,
+      "compilePassed": true,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 16390,
+      "tokenCount": 25099,
+      "evidenceRefs": [
+        "runs/sqlfluff__sqlfluff-884/devorbit.json"
+      ],
+      "artifactDigests": [
+        "sha256:90cf2944d76560cc3493bac5fe0f67db3047424641ebc64b47b3bfdfe6f36a25"
+      ],
+      "error": null
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-884",
+      "method": "single-agent",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": null,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 13824,
+      "tokenCount": 16677,
+      "evidenceRefs": [
+        "runs/sqlfluff__sqlfluff-884/single-agent.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-2998",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": true,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 148416,
+      "tokenCount": 32709,
+      "evidenceRefs": [
+        "runs/sqlfluff__sqlfluff-2998/devorbit.json"
+      ],
+      "artifactDigests": [
+        "sha256:2b509824d8a2a57f85ba24b77e75783c4fd6eb8f4fc0ac2510b3ccdc0431fe82"
+      ],
+      "error": null
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-2998",
+      "method": "single-agent",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": null,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 130879,
+      "tokenCount": 22332,
+      "evidenceRefs": [
+        "runs/sqlfluff__sqlfluff-2998/single-agent.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-4778",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 138107,
+      "tokenCount": 70209,
+      "evidenceRefs": [
+        "runs/sqlfluff__sqlfluff-4778/devorbit.json"
+      ],
+      "artifactDigests": [
+        "sha256:f692b1c96aa9de4e69cdf69b35eb2f0a5426b32cb46e2f32178ffa6271340583"
+      ],
+      "error": null
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-4778",
+      "method": "single-agent",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": null,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 16609,
+      "tokenCount": 44447,
+      "evidenceRefs": [
+        "runs/sqlfluff__sqlfluff-4778/single-agent.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-4753",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": true,
+      "testsPassed": true,
+      "closedLoop": true,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 4752,
+      "tokenCount": 13492,
+      "evidenceRefs": [
+        "runs/sqlfluff__sqlfluff-4753/devorbit.json"
+      ],
+      "artifactDigests": [
+        "sha256:ec89ad2bbea439c75f704689438c0615f59bf4deb8e43563da0e70abf3fe2906"
+      ],
+      "error": null
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-4753",
+      "method": "single-agent",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": null,
+      "patchAttempted": true,
+      "compilePassed": true,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 10804,
+      "tokenCount": 21082,
+      "evidenceRefs": [
+        "runs/sqlfluff__sqlfluff-4753/single-agent.json"
+      ],
+      "artifactDigests": [
+        "sha256:a26a88a4026fed47e9f872fd90929feebbcbc2a922c1363822da032176dafd6d"
+      ],
+      "error": null
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-3220",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 14791,
+      "tokenCount": 38759,
+      "evidenceRefs": [
+        "runs/sqlfluff__sqlfluff-3220/devorbit.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-3220",
+      "method": "single-agent",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": null,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 7803,
+      "tokenCount": 19806,
+      "evidenceRefs": [
+        "runs/sqlfluff__sqlfluff-3220/single-agent.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-1577",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 16000,
+      "tokenCount": 42595,
+      "evidenceRefs": [
+        "runs/sqlfluff__sqlfluff-1577/devorbit.json"
+      ],
+      "artifactDigests": [
+        "sha256:b45637950e542c4250625230ed5d0f67d278d8917733b69a7bb9a5b5a55ece85"
+      ],
+      "error": null
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-1577",
+      "method": "single-agent",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": null,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 11344,
+      "tokenCount": 23021,
+      "evidenceRefs": [
+        "runs/sqlfluff__sqlfluff-1577/single-agent.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-1625",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 15606,
+      "tokenCount": 29198,
+      "evidenceRefs": [
+        "runs/sqlfluff__sqlfluff-1625/devorbit.json"
+      ],
+      "artifactDigests": [
+        "sha256:08d27187b9759c3056eb51a451ba5408ce78de23c102fb805b2e55e43b2eb5a5"
+      ],
+      "error": null
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-1625",
+      "method": "single-agent",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": null,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 9401,
+      "tokenCount": 17160,
+      "evidenceRefs": [
+        "runs/sqlfluff__sqlfluff-1625/single-agent.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYLINT-DEV__ASTROID-1262",
+      "method": "devorbit",
+      "split": "test",
+      "status": "error",
+      "rootCauseRank": null,
+      "patchAttempted": false,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 5434,
+      "tokenCount": 0,
+      "evidenceRefs": [],
+      "artifactDigests": [],
+      "error": "dependency install failed: in1/miniconda3/lib/python3.13/inspect.py). Did you mean: 'formatargvalues'?\n      [end of output]\n  \n  note: This error originates from a subprocess, and is likely not a problem with pip.\nerror: metadata-generation-failed\n\n× Encountered error while generating package metad"
+    },
+    {
+      "caseId": "PUB-PYLINT-DEV__ASTROID-1262",
+      "method": "single-agent",
+      "split": "test",
+      "status": "error",
+      "rootCauseRank": null,
+      "patchAttempted": false,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 5434,
+      "tokenCount": 0,
+      "evidenceRefs": [],
+      "artifactDigests": [],
+      "error": "dependency install failed: in1/miniconda3/lib/python3.13/inspect.py). Did you mean: 'formatargvalues'?\n      [end of output]\n  \n  note: This error originates from a subprocess, and is likely not a problem with pip.\nerror: metadata-generation-failed\n\n× Encountered error while generating package metad"
+    },
+    {
+      "caseId": "PUB-PYLINT-DEV__ASTROID-1962",
+      "method": "devorbit",
+      "split": "test",
+      "status": "error",
+      "rootCauseRank": null,
+      "patchAttempted": false,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 2880,
+      "tokenCount": 0,
+      "evidenceRefs": [],
+      "artifactDigests": [],
+      "error": "dependency install failed: as no attribute 'ImpImporter'. Did you mean: 'zipimporter'?\n      [end of output]\n  \n  note: This error originates from a subprocess, and is likely not a problem with pip.\nerror: subprocess-exited-with-error\n\n× Getting requirements to build wheel did not run successfully.\n"
+    },
+    {
+      "caseId": "PUB-PYLINT-DEV__ASTROID-1962",
+      "method": "single-agent",
+      "split": "test",
+      "status": "error",
+      "rootCauseRank": null,
+      "patchAttempted": false,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 2880,
+      "tokenCount": 0,
+      "evidenceRefs": [],
+      "artifactDigests": [],
+      "error": "dependency install failed: as no attribute 'ImpImporter'. Did you mean: 'zipimporter'?\n      [end of output]\n  \n  note: This error originates from a subprocess, and is likely not a problem with pip.\nerror: subprocess-exited-with-error\n\n× Getting requirements to build wheel did not run successfully.\n"
+    },
+    {
+      "caseId": "PUB-PYLINT-DEV__ASTROID-1196",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 13167,
+      "tokenCount": 31953,
+      "evidenceRefs": [
+        "runs/pylint-dev__astroid-1196/devorbit.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYLINT-DEV__ASTROID-1196",
+      "method": "single-agent",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": null,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 28502,
+      "tokenCount": 15884,
+      "evidenceRefs": [
+        "runs/pylint-dev__astroid-1196/single-agent.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYLINT-DEV__ASTROID-941",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 20368,
+      "tokenCount": 31961,
+      "evidenceRefs": [
+        "runs/pylint-dev__astroid-941/devorbit.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYLINT-DEV__ASTROID-941",
+      "method": "single-agent",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": null,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 25271,
+      "tokenCount": 14526,
+      "evidenceRefs": [
+        "runs/pylint-dev__astroid-941/single-agent.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYLINT-DEV__ASTROID-2023",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": true,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 21666,
+      "tokenCount": 34175,
+      "evidenceRefs": [
+        "runs/pylint-dev__astroid-2023/devorbit.json"
+      ],
+      "artifactDigests": [
+        "sha256:e0584f4983eafeb24c65e99dfaf7fba884ff68e6231ae6312d6a86f53b9fda55"
+      ],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYLINT-DEV__ASTROID-2023",
+      "method": "single-agent",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": null,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 15526,
+      "tokenCount": 15718,
+      "evidenceRefs": [
+        "runs/pylint-dev__astroid-2023/single-agent.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-PYLINT-DEV__ASTROID-1959",
+      "method": "devorbit",
+      "split": "test",
+      "status": "error",
+      "rootCauseRank": null,
+      "patchAttempted": false,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 2795,
+      "tokenCount": 0,
+      "evidenceRefs": [],
+      "artifactDigests": [],
+      "error": "dependency install failed: as no attribute 'ImpImporter'. Did you mean: 'zipimporter'?\n      [end of output]\n  \n  note: This error originates from a subprocess, and is likely not a problem with pip.\nerror: subprocess-exited-with-error\n\n× Getting requirements to build wheel did not run successfully.\n"
+    },
+    {
+      "caseId": "PUB-PYLINT-DEV__ASTROID-1959",
+      "method": "single-agent",
+      "split": "test",
+      "status": "error",
+      "rootCauseRank": null,
+      "patchAttempted": false,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 2795,
+      "tokenCount": 0,
+      "evidenceRefs": [],
+      "artifactDigests": [],
+      "error": "dependency install failed: as no attribute 'ImpImporter'. Did you mean: 'zipimporter'?\n      [end of output]\n  \n  note: This error originates from a subprocess, and is likely not a problem with pip.\nerror: subprocess-exited-with-error\n\n× Getting requirements to build wheel did not run successfully.\n"
+    },
+    {
+      "caseId": "PUB-MARSHMALLOW-CODE__MARSHMALLOW-1343",
+      "method": "devorbit",
+      "split": "test",
+      "status": "error",
+      "rootCauseRank": null,
+      "patchAttempted": false,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 3960,
+      "tokenCount": 3384,
+      "evidenceRefs": [],
+      "artifactDigests": [],
+      "error": "model HTTP 502: {\"error\":{\"message\":\"Unable to connect to the Zhanlu model service\",\"type\":\"gateway_error\",\"param\":null,\"code\":\"upstream_connection_error\"}}"
+    },
+    {
+      "caseId": "PUB-MARSHMALLOW-CODE__MARSHMALLOW-1343",
+      "method": "single-agent",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": null,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 10892,
+      "tokenCount": 12498,
+      "evidenceRefs": [
+        "runs/marshmallow-code__marshmallow-1343/single-agent.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-MARSHMALLOW-CODE__MARSHMALLOW-1359",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": true,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 12363,
+      "tokenCount": 31694,
+      "evidenceRefs": [
+        "runs/marshmallow-code__marshmallow-1359/devorbit.json"
+      ],
+      "artifactDigests": [
+        "sha256:8b1c083c99582a82ff7ec4281bb4687b1aa1e569401041f5c01c364bbc7f4739"
+      ],
+      "error": null
+    },
+    {
+      "caseId": "PUB-MARSHMALLOW-CODE__MARSHMALLOW-1359",
+      "method": "single-agent",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": null,
+      "patchAttempted": true,
+      "compilePassed": true,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 14398,
+      "tokenCount": 14852,
+      "evidenceRefs": [
+        "runs/marshmallow-code__marshmallow-1359/single-agent.json"
+      ],
+      "artifactDigests": [
+        "sha256:8b1c083c99582a82ff7ec4281bb4687b1aa1e569401041f5c01c364bbc7f4739"
+      ],
+      "error": null
+    },
+    {
+      "caseId": "PUB-MARSHMALLOW-CODE__MARSHMALLOW-1810",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": true,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 12151,
+      "tokenCount": 29805,
+      "evidenceRefs": [
+        "runs/marshmallow-code__marshmallow-1810/devorbit.json"
+      ],
+      "artifactDigests": [
+        "sha256:d16b47cbe8fe94d884c849df39d81952d87273ba1eddcbc90122daece6006022"
+      ],
+      "error": null
+    },
+    {
+      "caseId": "PUB-MARSHMALLOW-CODE__MARSHMALLOW-1810",
+      "method": "single-agent",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": null,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 19168,
+      "tokenCount": 13200,
+      "evidenceRefs": [
+        "runs/marshmallow-code__marshmallow-1810/single-agent.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    },
+    {
+      "caseId": "PUB-MARSHMALLOW-CODE__MARSHMALLOW-1252",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": true,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 41917,
+      "tokenCount": 32432,
+      "evidenceRefs": [
+        "runs/marshmallow-code__marshmallow-1252/devorbit.json"
+      ],
+      "artifactDigests": [
+        "sha256:16e5afc10d1283a3d321468c4c664db5cb16016e1d52b12473428cbd8e500a5f"
+      ],
+      "error": null
+    },
+    {
+      "caseId": "PUB-MARSHMALLOW-CODE__MARSHMALLOW-1252",
+      "method": "single-agent",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": null,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 22737,
+      "tokenCount": 14634,
+      "evidenceRefs": [
+        "runs/marshmallow-code__marshmallow-1252/single-agent.json"
+      ],
+      "artifactDigests": [],
+      "error": null
+    }
+  ]
 }

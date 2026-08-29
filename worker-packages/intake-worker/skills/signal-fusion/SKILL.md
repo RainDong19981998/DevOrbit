@@ -1,5 +1,6 @@
 ---
 name: signal-fusion
+version: 1.0.0
 description: Normalize, cluster, and deduplicate heterogeneous software defect or requirement signals from issues, logs, metrics, traces, changes, and user feedback. Use when a delivery workflow needs a canonical case, timeline, severity, source links, or an explicit ambiguity report before diagnosis.
 ---
 

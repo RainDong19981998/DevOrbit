@@ -1,0 +1,12 @@
+diff --git a/test/api/simple_test.py b/test/api/simple_test.py
+--- a/test/api/simple_test.py
++++ b/test/api/simple_test.py
+@@ -95,7 +95,7 @@
+         "line_no": 1,
+         "line_pos": 41,
+         "description": "Files must end with a single trailing newline.",
+-        "name": "layout.end-of-file",
++        "name": "layout.end_of_file",
+     },
+ ]
+ 

@@ -1,0 +1,31 @@
+{
+  "caseId": "PUB-SQLFLUFF__SQLFLUFF-1577",
+  "method": "single-agent",
+  "attempts": 3,
+  "rca": null,
+  "edits": [
+    {
+      "path": "src/sqlfluff/core/templaters/base.py",
+      "search": "        # Find the start of the next templated section.\n        for idx, elem in enumerate(self._raw_slice_info.templated_slice_info[1:]):\n            if elem[0] > pos:\n                return idx, idx + 1\n            elif elem[0] == pos:\n                return idx + 1, idx + 1\n        raise ValueError(\"Position Not Found\")",
+      "replace": "        # Find the start of the next templated section.\n        for idx, elem in enumerate(self._raw_slice_info.templated_slice_info[1:]):\n            if elem[0] > pos:\n                return idx, idx + 1\n            elif elem[0] == pos:\n                return idx + 1, idx + 1\n        # If we get here, the position is at or beyond the end of the templated\n        # string. Return the last slice index so that callers can map the\n        # position to the end of the source.\n        return len(self._raw_slice_info.templated_slice_info) - 1, len(self._raw_slice_info.templated_slice_info)"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "edit apply failed: src/sqlfluff/core/templaters/base.py: search block not found (exact and whitespace-normalized match both failed) [search:         # Find the start of the next templated section.\n        for idx, elem in enumerate(self._raw_slice_info.templated_slice_info[1:]):\n            if elem[0]",
+    "changedPaths": [
+      "src/sqlfluff/core/templaters/base.py"
+    ]
+  },
+  "patchSha256": null,
+  "contextBytes": 13062,
+  "baselineTail": "no-header -x test/core/templaters/jinja_test.py::test__templater_jinja_lint_empty\nImportError while loading conftest '/tmp/zhanlu/bench-work/sqlfluff__sqlfluff-1577/source/test/conftest.py'.\ntest/conftest.py:9: in <module>\n    from sqlfluff.cli.commands import quoted_presenter\nsrc/sqlfluff/__init__.py:9: in <module>\n    import pkg_resources\nE   ModuleNotFoundError: No module named 'pkg_resources'\n",
+  "goldFiles": [
+    "src/sqlfluff/core/templaters/base.py"
+  ],
+  "model": "glm",
+  "modelCalls": 3
+}

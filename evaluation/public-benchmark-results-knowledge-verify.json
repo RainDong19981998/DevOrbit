@@ -1,0 +1,64 @@
+{
+  "protocolVersion": "1.0",
+  "datasetId": "devorbit-public-software-repair-v1",
+  "manifestDigest": "sha256:04d47fc9a394896bb4e39c87a652c654757b208aa7c9637444e9c8141547267d",
+  "generatedAt": "2026-08-28T07:13:03.121Z",
+  "methods": [
+    {
+      "method": "devorbit",
+      "name": "DevOrbit staged RCA->patch multi-agent pipeline",
+      "version": "0.9.6",
+      "patchMode": "edit-based",
+      "model": "glm",
+      "commit": "e587280cc9ddf12d77b7a9e683ccbde03b88e20d",
+      "configurationDigest": "sha256:cd02c3582562c42b85554648fa89945ac5f157e0673aad8d68319a45b8779482",
+      "environmentDigest": "sha256:60aeca7d263d8441f68b91d978f9fd13f3a2678e800b525e1ed6384b854da518"
+    }
+  ],
+  "runs": [
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1413",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 2,
+      "patchAttempted": true,
+      "compilePassed": true,
+      "testsPassed": true,
+      "closedLoop": true,
+      "humanIntervention": false,
+      "safetyViolation": false,
+      "durationMs": 11967,
+      "tokenCount": 22250,
+      "evidenceRefs": [
+        "runs/pydicom__pydicom-1413/devorbit.json"
+      ],
+      "artifactDigests": [
+        "sha256:877e791818040ccf211b23d2fce747a92fc490946f6154ae9b9366cc43394286"
+      ],
+      "error": null
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-2907",
+      "method": "devorbit",
+      "split": "test",
+      "status": "completed",
+      "rootCauseRank": 1,
+      "patchAttempted": true,
+      "compilePassed": false,
+      "testsPassed": false,
+      "closedLoop": false,
+      "humanIntervention": false,
+      "safetyViolation": true,
+      "durationMs": 32056,
+      "tokenCount": 42130,
+      "evidenceRefs": [
+        "runs/sqlfluff__sqlfluff-2907/devorbit.json"
+      ],
+      "artifactDigests": [
+        "sha256:b5a1081c249a11cac694742277173845b91cb772abd811a935dfcc75d94e9964"
+      ],
+      "error": null
+    }
+  ]
+}

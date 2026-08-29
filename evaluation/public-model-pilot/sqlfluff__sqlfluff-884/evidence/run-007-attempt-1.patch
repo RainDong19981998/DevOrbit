@@ -1,0 +1,18 @@
+diff --git a/src/sqlfluff/core/parser/segments/raw.py b/src/sqlfluff/core/parser/segments/raw.py
+index 492ef89..6df0f6f 100644
+--- a/src/sqlfluff/core/parser/segments/raw.py
++++ b/src/sqlfluff/core/parser/segments/raw.py
+@@ -79,7 +79,12 @@ class RawSegment(BaseSegment):
+         newclass = type(
+             classname,
+             (cls,),
+-            dict(_template=_template, _name=name, **kwargs),
++            dict(
++                _template=_template,
++                _name=name,
++                **kwargs,
++                is_whitespace=(name == "whitespace" or name == "newline")
++            )
+         )
+         # Now we return that class in the abstract. NOT INSTANTIATED
+         return newclass

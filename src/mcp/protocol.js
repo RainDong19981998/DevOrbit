@@ -1,4 +1,9 @@
-export { MCP_PROTOCOL_VERSION } from '../version.js';
+export { MCP_LATEST_PROTOCOL_VERSION, MCP_PROTOCOL_VERSION, MCP_PROTOCOL_VERSIONS } from '../version.js';
+import { MCP_LATEST_PROTOCOL_VERSION, MCP_PROTOCOL_VERSIONS } from '../version.js';
+
+export function negotiateProtocolVersion(requested) {
+  return MCP_PROTOCOL_VERSIONS.includes(requested) ? requested : MCP_LATEST_PROTOCOL_VERSION;
+}
 
 export function rpcResult(id, result) {
   return { jsonrpc: '2.0', id, result };

@@ -1,0 +1,69 @@
+{
+  "caseId": "PUB-PYDICOM__PYDICOM-1413",
+  "method": "devorbit",
+  "attempts": 1,
+  "rca": {
+    "rootCause": "When a `bytes` value is assigned to a DataElement with an 'O*' VR (OB, OD, OF, OL, OV, OW), pydicom's value conversion logic incorrectly splits the bytes on the backslash character (0x5C) and wraps the result in a MultiValue. This happens because the code path that handles multi-valued string VRs (which use backslash as a delimiter) is also being applied to binary 'O*' VRs, where backslash (0x5C) is a legitimate data byte, not a delimiter. The fix must ensure that 'O*' VR values that are `bytes` are kept as-is and not split into a MultiValue.",
+    "confidence": 0.9,
+    "evidence": [
+      "Issue title: 'TypeError: a bytes-like object is required, not MultiValue' when updating tag with VR 'OL'",
+      "Maintainer reproduction shows `print(ds)` outputting a MultiValue of bytes: `OL: [b'\\x00\\x00\\x01\\x00...', b'\\x00]\\x00^\\x00...']` indicating the bytes were split",
+      "Maintainer diagnosis: 'I think this is because the byte value is hitting the hex for the backslash character during assignment. Ouch, that's kinda nasty.'",
+      "The split occurs at byte 0x5C (backslash), which is the DICOM delimiter for multi-valued string VRs but is valid data in binary O* VRs"
+    ],
+    "filesToChange": [
+      "pydicom/values.py",
+      "pydicom/dataelem.py"
+    ]
+  },
+  "edits": [
+    {
+      "path": "pydicom/dataelem.py",
+      "search": "        if isinstance(val, (str, bytes)) and self.VR not in \\\n                ['UT', 'ST', 'LT', 'FL', 'FD', 'AT', 'OB', 'OW', 'OF', 'SL',\n                 'SQ', 'SS', 'UL', 'OB/OW', 'OW/OB', 'OB or OW',\n                 'OW or OB', 'UN'] and 'US' not in self.VR:",
+      "replace": "        if isinstance(val, (str, bytes)) and self.VR not in \\\n                ['UT', 'ST', 'LT', 'FL', 'FD', 'AT', 'OB', 'OW', 'OF', 'OD',\n                 'OL', 'OV', 'SL', 'SQ', 'SS', 'UL', 'OB/OW', 'OW/OB',\n                 'OB or OW', 'OW or OB', 'UN'] and 'US' not in self.VR:"
+    }
+  ],
+  "warningsRecalled": [
+    "BENCH-EP-182d660601154c1c",
+    "BENCH-EP-22657210b877a19f",
+    "BENCH-EP-3e1b59ef89de0031",
+    "BENCH-EP-4c766102041881ff",
+    "BENCH-EP-59405e83d1211813",
+    "BENCH-EP-70e07b9228fedeb4",
+    "BENCH-EP-874751f2f2e036b5",
+    "BENCH-EP-8f3d88852a74b2c5",
+    "BENCH-EP-a50a1ce5db09d439",
+    "BENCH-EP-a80e111199085edf",
+    "BENCH-EP-b9fc673c55a23976",
+    "BENCH-EP-cae1254447012b5e",
+    "BENCH-EP-d41f806b175bce65",
+    "BENCH-EP-d8c8fcae12b5957a",
+    "BENCH-EP-da3c767a0a2d0541"
+  ],
+  "evaluation": {
+    "compilePassed": true,
+    "safetyViolation": false,
+    "testsPassed": true,
+    "closedLoop": true,
+    "detail": "F2P green; P2P green ........                                                                 [100%]\n8 passed in 0.03s\n",
+    "f2pLogTail": "",
+    "changedPaths": [
+      "pydicom/dataelem.py"
+    ],
+    "appliedMethods": [
+      {
+        "path": "pydicom/dataelem.py",
+        "method": "exact",
+        "ambiguous": false
+      }
+    ]
+  },
+  "patchSha256": "sha256:877e791818040ccf211b23d2fce747a92fc490946f6154ae9b9366cc43394286",
+  "contextBytes": 10966,
+  "baselineTail": "!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.29s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x pydicom/tests/test_valuerep.py::test_assigning_bytes[OD-bytes-vm017-vmN17-DoubleFloatPixelData] pydicom/tests/test_valuerep.py::test_assigning_bytes[OL-bytes-vm019-vmN19-TrackPointIndexList] pydicom/tests/test_valuerep.py::test_assigning_bytes[OV-bytes-vm020-vmN20-SelectorOVValue]\n",
+  "goldFiles": [
+    "pydicom/dataelem.py"
+  ],
+  "model": "glm",
+  "modelCalls": 2
+}

@@ -1,30 +1,32 @@
 {
-  "generatedAt": "2026-08-13T14:37:19.651Z",
+  "generatedAt": "2026-08-29T12:22:21.027Z",
   "summary": {
-    "checks": 474,
-    "passed": 474,
+    "checks": 1536,
+    "passed": 1536,
     "failed": 0
   },
   "artifacts": {
-    "DevOrbit_初赛方案.pdf": "e7b0b7fbd0cdd65c4bfb2e53e161848ae124f6d2f1f9aa34c3aaca66f9bf89e5",
-    "DevOrbit_初赛方案.pptx": "60d4903656e38a9341312e7a9b1db1eb900eab089bbf70f3f8ed67dfc28725aa",
-    "DevOrbit_初赛可执行代码包.zip": "132d81ed3aa5c4e0bea9465a858f5e6347ead421a41b1927c341db6f246fcb4b",
-    "DevOrbit_演示视频.mp4": "c86d6d4f1eff09835e3866edf76e4e4ca13a53b7280a2162d9b8a8a53b1eb327",
-    "DevOrbit_演示视频封面.png": "05787d13fb6591abafb83a3088a931a415ec07786025cc541db90263a2d7482e",
-    "DevOrbit_初赛讲解视频_自动语音版.mp4": "123ef5a0cd7bf969cdd808eab56e1a3e1a13dff987895f7bbc6fca1840eafe6e",
-    "DevOrbit_威胁模型.pdf": "12e03c80d0840cfc0dd8ed84ac1f8f3ae84f7f010f1cfc5fd50e3d25943dd769",
-    "DevOrbit_证据索引.pdf": "6a72a1018e847fc884c97459f66cb295bf56e44e3a777d2d4027e0cdb43281ef",
-    "DevOrbit_对照与消融评测.pdf": "e91a4c2eaa70c4aca233a4dce54a2c3344075fa25cf395c781a044f6e521f23a",
-    "DevOrbit_对抗安全评测.pdf": "1b38388997a86c1fbca03a96b98cfac2d4a76232bb596a64e900896075814a43",
-    "DevOrbit_公开基准复现试点.pdf": "8ce8afd2f6d58404edd2353ac652a7f4657d9a976b4774887060f3683f2cff7e"
+    "DevOrbit_复赛方案.pdf": "24018dbab833f9a7edd0f303e8a619e30f60bb8c417f6e2c2798297eb680f049",
+    "DevOrbit_复赛方案.pptx": "67138649fee982fcd1cfb9f3db559b22047132718e6df4c1be9ba371925fbb93",
+    "DevOrbit_复赛可执行代码包.zip": "33f3bbe63b05ca6d983fc161a83aa54efba26987ad8bf0e235428e64fd4c4686",
+    "DevOrbit_演示视频.mp4": "e55914a513f3dac224d9cf2debe093deb06e25e097bb45b9ef45782211bec238",
+    "DevOrbit_演示视频封面.png": "79f400aca4fddb8233ca83b48140e35cb76024c5b8ba8b49af7612f945b574f9",
+    "DevOrbit_产品界面.png": "e3bac38e854e8866cf6227acefb52f04cdfb879f4d2ed02b1ed19d7c17d0d9ae",
+    "DevOrbit_初赛讲解视频_无配音版.mp4": "absent",
+    "DevOrbit_AgentTeams本地运行验证.pdf": "f76a8ea7f11848ba74a88edbbff920ae1ff0e0182de8d237aa94612ea5074134",
+    "DevOrbit_威胁模型.pdf": "666b62d02976ca7114ee166c601d8af749d41e03a6876c97f1adf57c72b7f1e9",
+    "DevOrbit_证据索引.pdf": "ed78a1ca09feeace8b8626d23c975c97245eaed99039b3a7997f0548d1bda9c9",
+    "DevOrbit_对照与消融评测.pdf": "a4ff5348cb71a3783c57a03a66e2a2a40b6cbede8ea169a71987d7cde0d3e88a",
+    "DevOrbit_对抗安全评测.pdf": "9d6114910d54c12f094156889391933c7dbc855fa0ae727f7d03e42e49a1ea25",
+    "DevOrbit_公开基准复现试点.pdf": "c0440cc4c79357b22e99af84cb9a00b10f5341550cafb86f52bdcd9d057fdd33"
   },
-  "videoReviewBoundary": "Both video digests are locked to visually reviewed recordings. The narrated explainer was sampled at opening, browser demo, evidence and roadmap frames. Any video change requires a new pixel-level review.",
+  "videoReviewBoundary": "Both video digests are locked to visually reviewed silent recordings. Each file contains H.264 video and no audio stream. The explainer was sampled at product definition, pain, concrete case, browser workflow, evidence boundary and closing frames. Any video change requires a new pixel-level review.",
   "cloudBoundary": "The official cloud Skill is source-locked and packaged for Intake/RCA. The default Demo does not claim a cloud-account invocation.",
   "checks": [
     {
       "label": "intro length",
       "ok": true,
-      "detail": "458/500 chars"
+      "detail": "474/500 chars"
     },
     {
       "label": "intro required claims",
@@ -42,12 +44,27 @@
       "detail": ""
     },
     {
+      "label": "PDF submission date",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "PDF product positioning",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "PDF official Skill evidence",
       "ok": true,
       "detail": ""
     },
     {
-      "label": "PDF V0.6.0 cover and evidence",
+      "label": "PDF V1.0.0 cover and evidence",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "PDF mandatory sections",
       "ok": true,
       "detail": ""
     },
@@ -62,7 +79,7 @@
       "detail": ""
     },
     {
-      "label": "PPTX V0.6.0 cover and evidence",
+      "label": "PPTX V1.0.0 cover and evidence",
       "ok": true,
       "detail": ""
     },
@@ -77,14 +94,19 @@
       "detail": ""
     },
     {
+      "label": "video has no audio stream",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "video duration",
       "ok": true,
-      "detail": "26.000000s"
+      "detail": "129.000000s"
     },
     {
       "label": "video reviewed digest unchanged",
       "ok": true,
-      "detail": "c86d6d4f1eff0983"
+      "detail": "e55914a513f3dac2"
     },
     {
       "label": "video metadata compliance",
@@ -97,22 +119,27 @@
       "detail": ""
     },
     {
-      "label": "explainer AAC audio",
+      "label": "explainer has no audio stream",
       "ok": true,
       "detail": ""
     },
     {
       "label": "explainer video duration",
       "ok": true,
-      "detail": "190.367000s"
+      "detail": "undefineds"
     },
     {
       "label": "explainer reviewed digest unchanged",
       "ok": true,
-      "detail": "123ef5a0cd7bf969"
+      "detail": "n/a"
     },
     {
       "label": "explainer metadata compliance",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "supporting PDF DevOrbit_AgentTeams本地运行验证.pdf",
       "ok": true,
       "detail": ""
     },
@@ -203,6 +230,51 @@
     },
     {
       "label": "code ZIP docs/证据索引.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP docs/AgentTeams本地运行验证.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP evaluation/agentteams-runtime-case.manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP schemas/agentteams-runtime-case.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP schemas/agentteams-runtime-report.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP reports/agentteams-runtime.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP scripts/agentteams-identity-proxy.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP scripts/configure-agentteams-local-runtime.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP scripts/run-agentteams-runtime-case.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP scripts/validate-agentteams-runtime.mjs",
       "ok": true,
       "detail": ""
     },
@@ -432,6 +504,146 @@
       "detail": ""
     },
     {
+      "label": "code ZIP evaluation/public-model-pilot-v11.manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP schemas/public-model-pilot-v11.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP reports/public-model-pilot-v11.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP scripts/run-public-model-pilot.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP scripts/validate-public-model-pilot-v11.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP src/evaluation/model-pilot-gate.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP src/evaluation/model-pilot-gate.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-011-transcript.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-011-model.patch",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-011-target.log",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-011-regression.log",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-011-classification.log",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP evaluation/independent-model-pilot.manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP schemas/independent-model-pilot.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP evaluation/independent-model-pilot/candidate-selection.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP evaluation/independent-model-pilot/pydicom__pydicom-965/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP evaluation/independent-model-pilot/pydicom__pydicom-965/test.patch",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP evaluation/independent-model-pilot/pydicom__pydicom-965/requirements.lock",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP evaluation/independent-model-pilot/pydicom__pydicom-965/classification_probe.py",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP evaluation/independent-model-pilot/pydicom__pydicom-965/evidence/transcript.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP evaluation/independent-model-pilot/pydicom__pydicom-965/evidence/baseline-target.log",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP evaluation/independent-model-pilot/pydicom__pydicom-965/evidence/contract-rejection.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP reports/independent-model-pilot.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP reports/independent-model-pilot-preflight-001.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP scripts/run-independent-model-pilot.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP scripts/validate-independent-model-pilot.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP src/evaluation/exact-edit-transaction.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP src/evaluation/exact-edit-transaction.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code ZIP scripts/release-audit.mjs",
       "ok": true,
       "detail": ""
@@ -442,7 +654,22 @@
       "detail": ""
     },
     {
-      "label": "code ZIP V0.6.0 version",
+      "label": "code ZIP version",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP official AgentTeams local runtime",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP AgentTeams honest boundary",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP AgentTeams report credential scan",
       "ok": true,
       "detail": ""
     },
@@ -467,7 +694,7 @@
       "detail": ""
     },
     {
-      "label": "code ZIP public benchmark is protocol-only",
+      "label": "code ZIP public benchmark is frozen with 30 scored cases",
       "ok": true,
       "detail": ""
     },
@@ -512,6 +739,76 @@
       "detail": ""
     },
     {
+      "label": "code ZIP public model terminal disclosure",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP public model expanded gate rejection",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP public model manifest binding",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP public model artifact transcript",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP public model artifact patch",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP public model artifact targetLog",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP public model artifact regressionLog",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP public model artifact classificationLog",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP independent candidate frozen before model",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP independent runner binding",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP independent terminal negative result",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP independent manifest and model binding",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP independent gold and network isolation",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP independent rejection disclosure",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code ZIP native platform contract",
       "ok": true,
       "detail": ""
@@ -537,6 +834,11 @@
       "detail": ""
     },
     {
+      "label": "nested official Skill secret scan",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "official Skill curation disclosed",
       "ok": true,
       "detail": ""
@@ -557,7 +859,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan README.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance package.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan package.json",
       "ok": true,
       "detail": ""
     },
@@ -567,7 +879,27 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan server.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance app/tour-timeline.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan app/tour-timeline.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance app/approval.css",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan app/approval.css",
       "ok": true,
       "detail": ""
     },
@@ -577,7 +909,27 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan app/style.css",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance app/app.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan app/app.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance app/v095.css",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan app/v095.css",
       "ok": true,
       "detail": ""
     },
@@ -587,7 +939,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan app/index.html",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance config/agentteams.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan config/agentteams.yaml",
       "ok": true,
       "detail": ""
     },
@@ -597,7 +959,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan config/case-lifecycle.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance config/aliyun-official-skill.contract.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan config/aliyun-official-skill.contract.json",
       "ok": true,
       "detail": ""
     },
@@ -607,7 +979,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan config/agentteams.resources.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance config/agentteams-v1.2.2.contract.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan config/agentteams-v1.2.2.contract.json",
       "ok": true,
       "detail": ""
     },
@@ -617,7 +999,27 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan config/policy.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance config/tool-policy.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan config/tool-policy.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance config/otel-collector.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan config/otel-collector.yaml",
       "ok": true,
       "detail": ""
     },
@@ -627,7 +1029,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan config/platform-native.contract.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance docs/提交清单.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan docs/提交清单.md",
       "ok": true,
       "detail": ""
     },
@@ -637,7 +1049,27 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan docs/路演PPT.html",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance docs/AgentTeams本地运行验证.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan docs/AgentTeams本地运行验证.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance docs/工具与云产品清单.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan docs/工具与云产品清单.md",
       "ok": true,
       "detail": ""
     },
@@ -647,7 +1079,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan docs/参赛方案.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance docs/第三方依赖与合规清单.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan docs/第三方依赖与合规清单.md",
       "ok": true,
       "detail": ""
     },
@@ -657,12 +1099,37 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan docs/威胁模型.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance docs/证据索引.md",
       "ok": true,
       "detail": ""
     },
     {
-      "label": "code compliance docs/自动解说视频说明.md",
+      "label": "code secret-scan docs/证据索引.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance docs/场景迁移复制路径.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan docs/场景迁移复制路径.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance docs/无配音讲解视频说明.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan docs/无配音讲解视频说明.md",
       "ok": true,
       "detail": ""
     },
@@ -672,7 +1139,37 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan docs/Adapter生产契约.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance docs/原生平台连接器.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan docs/原生平台连接器.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance docs/reference/初赛评委反馈.txt",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan docs/reference/初赛评委反馈.txt",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance docs/reference/goal.txt",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan docs/reference/goal.txt",
       "ok": true,
       "detail": ""
     },
@@ -682,7 +1179,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan docs/复赛冲刺路线图.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance docs/评委90秒验收.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan docs/评委90秒验收.md",
       "ok": true,
       "detail": ""
     },
@@ -692,7 +1199,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan docs/公开基准协议.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance docs/作品简介.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan docs/作品简介.md",
       "ok": true,
       "detail": ""
     },
@@ -702,7 +1219,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan docs/公开基准复现试点.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance docs/官网提交粘贴稿.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan docs/官网提交粘贴稿.md",
       "ok": true,
       "detail": ""
     },
@@ -712,7 +1239,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan docs/Skill清单.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance docs/Agent-Identity清单.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan docs/Agent-Identity清单.md",
       "ok": true,
       "detail": ""
     },
@@ -722,7 +1259,27 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan docs/演示脚本.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance schemas/public-benchmark.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan schemas/public-benchmark.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance schemas/public-model-pilot-v11.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan schemas/public-model-pilot-v11.schema.json",
       "ok": true,
       "detail": ""
     },
@@ -732,7 +1289,107 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan schemas/platform-native.contract.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance schemas/public-benchmark-results.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan schemas/public-benchmark-results.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance schemas/archive/public-model-pilot-v7.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan schemas/archive/public-model-pilot-v7.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance schemas/archive/public-model-pilot-v3.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan schemas/archive/public-model-pilot-v3.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance schemas/archive/public-model-pilot-v2.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan schemas/archive/public-model-pilot-v2.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance schemas/archive/public-model-pilot-v8.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan schemas/archive/public-model-pilot-v8.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance schemas/archive/public-model-pilot-v5.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan schemas/archive/public-model-pilot-v5.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance schemas/archive/public-model-pilot-v10.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan schemas/archive/public-model-pilot-v10.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance schemas/archive/public-model-pilot-v4.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan schemas/archive/public-model-pilot-v4.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance schemas/archive/public-model-pilot-v6.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan schemas/archive/public-model-pilot-v6.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance schemas/archive/public-model-pilot-v9.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan schemas/archive/public-model-pilot-v9.schema.json",
       "ok": true,
       "detail": ""
     },
@@ -742,7 +1399,27 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan schemas/public-benchmark-report.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance schemas/tool-contract.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan schemas/tool-contract.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance schemas/agentteams-runtime-case.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan schemas/agentteams-runtime-case.schema.json",
       "ok": true,
       "detail": ""
     },
@@ -752,7 +1429,27 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan schemas/http-adapter.openapi.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance schemas/public-benchmark-pilot.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan schemas/public-benchmark-pilot.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance schemas/public-model-pilot.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan schemas/public-model-pilot.schema.json",
       "ok": true,
       "detail": ""
     },
@@ -762,7 +1459,37 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan schemas/case-state.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance schemas/independent-model-pilot.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan schemas/independent-model-pilot.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance schemas/agentteams-runtime-report.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan schemas/agentteams-runtime-report.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance skills/signal-fusion/SKILL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan skills/signal-fusion/SKILL.md",
       "ok": true,
       "detail": ""
     },
@@ -772,7 +1499,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan skills/signal-fusion/agents/openai.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance skills/evidence-rca/SKILL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan skills/evidence-rca/SKILL.md",
       "ok": true,
       "detail": ""
     },
@@ -782,7 +1519,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan skills/evidence-rca/agents/openai.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance skills/patch-plan/SKILL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan skills/patch-plan/SKILL.md",
       "ok": true,
       "detail": ""
     },
@@ -792,7 +1539,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan skills/patch-plan/agents/openai.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance skills/knowledge-card/SKILL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan skills/knowledge-card/SKILL.md",
       "ok": true,
       "detail": ""
     },
@@ -802,7 +1559,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan skills/knowledge-card/agents/openai.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance skills/test-gate/SKILL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan skills/test-gate/SKILL.md",
       "ok": true,
       "detail": ""
     },
@@ -812,7 +1579,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan skills/test-gate/agents/openai.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance skills/impact-map/SKILL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan skills/impact-map/SKILL.md",
       "ok": true,
       "detail": ""
     },
@@ -822,7 +1599,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan skills/impact-map/agents/openai.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance skills/release-guard/SKILL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan skills/release-guard/SKILL.md",
       "ok": true,
       "detail": ""
     },
@@ -832,7 +1619,27 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan skills/release-guard/agents/openai.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance scripts/adapter-contract-smoke.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/adapter-contract-smoke.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/agentteams-autonomous-probe.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/agentteams-autonomous-probe.mjs",
       "ok": true,
       "detail": ""
     },
@@ -842,7 +1649,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan scripts/evaluate-security.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance scripts/evaluate.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/evaluate.mjs",
       "ok": true,
       "detail": ""
     },
@@ -852,7 +1669,47 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan scripts/native-platform-smoke.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/build_total_bundle.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/build_total_bundle.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/ablation-mechanism.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/ablation-mechanism.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/gitlab-e2e-self-healing.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/gitlab-e2e-self-healing.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance scripts/mcp-smoke.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/mcp-smoke.mjs",
       "ok": true,
       "detail": ""
     },
@@ -862,7 +1719,57 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan scripts/reconcile-idempotency.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/db-branch-smoke.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/db-branch-smoke.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/benchmark-autopsy.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/benchmark-autopsy.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/model-provider-smoke.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/model-provider-smoke.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance scripts/release-audit.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/release-audit.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/scenario-migration.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/scenario-migration.mjs",
       "ok": true,
       "detail": ""
     },
@@ -872,7 +1779,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan scripts/validate.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance scripts/capture-run.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/capture-run.mjs",
       "ok": true,
       "detail": ""
     },
@@ -882,7 +1799,137 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan scripts/export-otel.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/gitlab-e2e.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/gitlab-e2e.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/write-skills-registry.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/write-skills-registry.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance scripts/compliance.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/compliance.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/canary-docker.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/canary-docker.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/archive/validate-public-model-pilot-v2.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/archive/validate-public-model-pilot-v2.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/archive/validate-public-model-pilot-v9.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/archive/validate-public-model-pilot-v9.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/archive/validate-public-model-pilot-v3.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/archive/validate-public-model-pilot-v3.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/archive/validate-public-model-pilot-v7.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/archive/validate-public-model-pilot-v7.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/archive/validate-public-model-pilot-v5.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/archive/validate-public-model-pilot-v5.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/archive/validate-public-model-pilot-v8.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/archive/validate-public-model-pilot-v8.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/archive/validate-public-model-pilot-v4.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/archive/validate-public-model-pilot-v4.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/archive/validate-public-model-pilot-v6.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/archive/validate-public-model-pilot-v6.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/archive/validate-public-model-pilot-v10.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/archive/validate-public-model-pilot-v10.mjs",
       "ok": true,
       "detail": ""
     },
@@ -892,7 +1939,47 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan scripts/container-smoke.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance scripts/validate-adapter-contract.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/validate-adapter-contract.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/validate-public-model-pilot.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/validate-public-model-pilot.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/run-independent-model-pilot.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/run-independent-model-pilot.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/configure-agentteams-local-runtime.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/configure-agentteams-local-runtime.mjs",
       "ok": true,
       "detail": ""
     },
@@ -902,7 +1989,47 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan scripts/api-smoke.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance scripts/api-security-smoke.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/api-security-smoke.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/run-public-model-pilot.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/run-public-model-pilot.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/verify-evidence-chain.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/verify-evidence-chain.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/agentteams-ctl.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/agentteams-ctl.mjs",
       "ok": true,
       "detail": ""
     },
@@ -912,7 +2039,67 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan scripts/validate-agentteams.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/agentteams-runtime-v3.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/agentteams-runtime-v3.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/agentteams-identity-proxy.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/agentteams-identity-proxy.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/freeze-public-benchmark.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/freeze-public-benchmark.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/chaos.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/chaos.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance scripts/firefox-demo-user.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/firefox-demo-user.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/model-ablation.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/model-ablation.mjs",
       "ok": true,
       "detail": ""
     },
@@ -922,7 +2109,57 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan scripts/write-deliverable-checksums.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/mttr-baseline.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/mttr-baseline.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/validate-agentteams-runtime.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/validate-agentteams-runtime.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/validate-independent-model-pilot.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/validate-independent-model-pilot.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/run-public-benchmark.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/run-public-benchmark.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance scripts/public-benchmark.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/public-benchmark.mjs",
       "ok": true,
       "detail": ""
     },
@@ -932,7 +2169,27 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan scripts/evaluate-benchmark.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance scripts/write-native-runner-report.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/write-native-runner-report.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/run-agentteams-runtime-case.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/run-agentteams-runtime-case.mjs",
       "ok": true,
       "detail": ""
     },
@@ -942,7 +2199,37 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan scripts/evaluate-rag.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance scripts/render-agentteams-config.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/render-agentteams-config.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/fault-drill.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/fault-drill.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/benchmark-knowledge.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/benchmark-knowledge.mjs",
       "ok": true,
       "detail": ""
     },
@@ -952,7 +2239,57 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan scripts/validate-public-pilot.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/validate-public-model-pilot-v11.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/validate-public-model-pilot-v11.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance src/adapters/http.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/adapters/http.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/adapters/gitlab.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/adapters/gitlab.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/adapters/db-branch.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/adapters/db-branch.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/adapters/gitlab.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/adapters/gitlab.test.js",
       "ok": true,
       "detail": ""
     },
@@ -962,7 +2299,47 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan src/adapters/platforms.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/adapters/db-branch.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/adapters/db-branch.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/security/evidence-chain.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/security/evidence-chain.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/security/evidence-chain.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/security/evidence-chain.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance src/security/tool-policy.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/security/tool-policy.js",
       "ok": true,
       "detail": ""
     },
@@ -972,7 +2349,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan src/orchestrator.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance src/adapter-http.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/adapter-http.test.js",
       "ok": true,
       "detail": ""
     },
@@ -982,7 +2369,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan src/platform-adapters.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance src/agents/learning-agent.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/agents/learning-agent.js",
       "ok": true,
       "detail": ""
     },
@@ -992,7 +2389,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan src/agents/impact-agent.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance src/agents/release-agent.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/agents/release-agent.js",
       "ok": true,
       "detail": ""
     },
@@ -1002,7 +2409,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan src/agents/rca-agent.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance src/agents/patch-agent.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/agents/patch-agent.js",
       "ok": true,
       "detail": ""
     },
@@ -1012,7 +2429,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan src/agents/verify-agent.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance src/agents/intake-agent.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/agents/intake-agent.js",
       "ok": true,
       "detail": ""
     },
@@ -1022,7 +2449,27 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan src/agents/index.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/runtime/state-store.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/runtime/state-store.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance src/runtime/test-runner.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/runtime/test-runner.js",
       "ok": true,
       "detail": ""
     },
@@ -1032,7 +2479,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan src/runtime/case-state.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance src/runtime/digest.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/runtime/digest.js",
       "ok": true,
       "detail": ""
     },
@@ -1042,7 +2499,37 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan src/runtime/trace.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance src/runtime/manager.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/runtime/manager.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/runtime/state-store.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/runtime/state-store.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/fixture-migration.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/fixture-migration.test.js",
       "ok": true,
       "detail": ""
     },
@@ -1052,7 +2539,57 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan src/adapters.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/knowledge/episode-store.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/knowledge/episode-store.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance src/knowledge/store.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/knowledge/store.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/knowledge/hybrid-store.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/knowledge/hybrid-store.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/knowledge/hybrid-store.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/knowledge/hybrid-store.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/knowledge/episode-store.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/knowledge/episode-store.js",
       "ok": true,
       "detail": ""
     },
@@ -1062,7 +2599,57 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan src/skills.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance src/observability/otel.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/observability/otel.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/models/provider.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/models/provider.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/models/embedding.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/models/embedding.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/models/provider.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/models/provider.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/models/embedding.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/models/embedding.js",
       "ok": true,
       "detail": ""
     },
@@ -1072,7 +2659,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan src/mcp/http-transport.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance src/mcp/client.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/mcp/client.js",
       "ok": true,
       "detail": ""
     },
@@ -1082,7 +2679,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan src/mcp/protocol.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance src/mcp/tool-server.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/mcp/tool-server.js",
       "ok": true,
       "detail": ""
     },
@@ -1092,7 +2699,87 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan src/mcp/tools.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/benchmark/edit-engine.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/benchmark/edit-engine.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/benchmark/edit-engine.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/benchmark/edit-engine.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/fixture-profiles.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/fixture-profiles.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/evaluation/exact-edit-transaction.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/evaluation/exact-edit-transaction.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/evaluation/exact-edit-transaction.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/evaluation/exact-edit-transaction.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/evaluation/model-pilot-gate.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/evaluation/model-pilot-gate.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance src/evaluation/public-benchmark.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/evaluation/public-benchmark.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/evaluation/model-pilot-gate.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/evaluation/model-pilot-gate.test.js",
       "ok": true,
       "detail": ""
     },
@@ -1102,7 +2789,27 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan src/evaluation/public-benchmark.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance src/orchestrator.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/orchestrator.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/agentteams-identity-proxy.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/agentteams-identity-proxy.js",
       "ok": true,
       "detail": ""
     },
@@ -1112,7 +2819,97 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan src/version.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/agentteams-identity-proxy.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/agentteams-identity-proxy.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance src/security-policy.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/security-policy.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/skills-registry.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/skills-registry.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance fixtures/inventory-service/src/stock.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan fixtures/inventory-service/src/stock.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance fixtures/inventory-service/test/stock.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan fixtures/inventory-service/test/stock.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance fixtures/inventory-service/signals/surface.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan fixtures/inventory-service/signals/surface.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance fixtures/inventory-service/signals/deep.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan fixtures/inventory-service/signals/deep.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance fixtures/inventory-service/package.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan fixtures/inventory-service/package.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance fixtures/canary-service/server.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan fixtures/canary-service/server.mjs",
       "ok": true,
       "detail": ""
     },
@@ -1122,7 +2919,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan fixtures/checkout-service/src/redisPool.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance fixtures/checkout-service/src/order.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan fixtures/checkout-service/src/order.js",
       "ok": true,
       "detail": ""
     },
@@ -1132,7 +2939,37 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan fixtures/checkout-service/test/order.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance fixtures/checkout-service/test/redisPool.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan fixtures/checkout-service/test/redisPool.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance fixtures/checkout-service/signals/surface.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan fixtures/checkout-service/signals/surface.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance fixtures/checkout-service/signals/deep.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan fixtures/checkout-service/signals/deep.json",
       "ok": true,
       "detail": ""
     },
@@ -1142,7 +2979,37 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan fixtures/checkout-service/package.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance knowledge/benchmark-episodes.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan knowledge/benchmark-episodes.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance knowledge/cases.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan knowledge/cases.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance knowledge/episodes.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan knowledge/episodes.json",
       "ok": true,
       "detail": ""
     },
@@ -1152,7 +3019,217 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan evaluation/golden-cases.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance evaluation/rag-cases.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/rag-cases.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-003-transcript.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-003-transcript.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-011-transcript.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-011-transcript.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-007-transcript.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-007-transcript.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-001-failure.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-001-failure.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-004-control-failure-001-transcript.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-004-control-failure-001-transcript.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-008-control-failure-001-transcript.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-008-control-failure-001-transcript.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-010-transcript.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-010-transcript.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-002-transcript.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-002-transcript.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-003-infra-failure-001.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-003-infra-failure-001.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-008-control-failure-001.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-008-control-failure-001.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-008-transcript.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-008-transcript.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-004-control-failure-001.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-004-control-failure-001.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-005-transcript.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-005-transcript.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-009-transcript.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-009-transcript.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-006-transcript.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-006-transcript.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-004-transcript.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-004-transcript.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-model-pilot/sqlfluff__sqlfluff-884/comments.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-model-pilot/sqlfluff__sqlfluff-884/comments.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-model-pilot/sqlfluff__sqlfluff-884/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-model-pilot/sqlfluff__sqlfluff-884/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark-results-knowledge-verify.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark-results-knowledge-verify.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/agentteams-runtime-case-v2.manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/agentteams-runtime-case-v2.manifest.json",
       "ok": true,
       "detail": ""
     },
@@ -1162,7 +3239,1837 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan evaluation/public-benchmark.manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance evaluation/public-benchmark-pilot.manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark-pilot.manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/agentteams-runtime-case.manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/agentteams-runtime-case.manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/independent-model-pilot/pydicom__pydicom-965/evidence/transcript.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/independent-model-pilot/pydicom__pydicom-965/evidence/transcript.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/independent-model-pilot/pydicom__pydicom-965/evidence/preflight-001-transcript.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/independent-model-pilot/pydicom__pydicom-965/evidence/preflight-001-transcript.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/independent-model-pilot/pydicom__pydicom-965/evidence/contract-rejection.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/independent-model-pilot/pydicom__pydicom-965/evidence/contract-rejection.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/independent-model-pilot/pydicom__pydicom-965/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/independent-model-pilot/pydicom__pydicom-965/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/independent-model-pilot/candidate-selection.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/independent-model-pilot/candidate-selection.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-model-pilot-v10.manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-model-pilot-v10.manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-model-pilot-v3.manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-model-pilot-v3.manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-model-pilot-v5.manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-model-pilot-v5.manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-benchmark-runs-v0.8/sqlfluff__sqlfluff-884/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-benchmark-runs-v0.8/sqlfluff__sqlfluff-884/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-benchmark-runs-v0.8/pylint-dev__astroid-2023/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-benchmark-runs-v0.8/pylint-dev__astroid-2023/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-benchmark-runs-v0.8/pylint-dev__astroid-2023/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-benchmark-runs-v0.8/pylint-dev__astroid-2023/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-benchmark-runs-v0.8/pydicom__pydicom-839/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-benchmark-runs-v0.8/pydicom__pydicom-839/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-benchmark-runs-v0.8/sqlfluff__sqlfluff-4753/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-benchmark-runs-v0.8/sqlfluff__sqlfluff-4753/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-benchmark-runs-v0.8/sqlfluff__sqlfluff-1577/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-benchmark-runs-v0.8/sqlfluff__sqlfluff-1577/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-benchmark-runs-v0.8/sqlfluff__sqlfluff-1577/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-benchmark-runs-v0.8/sqlfluff__sqlfluff-1577/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-benchmark-runs-v0.8/marshmallow-code__marshmallow-1810/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-benchmark-runs-v0.8/marshmallow-code__marshmallow-1810/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-benchmark-runs-v0.8/marshmallow-code__marshmallow-1810/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-benchmark-runs-v0.8/marshmallow-code__marshmallow-1810/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-benchmark-runs-v0.8/pydicom__pydicom-903/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-benchmark-runs-v0.8/pydicom__pydicom-903/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-benchmark-runs-v0.8/sqlfluff__sqlfluff-4778/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-benchmark-runs-v0.8/sqlfluff__sqlfluff-4778/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-benchmark-runs-v0.8/sqlfluff__sqlfluff-4778/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-benchmark-runs-v0.8/sqlfluff__sqlfluff-4778/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-benchmark-runs-v0.8/pylint-dev__astroid-941/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-benchmark-runs-v0.8/pylint-dev__astroid-941/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-benchmark-runs-v0.8/pydicom__pydicom-1428/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-benchmark-runs-v0.8/pydicom__pydicom-1428/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-benchmark-runs-v0.8/pydicom__pydicom-1428/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-benchmark-runs-v0.8/pydicom__pydicom-1428/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-benchmark-runs-v0.8/marshmallow-code__marshmallow-1252/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-benchmark-runs-v0.8/marshmallow-code__marshmallow-1252/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-benchmark-runs-v0.8/pydicom__pydicom-1031/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-benchmark-runs-v0.8/pydicom__pydicom-1031/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-benchmark-runs-v0.8/marshmallow-code__marshmallow-1359/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-benchmark-runs-v0.8/marshmallow-code__marshmallow-1359/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-benchmark-runs-v0.8/marshmallow-code__marshmallow-1359/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-benchmark-runs-v0.8/marshmallow-code__marshmallow-1359/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-benchmark-runs-v0.8/pydicom__pydicom-1256/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-benchmark-runs-v0.8/pydicom__pydicom-1256/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-benchmark-runs-v0.8/pydicom__pydicom-1256/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-benchmark-runs-v0.8/pydicom__pydicom-1256/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-benchmark-runs-v0.8/pydicom__pydicom-1076/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-benchmark-runs-v0.8/pydicom__pydicom-1076/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-benchmark-runs-v0.8/pydicom__pydicom-1076/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-benchmark-runs-v0.8/pydicom__pydicom-1076/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-benchmark-runs-v0.8/sqlfluff__sqlfluff-1625/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-benchmark-runs-v0.8/sqlfluff__sqlfluff-1625/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-benchmark-runs-v0.8/sqlfluff__sqlfluff-2907/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-benchmark-runs-v0.8/sqlfluff__sqlfluff-2907/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-benchmark-runs-v0.8/marshmallow-code__marshmallow-1343/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-benchmark-runs-v0.8/marshmallow-code__marshmallow-1343/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-benchmark-runs-v0.8/marshmallow-code__marshmallow-1343/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-benchmark-runs-v0.8/marshmallow-code__marshmallow-1343/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-benchmark-runs-v0.8/pydicom__pydicom-1413/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-benchmark-runs-v0.8/pydicom__pydicom-1413/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-benchmark-runs-v0.8/pydicom__pydicom-1413/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-benchmark-runs-v0.8/pydicom__pydicom-1413/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-benchmark-runs-v0.8/sqlfluff__sqlfluff-2573/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-benchmark-runs-v0.8/sqlfluff__sqlfluff-2573/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-benchmark-runs-v0.8/pydicom__pydicom-1694/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-benchmark-runs-v0.8/pydicom__pydicom-1694/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-benchmark-runs-v0.8/pydicom__pydicom-1694/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-benchmark-runs-v0.8/pydicom__pydicom-1694/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-benchmark-runs-v0.8/sqlfluff__sqlfluff-3220/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-benchmark-runs-v0.8/sqlfluff__sqlfluff-3220/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-benchmark-runs-v0.8/pylint-dev__astroid-1196/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-benchmark-runs-v0.8/pylint-dev__astroid-1196/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-benchmark-runs-v0.8/pylint-dev__astroid-1196/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-benchmark-runs-v0.8/pylint-dev__astroid-1196/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-model-pilot-v8.manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-model-pilot-v8.manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-model-pilot-v4.manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-model-pilot-v4.manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-model-pilot-v7.manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-model-pilot-v7.manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-model-pilot-v9.manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-model-pilot-v9.manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-model-pilot-v2.manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-model-pilot-v2.manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-model-pilot-v6.manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-model-pilot-v6.manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/archive/public-benchmark-results-v0.8-diff-based.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/archive/public-benchmark-results-v0.8-diff-based.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark-results.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark-results.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark-pilot.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark-pilot.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark-results-deepseek.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark-results-deepseek.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark-results-qwen3-8b.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark-results-qwen3-8b.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-model-pilot-v11.manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-model-pilot-v11.manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-model-pilot.manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-model-pilot.manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark-results-glm-round1.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark-results-glm-round1.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs-qwen3-8b/pydicom__pydicom-955/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs-qwen3-8b/pydicom__pydicom-955/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs-qwen3-8b/pydicom__pydicom-903/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs-qwen3-8b/pydicom__pydicom-903/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs-qwen3-8b/pydicom__pydicom-1031/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs-qwen3-8b/pydicom__pydicom-1031/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs-qwen3-8b/pydicom__pydicom-1076/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs-qwen3-8b/pydicom__pydicom-1076/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs-qwen3-8b/pydicom__pydicom-1694/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs-qwen3-8b/pydicom__pydicom-1694/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs-deepseek/pydicom__pydicom-955/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs-deepseek/pydicom__pydicom-955/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs-deepseek/sqlfluff__sqlfluff-884/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs-deepseek/sqlfluff__sqlfluff-884/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs-deepseek/pylint-dev__astroid-2023/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs-deepseek/pylint-dev__astroid-2023/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs-deepseek/pydicom__pydicom-839/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs-deepseek/pydicom__pydicom-839/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs-deepseek/sqlfluff__sqlfluff-4753/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs-deepseek/sqlfluff__sqlfluff-4753/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs-deepseek/sqlfluff__sqlfluff-1577/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs-deepseek/sqlfluff__sqlfluff-1577/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs-deepseek/marshmallow-code__marshmallow-1810/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs-deepseek/marshmallow-code__marshmallow-1810/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs-deepseek/pydicom__pydicom-903/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs-deepseek/pydicom__pydicom-903/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs-deepseek/sqlfluff__sqlfluff-4778/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs-deepseek/sqlfluff__sqlfluff-4778/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs-deepseek/sqlfluff__sqlfluff-4151/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs-deepseek/sqlfluff__sqlfluff-4151/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs-deepseek/pylint-dev__astroid-941/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs-deepseek/pylint-dev__astroid-941/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs-deepseek/pydicom__pydicom-1428/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs-deepseek/pydicom__pydicom-1428/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs-deepseek/marshmallow-code__marshmallow-1252/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs-deepseek/marshmallow-code__marshmallow-1252/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs-deepseek/sqlfluff__sqlfluff-2998/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs-deepseek/sqlfluff__sqlfluff-2998/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs-deepseek/pydicom__pydicom-1031/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs-deepseek/pydicom__pydicom-1031/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs-deepseek/marshmallow-code__marshmallow-1359/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs-deepseek/marshmallow-code__marshmallow-1359/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs-deepseek/pydicom__pydicom-1256/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs-deepseek/pydicom__pydicom-1256/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs-deepseek/pydicom__pydicom-1076/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs-deepseek/pydicom__pydicom-1076/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs-deepseek/sqlfluff__sqlfluff-1625/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs-deepseek/sqlfluff__sqlfluff-1625/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs-deepseek/sqlfluff__sqlfluff-2907/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs-deepseek/sqlfluff__sqlfluff-2907/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs-deepseek/marshmallow-code__marshmallow-1343/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs-deepseek/marshmallow-code__marshmallow-1343/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs-deepseek/pydicom__pydicom-1413/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs-deepseek/pydicom__pydicom-1413/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs-deepseek/sqlfluff__sqlfluff-2573/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs-deepseek/sqlfluff__sqlfluff-2573/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs-deepseek/pydicom__pydicom-1694/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs-deepseek/pydicom__pydicom-1694/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs-deepseek/sqlfluff__sqlfluff-3220/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs-deepseek/sqlfluff__sqlfluff-3220/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs-deepseek/pylint-dev__astroid-1196/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs-deepseek/pylint-dev__astroid-1196/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/cases/pydicom__pydicom-955/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/cases/pydicom__pydicom-955/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/cases/sqlfluff__sqlfluff-884/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/cases/sqlfluff__sqlfluff-884/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/cases/pylint-dev__astroid-2023/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/cases/pylint-dev__astroid-2023/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/cases/pylint-dev__astroid-1959/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/cases/pylint-dev__astroid-1959/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/cases/pydicom__pydicom-839/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/cases/pydicom__pydicom-839/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/cases/pydicom__pydicom-1069/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/cases/pydicom__pydicom-1069/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/cases/sqlfluff__sqlfluff-4753/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/cases/sqlfluff__sqlfluff-4753/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/cases/sqlfluff__sqlfluff-1577/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/cases/sqlfluff__sqlfluff-1577/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/cases/marshmallow-code__marshmallow-1810/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/cases/marshmallow-code__marshmallow-1810/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/cases/pydicom__pydicom-903/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/cases/pydicom__pydicom-903/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/cases/sqlfluff__sqlfluff-4778/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/cases/sqlfluff__sqlfluff-4778/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/cases/sqlfluff__sqlfluff-4151/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/cases/sqlfluff__sqlfluff-4151/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/cases/pylint-dev__astroid-941/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/cases/pylint-dev__astroid-941/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/cases/pydicom__pydicom-1428/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/cases/pydicom__pydicom-1428/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/cases/marshmallow-code__marshmallow-1252/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/cases/marshmallow-code__marshmallow-1252/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/cases/sqlfluff__sqlfluff-2998/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/cases/sqlfluff__sqlfluff-2998/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/cases/pydicom__pydicom-1031/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/cases/pydicom__pydicom-1031/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/cases/marshmallow-code__marshmallow-1359/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/cases/marshmallow-code__marshmallow-1359/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/cases/pydicom__pydicom-1256/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/cases/pydicom__pydicom-1256/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/cases/pydicom__pydicom-1076/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/cases/pydicom__pydicom-1076/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/cases/sqlfluff__sqlfluff-1625/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/cases/sqlfluff__sqlfluff-1625/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/cases/sqlfluff__sqlfluff-2907/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/cases/sqlfluff__sqlfluff-2907/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/cases/pylint-dev__astroid-1962/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/cases/pylint-dev__astroid-1962/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/cases/marshmallow-code__marshmallow-1343/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/cases/marshmallow-code__marshmallow-1343/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/cases/pylint-dev__astroid-1262/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/cases/pylint-dev__astroid-1262/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/cases/pydicom__pydicom-1413/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/cases/pydicom__pydicom-1413/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/cases/sqlfluff__sqlfluff-2573/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/cases/sqlfluff__sqlfluff-2573/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/cases/pydicom__pydicom-1694/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/cases/pydicom__pydicom-1694/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/cases/sqlfluff__sqlfluff-3220/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/cases/sqlfluff__sqlfluff-3220/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/cases/pylint-dev__astroid-1196/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/cases/pylint-dev__astroid-1196/issue.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs-knowledge-verify/sqlfluff__sqlfluff-2907/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs-knowledge-verify/sqlfluff__sqlfluff-2907/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs-knowledge-verify/pydicom__pydicom-1413/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs-knowledge-verify/pydicom__pydicom-1413/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/pydicom__pydicom-955/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/pydicom__pydicom-955/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/pydicom__pydicom-955/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/pydicom__pydicom-955/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/sqlfluff__sqlfluff-884/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/sqlfluff__sqlfluff-884/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/sqlfluff__sqlfluff-884/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/sqlfluff__sqlfluff-884/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/pylint-dev__astroid-2023/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/pylint-dev__astroid-2023/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/pylint-dev__astroid-2023/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/pylint-dev__astroid-2023/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/pydicom__pydicom-839/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/pydicom__pydicom-839/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/pydicom__pydicom-839/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/pydicom__pydicom-839/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/sqlfluff__sqlfluff-4753/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/sqlfluff__sqlfluff-4753/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/sqlfluff__sqlfluff-4753/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/sqlfluff__sqlfluff-4753/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/sqlfluff__sqlfluff-1577/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/sqlfluff__sqlfluff-1577/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/sqlfluff__sqlfluff-1577/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/sqlfluff__sqlfluff-1577/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/marshmallow-code__marshmallow-1810/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/marshmallow-code__marshmallow-1810/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/marshmallow-code__marshmallow-1810/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/marshmallow-code__marshmallow-1810/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/pydicom__pydicom-903/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/pydicom__pydicom-903/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/pydicom__pydicom-903/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/pydicom__pydicom-903/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/sqlfluff__sqlfluff-4778/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/sqlfluff__sqlfluff-4778/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/sqlfluff__sqlfluff-4778/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/sqlfluff__sqlfluff-4778/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/sqlfluff__sqlfluff-4151/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/sqlfluff__sqlfluff-4151/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/sqlfluff__sqlfluff-4151/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/sqlfluff__sqlfluff-4151/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/pylint-dev__astroid-941/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/pylint-dev__astroid-941/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/pylint-dev__astroid-941/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/pylint-dev__astroid-941/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/pydicom__pydicom-1428/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/pydicom__pydicom-1428/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/pydicom__pydicom-1428/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/pydicom__pydicom-1428/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/marshmallow-code__marshmallow-1252/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/marshmallow-code__marshmallow-1252/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/marshmallow-code__marshmallow-1252/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/marshmallow-code__marshmallow-1252/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/sqlfluff__sqlfluff-2998/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/sqlfluff__sqlfluff-2998/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/sqlfluff__sqlfluff-2998/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/sqlfluff__sqlfluff-2998/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/pydicom__pydicom-1031/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/pydicom__pydicom-1031/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/pydicom__pydicom-1031/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/pydicom__pydicom-1031/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/marshmallow-code__marshmallow-1359/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/marshmallow-code__marshmallow-1359/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/marshmallow-code__marshmallow-1359/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/marshmallow-code__marshmallow-1359/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/pydicom__pydicom-1256/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/pydicom__pydicom-1256/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/pydicom__pydicom-1256/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/pydicom__pydicom-1256/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/pydicom__pydicom-1076/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/pydicom__pydicom-1076/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/pydicom__pydicom-1076/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/pydicom__pydicom-1076/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/sqlfluff__sqlfluff-1625/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/sqlfluff__sqlfluff-1625/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/sqlfluff__sqlfluff-1625/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/sqlfluff__sqlfluff-1625/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/sqlfluff__sqlfluff-2907/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/sqlfluff__sqlfluff-2907/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/sqlfluff__sqlfluff-2907/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/sqlfluff__sqlfluff-2907/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/marshmallow-code__marshmallow-1343/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/marshmallow-code__marshmallow-1343/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/marshmallow-code__marshmallow-1343/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/marshmallow-code__marshmallow-1343/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/pydicom__pydicom-1413/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/pydicom__pydicom-1413/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/pydicom__pydicom-1413/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/pydicom__pydicom-1413/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/sqlfluff__sqlfluff-2573/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/sqlfluff__sqlfluff-2573/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/sqlfluff__sqlfluff-2573/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/sqlfluff__sqlfluff-2573/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/pydicom__pydicom-1694/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/pydicom__pydicom-1694/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/pydicom__pydicom-1694/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/pydicom__pydicom-1694/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/sqlfluff__sqlfluff-3220/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/sqlfluff__sqlfluff-3220/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/sqlfluff__sqlfluff-3220/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/sqlfluff__sqlfluff-3220/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/pylint-dev__astroid-1196/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/pylint-dev__astroid-1196/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs/pylint-dev__astroid-1196/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs/pylint-dev__astroid-1196/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs-pilot/pydicom__pydicom-903/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs-pilot/pydicom__pydicom-903/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs-pilot/pydicom__pydicom-903/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs-pilot/pydicom__pydicom-903/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs-pilot/marshmallow-code__marshmallow-1252/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs-pilot/marshmallow-code__marshmallow-1252/single-agent.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/public-benchmark/runs-pilot/marshmallow-code__marshmallow-1252/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/public-benchmark/runs-pilot/marshmallow-code__marshmallow-1252/devorbit.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/model-ablation.config.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/model-ablation.config.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance evaluation/independent-model-pilot.manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan evaluation/independent-model-pilot.manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/model-ablation.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/model-ablation.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/model-ablation.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/model-ablation.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/gitlab-e2e-self-healing.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/gitlab-e2e-self-healing.json",
       "ok": true,
       "detail": ""
     },
@@ -1172,7 +5079,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan reports/rag-evaluation.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance reports/agentteams-contract.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/agentteams-contract.json",
       "ok": true,
       "detail": ""
     },
@@ -1182,7 +5099,37 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan reports/container-smoke.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance reports/otel-happy-path.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/otel-happy-path.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/independent-model-pilot.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/independent-model-pilot.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/db-branch.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/db-branch.json",
       "ok": true,
       "detail": ""
     },
@@ -1192,7 +5139,117 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan reports/public-benchmark.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/agentteams-autonomous-probe.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/agentteams-autonomous-probe.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/agentteams-runtime-v2.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/agentteams-runtime-v2.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/model-provider-smoke.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/model-provider-smoke.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/scenario-migration.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/scenario-migration.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/agentteams-runtime.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/agentteams-runtime.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/canary-docker.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/canary-docker.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance reports/evaluation.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/evaluation.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/scenario-migration.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/scenario-migration.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/ablation.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/ablation.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/knowledge-replay-verification.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/knowledge-replay-verification.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/independent-model-pilot-preflight-001.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/independent-model-pilot-preflight-001.json",
       "ok": true,
       "detail": ""
     },
@@ -1202,7 +5259,127 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan reports/security-evaluation.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/skills-registry.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/skills-registry.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/archive/public-model-pilot-v9.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/archive/public-model-pilot-v9.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/archive/public-model-pilot-v7.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/archive/public-model-pilot-v7.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/archive/public-model-pilot-v4.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/archive/public-model-pilot-v4.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/archive/public-model-pilot-v3.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/archive/public-model-pilot-v3.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/archive/public-model-pilot-v2.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/archive/public-model-pilot-v2.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/archive/public-model-pilot-v10.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/archive/public-model-pilot-v10.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/archive/public-model-pilot-v5.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/archive/public-model-pilot-v5.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/archive/public-model-pilot-v8.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/archive/public-model-pilot-v8.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/archive/public-model-pilot-v6.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/archive/public-model-pilot-v6.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance reports/benchmark.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/benchmark.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/public-model-pilot-v11.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/public-model-pilot-v11.json",
       "ok": true,
       "detail": ""
     },
@@ -1212,7 +5389,47 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan reports/public-benchmark-pilot.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/mttr-baseline.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/mttr-baseline.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/fault-drill.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/fault-drill.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/ablation.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/ablation.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance reports/agentteams-contract.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/agentteams-contract.md",
       "ok": true,
       "detail": ""
     },
@@ -1222,7 +5439,27 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan reports/benchmark.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/fault-drill.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/fault-drill.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance reports/native-runner-smoke.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/native-runner-smoke.json",
       "ok": true,
       "detail": ""
     },
@@ -1232,7 +5469,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan reports/native-platform-smoke.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance reports/runs/test-failure.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/runs/test-failure.json",
       "ok": true,
       "detail": ""
     },
@@ -1242,7 +5489,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan reports/runs/happy-path.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance reports/runs/canary-regression.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/runs/canary-regression.json",
       "ok": true,
       "detail": ""
     },
@@ -1252,7 +5509,27 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan reports/runs/low-confidence.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/benchmark-autopsy.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/benchmark-autopsy.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance reports/public-benchmark.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/public-benchmark.md",
       "ok": true,
       "detail": ""
     },
@@ -1262,7 +5539,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan reports/security-evaluation.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance reports/rag-evaluation.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/rag-evaluation.md",
       "ok": true,
       "detail": ""
     },
@@ -1272,7 +5559,67 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan reports/evaluation.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/benchmark-autopsy.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/benchmark-autopsy.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/public-model-pilot.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/public-model-pilot.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/agentteams-runtime-v3.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/agentteams-runtime-v3.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/gitlab-e2e.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/gitlab-e2e.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/chaos.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/chaos.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/patch-worker/manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/patch-worker/manifest.json",
       "ok": true,
       "detail": ""
     },
@@ -1282,7 +5629,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/patch-worker/config/SOUL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/patch-worker/config/AGENTS.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/patch-worker/config/AGENTS.md",
       "ok": true,
       "detail": ""
     },
@@ -1292,7 +5649,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/patch-worker/skills/patch-plan/SKILL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/patch-worker/skills/patch-plan/openai.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/patch-worker/skills/patch-plan/openai.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1302,7 +5669,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/impact-worker/manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/impact-worker/config/SOUL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/impact-worker/config/SOUL.md",
       "ok": true,
       "detail": ""
     },
@@ -1312,7 +5689,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/impact-worker/config/AGENTS.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/impact-worker/skills/impact-map/SKILL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/impact-worker/skills/impact-map/SKILL.md",
       "ok": true,
       "detail": ""
     },
@@ -1322,7 +5709,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/impact-worker/skills/impact-map/openai.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/release-worker/manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/release-worker/manifest.json",
       "ok": true,
       "detail": ""
     },
@@ -1332,7 +5729,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/release-worker/config/SOUL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/release-worker/config/AGENTS.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/release-worker/config/AGENTS.md",
       "ok": true,
       "detail": ""
     },
@@ -1342,7 +5749,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/release-worker/skills/release-guard/SKILL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/release-worker/skills/release-guard/openai.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/release-worker/skills/release-guard/openai.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1352,7 +5769,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/README.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/templates/manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/templates/manifest.json",
       "ok": true,
       "detail": ""
     },
@@ -1362,7 +5789,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/templates/SOUL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/templates/AGENTS.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/templates/AGENTS.md",
       "ok": true,
       "detail": ""
     },
@@ -1372,7 +5809,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/learning-worker/manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/learning-worker/config/SOUL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/learning-worker/config/SOUL.md",
       "ok": true,
       "detail": ""
     },
@@ -1382,7 +5829,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/learning-worker/config/AGENTS.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/learning-worker/skills/knowledge-card/SKILL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/learning-worker/skills/knowledge-card/SKILL.md",
       "ok": true,
       "detail": ""
     },
@@ -1392,7 +5849,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/learning-worker/skills/knowledge-card/openai.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/intake-worker/manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/intake-worker/manifest.json",
       "ok": true,
       "detail": ""
     },
@@ -1402,7 +5869,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/intake-worker/config/SOUL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/intake-worker/config/AGENTS.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/intake-worker/config/AGENTS.md",
       "ok": true,
       "detail": ""
     },
@@ -1412,7 +5889,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/intake-worker/skills/signal-fusion/SKILL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/intake-worker/skills/signal-fusion/openai.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/intake-worker/skills/signal-fusion/openai.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1422,7 +5909,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/SKILL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/cli-installation-guide.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/cli-installation-guide.md",
       "ok": true,
       "detail": ""
     },
@@ -1432,7 +5929,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/ram-policies.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/query_analysis/indexConfig.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/query_analysis/indexConfig.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1442,7 +5949,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/query_analysis/sql.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/query_analysis/indexSearch.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/query_analysis/indexSearch.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1452,7 +5969,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/query_analysis/overview.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/conversion.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/conversion.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1462,7 +5989,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/array.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/hash.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/hash.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1472,7 +6009,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/geospatial.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/bitwise.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/bitwise.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1482,7 +6029,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/math.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/url.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/url.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1492,7 +6049,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/README.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/operators.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/operators.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1502,7 +6069,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/binary.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/conditional.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/conditional.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1512,7 +6089,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/aggregate.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/lambda.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/lambda.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1522,7 +6109,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/ip_geo.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/window_funnel.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/window_funnel.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1532,7 +6129,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/datetime.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/map.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/map.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1542,7 +6149,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/approximate.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/json.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/json.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1552,7 +6169,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/statistical.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/encoding.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/encoding.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1562,7 +6189,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/color.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/type_conversion.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/type_conversion.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1572,7 +6209,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/comparison.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/string.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/string.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1582,7 +6229,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/regex.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/geo.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/geo.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1592,7 +6249,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/overview.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/window.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/window.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1602,7 +6269,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions/hyperloglog.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/regions.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/regions.md",
       "ok": true,
       "detail": ""
     },
@@ -1612,7 +6289,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/functions-guide.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/query-analysis.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/query-analysis.md",
       "ok": true,
       "detail": ""
     },
@@ -1622,7 +6309,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/acceptance-criteria.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/spl-guide.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/spl-guide.md",
       "ok": true,
       "detail": ""
     },
@@ -1632,7 +6329,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/troubleshooting.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/related-apis.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/related-apis.md",
       "ok": true,
       "detail": ""
     },
@@ -1642,7 +6349,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/spl/limit.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/spl/where.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/spl/where.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1652,7 +6369,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/spl/stats.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/spl/project.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/spl/project.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1662,7 +6389,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/spl/parse-json.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/spl/project-away.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/spl/project-away.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1672,7 +6409,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/spl/json_string_process.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/spl/parse-csv.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/spl/parse-csv.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1682,7 +6429,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/spl/parse-kv.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/spl/parse-regexp.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/spl/parse-regexp.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1692,7 +6449,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/spl/sort.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/spl/pack-fields.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/spl/pack-fields.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1702,7 +6469,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/spl/extend.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/intake-worker/skills/alibabacloud-sls-query/references/spl/project-rename.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/spl/project-rename.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1712,7 +6489,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/intake-worker/skills/alibabacloud-sls-query/references/spl/overview.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/rca-worker/manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/rca-worker/manifest.json",
       "ok": true,
       "detail": ""
     },
@@ -1722,7 +6509,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/rca-worker/config/SOUL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/rca-worker/config/AGENTS.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/rca-worker/config/AGENTS.md",
       "ok": true,
       "detail": ""
     },
@@ -1732,7 +6529,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/rca-worker/skills/evidence-rca/SKILL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/rca-worker/skills/evidence-rca/openai.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/rca-worker/skills/evidence-rca/openai.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1742,7 +6549,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/SKILL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/cli-installation-guide.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/cli-installation-guide.md",
       "ok": true,
       "detail": ""
     },
@@ -1752,7 +6569,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/ram-policies.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/query_analysis/indexConfig.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/query_analysis/indexConfig.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1762,7 +6589,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/query_analysis/sql.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/query_analysis/indexSearch.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/query_analysis/indexSearch.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1772,7 +6609,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/query_analysis/overview.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/conversion.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/conversion.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1782,7 +6629,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/array.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/hash.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/hash.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1792,7 +6649,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/geospatial.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/bitwise.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/bitwise.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1802,7 +6669,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/math.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/url.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/url.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1812,7 +6689,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/README.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/operators.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/operators.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1822,7 +6709,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/binary.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/conditional.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/conditional.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1832,7 +6729,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/aggregate.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/lambda.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/lambda.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1842,7 +6749,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/ip_geo.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/window_funnel.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/window_funnel.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1852,7 +6769,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/datetime.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/map.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/map.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1862,7 +6789,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/approximate.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/json.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/json.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1872,7 +6809,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/statistical.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/encoding.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/encoding.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1882,7 +6829,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/color.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/type_conversion.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/type_conversion.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1892,7 +6849,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/comparison.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/string.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/string.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1902,7 +6869,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/regex.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/geo.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/geo.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1912,7 +6889,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/overview.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/window.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/window.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1922,7 +6909,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions/hyperloglog.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/regions.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/regions.md",
       "ok": true,
       "detail": ""
     },
@@ -1932,7 +6929,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/functions-guide.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/query-analysis.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/query-analysis.md",
       "ok": true,
       "detail": ""
     },
@@ -1942,7 +6949,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/acceptance-criteria.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/spl-guide.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/spl-guide.md",
       "ok": true,
       "detail": ""
     },
@@ -1952,7 +6969,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/troubleshooting.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/related-apis.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/related-apis.md",
       "ok": true,
       "detail": ""
     },
@@ -1962,7 +6989,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/spl/limit.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/spl/where.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/spl/where.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1972,7 +7009,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/spl/stats.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/spl/project.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/spl/project.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1982,7 +7029,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/spl/parse-json.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/spl/project-away.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/spl/project-away.yaml",
       "ok": true,
       "detail": ""
     },
@@ -1992,7 +7049,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/spl/json_string_process.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/spl/parse-csv.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/spl/parse-csv.yaml",
       "ok": true,
       "detail": ""
     },
@@ -2002,7 +7069,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/spl/parse-kv.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/spl/parse-regexp.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/spl/parse-regexp.yaml",
       "ok": true,
       "detail": ""
     },
@@ -2012,7 +7089,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/spl/sort.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/spl/pack-fields.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/spl/pack-fields.yaml",
       "ok": true,
       "detail": ""
     },
@@ -2022,7 +7109,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/spl/extend.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/rca-worker/skills/alibabacloud-sls-query/references/spl/project-rename.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/spl/project-rename.yaml",
       "ok": true,
       "detail": ""
     },
@@ -2032,7 +7129,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/rca-worker/skills/alibabacloud-sls-query/references/spl/overview.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/verify-worker/manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/verify-worker/manifest.json",
       "ok": true,
       "detail": ""
     },
@@ -2042,7 +7149,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/verify-worker/config/SOUL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/verify-worker/config/AGENTS.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/verify-worker/config/AGENTS.md",
       "ok": true,
       "detail": ""
     },
@@ -2052,7 +7169,17 @@
       "detail": ""
     },
     {
+      "label": "code secret-scan worker-packages/verify-worker/skills/test-gate/SKILL.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance worker-packages/verify-worker/skills/test-gate/openai.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan worker-packages/verify-worker/skills/test-gate/openai.yaml",
       "ok": true,
       "detail": ""
     },
@@ -2062,17 +7189,32 @@
       "detail": ""
     },
     {
-      "label": "total ZIP DevOrbit_初赛方案.pdf",
+      "label": "code secret-scan third_party/aliyun/README.md",
       "ok": true,
       "detail": ""
     },
     {
-      "label": "total ZIP DevOrbit_初赛方案.pptx",
+      "label": "code compliance docker-compose.observability.yml",
       "ok": true,
       "detail": ""
     },
     {
-      "label": "total ZIP DevOrbit_初赛可执行代码包.zip",
+      "label": "code secret-scan docker-compose.observability.yml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP DevOrbit_复赛方案.pdf",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP DevOrbit_复赛方案.pptx",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP DevOrbit_复赛可执行代码包.zip",
       "ok": true,
       "detail": ""
     },
@@ -2083,6 +7225,11 @@
     },
     {
       "label": "total ZIP DevOrbit_演示视频封面.png",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP DevOrbit_产品界面.png",
       "ok": true,
       "detail": ""
     },
@@ -2113,6 +7260,11 @@
     },
     {
       "label": "total ZIP 演示脚本.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP AgentTeams本地运行验证.md",
       "ok": true,
       "detail": ""
     },
@@ -2153,6 +7305,26 @@
     },
     {
       "label": "total ZIP http-adapter.openapi.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP agentteams-runtime.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP agentteams-runtime-case.manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP agentteams-runtime-case.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP agentteams-runtime-report.schema.json",
       "ok": true,
       "detail": ""
     },
@@ -2212,6 +7384,41 @@
       "detail": ""
     },
     {
+      "label": "total ZIP public-model-pilot-v11.manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP public-model-pilot-v11.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP public-model-pilot-v11.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP independent-model-pilot.manifest.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP independent-model-pilot.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP candidate-selection.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP independent-model-pilot.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "total ZIP platform-native.contract.json",
       "ok": true,
       "detail": ""
@@ -2257,7 +7464,7 @@
       "detail": ""
     },
     {
-      "label": "total ZIP DevOrbit_初赛讲解视频_自动语音版.mp4",
+      "label": "total ZIP DevOrbit_AgentTeams本地运行验证.pdf",
       "ok": true,
       "detail": ""
     },
@@ -2307,47 +7514,12 @@
       "detail": ""
     },
     {
-      "label": "total compliance 交付物_SHA256.txt",
+      "label": "total ZIP public model terminal evidence",
       "ok": true,
       "detail": ""
     },
     {
-      "label": "total compliance 作品简介.md",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "label": "total compliance 官网提交粘贴稿.md",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "label": "total compliance 提交清单.md",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "label": "total compliance 评委90秒验收.md",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "label": "total compliance 第三方依赖与合规清单.md",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "label": "total compliance 演示脚本.md",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "label": "total compliance 威胁模型.md",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "label": "total compliance 证据索引.md",
+      "label": "total ZIP independent negative evidence",
       "ok": true,
       "detail": ""
     },
@@ -2357,7 +7529,27 @@
       "detail": ""
     },
     {
+      "label": "total secret-scan Adapter生产契约.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "total compliance agentteams-contract.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total secret-scan agentteams-contract.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total compliance AgentTeams本地运行验证.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total secret-scan AgentTeams本地运行验证.md",
       "ok": true,
       "detail": ""
     },
@@ -2367,7 +7559,7 @@
       "detail": ""
     },
     {
-      "label": "total compliance security-evaluation.md",
+      "label": "total secret-scan benchmark.md",
       "ok": true,
       "detail": ""
     },
@@ -2377,7 +7569,47 @@
       "detail": ""
     },
     {
+      "label": "total secret-scan public-benchmark.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total compliance security-evaluation.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total secret-scan security-evaluation.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total compliance 交付物_SHA256.txt",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total secret-scan 交付物_SHA256.txt",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total compliance 作品简介.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total secret-scan 作品简介.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "total compliance 公开基准协议.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total secret-scan 公开基准协议.md",
       "ok": true,
       "detail": ""
     },
@@ -2387,7 +7619,87 @@
       "detail": ""
     },
     {
+      "label": "total secret-scan 公开基准复现试点.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "total compliance 原生平台连接器.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total secret-scan 原生平台连接器.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total compliance 威胁模型.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total secret-scan 威胁模型.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total compliance 官网提交粘贴稿.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total secret-scan 官网提交粘贴稿.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total compliance 提交清单.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total secret-scan 提交清单.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total compliance 演示脚本.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total secret-scan 演示脚本.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total compliance 第三方依赖与合规清单.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total secret-scan 第三方依赖与合规清单.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total compliance 证据索引.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total secret-scan 证据索引.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total compliance 评委90秒验收.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total secret-scan 评委90秒验收.md",
       "ok": true,
       "detail": ""
     }

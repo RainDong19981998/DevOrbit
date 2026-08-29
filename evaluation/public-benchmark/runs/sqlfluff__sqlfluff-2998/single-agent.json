@@ -1,0 +1,31 @@
+{
+  "caseId": "PUB-SQLFLUFF__SQLFLUFF-2998",
+  "method": "single-agent",
+  "attempts": 3,
+  "rca": null,
+  "edits": [
+    {
+      "path": "src/sqlfluff/rules/L027.py",
+      "search": "        # Loop through references and check each one\n        for reference in column_reference.segments:\n            # Skip if not a reference (e.g. whitespace)\n            if reference.type != \"identifier\":\n                continue\n            if reference not in self.ignore_words:\n                unqualified_names.append(reference.raw)  # type: ignore\n            break",
+      "replace": "        # Loop through references and check each one\n        for reference in column_reference.segments:\n            # Skip if not a reference (e.g. whitespace)\n            if reference.type != \"identifier\":\n                continue\n            if reference not in self.ignore_words:\n                unqualified_names.append(reference.raw)  # type: ignore\n            break\n\n        # If we have multiple parts, we only care about the first.\n        if len(unqualified_names) > 1:\n            unqualified_names = [unqualified_names[0]]"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "edit apply failed: src/sqlfluff/rules/L027.py: search block not found (exact and whitespace-normalized match both failed) [search:         # Loop through references and check each one\n        for reference in column_reference.segments:\n            # Skip if not a reference (e.g. whitespace)]",
+    "changedPaths": [
+      "src/sqlfluff/rules/L027.py"
+    ]
+  },
+  "patchSha256": null,
+  "contextBytes": 16334,
+  "baselineTail": "ummary info ============================\nFAILED test/rules/std_test.py::test__rules__std_file[L027-column_references.sql-violations16]\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.20s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x test/rules/std_test.py::test__rules__std_file[L027-column_references.sql-violations16]\n",
+  "goldFiles": [
+    "src/sqlfluff/rules/L027.py"
+  ],
+  "model": "glm",
+  "modelCalls": 3
+}

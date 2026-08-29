@@ -1,5 +1,6 @@
 ---
 name: impact-map
+version: 1.0.0
 description: Map a normalized software case or proposed change to affected repositories, services, APIs, files, dependencies, users, and regression tests. Use for code-root-cause investigation, change risk analysis, regression selection, or release scope validation.
 ---
 

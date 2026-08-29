@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devorbit.example/schemas/agentteams-runtime-report.schema.json",
+  "type": "object",
+  "required": ["protocolVersion", "runId", "caseId", "startedAt", "completedAt", "status", "boundary", "runtime", "task", "evidence"],
+  "properties": {
+    "protocolVersion": { "const": "1.0" },
+    "runId": { "type": "string", "minLength": 1 },
+    "caseId": { "pattern": "^CASE-" },
+    "startedAt": { "type": "string", "minLength": 1 },
+    "completedAt": { "type": "string", "minLength": 1 },
+    "status": { "const": "passed" },
+    "boundary": { "type": "string", "minLength": 80 },
+    "runtime": {
+      "type": "object",
+      "required": ["team", "workers", "matrix", "mcp"],
+      "properties": {
+        "team": {
+          "type": "object",
+          "required": ["name", "phase", "leaderReady", "readyWorkers", "totalWorkers"],
+          "properties": {
+            "name": { "const": "devorbit-delivery-team" },
+            "phase": { "const": "Active" },
+            "leaderReady": { "const": true },
+            "readyWorkers": { "const": 7 },
+            "totalWorkers": { "const": 7 }
+          },
+          "additionalProperties": false
+        },
+        "workers": { "type": "array", "minItems": 8, "maxItems": 8 },
+        "matrix": { "type": "object", "required": ["adminId", "leaderId", "teamRoomId", "leaderDmRoomId", "roomCount", "memberships"] },
+        "mcp": {
+          "type": "object",
+          "required": ["baselineOffset", "protocolVersions"],
+          "properties": {
+            "baselineOffset": { "type": "integer", "minimum": 0 },
+            "protocolVersions": { "type": "array", "contains": { "const": "2025-11-25" } }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "task": {
+      "type": "object",
+      "required": ["eventId", "completionMarker", "timeoutSeconds", "teamHarnessProjectId", "finalMessageId"],
+      "properties": {
+        "eventId": { "pattern": "^\\$" },
+        "completionMarker": { "const": "DEVORBIT_RUNTIME_RESULT" },
+        "timeoutSeconds": { "type": "integer", "minimum": 60 },
+        "teamHarnessProjectId": { "type": "string", "minLength": 1 },
+        "finalMessageId": { "pattern": "^\\$" }
+      },
+      "additionalProperties": false
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["seenWorkers", "requiredWorkers", "auditChecks", "taskPlan", "teamHarness", "workerMcp", "workerMatrix", "audit", "timeline", "leaderCompletion"],
+      "properties": {
+        "seenWorkers": { "type": "array", "minItems": 7, "maxItems": 7, "uniqueItems": true },
+        "requiredWorkers": { "type": "array", "minItems": 7, "maxItems": 7, "uniqueItems": true },
+        "auditChecks": { "type": "array", "minItems": 7, "maxItems": 7 },
+        "taskPlan": { "type": "array", "minItems": 7, "maxItems": 7 },
+        "teamHarness": { "type": "array", "minItems": 20 },
+        "workerMcp": { "type": "array", "minItems": 16 },
+        "workerMatrix": { "type": "array", "minItems": 7, "maxItems": 7 },
+        "audit": { "type": "array", "minItems": 16 },
+        "timeline": { "type": "array" },
+        "leaderCompletion": { "type": "object", "required": ["eventId", "roomId", "sender", "at", "body"] }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

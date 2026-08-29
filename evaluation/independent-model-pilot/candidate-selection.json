@@ -1,0 +1,86 @@
+{
+  "protocolVersion": "1.0",
+  "selectionId": "devorbit-independent-candidate-selection-20260814",
+  "recordedAt": "2026-08-14T05:46:41Z",
+  "dataset": {
+    "name": "princeton-nlp/SWE-bench",
+    "split": "dev",
+    "snapshotPath": "/tmp/swebench-dev.parquet",
+    "snapshotSha256": "sha256:d758d54540aa4140d0274ed0cc93b8288aa6f323c3c603e2557e7666a47fc41b",
+    "rowCount": 225
+  },
+  "selectionPolicy": {
+    "required": [
+      "repository differs from the previously tuned sqlfluff/sqlfluff case",
+      "OSI-approved permissive source license",
+      "content-addressable GitHub source archive at the dataset base commit",
+      "one to three deterministic FAIL_TO_PASS tests",
+      "no proprietary service or network dependency in the target test",
+      "gold implementation patch is neither inspected nor copied into the experiment tree"
+    ],
+    "ranking": [
+      "baseline target failure is reproducible on the local Python 3.10 evaluator",
+      "fewest runtime and test dependencies",
+      "small deterministic regression surface",
+      "short issue statement with an observable expected behavior"
+    ],
+    "selectionTiming": "Candidates and winner were selected before any model invocation on any candidate. A candidate is not replaced based on model outcome."
+  },
+  "candidates": [
+    {
+      "instanceId": "marshmallow-code__marshmallow-1252",
+      "repository": "marshmallow-code/marshmallow",
+      "baseCommit": "b063a103ae5222a5953cd7453a1eb0d161dc5b52",
+      "sourceArchiveSha256": "sha256:61e0cebf3743db0fcaa102d6fe440841209d8d3c4ddbb442d80785521565d31e",
+      "license": "MIT",
+      "failToPassCount": 1,
+      "passToPassCount": 37,
+      "baselineStatus": "dependency-precondition-failed",
+      "selectionStatus": "not-selected",
+      "reason": "The repository-wide test conftest requires simplejson even though the target behavior is meant to exercise the no-python-dateutil path."
+    },
+    {
+      "instanceId": "pydicom__pydicom-965",
+      "repository": "pydicom/pydicom",
+      "baseCommit": "ee775c8a137cd8e0b69b46dc24c23648c31fe34c",
+      "sourceArchiveSha256": "sha256:2530c36a62db5563119e63432418171aed2201a9c4e374c9fc8224764816e678",
+      "license": "MIT",
+      "failToPassCount": 1,
+      "passToPassCount": 38,
+      "baselineStatus": "reproduced: 1 failed",
+      "regressionBaselineStatus": "38 passed, 1 failed, 1 skipped",
+      "selectionStatus": "selected",
+      "reason": "The exact target failure and its deterministic 38-test sibling regression surface reproduce with no project runtime dependencies."
+    },
+    {
+      "instanceId": "pylint-dev__astroid-1614",
+      "repository": "pylint-dev/astroid",
+      "baseCommit": "aa5a0d92e640ee5f3fa9a8ba3ba058a7b594ca44",
+      "sourceArchiveSha256": "sha256:5e5a12bf9036d35fac2459d4843e9344af38e8cd7ed74a2a3341ab597755e9bb",
+      "license": "LGPL-2.1-or-later",
+      "failToPassCount": 1,
+      "passToPassCount": 9,
+      "baselineStatus": "not-run-after-ranking",
+      "selectionStatus": "not-selected",
+      "reason": "Its inference test environment has a larger dependency and compatibility surface than the selected pure-Python case."
+    },
+    {
+      "instanceId": "pvlib__pvlib-python-1707",
+      "repository": "pvlib/pvlib-python",
+      "baseCommit": "40e9e978c170bdde4eeee1547729417665dbc34c",
+      "sourceArchiveSha256": "sha256:227d2090b7080407a563136d39fe1c24443f835a7a41daadb6a01917e3bb9ea3",
+      "license": "BSD-3-Clause",
+      "failToPassCount": 1,
+      "passToPassCount": 30,
+      "baselineStatus": "not-run-after-ranking",
+      "selectionStatus": "not-selected",
+      "reason": "Its numerical stack requires numpy, pandas and scipy, increasing environment variance without improving the independence criterion."
+    }
+  ],
+  "goldIsolation": {
+    "implementationPatchRead": false,
+    "implementationPatchStored": false,
+    "implementationPatchDigestStored": false,
+    "testPatchUsedOnlyByEvaluator": true
+  }
+}

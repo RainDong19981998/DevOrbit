@@ -25,9 +25,9 @@ try {
   const notification = await post({ jsonrpc: '2.0', method: 'notifications/initialized' }, sessionId);
   if (notification.response.status !== 202) throw new Error('notification handling failed');
   const list = await post({ jsonrpc: '2.0', id: 2, method: 'tools/list', params: {} }, sessionId);
-  if (list.data.result.tools.length !== 10 || !list.data.result.tools.some(tool => tool.name === 'knowledge.search_cases') || !list.data.result.tools.some(tool => tool.name === 'repository.dispose_workspace')) throw new Error('tool discovery failed');
+  if (list.data.result.tools.length !== 14 || !list.data.result.tools.some(tool => tool.name === 'knowledge.search_cases') || !list.data.result.tools.some(tool => tool.name === 'repository.dispose_workspace')) throw new Error('tool discovery failed');
   const call = await post({ jsonrpc: '2.0', id: 3, method: 'tools/call', params: { name: 'knowledge.search_cases', arguments: { query: 'Redis 连接池 幂等 重复订单', tags: ['checkout'], topK: 2 } } }, sessionId);
-  if (call.data.result.isError || call.data.result.structuredContent.results[0].id !== 'KB-HIST-001') throw new Error('structured tool result failed');
+  if (call.data.result.isError || call.data.result.structuredContent.results[0].id !== 'EP-001') throw new Error('structured tool result failed');
   const unknown = await post({ jsonrpc: '2.0', id: 4, method: 'tools/call', params: { name: 'missing.tool', arguments: {} } }, sessionId);
   if (unknown.data.error?.code !== -32602) throw new Error('unknown tool error failed');
   const forgedCanary = await post({ jsonrpc: '2.0', id: 5, method: 'tools/call', params: { name: 'release.canary', arguments: { caseId: 'CASE-SMOKE', version: 'rc1', approvalId: 'APR-SMOKE', approvalToken: 'forged', idempotencyKey: 'same-key', regressed: false } } }, sessionId);
@@ -39,11 +39,20 @@ try {
   await post({ jsonrpc: '2.0', method: 'notifications/initialized' }, impactSessionId, { 'x-devorbit-agent': 'impact-worker' });
   const traversal = await post({ jsonrpc: '2.0', id: 8, method: 'tools/call', params: { name: 'repository.read_file', arguments: { path: '../../etc/passwd' } } }, impactSessionId, { 'x-devorbit-agent': 'impact-worker' });
   if (!traversal.data.result.isError || !traversal.data.result.structuredContent.error.includes('escapes workspace')) throw new Error('workspace traversal guard failed');
+  const modernInit = await post({ jsonrpc: '2.0', id: 9, method: 'initialize', params: { protocolVersion: '2025-11-25', capabilities: {}, clientInfo: { name: 'modern-smoke', version: '1' } } }, null, { 'x-devorbit-agent': 'verify-worker' });
+  const modernSessionId = modernInit.response.headers.get('mcp-session-id');
+  if (!modernSessionId || modernInit.data.result.protocolVersion !== '2025-11-25') throw new Error('2025-11-25 initialization failed');
+  const modernList = await post({ jsonrpc: '2.0', id: 10, method: 'tools/list', params: {} }, modernSessionId, { 'x-devorbit-agent': 'verify-worker', 'mcp-protocol-version': '2025-11-25' });
+  if (modernList.data.result.tools.length !== 14) throw new Error('2025-11-25 tool discovery failed');
+  const wrongModernVersion = await post({ jsonrpc: '2.0', id: 11, method: 'tools/list', params: {} }, modernSessionId, { 'x-devorbit-agent': 'verify-worker', 'mcp-protocol-version': '2025-06-18' });
+  if (wrongModernVersion.response.status !== 400) throw new Error('negotiated protocol version binding failed');
+  const modernDeleted = await fetch(url, { method: 'DELETE', headers: { 'mcp-session-id': modernSessionId, 'mcp-protocol-version': '2025-11-25', 'x-devorbit-agent': 'verify-worker' } });
+  if (modernDeleted.status !== 204) throw new Error('2025-11-25 session deletion failed');
   const foreignDelete = await fetch(url, { method: 'DELETE', headers: { 'mcp-session-id': sessionId, 'mcp-protocol-version': '2025-06-18', 'x-devorbit-agent': 'release-worker' } });
   if (foreignDelete.status !== 403) throw new Error('session deletion identity binding failed');
   const deleted = await fetch(url, { method: 'DELETE', headers: { 'mcp-session-id': sessionId, 'mcp-protocol-version': '2025-06-18', 'x-devorbit-agent': 'rca-worker' } });
   if (deleted.status !== 204) throw new Error('session deletion failed');
-  console.log('PASS MCP 2025-06-18 Streamable HTTP: origin, bound identity, discovery, policy denial, errors');
+  console.log('PASS MCP 2025-06-18 + 2025-11-25 Streamable HTTP: negotiation, bound identity, discovery, policy denial, errors');
 } finally {
   child.kill('SIGTERM');
 }

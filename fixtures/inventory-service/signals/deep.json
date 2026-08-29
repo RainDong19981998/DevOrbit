@@ -1,0 +1,5 @@
+[
+  { "source": "变更", "id": "CHG-501", "text": "inventory-service v2026.08.29 removed optimistic-lock condition: UPDATE stock SET qty = qty - ? WHERE sku = ? AND qty >= ?", "time": "13:40:02" },
+  { "source": "数据库", "id": "DB-77", "text": "stock_ledger.qty negative rows detected: SKU-C=-1, SKU-D=-3", "time": "14:06:41" },
+  { "source": "Trace", "id": "TRACE-9C21", "text": "inventory-service concurrent deduct on SKU-C within 8ms; both writes committed without quantity recheck", "time": "14:05:33" }
+]

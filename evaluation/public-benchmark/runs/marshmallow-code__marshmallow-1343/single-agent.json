@@ -1,0 +1,31 @@
+{
+  "caseId": "PUB-MARSHMALLOW-CODE__MARSHMALLOW-1343",
+  "method": "single-agent",
+  "attempts": 3,
+  "rca": null,
+  "edits": [
+    {
+      "path": "src/marshmallow/schema.py",
+      "search": "        for field_name, field_obj in iteritems(self.fields):\n            if field_obj.validate:\n                value = data[field_obj.attribute or field_name]\n                try:\n                    field_obj.validate(value)",
+      "replace": "        for field_name, field_obj in iteritems(self.fields):\n            if field_obj.validate:\n                key = field_obj.attribute or field_name\n                if key in data:\n                    value = data[key]\n                else:\n                    value = missing\n                try:\n                    field_obj.validate(value)"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "edit apply failed: src/marshmallow/schema.py: search block not found (exact and whitespace-normalized match both failed) [search:         for field_name, field_obj in iteritems(self.fields):\n            if field_obj.validate:\n                value = data[field_obj.attribute or field_name]\n]",
+    "changedPaths": [
+      "src/marshmallow/schema.py"
+    ]
+  },
+  "patchSha256": null,
+  "contextBytes": 8525,
+  "baselineTail": "marshalling.py::TestUnmarshaller::test_deserialize_wrong_nested_type_with_validates_method\nImportError while loading conftest '/tmp/zhanlu/bench-work/marshmallow-code__marshmallow-1343/source/tests/conftest.py'.\ntests/conftest.py:5: in <module>\n    from tests.base import User, UserSchema, Blog\ntests/base.py:6: in <module>\n    import simplejson\nE   ModuleNotFoundError: No module named 'simplejson'\n",
+  "goldFiles": [
+    "src/marshmallow/schema.py"
+  ],
+  "model": "glm",
+  "modelCalls": 3
+}

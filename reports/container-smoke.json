@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-08-13T14:16:19.894Z",
-  "version": "0.6.0",
+  "generatedAt": "2026-08-29T12:00:45.503Z",
+  "version": "1.0.0",
   "intendedNodeImage": "node:22.18.0-bookworm-slim",
   "intendedNodeImageIndexDigest": "sha256:752ea8a2f758c34002a0461bd9f1cee4f9a3c36d48494586f60ffce1fc708e0e",
   "intendedNodeImageAmd64ManifestDigest": "sha256:0d130e2ee18e88e1561375276daced6bff032539200173f2daf48c2e33f38ff5",
-  "nodeImage": "devorbit-node:22.18.0-bookworm-offline",
-  "applicationImage": "devorbit:0.6.0-smoke",
-  "imageId": "sha256:00423ff4c4bdf5a8604ed3dd83ffdf65ca6d8b39480b40a6028b976e766a07d5",
+  "nodeImage": "node:22.18.0-bookworm-slim",
+  "applicationImage": "devorbit:0.8.0-smoke",
+  "imageId": "sha256:d3ed75f413874f2f4fd44e09e4437846b1bbe40a9dfbc678b9c3ae16ebc54a75",
   "hardening": {
     "uid": 10001,
     "readOnlyRootfs": true,
@@ -48,7 +48,7 @@
     {
       "label": "pending approval gate",
       "ok": true,
-      "detail": ""
+      "detail": "status=200 state=approval_pending error= detail="
     },
     {
       "label": "red-green evidence before approval",

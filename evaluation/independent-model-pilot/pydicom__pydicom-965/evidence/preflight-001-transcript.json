@@ -1,0 +1,33 @@
+{
+  "protocolVersion": "1.0",
+  "pilotId": "devorbit-independent-model-pilot-v1",
+  "runId": "independent-run-001",
+  "manifestSha256": "sha256:7b38ec923701f56ae3eda132624f2f4564e85b35d401db5680ed4338c45f4c23",
+  "startedAt": "2026-08-14T05:54:17.488Z",
+  "completedAt": "2026-08-14T05:54:17.534Z",
+  "stage": "verify-runtime",
+  "status": "failed",
+  "error": "model name or digest mismatch",
+  "isolation": {
+    "modelWorkspaceContainsHiddenTestPatch": false,
+    "modelWorkspaceContainsClassificationProbe": false,
+    "forbiddenArtifactsReadByModel": [],
+    "goldImplementationRead": false,
+    "goldComparisonPerformed": false,
+    "agentNetworkToolsAvailable": false
+  },
+  "agents": [],
+  "tools": [
+    {
+      "tool": "runtime.python-version",
+      "args": [
+        "--version"
+      ],
+      "cwd": null,
+      "exitCode": 0,
+      "durationMs": 5,
+      "outputSha256": "sha256:f6b75e07f1488db28a89724a522725e3e01af3dc78f6fd365f17eb4059e41056",
+      "outputTail": "Python 3.10.12"
+    }
+  ]
+}

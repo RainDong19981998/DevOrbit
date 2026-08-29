@@ -1,0 +1,20 @@
+{
+  "runId": "run-001",
+  "startedAt": "2026-08-13T15:00:00Z",
+  "completedAt": "2026-08-13T15:00:49Z",
+  "status": "blocked-before-apply",
+  "manifestSha256": "sha256:b307fdc6d1271f6b5b036149457736f8fcf71bef7b1bc60c7d28b7d5c60a2054",
+  "schemaSha256": "sha256:aa4943d5e80eed75bcf38ad5fb649632bf2f77a6753f1ee7105e372c084c6413",
+  "model": "qwen3:8b",
+  "modelDigest": "sha256:500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+  "patchSha256": "sha256:75b04516d76c3be955f64a98f65e204975385b30520a15b3a451c08e23aa343f",
+  "observed": "RCA and Patch model calls completed. The patch output was persisted, but the runner exited before flushing the in-memory RCA transcript.",
+  "gate": "git apply --check",
+  "gateExitCode": 1,
+  "gateOutput": "error: patch failed: src/sqlfluff/core/parser/segments/base.py:72\nerror: src/sqlfluff/core/parser/segments/base.py: patch does not apply",
+  "sourceModified": false,
+  "testsAfterPatchRun": false,
+  "humanRepairApplied": false,
+  "analysis": "The model emitted fabricated index metadata and an inapplicable hunk. Its proposed global BaseSegment is_whitespace=True change was also broader than the issue evidence justified. The deterministic patch gate correctly blocked execution.",
+  "boundary": "Failed pre-registered validation run. This is not a DevOrbit success, score, aggregate benchmark, test-set result, or ranking claim."
+}

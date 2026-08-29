@@ -1,0 +1,8 @@
+{
+  "instanceId": "sqlfluff__sqlfluff-884",
+  "repository": "sqlfluff/sqlfluff",
+  "version": "0.4",
+  "createdAt": "2021-03-23T21:28:49Z",
+  "problemStatement": "Whitespace token is_whitespace is False\nI expect segment.is_whitespace of a Whitespace token is True, however, it is set to False.\r\n\r\n## Expected Behaviour\r\nsegment.is_whitespace return True\r\n\r\n## Observed Behaviour\r\nsegment.is_whitespace return False\r\n## Steps to Reproduce\r\n\r\n## Version\r\nInclude the output of `sqlfluff --version` along with your Python version\r\n\r\n## Configuration\r\n```\r\nInclude your SQLFluff configuration here\r\n```\r\n\n",
+  "hintsText": "To triage this issue, I searched the SQLFluff code to find all uses of `is_whitespace`. This is the only one I found:\r\n```\r\nsrc/sqlfluff/core/parser/segments/base.py:72:    is_whitespace = False\r\n```\r\n\r\n@alanmcruickshank: What's the purpose of `is_whitespace`?\r\n\r\nI see that long ago (2019), there was a class `WhitespaceSegment` (also a `NewlineSegment`). Now it's not a class -- instead, it'd defined in `src/sqlfluff/core/rules/base.py`.\nOnce #866 is merged I'll pick up the rest of this which relates to some of the lexer objects."
+}

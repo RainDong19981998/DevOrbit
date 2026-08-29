@@ -1,0 +1,34 @@
+{
+  "protocolVersion": "1.0",
+  "title": "失败知识自沉淀：二轮回放召回留痕验证",
+  "generatedAt": "2026-08-28T15:20:00+08:00",
+  "flow": [
+    "第一轮 glm 全量基准（无知识）→ 42 条 negative Episode 自动分类沉淀（scripts/benchmark-knowledge.mjs → knowledge/benchmark-episodes.json）",
+    "第二轮基准运行中，patch 调用前按仓库召回负面 Episode 作为 historicalFailureWarnings 注入提示（scripts/run-public-benchmark.mjs loadBenchmarkWarnings）",
+    "本验证运行证明召回在真实模型调用路径上生效并落盘留痕"
+  ],
+  "verificationRuns": [
+    {
+      "caseId": "PUB-PYDICOM__PYDICOM-1413",
+      "repo": "pydicom/pydicom",
+      "closedLoop": true,
+      "warningsRecalled": 15,
+      "recalledEpisodes": ["BENCH-EP-182d660601154c1c", "BENCH-EP-22657210b877a19f", "BENCH-EP-3e1b59ef89de0031", "BENCH-EP-4c766102041881ff", "BENCH-EP-59405e83d1211813", "BENCH-EP-70e07b9228fedeb4", "BENCH-EP-874751f2f2e036b5", "BENCH-EP-8f3d88852a74b2c5", "BENCH-EP-a50a1ce5db09d439", "BENCH-EP-a80e111199085edf", "BENCH-EP-b9fc673c55a23976", "BENCH-EP-cae1254447012b5e", "BENCH-EP-d41f806b175bce65", "BENCH-EP-d8c8fcae12b5957a", "BENCH-EP-da3c767a0a2d0541"]
+    },
+    {
+      "caseId": "PUB-SQLFLUFF__SQLFLUFF-2907",
+      "repo": "sqlfluff/sqlfluff",
+      "closedLoop": false,
+      "warningsRecalled": 15,
+      "recalledEpisodes": ["BENCH-EP-043919a5a51f1274", "BENCH-EP-1b1555b459d55d97", "BENCH-EP-25952be65a5102bd", "BENCH-EP-2a8ddfad805f1bcd", "BENCH-EP-5082320c38365c62", "BENCH-EP-52d6065e91c81777", "BENCH-EP-7698e33e1820dc2b", "BENCH-EP-78b7565af30b46ea", "BENCH-EP-85921afd61b80019", "BENCH-EP-99fcda943a468e8c", "BENCH-EP-a92e794abcd5ec90", "BENCH-EP-ca59dff7cda8511b", "BENCH-EP-d255d4478ab019c9", "BENCH-EP-e3e9299e0878c22f", "BENCH-EP-ff3e7fe0ff3b4f76"]
+    }
+  ],
+  "evidence": {
+    "episodesFile": "knowledge/benchmark-episodes.json",
+    "episodeCount": 42,
+    "runDetails": "evaluation/public-benchmark/runs-knowledge-verify/{instance}/devorbit.json 的 warningsRecalled 字段",
+    "resultsFile": "evaluation/public-benchmark-results-knowledge-verify.json"
+  },
+  "honestBoundary": "本轮验证只证明召回机制在真实调用路径生效（warningsRecalled 非空且按仓库过滤）。闭环率提升同时包含管道改进（baselineTail/hints/previousEdits 反馈增强）与知识召回两个变量，未做单一变量隔离；归因而非全部归于知识召回。",
+  "status": "verified"
+}

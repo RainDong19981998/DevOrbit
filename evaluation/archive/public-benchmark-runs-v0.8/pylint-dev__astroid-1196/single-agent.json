@@ -1,0 +1,19 @@
+{
+  "caseId": "PUB-PYLINT-DEV__ASTROID-1196",
+  "method": "single-agent",
+  "attempts": 2,
+  "rca": null,
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "git apply --check failed: \nerror: patch failed: astroid/nodes/node_classes.py:2240\nerror: astroid/nodes/node_classes.py: patch does not apply\n\nCommand failed: git apply --check model.patch\nerror: patch failed: astroid/nodes/node_classes.py:2240\nerror: astroid/nodes/node_classes.py: patch does not apply\n"
+  },
+  "patchSha256": "sha256:d16718ed132ebbbc800c4cc6de4f96990a620837111d3435b1f4f13bda16a53c",
+  "contextBytes": 8000,
+  "baselineTail": "hon3TC::test_unpacking_in_dict_getitem_uninferable\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 2 warnings in 0.55s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x tests/unittest_python3.py::Python3TC::test_unpacking_in_dict_getitem_uninferable tests/unittest_python3.py::Python3TC::test_unpacking_in_dict_getitem_with_ref\n",
+  "goldFiles": [
+    "astroid/nodes/node_classes.py"
+  ]
+}

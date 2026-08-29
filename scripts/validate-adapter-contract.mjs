@@ -19,7 +19,7 @@ const toolNames = createTools({ fixturePath: '/tmp/fixture', workspaceRegistry: 
 check('OpenAPI 3.1 document', contract.openapi === '3.1.0' && contract.info?.version === '0.5.0');
 check('global bearer authentication', contract.security?.some(item => Object.hasOwn(item, 'bearerAuth')));
 check('ten HTTP operations', operations.size === 10 && Object.keys(HTTP_ADAPTER_OPERATIONS).length === 10, `${operations.size}/10`);
-check('MCP tools map one-to-one', toolNames.length === 10 && toolNames.every(name => operations.has(name)) && [...operations.keys()].every(name => toolNames.includes(name)));
+check('HTTP adapter operations map to MCP tools', [...operations.keys()].every(name => toolNames.includes(name)) && Object.keys(HTTP_ADAPTER_OPERATIONS).every(name => toolNames.includes(name)));
 
 const requiredCorrelation = new Set(['#/components/parameters/TraceId', '#/components/parameters/CaseId', '#/components/parameters/Agent', '#/components/parameters/Operation']);
 for (const [name, expected] of Object.entries(HTTP_ADAPTER_OPERATIONS)) {

@@ -1,0 +1,37 @@
+{
+  "caseId": "PUB-PYDICOM__PYDICOM-955",
+  "method": "single-agent",
+  "attempts": 3,
+  "rca": null,
+  "edits": [
+    {
+      "path": "pydicom/filereader.py",
+      "search": "def data_element_generator(fp, is_implicit_VR, is_little_endian,\n                         stop_when=None, defer_size=None,\n                         force_read=False):\n    \"\"\"Read a data element and return a DataElement class or None.\"\"\"",
+      "replace": "def _correct_lut_descriptor(element):\n    \"\"\"Correct the LUT Descriptor values when the VR is SS.\n\n    The first and third values of LUT Descriptor (0028,3002) and the\n    Red/Green/Blue Palette Color Lookup Table Descriptor are always\n    unsigned (US), even when the VR is SS due to the second value being\n    signed (as indicated by Pixel Representation).\n    \"\"\"\n    if element.VR != 'SS':\n        return\n\n    # Mask to unsigned 16-bit\n    values = list(element.value)\n    if len(values) >= 1:\n        values[0] = values[0] & 0xFFFF\n    if len(values) >= 3:\n        values[2] = values[2] & 0xFFFF\n    element.value = values\n\n\ndef data_element_generator(fp, is_implicit_VR, is_little_endian,\n                         stop_when=None, defer_size=None,\n                         force_read=False):\n    \"\"\"Read a data element and return a DataElement class or None.\"\"\""
+    },
+    {
+      "path": "pydicom/filereader.py",
+      "search": "    return DataElement(tag, VR, value, byte_string_VR, is_little_endian,\n                       already_have_VR=True)",
+      "replace": "    element = DataElement(tag, VR, value, byte_string_VR, is_little_endian,\n                       already_have_VR=True)\n    if tag in [(0x0028, 0x3002), (0x0028, 0x1101),\n               (0x0028, 0x1102), (0x0028, 0x1103)]:\n        _correct_lut_descriptor(element)\n    return element"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "edit apply failed: pydicom/filereader.py: search block not found (exact and whitespace-normalized match both failed) [search: def data_element_generator(fp, is_implicit_VR, is_little_endian,\n                         stop_when=None, defer_size=None,\n                         force_read=F]; pydicom/filereader.py: search block not found (exact and whitespace-normalized match both failed) [search:     return DataElement(tag, VR, value, byte_string_VR, is_little_endian,\n                       already_have_VR=True)]",
+    "changedPaths": [
+      "pydicom/filereader.py"
+    ]
+  },
+  "patchSha256": null,
+  "contextBytes": 18294,
+  "baselineTail": "===================== short test summary info ============================\nFAILED pydicom/tests/test_filereader.py::TestReader::test_lut_descriptor - as...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.34s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x pydicom/tests/test_filereader.py::TestReader::test_lut_descriptor\n",
+  "goldFiles": [
+    "pydicom/dataelem.py",
+    "pydicom/pixel_data_handlers/util.py"
+  ],
+  "model": "glm",
+  "modelCalls": 3
+}

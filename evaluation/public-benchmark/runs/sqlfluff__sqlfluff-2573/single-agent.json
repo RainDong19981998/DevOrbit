@@ -1,0 +1,32 @@
+{
+  "caseId": "PUB-SQLFLUFF__SQLFLUFF-2573",
+  "method": "single-agent",
+  "attempts": 3,
+  "rca": null,
+  "edits": [
+    {
+      "path": "src/sqlfluff/core/linter/linter.py",
+      "search": "        ignore_file = pathlib.Path(self.working_path) / \".sqlfluffignore\"\n        if ignore_file.is_file():\n            ignore_paths = self.get_ignore_files(\n                self.working_path\n            ) + self.get_ignore_files(path)\n        else:\n            ignore_paths = self.get_ignore_files(path)",
+      "replace": "        ignore_paths = self.get_ignore_files(path)\n        # Add ignore files from the working path (current directory) and its\n        # parents so that a `.sqlfluffignore` in the project root is respected\n        # even when a subdirectory is passed as the path to lint.\n        working_path = pathlib.Path(self.working_path).resolve()\n        for parent in [working_path] + list(working_path.parents):\n            ignore_file = parent / \".sqlfluffignore\"\n            if ignore_file.is_file():\n                ignore_paths += self.get_ignore_files(str(parent))"
+    }
+  ],
+  "evaluation": {
+    "compilePassed": false,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "edit apply failed: src/sqlfluff/core/linter/linter.py: search block not found (exact and whitespace-normalized match both failed) [search:         ignore_file = pathlib.Path(self.working_path) / \".sqlfluffignore\"\n        if ignore_file.is_file():\n            ignore_paths = self.get_ignore_files(\n  ]",
+    "changedPaths": [
+      "src/sqlfluff/core/linter/linter.py"
+    ]
+  },
+  "patchSha256": null,
+  "contextBytes": 14336,
+  "baselineTail": " info ============================\nFAILED test/core/linter_test.py::test__linter__path_from_paths__sqlfluffignore_current_directory\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.15s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x test/core/linter_test.py::test__linter__path_from_paths__sqlfluffignore_current_directory\n",
+  "goldFiles": [
+    "src/sqlfluff/core/config.py",
+    "src/sqlfluff/core/linter/linter.py"
+  ],
+  "model": "glm",
+  "modelCalls": 3
+}

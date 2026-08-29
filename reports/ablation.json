@@ -1,0 +1,147 @@
+{
+  "generatedAt": "2026-08-27T09:49:22.760Z",
+  "type": "mechanism-level ablation (deterministic harness)",
+  "disclosure": "本消融在 golden-cases 层使用确定性 harness 运行（无模型调用），证明去掉关键能力后的行为变化。模型级消融（不同模型/配置对比）需凭据版环境，见凭据版报告。",
+  "groups": [
+    {
+      "id": "full-policy",
+      "label": "全策略（基线）",
+      "controls": {},
+      "runs": [
+        {
+          "scenario": "dynamic-resampling",
+          "hypothesis": "resampling rounds=1, confidence≥0.80, 闭环成功晋级",
+          "summary": {
+            "status": "learned",
+            "rcaDecision": "supported",
+            "resamplingRounds": 1,
+            "resamplingMaxRounds": 2,
+            "confidence": 0.91,
+            "confidenceThreshold": 0.8,
+            "patchAttempts": 1,
+            "maxPatchAttempts": 3,
+            "testGate": "passed",
+            "ragHits": 2,
+            "ragMcpCall": {
+              "protocol": "MCP",
+              "protocolVersion": "2025-06-18",
+              "transport": "embedded-jsonrpc",
+              "tool": "knowledge.search_cases",
+              "durationMs": 0,
+              "isError": false
+            },
+            "ragCited": true,
+            "warningsCount": 1,
+            "warnings": [
+              "曾尝试调大连接池参数（80→200），导致下游 Redis 集群 OOM 级联崩溃，已自动规避"
+            ],
+            "closedLoop": true,
+            "outcome": "promoted"
+          }
+        },
+        {
+          "scenario": "self-healing",
+          "hypothesis": "patchAttempts≥2, gate=passed, 闭环成功",
+          "summary": {
+            "status": "learned",
+            "rcaDecision": "supported",
+            "resamplingRounds": 0,
+            "resamplingMaxRounds": 2,
+            "confidence": 0.91,
+            "confidenceThreshold": 0.8,
+            "patchAttempts": 2,
+            "maxPatchAttempts": 3,
+            "testGate": "passed",
+            "ragHits": 2,
+            "ragMcpCall": {
+              "protocol": "MCP",
+              "protocolVersion": "2025-06-18",
+              "transport": "embedded-jsonrpc",
+              "tool": "knowledge.search_cases",
+              "durationMs": 1,
+              "isError": false
+            },
+            "ragCited": true,
+            "warningsCount": 1,
+            "warnings": [
+              "曾尝试调大连接池参数（80→200），导致下游 Redis 集群 OOM 级联崩溃，已自动规避"
+            ],
+            "closedLoop": true,
+            "outcome": "promoted"
+          }
+        }
+      ]
+    },
+    {
+      "id": "no-episode-rag",
+      "label": "关知识召回（controls.rag=false）",
+      "controls": {
+        "rag": false
+      },
+      "runs": [
+        {
+          "scenario": "dynamic-resampling",
+          "hypothesis": "ragHits=0（不调用 search_cases），resampling 仍能补证，warnings 为空",
+          "summary": {
+            "status": "learned",
+            "rcaDecision": "supported",
+            "resamplingRounds": 1,
+            "resamplingMaxRounds": 2,
+            "confidence": 0.91,
+            "confidenceThreshold": 0.8,
+            "patchAttempts": 1,
+            "maxPatchAttempts": 3,
+            "testGate": "passed",
+            "ragHits": 0,
+            "ragMcpCall": null,
+            "ragCited": false,
+            "warningsCount": 0,
+            "warnings": [],
+            "closedLoop": true,
+            "outcome": "promoted"
+          }
+        }
+      ]
+    },
+    {
+      "id": "no-self-healing",
+      "label": "关自愈（controls.maxPatchAttempts=1）",
+      "controls": {
+        "maxPatchAttempts": 1
+      },
+      "runs": [
+        {
+          "scenario": "self-healing",
+          "hypothesis": "patchAttempts=1, gate=failed, 熔断 needs_human",
+          "summary": {
+            "status": "needs_human",
+            "rcaDecision": "supported",
+            "resamplingRounds": 0,
+            "resamplingMaxRounds": 2,
+            "confidence": 0.91,
+            "confidenceThreshold": 0.8,
+            "patchAttempts": 1,
+            "maxPatchAttempts": 1,
+            "testGate": "failed",
+            "ragHits": 2,
+            "ragMcpCall": {
+              "protocol": "MCP",
+              "protocolVersion": "2025-06-18",
+              "transport": "embedded-jsonrpc",
+              "tool": "knowledge.search_cases",
+              "durationMs": 1,
+              "isError": false
+            },
+            "ragCited": true,
+            "warningsCount": 1,
+            "warnings": [
+              "曾尝试调大连接池参数（80→200），导致下游 Redis 集群 OOM 级联崩溃，已自动规避"
+            ],
+            "closedLoop": false,
+            "outcome": "needs_human"
+          }
+        }
+      ]
+    }
+  ]
+}

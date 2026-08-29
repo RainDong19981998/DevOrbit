@@ -1,0 +1,44 @@
+{
+  "caseId": "PUB-PYDICOM__PYDICOM-903",
+  "method": "devorbit",
+  "attempts": 3,
+  "rca": {
+    "rootCause": "When writing a DS (Decimal String) data element with a value length exceeding 65534 bytes in Explicit VR transfer syntax, the writer attempts to encode the length using a 2-byte unsigned short (write_leUS), which overflows and raises a struct.error. The correct behavior per DICOM standard is to change the VR to UN (Unknown) when the value is too long for the explicit VR length field, as noted in issue #900. The current code does not handle this case and instead lets the low-level pack call fail with an unhelpful error message.",
+    "confidence": 0.9,
+    "evidence": [
+      "The issue describes an exception 'ushort format requires 0 <= number <= (0x7fff * 2 + 1)' raised by the pack call in write_leUS when writing a DS tag with length > 65534 bytes in explicit VR.",
+      "The hint states: 'Reopen as the fix is incorrect - the VR shall be changed to UN instead (see #900).'",
+      "The DICOM standard PS3.5 Table 6.2-1 note says: 'Data Elements with multiple values using this VR may not be properly encoded if Explicit-VR transfer syntax is used and the VL of this attribute exceeds 65534 bytes.'",
+      "The repo map shows pydicom/filewriter.py as the file containing write_data_element and write_leUS functions."
+    ],
+    "filesToChange": [
+      "pydicom/filewriter.py"
+    ]
+  },
+  "evaluation": {
+    "compilePassed": true,
+    "safetyViolation": false,
+    "testsPassed": false,
+    "closedLoop": false,
+    "detail": "F2P red; P2P green ",
+    "f2pLogTail": "a_in_explicit_encoding(self):\n        \"\"\"Data too large to be written in explicit transfer syntax.\"\"\"\n>       self.fp.is_little_endian = True\n        ^^^^^^^\nE       AttributeError: 'TestWriteUndefinedLengthPixelData' object has no attribute 'fp'\n\npydicom/tests/test_filewriter.py:2505: AttributeError\n=========================== short test summary info ============================\nFAILED pydicom/tests/test_filewriter.py::TestWriteUndefinedLengthPixelData::test_writing_too_big_data_in_explicit_encoding\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.11s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x pydicom/tests/test_filewriter.py::TestWriteUndefinedLengthPixelData::test_writing_too_big_data_in_explicit_encoding\n",
+    "changedPaths": [
+      "pydicom/filewriter.py"
+    ],
+    "appliedMethods": [
+      {
+        "path": "pydicom/filewriter.py",
+        "method": "exact",
+        "ambiguous": false
+      }
+    ]
+  },
+  "patchSha256": "sha256:68c56e84e4d67f7b3d2d08f9963135b5f04aafc8d891aeb2f1785f25e6fc6c3f",
+  "contextBytes": 10280,
+  "baselineTail": "sts/test_filewriter.py::TestWriteUndefinedLengthPixelData::test_writing_too_big_data_in_explicit_encoding\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 0.45s\n\nCommand failed: /tmp/zhanlu/bench-venv/bin/python -m pytest -q --no-header -x pydicom/tests/test_filewriter.py::TestWriteUndefinedLengthPixelData::test_writing_too_big_data_in_explicit_encoding\n",
+  "goldFiles": [
+    "pydicom/filewriter.py"
+  ],
+  "model": "deepseek-v4-flash-0731",
+  "modelCalls": 4
+}

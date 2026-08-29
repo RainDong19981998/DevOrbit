@@ -8,15 +8,17 @@ npm run build-supporting-pdfs
 npm run bundle
 npm run write-checksums
 
-out='deliverables/DevOrbit_初赛提交总包.zip'
+out='deliverables/DevOrbit_复赛提交总包.zip'
 rm -f "$out"
 zip -qj "$out" \
-  deliverables/DevOrbit_初赛方案.pdf \
-  deliverables/DevOrbit_初赛方案.pptx \
-  deliverables/DevOrbit_初赛可执行代码包.zip \
+  deliverables/DevOrbit_复赛方案.pdf \
+  deliverables/DevOrbit_复赛方案.pptx \
+  deliverables/DevOrbit_复赛可执行代码包.zip \
   deliverables/DevOrbit_演示视频.mp4 \
   deliverables/DevOrbit_演示视频封面.png \
-  deliverables/DevOrbit_初赛讲解视频_自动语音版.mp4 \
+  deliverables/DevOrbit_产品界面.png \
+  deliverables/DevOrbit_初赛讲解视频_无配音版.mp4 \
+  deliverables/DevOrbit_AgentTeams本地运行验证.pdf \
   deliverables/DevOrbit_Agent-Identity清单.pdf \
   deliverables/DevOrbit_Skill清单.pdf \
   deliverables/DevOrbit_工具与云产品清单.pdf \
@@ -32,10 +34,15 @@ zip -qj "$out" \
   docs/评委90秒验收.md \
   docs/第三方依赖与合规清单.md \
   docs/演示脚本.md \
+  docs/AgentTeams本地运行验证.md \
   docs/威胁模型.md \
   docs/证据索引.md \
   docs/Adapter生产契约.md \
   reports/agentteams-contract.md \
+  reports/agentteams-runtime.json \
+  evaluation/agentteams-runtime-case.manifest.json \
+  schemas/agentteams-runtime-case.schema.json \
+  schemas/agentteams-runtime-report.schema.json \
   reports/benchmark.md \
   reports/security-evaluation.md \
   reports/container-smoke.json \
@@ -51,6 +58,21 @@ zip -qj "$out" \
   schemas/public-benchmark-pilot.schema.json \
   docs/公开基准复现试点.md \
   reports/public-benchmark-pilot.json \
+  evaluation/public-model-pilot-v11.manifest.json \
+  schemas/public-model-pilot-v11.schema.json \
+  reports/public-model-pilot-v11.json \
+  evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-011-transcript.json \
+  evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-011-model.patch \
+  evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-011-target.log \
+  evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-011-regression.log \
+  evaluation/public-model-pilot/sqlfluff__sqlfluff-884/evidence/run-011-classification.log \
+  evaluation/independent-model-pilot.manifest.json \
+  schemas/independent-model-pilot.schema.json \
+  evaluation/independent-model-pilot/candidate-selection.json \
+  reports/independent-model-pilot.json \
+  evaluation/independent-model-pilot/pydicom__pydicom-965/evidence/transcript.json \
+  evaluation/independent-model-pilot/pydicom__pydicom-965/evidence/baseline-target.log \
+  evaluation/independent-model-pilot/pydicom__pydicom-965/evidence/contract-rejection.json \
   config/platform-native.contract.json \
   schemas/platform-native.contract.schema.json \
   docs/原生平台连接器.md \
