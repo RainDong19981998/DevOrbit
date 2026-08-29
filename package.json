@@ -76,7 +76,7 @@
     "freeze-public-benchmark": "node scripts/freeze-public-benchmark.mjs",
     "run-public-benchmark": "node scripts/run-public-benchmark.mjs",
     "agentteams-autonomous-probe": "node scripts/agentteams-autonomous-probe.mjs",
-    "bundle": "rm -f deliverables/DevOrbit_复赛可执行代码包.zip && zip -qr deliverables/DevOrbit_复赛可执行代码包.zip README.md LICENSE package.json server.js Dockerfile Dockerfile.native .dockerignore app config docs schemas skills scripts src fixtures knowledge evaluation reports worker-packages third_party .env.example docker-compose.observability.yml --exclude 'deliverables/*' '*/__pycache__/*' '*.pyc' 'reports/release-audit.*'",
+    "bundle": "rm -f deliverables/DevOrbit_复赛可执行代码包.zip && zip -qr deliverables/DevOrbit_复赛可执行代码包.zip README.md LICENSE package.json server.js Dockerfile Dockerfile.native .dockerignore app config docs schemas skills scripts src fixtures knowledge evaluation reports worker-packages third_party .env.example docker-compose.observability.yml --exclude 'deliverables/*' '*/__pycache__/*' '*.pyc' 'reports/release-audit.*' 'docs/技术方案.md' 'docs/快速验收.md'",
     "verify-evidence-chain": "node scripts/verify-evidence-chain.mjs",
     "db-branch-smoke": "node scripts/db-branch-smoke.mjs",
     "gitlab-e2e-self-healing": "node scripts/gitlab-e2e-self-healing.mjs",

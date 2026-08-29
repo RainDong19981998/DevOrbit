@@ -275,7 +275,7 @@ const totalEntries = archiveEntries(totalZipPath);
 for (const required of [
   'DevOrbit_复赛方案.pdf', 'DevOrbit_复赛方案.pptx', 'DevOrbit_复赛可执行代码包.zip',
   'DevOrbit_演示视频.mp4', 'DevOrbit_演示视频封面.png', 'DevOrbit_产品界面.png', '作品简介.md', '官网提交粘贴稿.md',
-  '提交清单.md', '快速验收.md', '第三方依赖与合规清单.md', '演示脚本.md', 'AgentTeams本地运行验证.md',
+  '提交清单.md', '评委90秒验收.md', '第三方依赖与合规清单.md', '演示脚本.md', 'AgentTeams本地运行验证.md',
   '威胁模型.md', '证据索引.md', 'Adapter生产契约.md', 'agentteams-contract.md', 'benchmark.md', 'security-evaluation.md',
   'container-smoke.json', 'http-adapter.openapi.json', 'agentteams-runtime.json', 'agentteams-runtime-case.manifest.json', 'agentteams-runtime-case.schema.json', 'agentteams-runtime-report.schema.json',
   'public-benchmark.manifest.json', 'public-benchmark.json', 'public-benchmark.md', 'public-benchmark.schema.json', 'public-benchmark-results.schema.json', 'public-benchmark-report.schema.json', '公开基准协议.md',

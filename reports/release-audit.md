@@ -15,7 +15,7 @@
 |---|---|
 | DevOrbit_复赛方案.pdf | `24018dbab833f9a7edd0f303e8a619e30f60bb8c417f6e2c2798297eb680f049` |
 | DevOrbit_复赛方案.pptx | `67138649fee982fcd1cfb9f3db559b22047132718e6df4c1be9ba371925fbb93` |
-| DevOrbit_复赛可执行代码包.zip | `a5a81f736dec1adaa3103c47c9f9d6632c72e8414010d49174e0da45fa6242c7` |
+| DevOrbit_复赛可执行代码包.zip | `55395339cbf4687933f234987419e4e52ff81bc285c3cb4f26b85e7a12d186ed` |
 | DevOrbit_演示视频.mp4 | `e55914a513f3dac224d9cf2debe093deb06e25e097bb45b9ef45782211bec238` |
 | DevOrbit_演示视频封面.png | `79f400aca4fddb8233ca83b48140e35cb76024c5b8ba8b49af7612f945b574f9` |
 | DevOrbit_产品界面.png | `e3bac38e854e8866cf6227acefb52f04cdfb879f4d2ed02b1ed19d7c17d0d9ae` |
@@ -239,8 +239,8 @@
 | code secret-scan docs/AgentTeams本地运行验证.md | PASS |  |
 | code compliance docs/工具与云产品清单.md | PASS |  |
 | code secret-scan docs/工具与云产品清单.md | PASS |  |
-| code compliance docs/技术方案.md | PASS |  |
-| code secret-scan docs/技术方案.md | PASS |  |
+| code compliance docs/参赛方案.md | PASS |  |
+| code secret-scan docs/参赛方案.md | PASS |  |
 | code compliance docs/第三方依赖与合规清单.md | PASS |  |
 | code secret-scan docs/第三方依赖与合规清单.md | PASS |  |
 | code compliance docs/威胁模型.md | PASS |  |
@@ -261,6 +261,8 @@
 | code secret-scan docs/reference/goal.txt | PASS |  |
 | code compliance docs/复赛冲刺路线图.md | PASS |  |
 | code secret-scan docs/复赛冲刺路线图.md | PASS |  |
+| code compliance docs/评委90秒验收.md | PASS |  |
+| code secret-scan docs/评委90秒验收.md | PASS |  |
 | code compliance docs/公开基准协议.md | PASS |  |
 | code secret-scan docs/公开基准协议.md | PASS |  |
 | code compliance docs/作品简介.md | PASS |  |
@@ -273,8 +275,6 @@
 | code secret-scan docs/Skill清单.md | PASS |  |
 | code compliance docs/Agent-Identity清单.md | PASS |  |
 | code secret-scan docs/Agent-Identity清单.md | PASS |  |
-| code compliance docs/快速验收.md | PASS |  |
-| code secret-scan docs/快速验收.md | PASS |  |
 | code compliance docs/演示脚本.md | PASS |  |
 | code secret-scan docs/演示脚本.md | PASS |  |
 | code compliance schemas/public-benchmark.schema.json | PASS |  |
@@ -1474,7 +1474,7 @@
 | total ZIP 作品简介.md | PASS |  |
 | total ZIP 官网提交粘贴稿.md | PASS |  |
 | total ZIP 提交清单.md | PASS |  |
-| total ZIP 快速验收.md | PASS |  |
+| total ZIP 评委90秒验收.md | PASS |  |
 | total ZIP 第三方依赖与合规清单.md | PASS |  |
 | total ZIP 演示脚本.md | PASS |  |
 | total ZIP AgentTeams本地运行验证.md | PASS |  |
@@ -1555,8 +1555,6 @@
 | total secret-scan 威胁模型.md | PASS |  |
 | total compliance 官网提交粘贴稿.md | PASS |  |
 | total secret-scan 官网提交粘贴稿.md | PASS |  |
-| total compliance 快速验收.md | PASS |  |
-| total secret-scan 快速验收.md | PASS |  |
 | total compliance 提交清单.md | PASS |  |
 | total secret-scan 提交清单.md | PASS |  |
 | total compliance 演示脚本.md | PASS |  |
@@ -1565,3 +1563,5 @@
 | total secret-scan 第三方依赖与合规清单.md | PASS |  |
 | total compliance 证据索引.md | PASS |  |
 | total secret-scan 证据索引.md | PASS |  |
+| total compliance 评委90秒验收.md | PASS |  |
+| total secret-scan 评委90秒验收.md | PASS |  |
