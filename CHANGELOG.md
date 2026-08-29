@@ -28,7 +28,7 @@
 - `npm run release-audit` 1498/1498 PASS
 - 重启恢复端到端：运行→SIGKILL→重启→`restored 1 approval-pending session`→审批续跑→同 case/trace 闭环，证据链 15 环校验通过
 - 场景迁移：机制序列完全一致，两域均 3 失败→4 通过→promoted→learned
-- 故障演练 6/6 · AgentTeams 契约 141/141 · api-smoke / api-security-smoke PASS
+- 故障演练 7/7 · AgentTeams 契约 141/141 · api-smoke / api-security-smoke PASS
 
 ---
 

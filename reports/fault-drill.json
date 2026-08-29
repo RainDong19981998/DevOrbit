@@ -1,10 +1,10 @@
 {
   "schema": "devorbit.fault-drill/v1",
-  "version": "0.9.6",
-  "generatedAt": "2026-08-29T11:25:59.084Z",
+  "version": "1.0.0",
+  "generatedAt": "2026-08-29T14:34:14.001Z",
   "summary": {
-    "drills": 6,
-    "passed": 6,
+    "drills": 7,
+    "passed": 7,
     "failed": 0
   },
   "matrix": [
@@ -22,6 +22,11 @@
       "fault": "模型 500 不可用",
       "expected": "fail-closed，密钥不泄露",
       "control": "ModelProviderError + redact"
+    },
+    {
+      "fault": "模型网络超时",
+      "expected": "AbortSignal 超时后自动重试恢复",
+      "control": "AbortSignal.timeout + 可重试错误分类"
     },
     {
       "fault": "工具执行错误",
@@ -66,6 +71,15 @@
       "evidence": {
         "failClosed": true,
         "keyLeaked": false
+      }
+    },
+    {
+      "id": "FD-007",
+      "name": "模型网络超时：AbortSignal 超时后自动重试恢复",
+      "pass": true,
+      "evidence": {
+        "attempts": 2,
+        "content": "recovered-after-timeout"
       }
     },
     {

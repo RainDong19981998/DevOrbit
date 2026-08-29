@@ -51,6 +51,23 @@ record('FD-003', '模型 500 不可用：重试耗尽后 fail-closed 且不泄�
   keyLeaked: leaked
 });
 
+let callsTimeout = 0;
+const timeoutFetch = async () => {
+  callsTimeout += 1;
+  if (callsTimeout === 1) {
+    const timeoutError = new Error('The operation was aborted due to timeout');
+    timeoutError.name = 'TimeoutError';
+    throw timeoutError;
+  }
+  return new Response(JSON.stringify({ model: 'mock', choices: [{ message: { content: 'recovered-after-timeout' } }], usage: { prompt_tokens: 5, completion_tokens: 3, total_tokens: 8 } }), { status: 200, headers: { 'content-type': 'application/json' } });
+};
+const timeoutProvider = createModelProvider({ driver: 'openai-compat', baseUrl: 'https://mock.model.local/v1', apiKey: 'sk-mock-drill', model: 'mock-model', fetchImpl: timeoutFetch, sleep: () => {}, maxRetries: 2 });
+const timeoutResult = await timeoutProvider.chat({ agent: 'drill', user: 'ping' });
+record('FD-007', '模型网络超时：AbortSignal 超时后自动重试恢复', callsTimeout === 2 && timeoutResult.content === 'recovered-after-timeout' && timeoutResult.attempts === 2, {
+  attempts: timeoutResult.attempts,
+  content: timeoutResult.content
+});
+
 const fixturePath = fileURLToPath(new URL('../fixtures/checkout-service', import.meta.url));
 const toolServer = new McpToolServer({ tools: createTools({ fixturePath, workspaceRegistry: new Map(), knowledgeStore: new EpisodeStore(), signals: [] }), policy: new ToolPolicy({}) });
 const errorResponse = await toolServer.dispatch({ jsonrpc: '2.0', id: 1, method: 'tools/call', params: { name: 'repository.read_file', arguments: { path: 'src/does-not-exist.js' } } }, { agent: 'impact-worker', traceId: 'TRACE-DRILL', caseId: 'CASE-DRILL' });
@@ -102,6 +119,7 @@ const report = {
     { fault: 'Worker 返工耗尽', expected: '熔断降级 needs_human', control: 'max_patch_attempts=3 + circuit_breaker' },
     { fault: '模型 429 限流', expected: '自动重试后恢复', control: 'postJson 重试策略（幂等读路径）' },
     { fault: '模型 500 不可用', expected: 'fail-closed，密钥不泄露', control: 'ModelProviderError + redact' },
+    { fault: '模型网络超时', expected: 'AbortSignal 超时后自动重试恢复', control: 'AbortSignal.timeout + 可重试错误分类' },
     { fault: '工具执行错误', expected: '审计 error + JSON-RPC 失败', control: 'MCP 审计链 + 错误封装' },
     { fault: '数据库分支故障/恶意迁移', expected: 'fail-closed + 门禁阻断', control: 'DbBranchError + migration guardrail' },
     { fault: 'MCP 端点不可达', expected: '网络错误被捕获', control: '客户端错误处理' }

@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-08-29T14:05:17.878Z",
+  "generatedAt": "2026-08-29T14:39:47.310Z",
   "summary": {
     "checks": 1536,
     "passed": 1536,
     "failed": 0
   },
   "artifacts": {
-    "DevOrbit_复赛方案.pdf": "2b25a1a87257179326f5a24aa30b31eb6775a706899814ab506f2a121f0d534f",
-    "DevOrbit_复赛方案.pptx": "f81ce0c0762a064e78e471208d1b42f711784df80e229035c90ea31ec28d69bf",
-    "DevOrbit_复赛可执行代码包.zip": "812bd1ab3f69b8653837de1947a07531db7f375f0bee17ecfe26591ed9b1c68c",
+    "DevOrbit_复赛方案.pdf": "d9347184b0c2aa723e738ac7bb5fec996247f24a7104c28b911a6ca6ea26e9dd",
+    "DevOrbit_复赛方案.pptx": "4112c8fdef1833b344451ae121e2c94a2a5dbb6eba2ce4d042baef8ed462f905",
+    "DevOrbit_复赛可执行代码包.zip": "7ae0991176c591811f697426754ea8cecccc031e710a83e1a7c9107829be0713",
     "DevOrbit_演示视频.mp4": "e55914a513f3dac224d9cf2debe093deb06e25e097bb45b9ef45782211bec238",
     "DevOrbit_演示视频封面.png": "79f400aca4fddb8233ca83b48140e35cb76024c5b8ba8b49af7612f945b574f9",
     "DevOrbit_产品界面.png": "e3bac38e854e8866cf6227acefb52f04cdfb879f4d2ed02b1ed19d7c17d0d9ae",

@@ -1,10 +1,15 @@
 # DevOrbit — 多 Agent 研发闭环平台
 
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
+[![Version](https://img.shields.io/badge/version-1.0.0-green.svg)](https://github.com/RainDong19981998/DevOrbit/releases/tag/v1.0.0)
+[![Tests](https://img.shields.io/badge/tests-113%2F113-brightgreen.svg)](#验证与诚实边界)
+[![Node](https://img.shields.io/badge/node-%3E%3D20-339933.svg)]()
+
 > 当前版本 V1.0.0 · Apache-2.0 · 仅依赖 Node.js 标准库，无第三方 npm 包
 
 DevOrbit 是一套自动处理线上缺陷的多 Agent 研发平台。用户提交问题、仓库和分支，系统读取 Issue、日志与代码，完成根因定位、补丁生成和独立测试；发布前等待负责人确认，最终交付代码 Diff、测试报告、审批/灰度记录和复盘知识卡。
 
-V1.0.0 重点强化工程落地与可验证性。**状态持久化与重启恢复**——Case State 与证据链快照原子落盘，进程崩溃后自动恢复审批挂起会话并续跑（同 case/trace，证据链连续校验）。**Skill 版本溯源**——8 个 Skill 全部 SemVer + sha256 摘要注册，每条 trace 记录 skillVersion/skillDigest，任一结果可定位到产生它的 Skill 版本。**第二类场景迁移**——结算支付域到库存域（秒杀超卖）机制零改动复制：两域 Worker×Skill 序列、状态机路径、MCP 工具集完全一致，均 3 失败→4 通过→promoted 闭环。**可靠性故障演练** 6/6（返工熔断/模型 429 重试/500 fail-closed/工具错误审计/DB 门禁/端点不可达）。**上下文治理**——租户硬过滤、陈旧版本召回阻断、会话 TTL 与快照保留策略显性化。113/113 单测、63/63 validate、1536/1536 release-audit。
+V1.0.0 重点强化工程落地与可验证性。**状态持久化与重启恢复**——Case State 与证据链快照原子落盘，进程崩溃后自动恢复审批挂起会话并续跑（同 case/trace，证据链连续校验）。**Skill 版本溯源**——8 个 Skill 全部 SemVer + sha256 摘要注册，每条 trace 记录 skillVersion/skillDigest，任一结果可定位到产生它的 Skill 版本。**第二类场景迁移**——结算支付域到库存域（秒杀超卖）机制零改动复制：两域 Worker×Skill 序列、状态机路径、MCP 工具集完全一致，均 3 失败→4 通过→promoted 闭环。**可靠性故障演练** 7/7（返工熔断/模型 429 重试/500 fail-closed/网络超时重试/工具错误审计/DB 门禁/端点不可达）。**上下文治理**——租户硬过滤、陈旧版本召回阻断、会话 TTL 与快照保留策略显性化。113/113 单测、63/63 validate、1536/1536 release-audit。
 
 V0.9.6 第四轮：edit-based 补丁引擎重构（模型输出 SEARCH/REPLACE 块，工具侧应用+模糊匹配，根除 V0.8 模型直出 diff 的 0% 应用率硬伤）。RCA 引导目标文件内容注入。失败知识自沉淀闭环（42 条 negative Episode 自动生成→第二轮按仓库召回警示）。三维消融：管道（diff-based V0.8 0% vs edit-based V0.9.6）、模型（glm / deepseek-v4-flash / 本地 qwen3:8b）、架构（devorbit vs single-agent），同冻结 30 案例 SWE-bench dev test split。glm 第二轮（含知识回放）闭环率 0%→10%（3/30，PYDICOM-1413/SQLFLUFF-2907/SQLFLUFF-4753 均为 devorbit 闭环，single-agent 0/30），补丁可应用率 0%→56%，RCA Top-3 73.3%。deepseek edit-based 同样 3/30 闭环。驾驶舱新增基准大盘页。
 
@@ -183,7 +188,7 @@ MCP_URL=https://gateway.example.com/devorbit/mcp npm run deploy-agentteams
 
 ## 验证与诚实边界
 
-`npm test` 验证独立 Worker 协作、真实样例仓补丁/测试、同 Case 审批续跑、低置信停止、测试失败阻断与熔断、灰度回滚、动态补证升级、自愈闭环 Red→Red→Green、Episode 硬过滤与负面召回、DB Branch 全流程与安全门禁、Hash 链生成与篡改检测、edit-based 补丁引擎精确/模糊匹配、**状态快照原子写入/损坏隔离/重启恢复审批续跑**、**库存域场景迁移机制一致性**、**租户串扰防护与陈旧上下文阻断**，目前 113/113 通过。`npm run evaluate` 执行 7 个 Golden Cases，7/7 通过，5/5 安全分支正确，Worker 证据覆盖率 100%。`npm run evaluate-rag` 验证 4/4 词法与混合检索 Top-1 命中。`npm run evaluate-security` 验证 9 个对抗安全案例。`npm run verify-evidence-chain` 独立校验运行报告的 Hash 链完整性。`npm run db-branch-smoke` 在 Docker PostgreSQL 上验证数据库分支多假设并行验证全流程。`npm run scenario-migration` 生成结算→库存跨域迁移证据（机制序列一致性 + 双域闭环）。`npm run fault-drill` 执行 6 类可靠性故障注入演练。`npm run write-skills-registry` 生成 8 Skill 版本/摘要/Worker 绑定注册表。这些指标验证工作流和策略行为，不代表生产业务收益；正式公开基准冻结后统一报告 Top-3 根因命中率、Patch 可编译率和人工介入率。
+`npm test` 验证独立 Worker 协作、真实样例仓补丁/测试、同 Case 审批续跑、低置信停止、测试失败阻断与熔断、灰度回滚、动态补证升级、自愈闭环 Red→Red→Green、Episode 硬过滤与负面召回、DB Branch 全流程与安全门禁、Hash 链生成与篡改检测、edit-based 补丁引擎精确/模糊匹配、**状态快照原子写入/损坏隔离/重启恢复审批续跑**、**库存域场景迁移机制一致性**、**租户串扰防护与陈旧上下文阻断**，目前 113/113 通过。`npm run evaluate` 执行 7 个 Golden Cases，7/7 通过，5/5 安全分支正确，Worker 证据覆盖率 100%。`npm run evaluate-rag` 验证 4/4 词法与混合检索 Top-1 命中。`npm run evaluate-security` 验证 9 个对抗安全案例。`npm run verify-evidence-chain` 独立校验运行报告的 Hash 链完整性。`npm run db-branch-smoke` 在 Docker PostgreSQL 上验证数据库分支多假设并行验证全流程。`npm run scenario-migration` 生成结算→库存跨域迁移证据（机制序列一致性 + 双域闭环）。`npm run fault-drill` 执行 7 类可靠性故障注入演练。`npm run write-skills-registry` 生成 8 Skill 版本/摘要/Worker 绑定注册表。这些指标验证工作流和策略行为，不代表生产业务收益；正式公开基准冻结后统一报告 Top-3 根因命中率、Patch 可编译率和人工介入率。
 
 `npm run capture-runs` 生成 4 份可回放运行报告；`npm run api-smoke` 从独立端口启动服务并验证会话续跑、真实测试、安全门禁和评测报告 API。AgentTeams 契约证据见 [`reports/agentteams-contract.md`](reports/agentteams-contract.md)。
 
@@ -197,8 +202,9 @@ MCP_URL=https://gateway.example.com/devorbit/mcp npm run deploy-agentteams
 
 ## 开放与依赖披露
 
-- 计划开源：Agent/Skill 模板、Schema、适配器 SDK、演示案例和评测脚本。
-- 开源协议：Apache-2.0，见 [`LICENSE`](LICENSE)。
+- 公开仓库：[`github.com/RainDong19981998/DevOrbit`](https://github.com/RainDong19981998/DevOrbit)（Apache-2.0，tag `v1.0.0`）。
+- 已开源：Agent/Skill 模板、Schema、适配器 SDK、演示案例和评测脚本。
+- 社区治理：[`CONTRIBUTING.md`](CONTRIBUTING.md)（贡献指南）、[`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)（行为准则）、`.github/ISSUE_TEMPLATE/`（Issue 模板）。
 - 默认无密钥 Demo 仅依赖 Node.js 标准库；无商业 API、无外部 npm 包。
 - AgentTeams 证据环境使用官方 v1.2.2 容器、QwenPaw、本地 Ollama `qwen3:8b` 与 Higress；版本、边界和替换路径见合规清单。
 - 数据授权：当前所有案例文本、指标和标识均为团队构造的仿真数据，可公开复现。
@@ -221,7 +227,7 @@ MCP_URL=https://gateway.example.com/devorbit/mcp npm run deploy-agentteams
 - [`reports/native-platform-smoke.json`](reports/native-platform-smoke.json)：GitHub/Git/Jenkins/Argo 原生连接器 8/8 本地证据与边界说明。
 - [`reports/native-runner-smoke.json`](reports/native-runner-smoke.json)：原生 runner 镜像 Git/clone/最小权限/持久挂载 6/6 运行证据。
 - [`reports/scenario-migration.json`](reports/scenario-migration.json)：结算→库存第二类场景迁移证据（机制序列完全一致 + 双域闭环）。
-- [`reports/fault-drill.json`](reports/fault-drill.json)：6 类可靠性故障注入演练（熔断/重试/fail-closed/审计/门禁/网络）。
+- [`reports/fault-drill.json`](reports/fault-drill.json)：7 类可靠性故障注入演练（熔断/重试/超时/fail-closed/审计/门禁/网络）。
 - [`reports/skills-registry.json`](reports/skills-registry.json)：8 Skill 版本/摘要/Worker 绑定与生命周期注册表。
 - [`evaluation/public-benchmark-pilot.manifest.json`](evaluation/public-benchmark-pilot.manifest.json)：1 个 SWE-bench dev validation pilot 的来源、摘要、失败与金修复隔离证据；正式计分仍为 0 案例。
 - [`reports/public-model-pilot-v11.json`](reports/public-model-pilot-v11.json)：同一 validation case 的完整调优链终态；Run 7 旧门禁通过后被新增兼容性探针推翻，Run 11 增强门禁拒绝残余，39/39 失败证据校验。
