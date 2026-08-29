@@ -1,18 +1,18 @@
 # DevOrbit — 多 Agent 研发闭环平台
 
-> GOAI 初赛提交版：2026年8月16日 · 复赛更新版 V0.8.0：2026年8月25日 · V0.9.0：2026年8月27日 · V0.9.5：2026年8月27日 · V0.9.6：2026年8月28日 · **复赛最终提交版 V1.0.0：2026年8月31日**
+> 当前版本 V1.0.0 · Apache-2.0 · 仅依赖 Node.js 标准库，无第三方 npm 包
 
 DevOrbit 是一套自动处理线上缺陷的多 Agent 研发平台。用户提交问题、仓库和分支，系统读取 Issue、日志与代码，完成根因定位、补丁生成和独立测试；发布前等待负责人确认，最终交付代码 Diff、测试报告、审批/灰度记录和复盘知识卡。
 
-V1.0.0 复赛最终版：按复赛评分标准（场景 20% / 多 Agent 25% / Skill 20% / 工程落地与安全审计 30% / 开源 5%）完成最后冲刺。**状态持久化与重启恢复**——Case State 与证据链快照原子落盘，进程崩溃后自动恢复审批挂起会话并续跑（同 case/trace，证据链连续校验）。**Skill 版本溯源**——8 个 Skill 全部 SemVer + sha256 摘要注册，每条 trace 记录 skillVersion/skillDigest，任一结果可定位到产生它的 Skill 版本。**第二类场景迁移**——结算支付域到库存域（秒杀超卖）机制零改动复制：两域 Worker×Skill 序列、状态机路径、MCP 工具集完全一致，均 3 失败→4 通过→promoted 闭环。**可靠性故障演练** 6/6（返工熔断/模型 429 重试/500 fail-closed/工具错误审计/DB 门禁/端点不可达）。**上下文治理**——租户硬过滤、陈旧版本召回阻断、会话 TTL 与快照保留策略显性化。113/113 单测、63/63 validate、1498/1498 release-audit。
+V1.0.0 重点强化工程落地与可验证性。**状态持久化与重启恢复**——Case State 与证据链快照原子落盘，进程崩溃后自动恢复审批挂起会话并续跑（同 case/trace，证据链连续校验）。**Skill 版本溯源**——8 个 Skill 全部 SemVer + sha256 摘要注册，每条 trace 记录 skillVersion/skillDigest，任一结果可定位到产生它的 Skill 版本。**第二类场景迁移**——结算支付域到库存域（秒杀超卖）机制零改动复制：两域 Worker×Skill 序列、状态机路径、MCP 工具集完全一致，均 3 失败→4 通过→promoted 闭环。**可靠性故障演练** 6/6（返工熔断/模型 429 重试/500 fail-closed/工具错误审计/DB 门禁/端点不可达）。**上下文治理**——租户硬过滤、陈旧版本召回阻断、会话 TTL 与快照保留策略显性化。113/113 单测、63/63 validate、1536/1536 release-audit。
 
 V0.9.6 第四轮：edit-based 补丁引擎重构（模型输出 SEARCH/REPLACE 块，工具侧应用+模糊匹配，根除 V0.8 模型直出 diff 的 0% 应用率硬伤）。RCA 引导目标文件内容注入。失败知识自沉淀闭环（42 条 negative Episode 自动生成→第二轮按仓库召回警示）。三维消融：管道（diff-based V0.8 0% vs edit-based V0.9.6）、模型（glm / deepseek-v4-flash / 本地 qwen3:8b）、架构（devorbit vs single-agent），同冻结 30 案例 SWE-bench dev test split。glm 第二轮（含知识回放）闭环率 0%→10%（3/30，PYDICOM-1413/SQLFLUFF-2907/SQLFLUFF-4753 均为 devorbit 闭环，single-agent 0/30），补丁可应用率 0%→56%，RCA Top-3 73.3%。deepseek edit-based 同样 3/30 闭环。驾驶舱新增基准大盘页。
 
 V0.9.5 第三轮加强：GitLab CE 真实自愈 E2E 17/17（deepseek-v4 真实模型驱动 Red→Red→Green：首版 patch CI 红→模型读真实 job trace→二次生成→CI 绿→MR 合并）。AgentTeams 运行时 18/18（2 个自愈决策：DM-001 补证 0.45→0.92、DM-002 返工 Red→Green + 18 条 MCP 审计）。Chaos Button 现场故障注入演示（3 个故障库：连接池缩容/幂等丢失/慢 SQL）。机制级消融 3 组对照（full / no-episode / no-self-healing）。失败案例深度剖析（10 失败分类 + 自愈救回统计）。驾驶舱 UI 新增：置信度轨迹条、返工计数徽章、负面警示 tab、Hash 链可视化+现场篡改演示。container-smoke 断言回归（契约下限+版本动态化）。
 
-V0.8.0 复赛更新：模型升级为 deepseek-v4-flash-0731（阿里云百炼，经 Higress AI 网关路由），AgentTeams leader 展示真实自主协同（自主分诊→自学技能→规划 DAG→创建任务房间→派发→汇报，18 条自主 LLM 响应）。新增 GitLab CE 18.2.1 真实平台端到端闭环（Issue→deepseek RCA→模型直出修复 patch→CI 红→绿→MR 合并，13/13 步）。新增 Docker 双容器灰度 + SLO 违约检测 + 自动回滚（8/8）。30 案例 SWE-bench dev 公开基准正式计分（devorbit 20/30 vs single-agent 15/30，Wilson 95% 区间）。模型 Provider 三驱动抽象层（openai-compat/ollama/fixture），API key 永不入包。单元测试 64/64。
+V0.8.0：模型升级为 deepseek-v4-flash-0731（阿里云百炼，经 Higress AI 网关路由），AgentTeams leader 展示真实自主协同（自主分诊→自学技能→规划 DAG→创建任务房间→派发→汇报，18 条自主 LLM 响应）。新增 GitLab CE 18.2.1 真实平台端到端闭环（Issue→deepseek RCA→模型直出修复 patch→CI 红→绿→MR 合并，13/13 步）。新增 Docker 双容器灰度 + SLO 违约检测 + 自动回滚（8/8）。30 案例 SWE-bench dev 公开基准正式计分（devorbit 20/30 vs single-agent 15/30，Wilson 95% 区间）。模型 Provider 三驱动抽象层（openai-compat/ollama/fixture），API key 永不入包。单元测试 64/64。
 
-V0.4 是已审计的初赛提交基线；V0.6.0 完成六类 HTTP Provider、GitHub Issue/Git/Jenkins/Argo Rollouts 原生连接器和最小权限容器门禁。V0.7.0 在本机实际运行官方 AgentTeams v1.2.2（commit `849182a`）：1 个 Leader 与 7 个 QwenPaw Worker 均使用本地 `qwen3:8b`，通过 TeamHarness、Matrix 和带独立 Worker 身份的 MCP 完成正式闭环。冻结报告为 7/7 Worker、16 次 MCP 调用、31 条 TeamHarness 生命周期记录，L2 灰度因缺少签名审批令牌按策略拒绝并停在 `needs_human`。V0.8.0 将模型切换为 deepseek-v4-flash-0731 并复跑通过（7/7 Worker + 7/7 审计），自主协同 trace 已冻结。这是真实的官方 AgentTeams 本地运行证据，不是云账号、厂商平台或生产集群实测。
+V0.6.0 完成六类 HTTP Provider、GitHub Issue/Git/Jenkins/Argo Rollouts 原生连接器和最小权限容器门禁。V0.7.0 在本机实际运行官方 AgentTeams v1.2.2（commit `849182a`）：1 个 Leader 与 7 个 QwenPaw Worker 均使用本地 `qwen3:8b`，通过 TeamHarness、Matrix 和带独立 Worker 身份的 MCP 完成正式闭环。冻结报告为 7/7 Worker、16 次 MCP 调用、31 条 TeamHarness 生命周期记录，L2 灰度因缺少签名审批令牌按策略拒绝并停在 `needs_human`。V0.8.0 将模型切换为 deepseek-v4-flash-0731 并复跑通过（7/7 Worker + 7/7 审计），自主协同 trace 已冻结。这是真实的官方 AgentTeams 本地运行证据，不是云账号、厂商平台或生产集群实测。
 
 ## 一分钟运行
 
@@ -66,7 +66,7 @@ npm run validate-agentteams-runtime
 npm run container-smoke
 ```
 
-评审可直接按 [`docs/评委90秒验收.md`](docs/评委90秒验收.md) 快速复核评分证据。
+最短复核路径见 [`docs/快速验收.md`](docs/快速验收.md)。
 
 重建无声工程证据短片（需 Firefox、Xvfb 与 FFmpeg）：
 
@@ -111,7 +111,7 @@ config/agentteams.yaml     AgentTeams v1.2.2 Worker/Team CR（生成物）
 config/*.contract.json     锁定版本、字段枚举与官方证据哈希
 config/case-lifecycle.yaml 业务状态机（含补证回边、返工回边、熔断策略 v0.2.0）
 config/policy.yaml         风险等级、发布门禁、回滚、自愈、知识生命周期与上下文治理策略
-docs/                      参赛简介、清单、架构、路演材料与场景迁移复制路径
+docs/                      技术方案、快速验收、架构与场景迁移复制路径
 schemas/                   共享状态、MCP 与 HTTP Adapter 契约
 skills/                    7 个自定义、可分发且已校验的 Skill 包（SemVer frontmatter）
 third_party/aliyun/        锁定的官方云 Skill 合规裁剪快照与来源/差异说明
@@ -144,12 +144,12 @@ Skill 是稳定能力抽象，MCP 负责连接工具。当前实现提供 7 个�
 
 V0.5 的 HTTP Provider 契约见 [`docs/Adapter生产契约.md`](docs/Adapter生产契约.md) 与 [`schemas/http-adapter.openapi.json`](schemas/http-adapter.openapi.json)，应用版本现在为 V0.7.0；Adapter OpenAPI 独立保持 v0.5.0，因为接口兼容。V0.6.0 原生平台连接器与配置契约见 [`docs/原生平台连接器.md`](docs/原生平台连接器.md) 和 [`config/platform-native.contract.json`](config/platform-native.contract.json)。`npm run native-platform-smoke` 在本地协议端点上实际执行 Git clone/commit/push/checkout 与 `node --test`，并验证 GitHub Issue 归一化、Jenkins 异步构建、Argo JSON Patch/generation gate、回滚确认、临时分支清理和持久幂等；已完成结果可跨重启重放，外部结果未知则进入 `in_doubt`、禁止自动重做，只能由运维携 Provider 证据对账。`npm run native-runner-smoke` 验证含 Git 的最小权限原生镜像与持久幂等挂载。两者证明连接器工程边界，不等于厂商账号或生产系统实测。
 
-上下文机制已实现赛事要求中的两项：
+上下文机制包含两项核心能力：
 
 1. 共享状态管理：`Case State` 贯穿所有 Worker，状态字段由 JSON Schema 约束。
 2. 轨迹可观测：运行器记录 Agent、Skill、消息、时间和证据引用，支持回放与审计。
 
-RCA Worker 会调用 `knowledge.search_cases`，从 6 条结构化 Incident Episode 中检索 Top-3，检索先按租户→服务→环境→git/config 版本硬过滤，再走词法+embedding 混合召回，返回 `recommendations`（成功方案）与 `warnings`（负面方案/失败修法警示）；当前 7+4 个 Golden/Safety Cases 的 Top-1 均为预期案例，引用有效率 100%。Learning Worker 在发布或回滚后构建 observation artifact（灰度观察窗口、业务断言+APM 指标判定、复盘确认人），写入 Episode 时 `recallStatus` 为 `pending`（不进默认召回），观察通过转 `active`，回滚/复发转 `negative`（立即可召回作警示）。检索默认只召回 `active`+`negative`，`pending` 不进入默认召回。当前采用确定性词法/标签检索以保证无密钥复现，不伪装成向量模型；复赛增加公开缺陷集的 embedding 混合检索与对照评测。
+RCA Worker 会调用 `knowledge.search_cases`，从 6 条结构化 Incident Episode 中检索 Top-3，检索先按租户→服务→环境→git/config 版本硬过滤，再走词法+embedding 混合召回，返回 `recommendations`（成功方案）与 `warnings`（负面方案/失败修法警示）；当前 7+4 个 Golden/Safety Cases 的 Top-1 均为预期案例，引用有效率 100%。Learning Worker 在发布或回滚后构建 observation artifact（灰度观察窗口、业务断言+APM 指标判定、复盘确认人），写入 Episode 时 `recallStatus` 为 `pending`（不进默认召回），观察通过转 `active`，回滚/复发转 `negative`（立即可召回作警示）。检索默认只召回 `active`+`negative`，`pending` 不进入默认召回。当前采用确定性词法/标签检索以保证无密钥复现，不伪装成向量模型；并针对公开缺陷集提供 embedding 混合检索与对照评测。
 
 构建 AgentTeams Worker 包：
 
@@ -203,19 +203,15 @@ MCP_URL=https://gateway.example.com/devorbit/mcp npm run deploy-agentteams
 - AgentTeams 证据环境使用官方 v1.2.2 容器、QwenPaw、本地 Ollama `qwen3:8b` 与 Higress；版本、边界和替换路径见合规清单。
 - 数据授权：当前所有案例文本、指标和标识均为团队构造的仿真数据，可公开复现。
 
-## 提交材料
+## 文档与证据索引
 
-- [`docs/作品简介.md`](docs/作品简介.md)：500 字以内初赛简介。
-- [`docs/官网提交粘贴稿.md`](docs/官网提交粘贴稿.md)：官网字段、上传顺序与待填信息。
-- [`docs/参赛方案.md`](docs/参赛方案.md)：与评分项逐项对应的完整方案。
+- [`docs/技术方案.md`](docs/技术方案.md)：场景、架构、安全、知识与基准的完整技术方案。
+- [`docs/快速验收.md`](docs/快速验收.md)：最短可复核路径与证据索引。
 - [`docs/Agent-Identity清单.md`](docs/Agent-Identity清单.md)：7 个 Worker 与 Manager 的边界。
 - [`docs/Skill清单.md`](docs/Skill清单.md)：核心 Skill 的 I/O、失败处理、安全和复用价值。
-- [`deliverables/DevOrbit_复赛方案.pdf`](deliverables/DevOrbit_复赛方案.pdf)：18 页 V1.0.0 复赛主方案（含初赛反馈标红对比、场景闭环图、风险边界声明、可复制性说明四项必含内容）；源文件为同目录 PPTX。
 - [`docs/AgentTeams本地运行验证.md`](docs/AgentTeams本地运行验证.md)：官方 AgentTeams 本地实跑架构、证据计数、复核命令和诚实边界。
 - [`docs/演示脚本.md`](docs/演示脚本.md)：无配音视频分镜、现场 Demo 与问答口径。
-- [`docs/评委90秒验收.md`](docs/评委90秒验收.md)：最短可复核路径与评分证据索引。
 - [`docs/威胁模型.md`](docs/威胁模型.md)：信任边界、攻击路径、控制和剩余风险。
-- [`docs/复赛冲刺路线图.md`](docs/复赛冲刺路线图.md)：官方环境、真实工具链与公开基准的 10 天执行计划。
 - [`docs/场景迁移复制路径.md`](docs/场景迁移复制路径.md)：结算→库存跨域迁移的不变机制、替换项、步骤与适用边界。
 - [`docs/原生平台连接器.md`](docs/原生平台连接器.md)：GitHub/Git/Jenkins/Argo Rollouts 连接器配置、权限边界和 8/8 本地证据。
 - [`reports/benchmark.md`](reports/benchmark.md)：7 组对照/消融与 95% Wilson 区间。
@@ -230,3 +226,4 @@ MCP_URL=https://gateway.example.com/devorbit/mcp npm run deploy-agentteams
 - [`evaluation/public-benchmark-pilot.manifest.json`](evaluation/public-benchmark-pilot.manifest.json)：1 个 SWE-bench dev validation pilot 的来源、摘要、失败与金修复隔离证据；正式计分仍为 0 案例。
 - [`reports/public-model-pilot-v11.json`](reports/public-model-pilot-v11.json)：同一 validation case 的完整调优链终态；Run 7 旧门禁通过后被新增兼容性探针推翻，Run 11 增强门禁拒绝残余，39/39 失败证据校验。
 - [`reports/independent-model-pilot.json`](reports/independent-model-pilot.json)：跨仓预注册单次验证终态；pydicom 案例的重复 exact-edit 被契约拒绝，计为独立负例，26/26 证据校验。
+- [`deliverables/`](deliverables/)：产品演示视频（无声版与语音讲解版）、产品界面截图。

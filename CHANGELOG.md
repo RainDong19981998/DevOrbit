@@ -1,6 +1,6 @@
 # DevOrbit 版本迭代记录
 
-## V1.0.0（2026年8月31日）— 复赛最终提交版：持久化恢复 + Skill 溯源 + 场景迁移 + 故障演练
+## V1.0.0（2026年8月31日）— 持久化恢复 + Skill 溯源 + 场景迁移 + 故障演练
 
 ### 新增
 
@@ -10,8 +10,8 @@
 - **可靠性故障演练矩阵**：6 类受控故障注入——Worker 返工耗尽熔断、模型 429 重试恢复、模型 500 fail-closed（密钥不泄露）、工具执行错误审计、DB 未知分支 fail-closed + DROP TABLE 门禁、MCP 端点不可达（`scripts/fault-drill.mjs` → `reports/fault-drill.{json,md}` 6/6）
 - **上下文治理显性化**：`config/policy.yaml` 新增 `context_governance`（版本/分层/租户硬过滤/陈旧阻断/会话 TTL/快照保留/冲突降级）；3 个新单测覆盖租户串扰防护、陈旧 gitRevision 召回阻断、治理策略声明
 - **Skill 生命周期治理**：`reports/skills-registry.json`（7 自定义 + 1 官方锁定，version/digest/Worker 绑定/生命周期环节）；`docs/Skill清单.md` 生命周期章节（SemVer/Registry/晋级判据/灰度兼容/回滚/退役）
-- **方案 PDF 扩为 18 页**：新增初赛反馈调整点（标红对比）、场景闭环图（目标用户+痛点+价值+输入输出链路）、可复制性页；风险边界声明独立成页（复赛四项必含内容全覆盖）
-- **演示视频重录（129 秒 ≤8 分钟门禁）**：新增 Skill 调用证据（版本+摘要特写）与异常处理演示（self-healing Red→Red→Green）两段，覆盖复赛三要素（Agent 协作/Skill 调用证据/异常处理）；语音讲解版 CosyVoice 重新合成
+- **方案 PDF 扩为 18 页**：新增更新摘要、场景闭环图（目标用户+痛点+价值+输入输出链路）、可复制性页；风险边界声明独立成页
+- **演示视频重录（129 秒）**：新增 Skill 调用证据（版本+摘要特写）与异常处理演示（self-healing Red→Red→Green）两段；语音讲解版 CosyVoice 重新合成
 - 服务端新增 `GET /api/runs`（会话与快照列表）、`/api/health` 输出持久化状态；`POST /api/runs` 支持 `fixture: inventory`
 
 ### 变更
@@ -76,7 +76,7 @@
 
 - **GitLab CE 真实自愈 E2E 17/17**：deepseek-v4-flash-0731 真实模型驱动完整 Red→Red→Green 闭环——首版 patch CI 红→模型读真实 job trace→二次生成→CI 绿→MR 合并（`reports/gitlab-e2e-self-healing.json`）
 - **AgentTeams 运行时 V3 18/18**：2 个自愈决策（DM-001 补证 0.45→0.92、DM-002 返工 Red→Green）+ 18 条 MCP 审计（`reports/agentteams-runtime-v3.json`）
-- **Chaos Button 现场故障注入**：3 个预验证故障库（pool-shrink/idempotency-loss/slow-sql），评委现场选故障注入→完整闭环→恢复（`scripts/chaos.mjs` → `reports/chaos.json`）
+- **Chaos Button 现场故障注入**：3 个预验证故障库（pool-shrink/idempotency-loss/slow-sql），可选故障注入→完整闭环→恢复（`scripts/chaos.mjs` → `reports/chaos.json`）
 - **机制级消融 3 组对照**：full-policy / no-episode-rag / no-self-healing，证明去掉关键能力后行为变化（`scripts/ablation-mechanism.mjs` → `reports/ablation.{json,md}`）
 - **失败案例深度剖析**：30 案例 10 失败根因分类（environment-mismatch/timeout/patch-incomplete）+ 自愈救回统计（`scripts/benchmark-autopsy.mjs` → `reports/benchmark-autopsy.md`）
 - **驾驶舱 UI 新字段**：置信度轨迹条（0.58→0.91）、返工计数徽章、负面警示 tab、Hash 链 12 环节可视化 + 现场篡改演示按钮（`app/v095.css`）
@@ -145,7 +145,7 @@
 
 ---
 
-## V0.8.0（2026年8月25日）— 复赛更新
+## V0.8.0（2026年8月25日）— 真实平台连接器与公开基准
 
 ### 新增
 
@@ -165,7 +165,7 @@
 
 ---
 
-## V0.7.0（2026年8月16日）— 初赛提交
+## V0.7.0（2026年8月16日）— 首个完整版本
 
 ### 核心能力
 

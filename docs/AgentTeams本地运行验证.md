@@ -67,4 +67,4 @@ npm run validate-agentteams-runtime
 - `scripts/run-agentteams-runtime-case.mjs`
 - `scripts/validate-agentteams-runtime.mjs`
 
-在已安装并初始化的本地 AgentTeams 环境中，可先运行 `npm run configure-agentteams-local-runtime` 校验 Higress ServiceSource、Envoy Cluster 与 10/10 Worker MCP policy，再运行 `npm run run-agentteams-runtime-case` 生成新报告。安装期凭据和临时环境文件不随参赛包分发；新运行的事件 ID、时间和报告摘要应自然变化。
+在已安装并初始化的本地 AgentTeams 环境中，可先运行 `npm run configure-agentteams-local-runtime` 校验 Higress ServiceSource、Envoy Cluster 与 10/10 Worker MCP policy，再运行 `npm run run-agentteams-runtime-case` 生成新报告。安装期凭据和临时环境文件不随代码包分发；新运行的事件 ID、时间和报告摘要应自然变化。

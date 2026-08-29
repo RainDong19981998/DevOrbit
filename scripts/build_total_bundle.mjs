@@ -17,7 +17,7 @@ const fromCodeZip = [
   ['作品简介.md', 'docs/作品简介.md'],
   ['官网提交粘贴稿.md', 'docs/官网提交粘贴稿.md'],
   ['提交清单.md', 'docs/提交清单.md'],
-  ['评委90秒验收.md', 'docs/评委90秒验收.md'],
+  ['快速验收.md', 'docs/快速验收.md'],
   ['第三方依赖与合规清单.md', 'docs/第三方依赖与合规清单.md'],
   ['演示脚本.md', 'docs/演示脚本.md'],
   ['AgentTeams本地运行验证.md', 'docs/AgentTeams本地运行验证.md'],

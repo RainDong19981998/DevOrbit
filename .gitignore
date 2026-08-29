@@ -10,7 +10,16 @@ __pycache__/
 !evaluation/public-pilot/**/evidence/*.log
 !evaluation/public-model-pilot/**/evidence/*.log
 deliverables/*.zip
+deliverables/*.pdf
+deliverables/*.pptx
+deliverables/交付物_SHA256.txt
 .firefox-*-profile/
 docs/reference/
+docs/作品简介.md
+docs/官网提交粘贴稿.md
+docs/提交清单.md
+docs/复赛冲刺路线图.md
+docs/无配音讲解视频说明.md
+docs/路演PPT.html
 reports/runs/state/
 .zhanlu/

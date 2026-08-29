@@ -58,7 +58,7 @@ try {
   const mcp = await fetch(`${base}/mcp`, { method: 'POST', headers: { accept: 'application/json, text/event-stream', 'content-type': 'application/json' }, body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'initialize', params: { protocolVersion: '2025-06-18' } }) });
   if (mcp.status !== 401) throw new Error(`unauthorized MCP request returned ${mcp.status}`);
 
-  const traversal = await fetch(`${base}/docs/参赛方案.md`);
+  const traversal = await fetch(`${base}/docs/技术方案.md`);
   if (traversal.status !== 404) throw new Error(`non-public static resource returned ${traversal.status}`);
   const prefixedTraversal = await fetch(`${base}/app/../config/tool-policy.json`);
   if (prefixedTraversal.status !== 404) throw new Error(`prefixed static traversal returned ${prefixedTraversal.status}`);
