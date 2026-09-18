@@ -1,11 +1,11 @@
 # 提交发布审计
 
-- 结果：1599/1599 checks passed
+- 结果：1605/1605 checks passed
 - 作品简介：474/500 字符
-- PDF：18 页 V1.0.2；前 12 页主讲，后 6 页附录；已撤下无效 MTTR 对比与未实测数据库主张
+- PDF：18 页 V1.1.0；前 12 页主讲，后 6 页附录；已撤下无效 MTTR 对比与未实测数据库主张
 - 视频：演示片 H.264 1280×800、129 秒 tour 导览模式（烧录中文字幕、无音轨，≤8 分钟门禁；含 Agent 协作/Skill 调用证据/异常处理演示三要素）；另有语音讲解版（CosyVoice v3-flash 旁白混音，供路演使用，不参与提交门禁）；讲解片 V0.9.5+ 移除（初赛轮产物）
 - 基础工程证据：Agent×Tool 策略、9/9 对抗安全、三维消融、OTLP JSON 导出均已纳入总包
-- V1.0.2 工程证据：RCA/Patch 移除 profile.rootCause/profile.fix；AT 严格探针按七 Worker sender 与 MCP 归属验收；Skill PATCH 升级/回退实跑；数据库 measured=false 诚实披露
+- V1.1.0 工程证据：RCA/Patch 移除 profile.rootCause/profile.fix；AT 严格探针按七 Worker sender 与 MCP 归属验收；Skill PATCH 升级/回退实跑；数据库 measured=false 诚实披露
 - V0.9.6 工程证据：glm 第二轮闭环 3/30（0%→10%）、可应用率 56%、RCA Top-3 73.3%；single-agent 0/30；三维消融（管道/模型/架构）；失败知识自沉淀 42 条 negative Episode；GitLab 真实自愈 e2e 17/17；Docker 灰度 8/8
 - 公开调优边界：Run 1–11 全留痕；Run 7 旧门禁通过后由兼容性反例推翻；Run 11 增强门禁拒绝残余，39/39 失败证据校验
 - 独立验证边界：跨仓 pydicom 单次运行在重复 exact-edit 契约处终止，按负例披露；26/26 证据校验；正式 benchmark 仍为 not_run / 0 cases
@@ -13,13 +13,13 @@
 
 | Artifact | SHA-256 |
 |---|---|
-| DevOrbit_决赛方案.pdf | `a7f5b945f482abb1134821185fe0499378a6619a19d77ba637f38945ad5d9911` |
-| DevOrbit_决赛方案.pptx | `202d00612b7809f30c900cba7632a11e08e4213addc8099869b6e6fd2d1a483b` |
-| DevOrbit_决赛可执行代码包.zip | `9fb05849fa2877ba7597ac11b9123b1dcfc1ad8fe6b3484d749995b356677a58` |
+| DevOrbit_决赛方案.pdf | `215319ea0b9007b75554d58fca6542becdb73dfd3f1143dd8210585eb4893f2e` |
+| DevOrbit_决赛方案.pptx | `6bdc4fb60b82fb816b896b4f5bc7e2b39d1d688bf6070d7d9e528e81c7c9cf37` |
+| DevOrbit_决赛可执行代码包.zip | `5548a565070da7a4ab7d751517308e4f50b5ecf95bd1e61189db9ff0fb9dddd7` |
 | DevOrbit_决赛验收与答辩手册.pdf | `370872601a10f0afa84c7b9a8895f64b5f8ccc0b7102a96d746ddc6885f48d7c` |
-| DevOrbit_演示视频.mp4 | `8b4dfedb39b2ab76af599afb0779052654158b4e33a334b7ac9e1fec21703d8b` |
-| DevOrbit_演示视频封面.png | `95cc268c22d05d2360bc67a7235d78cd6c887abd220210c516e7a8ca067ae5bb` |
-| DevOrbit_产品界面.png | `79a9840366d811125ef552740d770fb31d6c38e3066e0ba263b1b52e25f67bc9` |
+| DevOrbit_演示视频.mp4 | `ea6ae96379ff0889cb60a1568baccc32297b52a72951128e2cd9d6b64bdc8aef` |
+| DevOrbit_演示视频封面.png | `18d09682a68947ae206aceb9276e319cafbe376a184b9c29d219cc16cd10a3c0` |
+| DevOrbit_产品界面.png | `839d5ca7f618b297a3f5f84fa524173c3848dbdcbe9c6174daac36c15b99257c` |
 | DevOrbit_AgentTeams本地运行验证.pdf | `14737146a1c3772668a5b5c000620192248c2302e80d845079284bf9b92b877f` |
 | DevOrbit_威胁模型.pdf | `4c458e86b71d29633d8edb042317eabd45ae0a2f095e54bc6fa68792dd7df08c` |
 | DevOrbit_证据索引.pdf | `c3d640fb1f5f67edcdb7a042185cadd34bc9e246ac92d68a425dcb45b714b528` |
@@ -36,18 +36,18 @@
 | PDF submission date | PASS |  |
 | PDF product positioning | PASS |  |
 | PDF official Skill evidence | PASS |  |
-| PDF V1.0.2 cover and evidence | PASS |  |
+| PDF V1.1.0 cover and evidence | PASS |  |
 | PDF 12-page main plus appendix | PASS |  |
 | PDF honest evidence boundary | PASS |  |
 | PDF compliance | PASS |  |
 | PPTX official Skill evidence | PASS |  |
-| PPTX V1.0.2 structure and evidence | PASS |  |
+| PPTX V1.1.0 structure and evidence | PASS |  |
 | PPTX removes invalid MTTR and DB claims | PASS |  |
 | PPTX compliance | PASS |  |
 | video format | PASS |  |
 | video has no audio stream | PASS |  |
 | video duration | PASS | 129.000000s |
-| video reviewed digest unchanged | PASS | 8b4dfedb39b2ab76 |
+| video reviewed digest unchanged | PASS | ea6ae96379ff0889 |
 | video metadata compliance | PASS |  |
 | explainer video format | PASS |  |
 | explainer has no audio stream | PASS |  |
@@ -260,6 +260,8 @@
 | code secret-scan docs/威胁模型.md | PASS |  |
 | code compliance docs/证据索引.md | PASS |  |
 | code secret-scan docs/证据索引.md | PASS |  |
+| code compliance docs/PolarDB现场复跑指南.md | PASS |  |
+| code secret-scan docs/PolarDB现场复跑指南.md | PASS |  |
 | code compliance docs/场景迁移复制路径.md | PASS |  |
 | code secret-scan docs/场景迁移复制路径.md | PASS |  |
 | code compliance docs/无配音讲解视频说明.md | PASS |  |
@@ -1158,6 +1160,8 @@
 | code secret-scan reports/runs/archive/CASE-6B735AEB.json | PASS |  |
 | code compliance reports/runs/archive/CASE-E30E3764.json | PASS |  |
 | code secret-scan reports/runs/archive/CASE-E30E3764.json | PASS |  |
+| code compliance reports/runs/archive/CASE-48DA0C0E.json | PASS |  |
+| code secret-scan reports/runs/archive/CASE-48DA0C0E.json | PASS |  |
 | code compliance reports/runs/archive/CASE-792DC7EA.json | PASS |  |
 | code secret-scan reports/runs/archive/CASE-792DC7EA.json | PASS |  |
 | code compliance reports/runs/archive/CASE-8325EC60.json | PASS |  |
@@ -1172,6 +1176,8 @@
 | code secret-scan reports/runs/archive/CASE-57BABFE3.json | PASS |  |
 | code compliance reports/runs/archive/CASE-C6E7DD6F.json | PASS |  |
 | code secret-scan reports/runs/archive/CASE-C6E7DD6F.json | PASS |  |
+| code compliance reports/runs/archive/CASE-4C9833CD.json | PASS |  |
+| code secret-scan reports/runs/archive/CASE-4C9833CD.json | PASS |  |
 | code compliance reports/runs/happy-path.json | PASS |  |
 | code secret-scan reports/runs/happy-path.json | PASS |  |
 | code compliance reports/runs/canary-regression.json | PASS |  |

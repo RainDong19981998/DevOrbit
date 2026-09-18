@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-09-18T14:50:25.088Z",
+  "generatedAt": "2026-09-18T15:15:41.977Z",
   "summary": {
-    "checks": 1599,
-    "passed": 1599,
+    "checks": 1605,
+    "passed": 1605,
     "failed": 0
   },
   "artifacts": {
-    "DevOrbit_决赛方案.pdf": "a7f5b945f482abb1134821185fe0499378a6619a19d77ba637f38945ad5d9911",
-    "DevOrbit_决赛方案.pptx": "202d00612b7809f30c900cba7632a11e08e4213addc8099869b6e6fd2d1a483b",
-    "DevOrbit_决赛可执行代码包.zip": "9fb05849fa2877ba7597ac11b9123b1dcfc1ad8fe6b3484d749995b356677a58",
+    "DevOrbit_决赛方案.pdf": "215319ea0b9007b75554d58fca6542becdb73dfd3f1143dd8210585eb4893f2e",
+    "DevOrbit_决赛方案.pptx": "6bdc4fb60b82fb816b896b4f5bc7e2b39d1d688bf6070d7d9e528e81c7c9cf37",
+    "DevOrbit_决赛可执行代码包.zip": "5548a565070da7a4ab7d751517308e4f50b5ecf95bd1e61189db9ff0fb9dddd7",
     "DevOrbit_决赛验收与答辩手册.pdf": "370872601a10f0afa84c7b9a8895f64b5f8ccc0b7102a96d746ddc6885f48d7c",
-    "DevOrbit_演示视频.mp4": "8b4dfedb39b2ab76af599afb0779052654158b4e33a334b7ac9e1fec21703d8b",
-    "DevOrbit_演示视频封面.png": "95cc268c22d05d2360bc67a7235d78cd6c887abd220210c516e7a8ca067ae5bb",
-    "DevOrbit_产品界面.png": "79a9840366d811125ef552740d770fb31d6c38e3066e0ba263b1b52e25f67bc9",
+    "DevOrbit_演示视频.mp4": "ea6ae96379ff0889cb60a1568baccc32297b52a72951128e2cd9d6b64bdc8aef",
+    "DevOrbit_演示视频封面.png": "18d09682a68947ae206aceb9276e319cafbe376a184b9c29d219cc16cd10a3c0",
+    "DevOrbit_产品界面.png": "839d5ca7f618b297a3f5f84fa524173c3848dbdcbe9c6174daac36c15b99257c",
     "DevOrbit_AgentTeams本地运行验证.pdf": "14737146a1c3772668a5b5c000620192248c2302e80d845079284bf9b92b877f",
     "DevOrbit_威胁模型.pdf": "4c458e86b71d29633d8edb042317eabd45ae0a2f095e54bc6fa68792dd7df08c",
     "DevOrbit_证据索引.pdf": "c3d640fb1f5f67edcdb7a042185cadd34bc9e246ac92d68a425dcb45b714b528",
@@ -59,7 +59,7 @@
       "detail": ""
     },
     {
-      "label": "PDF V1.0.2 cover and evidence",
+      "label": "PDF V1.1.0 cover and evidence",
       "ok": true,
       "detail": ""
     },
@@ -84,7 +84,7 @@
       "detail": ""
     },
     {
-      "label": "PPTX V1.0.2 structure and evidence",
+      "label": "PPTX V1.1.0 structure and evidence",
       "ok": true,
       "detail": ""
     },
@@ -116,7 +116,7 @@
     {
       "label": "video reviewed digest unchanged",
       "ok": true,
-      "detail": "8b4dfedb39b2ab76"
+      "detail": "ea6ae96379ff0889"
     },
     {
       "label": "video metadata compliance",
@@ -1175,6 +1175,16 @@
     },
     {
       "label": "code secret-scan docs/证据索引.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance docs/PolarDB现场复跑指南.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan docs/PolarDB现场复跑指南.md",
       "ok": true,
       "detail": ""
     },
@@ -5669,6 +5679,16 @@
       "detail": ""
     },
     {
+      "label": "code compliance reports/runs/archive/CASE-48DA0C0E.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/runs/archive/CASE-48DA0C0E.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance reports/runs/archive/CASE-792DC7EA.json",
       "ok": true,
       "detail": ""
@@ -5735,6 +5755,16 @@
     },
     {
       "label": "code secret-scan reports/runs/archive/CASE-C6E7DD6F.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/runs/archive/CASE-4C9833CD.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/runs/archive/CASE-4C9833CD.json",
       "ok": true,
       "detail": ""
     },

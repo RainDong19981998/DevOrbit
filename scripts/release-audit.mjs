@@ -39,7 +39,7 @@ check('PDF page count', /^Pages:\s+18$/m.test(pdfInfo));
 check('PDF submission date', pdfText.includes('2026') && pdfText.includes('9') && pdfText.includes('17'));
 check('PDF product positioning', pdfText.includes('缺陷') && pdfText.includes('Agent') && pdfText.includes('闭环'));
 check('PDF official Skill evidence', pdfText.includes('Skill') && pdfText.includes('AgentTeams'));
-check('PDF V1.0.2 cover and evidence', pdfText.includes('V1.0.2') && pdfText.includes('AgentTeams') && pdfText.includes('Skill'));
+check('PDF V1.1.0 cover and evidence', pdfText.includes('V1.1.0') && pdfText.includes('AgentTeams') && pdfText.includes('Skill'));
 check('PDF 12-page main plus appendix', pdfText.includes('MAIN 01-12') && pdfText.includes('APPENDIX') && pdfText.includes('附录 A') && pdfText.includes('附录 F'));
 check('PDF honest evidence boundary', pdfText.includes('measured=false') && pdfText.includes('NOT MEASURED') && !pdfText.includes('3250s → 14.8s') && !pdfText.includes('PostgreSQL 16 真实隔离'));
 check('PDF compliance', !hasForbidden(pdfText));
@@ -52,7 +52,7 @@ const pptxText = archiveEntries(pptxPath)
   .replace(/<[^>]+>/g, ' ')
   .replace(/&gt;/g, '>').replace(/&lt;/g, '<').replace(/&amp;/g, '&');
 check('PPTX official Skill evidence', pptxText.includes('Skill') && pptxText.includes('AgentTeams'));
-check('PPTX V1.0.2 structure and evidence', pptxText.includes('V1.0.2') && pptxText.includes('MAIN 01-12') && pptxText.includes('APPENDIX') && pptxText.includes('Skill'));
+check('PPTX V1.1.0 structure and evidence', pptxText.includes('V1.1.0') && pptxText.includes('MAIN 01-12') && pptxText.includes('APPENDIX') && pptxText.includes('Skill'));
 check('PPTX removes invalid MTTR and DB claims', !pptxText.includes('3250s → 14.8s') && !pptxText.includes('PostgreSQL 16 真实隔离'));
 check('PPTX compliance', !hasForbidden(pptxText));
 
@@ -64,7 +64,7 @@ const stream = videoProbe.streams?.find(item => item.codec_type === 'video') || 
 check('video format', stream.codec_name === 'h264' && stream.width === 1280 && stream.height === 800 && stream.pix_fmt === 'yuv420p');
 check('video has no audio stream', !videoProbe.streams?.some(item => item.codec_type === 'audio'));
 check('video duration', Math.abs(Number(videoProbe.format?.duration) - 129) < 0.05, `${videoProbe.format?.duration}s`);
-check('video reviewed digest unchanged', videoDigest === '8b4dfedb39b2ab76af599afb0779052654158b4e33a334b7ac9e1fec21703d8b', videoDigest.slice(0, 16));
+check('video reviewed digest unchanged', videoDigest === 'ea6ae96379ff0889cb60a1568baccc32297b52a72951128e2cd9d6b64bdc8aef', videoDigest.slice(0, 16));
 const videoMetadata = command('ffprobe', ['-v', 'error', '-show_entries', 'format_tags:stream_tags', '-of', 'json', videoPath]);
 check('video metadata compliance', !hasForbidden(videoMetadata));
 const explainerPath = fileURLToPath(new URL('DevOrbit_初赛讲解视频_无配音版.mp4', deliverables));
@@ -142,7 +142,8 @@ for (const required of [
 check('code ZIP cache free', !codeEntries.some(entry => entry.includes('__pycache__') || entry.endsWith('.pyc')));
 check('code ZIP excludes live state snapshots', !codeEntries.some(entry => entry.startsWith('reports/runs/state/')));
 const codePackage = JSON.parse(archiveFile(codeZipPath, 'package.json', 'utf8'));
-check('code ZIP version', codePackage.version === '1.0.2' && codePackage.scripts?.['skill-upgrade-drill'] && codePackage.scripts?.['validate-agentteams-runtime'] && codePackage.scripts?.['native-platform-smoke'] && codePackage.scripts?.['native-runner-smoke'] && codePackage.scripts?.['reconcile-idempotency'] && codePackage.scripts?.['validate-public-model-pilot-v11'] && codePackage.scripts?.['validate-independent-model-pilot'] && codePackage.scripts?.['model-provider-smoke'] && codePackage.scripts?.['gitlab-e2e'] && codePackage.scripts?.['public-benchmark'] && codePackage.scripts?.['canary-docker'] && codePackage.scripts?.['model-ablation'] && codePackage.scripts?.['benchmark-knowledge']);
+const workspacePackage = JSON.parse(await readFile(new URL('../package.json', import.meta.url), 'utf8'));
+check('code ZIP version', codePackage.version === workspacePackage.version && codePackage.scripts?.['skill-upgrade-drill'] && codePackage.scripts?.['validate-agentteams-runtime'] && codePackage.scripts?.['native-platform-smoke'] && codePackage.scripts?.['native-runner-smoke'] && codePackage.scripts?.['reconcile-idempotency'] && codePackage.scripts?.['validate-public-model-pilot-v11'] && codePackage.scripts?.['validate-independent-model-pilot'] && codePackage.scripts?.['model-provider-smoke'] && codePackage.scripts?.['gitlab-e2e'] && codePackage.scripts?.['public-benchmark'] && codePackage.scripts?.['canary-docker'] && codePackage.scripts?.['model-ablation'] && codePackage.scripts?.['benchmark-knowledge']);
 const autonomyProbe = JSON.parse(archiveFile(codeZipPath, 'reports/agentteams-autonomous-probe.json', 'utf8'));
 check('code ZIP strict AgentTeams autonomy boundary', autonomyProbe.status === 'blocked'
   ? autonomyProbe.summary?.newMcpAuditEntries === 0 && autonomyProbe.boundary?.includes('not evidence')
@@ -343,10 +344,10 @@ const markdown = [
   '# 提交发布审计', '',
   `- 结果：${report.summary.passed}/${report.summary.checks} checks passed`,
   `- 作品简介：${introBody.length}/500 字符`,
-  `- PDF：18 页 V1.0.2；前 12 页主讲，后 6 页附录；已撤下无效 MTTR 对比与未实测数据库主张`,
+  `- PDF：18 页 V1.1.0；前 12 页主讲，后 6 页附录；已撤下无效 MTTR 对比与未实测数据库主张`,
   `- 视频：演示片 H.264 1280×800、129 秒 tour 导览模式（烧录中文字幕、无音轨，≤8 分钟门禁；含 Agent 协作/Skill 调用证据/异常处理演示三要素）；另有语音讲解版（CosyVoice v3-flash 旁白混音，供路演使用，不参与提交门禁）；讲解片 V0.9.5+ 移除（初赛轮产物）`,
   `- 基础工程证据：Agent×Tool 策略、9/9 对抗安全、三维消融、OTLP JSON 导出均已纳入总包`,
-  `- V1.0.2 工程证据：RCA/Patch 移除 profile.rootCause/profile.fix；AT 严格探针按七 Worker sender 与 MCP 归属验收；Skill PATCH 升级/回退实跑；数据库 measured=false 诚实披露`,
+  `- V1.1.0 工程证据：RCA/Patch 移除 profile.rootCause/profile.fix；AT 严格探针按七 Worker sender 与 MCP 归属验收；Skill PATCH 升级/回退实跑；数据库 measured=false 诚实披露`,
   `- V0.9.6 工程证据：glm 第二轮闭环 3/30（0%→10%）、可应用率 56%、RCA Top-3 73.3%；single-agent 0/30；三维消融（管道/模型/架构）；失败知识自沉淀 42 条 negative Episode；GitLab 真实自愈 e2e 17/17；Docker 灰度 8/8`,
   `- 公开调优边界：Run 1–11 全留痕；Run 7 旧门禁通过后由兼容性反例推翻；Run 11 增强门禁拒绝残余，39/39 失败证据校验`,
   `- 独立验证边界：跨仓 pydicom 单次运行在重复 exact-edit 契约处终止，按负例披露；26/26 证据校验；正式 benchmark 仍为 not_run / 0 cases`,

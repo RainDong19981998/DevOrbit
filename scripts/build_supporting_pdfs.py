@@ -178,7 +178,7 @@ def render(source: Path, destination: Path):
         canvas.line(margin_x, height - 8 * mm, width - margin_x, height - 8 * mm)
         canvas.setFont(FONT_NAME, 7.5)
         canvas.setFillColor(MUTED)
-        canvas.drawString(margin_x, 7 * mm, f"DevOrbit V1.0.2 | 2026-09-17 | {title}")
+        canvas.drawString(margin_x, 7 * mm, f"DevOrbit V1.1.0 | 2026-09-18 | {title}")
         canvas.drawRightString(width - margin_x, 7 * mm, f"{doc.page} | 证据边界见正文")
         canvas.restoreState()
 
