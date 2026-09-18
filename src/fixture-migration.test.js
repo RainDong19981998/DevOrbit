@@ -39,7 +39,8 @@ test('migrated knowledge episode is scoped to the inventory service', async () =
   const episode = result.knowledge;
   assert.equal(episode.service, 'inventory-service');
   assert.equal(episode.tenant, 'acme-commerce');
-  assert.equal(episode.pattern, '乐观锁缺失 + 并发扣减超卖');
+  assert.equal(episode.pattern, result.rca.causes[0].statement);
+  assert.ok(episode.pattern.includes('库存扣减'));
   assert.ok(episode.tags.includes('oversell'));
   assert.equal(episode.recallStatus, 'active');
 });

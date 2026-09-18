@@ -28,7 +28,7 @@ export const learningAgent = {
       episodeId,
       title: state.incident.title,
       summary: rca?.causes?.[0]?.statement || state.incident.title,
-      pattern: profile.pattern,
+      pattern: rca?.causes?.[0]?.statement || 'unclassified',
       tags: [...profile.tags, state.scenario],
       evidence: rca?.causes?.[0]?.evidence || [],
       tenant: profile.tenant,

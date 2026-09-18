@@ -29,7 +29,7 @@ test('identity proxy authenticates AgentTeams bearer and overwrites spoofed iden
   const upstreamPort = await listen(upstream);
   const proxy = createAgentTeamsIdentityProxy({
     upstreamUrl: `http://127.0.0.1:${upstreamPort}`,
-    config: { version: 1, identities: [{ agent: 'intake-worker', bearerSha256: sha256Bearer('worker-secret') }] }
+    config: { version: 1, context: { caseId: 'CASE-AUTO-1', traceId: 'TRACE-AUTO-1' }, identities: [{ agent: 'intake-worker', bearerSha256: sha256Bearer('worker-secret') }] }
   });
   const proxyPort = await listen(proxy);
 
@@ -46,6 +46,8 @@ test('identity proxy authenticates AgentTeams bearer and overwrites spoofed iden
     assert.equal(response.status, 200);
     assert.equal(response.headers.get('mcp-session-id'), 'session-1');
     assert.equal(observed.headers['x-devorbit-agent'], 'intake-worker');
+    assert.equal(observed.headers['x-case-id'], 'CASE-AUTO-1');
+    assert.equal(observed.headers['x-trace-id'], 'TRACE-AUTO-1');
     assert.equal(observed.headers.authorization, undefined);
     assert.equal(observed.method, 'POST');
     assert.equal(observed.url, '/mcp?case=1');

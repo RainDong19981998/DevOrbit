@@ -61,3 +61,28 @@
 /* V1.0.0 Skill 版本溯源标记 */
 .skill-version{font:9px ui-monospace;font-style:normal;color:var(--orange,#f06a3a);background:#f06a3a14;padding:2px 5px;border-radius:3px;margin-left:5px}
 .skill-digest{font:8px ui-monospace;color:#98a39c;margin-left:5px}
+.governance-console{margin-top:18px;border:1px solid var(--line);background:#fff}
+.governance-console>header{min-height:70px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}
+.governance-console header p{margin:0 0 4px;color:var(--muted);font:700 10px/1.2 ui-monospace,monospace}
+.governance-console header h3{margin:0;font-size:18px}
+.governance-status{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border-bottom:1px solid var(--line)}
+.governance-status>div{min-width:0;padding:15px 18px;border-right:1px solid var(--line)}
+.governance-status>div:last-child{border-right:0}
+.governance-status small,.governance-status b{display:block;overflow-wrap:anywhere}
+.governance-status small{color:var(--muted);margin-bottom:7px}
+.governance-list{max-height:310px;overflow:auto}
+.governance-row{width:100%;min-height:56px;display:grid;grid-template-columns:minmax(240px,2fr) 1fr .7fr .8fr;gap:12px;align-items:center;padding:10px 18px;color:inherit;text-align:left;background:transparent;border:0;border-bottom:1px solid var(--line);cursor:pointer}
+.governance-row:hover{background:#f4f6ef}
+.governance-row span:first-child b,.governance-row span:first-child small{display:block}
+.governance-row small{margin-top:3px;color:var(--muted);font-family:ui-monospace,monospace}
+.governance-row em{color:var(--green);font-style:normal}
+.skill-card footer small{font:9px ui-monospace,monospace;color:var(--muted);margin-left:auto}
+.task-input{grid-template-columns:150px minmax(150px,.8fr) minmax(260px,1.7fr) minmax(150px,.8fr) minmax(150px,.9fr) 180px}
+.task-input select{height:38px;border:1px solid var(--line);background:#fff;padding:0 10px;color:var(--ink);font:12px inherit;min-width:0}
+.task-input input[readonly]{background:#f1f3ec;color:#526159}
+.acceptance-lock{grid-column:1/-1;display:flex;align-items:center;gap:24px;padding-top:14px;border-top:1px solid var(--line)}
+.acceptance-lock>div{min-width:180px}.acceptance-lock b,.acceptance-lock span{display:block}.acceptance-lock b{font-size:11px;color:var(--ink)}.acceptance-lock span{margin-top:4px;font-size:9px;color:var(--muted)}
+.acceptance-lock ul{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}.acceptance-lock li{padding:5px 8px;border:1px solid #b9c9bd;background:#edf4ec;color:var(--green);font:700 9px ui-monospace,monospace}
+@media(max-width:760px){.governance-status{grid-template-columns:1fr 1fr}.governance-status>div{border-bottom:1px solid var(--line)}.governance-row{grid-template-columns:1fr auto}.governance-row>:nth-child(3){display:none}}
+@media(max-width:1000px){.task-input{grid-template-columns:1fr 1fr}.acceptance-lock{align-items:flex-start;flex-direction:column;gap:10px}}
+@media(max-width:620px){.task-input{grid-template-columns:1fr}.acceptance-lock{grid-column:auto}}

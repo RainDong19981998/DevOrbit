@@ -4,11 +4,33 @@ const html = value => String(value ?? '').replace(/[&<>"']/g, character => ({ '&
 const demoParams = new URLSearchParams(window.location.search);
 const demoMode = demoParams.get('demo');
 const demoDelay = Math.max(3000, Math.min(15000, Number(demoParams.get('delay')) || 6000));
+const urlToken = demoParams.get('token');
+if (urlToken) localStorage.setItem('devorbit-control-token', urlToken);
+const controlToken = urlToken || localStorage.getItem('devorbit-control-token') || '';
+const apiHeaders = () => ({ 'content-type': 'application/json', ...(controlToken ? { authorization: `Bearer ${controlToken}` } : {}) });
 let currentRunId = null;
 let renderedTraceCount = 0;
 let currentData = null;
 let activeEvidenceTab = 'patch';
 const stageIndex = { triage: 0, impact: 1, rca: 2, patch: 3, verify: 4, release: 5, learn: 6 };
+const fixturePresentation = {
+  checkout: { summary: '支付下单链路异常', severity: 'S2', impact: '错误率 7.4%' },
+  inventory: { summary: '库存并发超卖异常', severity: 'S1', impact: '负库存已检出' }
+};
+
+async function selectFixture(fixture) {
+  const response = await fetch(`/api/case?fixture=${encodeURIComponent(fixture)}`);
+  if (!response.ok) throw new Error('案例上下文加载失败');
+  const incident = await response.json();
+  const presentation = fixturePresentation[fixture] || fixturePresentation.checkout;
+  $('#incident-title').value = incident.title;
+  $('#incident-repository').value = incident.repository;
+  $('#incident-branch').value = incident.branch;
+  $('#case-summary').textContent = presentation.summary;
+  $('#case-severity').innerHTML = `${html(presentation.severity)} <span>${html(presentation.impact)}</span>`;
+  $('#case-signal-count').textContent = `${incident.signals.length} 条跨源信号`;
+  $('#signal-count').textContent = `${incident.signals.length} 条`;
+}
 
 function showSignals(signals) {
   $('#signals').innerHTML = signals.map(s => `<div class="signal-row"><b>${html(s.source)}</b><time>${html(s.time)}</time><span>${html(s.text)}</span></div>`).join('');
@@ -85,8 +107,9 @@ function showRelease(data) {
   }
 }
 
-function showSkills(skills) {
-  $('#skill-grid').innerHTML = skills.map((s, i) => `<article class="skill-card"><code>${s.official ? 'OFFICIAL CLOUD' : 'CUSTOM'} / 0${i + 1}</code><h3>${html(s.name)}</h3><p>${html(s.purpose)}</p><footer><span>${html(s.risk)}</span><span>v${html(s.version || '1.0.0')}</span></footer></article>`).join('');
+function showSkills(skills, registry = []) {
+  const byId = new Map(registry.map(item => [item.id, item]));
+  $('#skill-grid').innerHTML = skills.map((s, i) => { const ref = byId.get(s.id); return `<article class="skill-card"><code>${s.official ? 'OFFICIAL CLOUD' : 'CUSTOM'} / 0${i + 1}</code><h3>${html(s.name)}</h3><p>${html(s.purpose)}</p><footer><span>${html(s.risk)}</span><span>v${html(ref?.version || s.version || '1.0.0')}</span>${ref?.digest ? `<small title="SKILL.md SHA-256">${html(ref.digest.slice(0, 18))}…</small>` : ''}</footer></article>`; }).join('');
 }
 
 function evidenceRows(items) {
@@ -149,13 +172,24 @@ async function run() {
   document.querySelectorAll('.pipeline article').forEach(x => x.classList.remove('active'));
   renderedTraceCount = 0;
   const scenario = $('#scenario-select').value;
-  const response = await fetch('/api/runs', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({
-    scenario,
-    title: $('#incident-title').value.trim(),
-    repository: $('#incident-repository').value.trim(),
-    branch: $('#incident-branch').value.trim()
-  }) });
-  const data = await response.json();
+  let response;
+  let data;
+  try {
+    response = await fetch('/api/runs', { method: 'POST', headers: apiHeaders(), body: JSON.stringify({
+      scenario,
+      fixture: $('#case-fixture').value,
+      title: $('#incident-title').value.trim(),
+      repository: $('#incident-repository').value.trim(),
+      branch: $('#incident-branch').value.trim()
+    }) });
+    data = await response.json();
+    if (!response.ok) throw new Error(data.error || '运行请求失败');
+  } catch (error) {
+    $('#run-state').className = 'run-state rejected';
+    $('#run-state').innerHTML = `<span></span>启动失败 · ${html(error.message)}`;
+    button.disabled = false; button.innerHTML = '<span>↻</span> 重新运行案例';
+    return;
+  }
   currentRunId = data.state.caseId;
   showSignals(data.incident.signals);
   await animateTrace(data);
@@ -175,7 +209,7 @@ async function run() {
 }
 
 async function resolveApproval(state) {
-  const response = await fetch(`/api/runs/${encodeURIComponent(currentRunId)}/approval`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ decision: state }) });
+  const response = await fetch(`/api/runs/${encodeURIComponent(currentRunId)}/approval`, { method: 'POST', headers: apiHeaders(), body: JSON.stringify({ decision: state }) });
   const data = await response.json();
   const button = $('#run-button');
   showRelease(data); showArtifacts(data); showEvidenceChain(data);
@@ -190,6 +224,7 @@ async function resolveApproval(state) {
   $('#run-state').className = data.release.decision === 'rolled_back' ? 'run-state rejected' : 'run-state done';
   $('#run-state').innerHTML = data.release.decision === 'rolled_back' ? '<span></span>闭环完成 · 灰度已回滚并沉淀' : '<span></span>闭环完成 · 知识卡 ' + html(data.knowledge.cardId || data.knowledge.episodeId);
   button.disabled = false; button.innerHTML = '<span>↻</span> 重新运行案例';
+  await loadGovernance();
   if (demoMode && demoMode !== 'tour') {
     $('#release').closest('.panel').scrollIntoView({ behavior: 'smooth', block: 'center' });
     setTimeout(() => {
@@ -199,6 +234,43 @@ async function resolveApproval(state) {
     setTimeout(() => showArtifacts(data, 'mcp'), 4600);
     setTimeout(() => document.querySelector('#skills').scrollIntoView({ behavior: 'smooth' }), 7600);
     setTimeout(() => document.querySelector('#evidence').scrollIntoView({ behavior: 'smooth' }), 10500);
+  }
+}
+
+async function loadGovernance() {
+  const status = $('#governance-status');
+  const list = $('#governance-list');
+  if (!status || !list) return;
+  const authHeaders = controlToken ? { authorization: `Bearer ${controlToken}` } : {};
+  try {
+    const [healthResponse, runsResponse] = await Promise.all([
+      fetch('/api/health', { headers: authHeaders }),
+      fetch('/api/runs', { headers: authHeaders })
+    ]);
+    if (!healthResponse.ok || !runsResponse.ok) throw new Error('运行治理接口不可用');
+    const health = await healthResponse.json();
+    const runs = await runsResponse.json();
+    const modeLabels = { fixture: '本地 Fixture · 真实样例仓测试', 'http-spi': '外部 HTTP SPI', 'github-jenkins-argo': 'GitHub + Jenkins + Argo' };
+    const modeLabel = modeLabels[health.providerMode] || health.providerMode;
+    $('#runtime-mode').textContent = `${modeLabel} · v${health.version}`;
+    $('#execution-boundary').textContent = health.providerMode === 'fixture' ? 'LOCAL FIXTURE' : 'EXTERNAL PLATFORM';
+    $('#execution-boundary-detail').textContent = health.providerMode === 'fixture' ? '本地样例仓真实测试；不宣称生产接入' : `${modeLabel} · 控制面鉴权已启用`;
+    status.innerHTML = `<div><small>服务版本</small><b>${html(health.version)}</b></div><div><small>执行模式</small><b>${html(modeLabel)}</b></div><div><small>状态持久化</small><b>${html(health.statePersistence)}</b></div><div><small>知识持久化</small><b>${html(health.knowledgePersistence)}</b></div><div><small>重启恢复</small><b>${html((health.restoredSessions || []).length)} 个会话</b></div>`;
+    const rows = [
+      ...(runs.sessions || []).map(run => ({ ...run, source: run.restored ? '重启恢复' : '活动会话' })),
+      ...(runs.archived || []).map(run => ({ ...run, source: '证据归档' }))
+    ].slice(0, 8);
+    list.innerHTML = rows.length ? rows.map(run => `<button class="governance-row" data-case-id="${html(run.caseId)}"><span><b>${html(run.caseId)}</b><small>${html(run.traceId || '--')}</small></span><span>${html(run.status)}</span><span>${html(run.tests || run.revision || '--')}</span><em>${html(run.source)}</em></button>`).join('') : '<p class="empty compact">运行新任务后将在此保留 Case、Trace、测试、审批与证据链索引</p>';
+    list.querySelectorAll('[data-case-id]').forEach(row => row.addEventListener('click', async () => {
+      const response = await fetch(`/api/runs/${encodeURIComponent(row.dataset.caseId)}`, { headers: authHeaders });
+      if (!response.ok) return;
+      const detail = await response.json();
+      currentData = detail.result;
+      showArtifacts(detail.result, 'trace');
+      document.querySelector('#artifacts').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }));
+  } catch (error) {
+    status.innerHTML = `<div class="safety-stop">${html(error.message)}</div>`;
   }
 }
 
@@ -270,12 +342,8 @@ function reverifyChain() {
 }
 
 const initial = await fetch('/api/meta').then(r => r.json());
-showSkills(initial.skills);
-fetch('/api/case').then(r => r.json()).then(incident => {
-  $('#incident-title').value = incident.title;
-  $('#incident-repository').value = incident.repository;
-  $('#incident-branch').value = incident.branch;
-}).catch(() => {});
+showSkills(initial.skills, initial.skillRegistry);
+selectFixture($('#case-fixture').value).catch(() => {});
 fetch('/reports/evaluation.json').then(r => r.json()).then(report => {
   $('#metric-eval').textContent = `${report.summary.passed}/${report.summary.cases}`;
 }).catch(() => {});
@@ -283,6 +351,7 @@ fetch('/reports/security-evaluation.json').then(r => r.json()).then(report => {
   $('#metric-security').textContent = `${report.summary.passed}/${report.summary.cases}`;
 }).catch(() => {});
 renderBenchmarkBoard();
+loadGovernance();
 async function renderBenchmarkBoard() {
   const board = $('#benchmark-board');
   if (!board) return;
@@ -319,11 +388,13 @@ async function renderBenchmarkBoard() {
   } catch { /* 无基准数据时保持占位 */ }
 }
 $('#run-button').addEventListener('click', run);
+$('#case-fixture').addEventListener('change', event => selectFixture(event.target.value).catch(() => {}));
 document.querySelectorAll('.artifact-tab').forEach(button => button.addEventListener('click', () => {
   if (currentData) showArtifacts(currentData, button.dataset.evidenceTab);
 }));
 $('#tamper-button').addEventListener('click', tamperChain);
 $('#reverify-button').addEventListener('click', reverifyChain);
+$('#refresh-governance').addEventListener('click', loadGovernance);
 
 if (['happy-path', 'low-confidence', 'test-failure', 'canary-regression', 'dynamic-resampling', 'self-healing'].includes(demoMode)) {
   $('#scenario-select').value = demoMode;

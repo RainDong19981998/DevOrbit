@@ -78,6 +78,11 @@
         "transport": "http"
       },
       {
+        "name": "repository",
+        "url": "https://devorbit.example/mcp",
+        "transport": "http"
+      },
+      {
         "name": "knowledge",
         "url": "https://devorbit.example/mcp",
         "transport": "http"

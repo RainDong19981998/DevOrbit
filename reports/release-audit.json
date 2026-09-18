@@ -1,24 +1,24 @@
 {
-  "generatedAt": "2026-08-29T14:39:47.310Z",
+  "generatedAt": "2026-09-18T14:22:44.768Z",
   "summary": {
-    "checks": 1536,
-    "passed": 1536,
+    "checks": 1599,
+    "passed": 1599,
     "failed": 0
   },
   "artifacts": {
-    "DevOrbit_复赛方案.pdf": "d9347184b0c2aa723e738ac7bb5fec996247f24a7104c28b911a6ca6ea26e9dd",
-    "DevOrbit_复赛方案.pptx": "4112c8fdef1833b344451ae121e2c94a2a5dbb6eba2ce4d042baef8ed462f905",
-    "DevOrbit_复赛可执行代码包.zip": "7ae0991176c591811f697426754ea8cecccc031e710a83e1a7c9107829be0713",
-    "DevOrbit_演示视频.mp4": "e55914a513f3dac224d9cf2debe093deb06e25e097bb45b9ef45782211bec238",
-    "DevOrbit_演示视频封面.png": "79f400aca4fddb8233ca83b48140e35cb76024c5b8ba8b49af7612f945b574f9",
-    "DevOrbit_产品界面.png": "e3bac38e854e8866cf6227acefb52f04cdfb879f4d2ed02b1ed19d7c17d0d9ae",
-    "DevOrbit_初赛讲解视频_无配音版.mp4": "absent",
-    "DevOrbit_AgentTeams本地运行验证.pdf": "f76a8ea7f11848ba74a88edbbff920ae1ff0e0182de8d237aa94612ea5074134",
-    "DevOrbit_威胁模型.pdf": "666b62d02976ca7114ee166c601d8af749d41e03a6876c97f1adf57c72b7f1e9",
-    "DevOrbit_证据索引.pdf": "ed78a1ca09feeace8b8626d23c975c97245eaed99039b3a7997f0548d1bda9c9",
-    "DevOrbit_对照与消融评测.pdf": "a4ff5348cb71a3783c57a03a66e2a2a40b6cbede8ea169a71987d7cde0d3e88a",
-    "DevOrbit_对抗安全评测.pdf": "9d6114910d54c12f094156889391933c7dbc855fa0ae727f7d03e42e49a1ea25",
-    "DevOrbit_公开基准复现试点.pdf": "c0440cc4c79357b22e99af84cb9a00b10f5341550cafb86f52bdcd9d057fdd33"
+    "DevOrbit_决赛方案.pdf": "4adeb94b30f5e1983181f56f950ef854f9c340480f89088bfbc8ea34c3d43a7c",
+    "DevOrbit_决赛方案.pptx": "b79749fe3c411bc22234a57fdd2f1ee54e125f21475f96f66946bac845fc2d52",
+    "DevOrbit_决赛可执行代码包.zip": "be6370bbc7bc86f99a8224e1785bed667d2aa828591ac0ed63725f08dc040335",
+    "DevOrbit_决赛验收与答辩手册.pdf": "370872601a10f0afa84c7b9a8895f64b5f8ccc0b7102a96d746ddc6885f48d7c",
+    "DevOrbit_演示视频.mp4": "8b4dfedb39b2ab76af599afb0779052654158b4e33a334b7ac9e1fec21703d8b",
+    "DevOrbit_演示视频封面.png": "95cc268c22d05d2360bc67a7235d78cd6c887abd220210c516e7a8ca067ae5bb",
+    "DevOrbit_产品界面.png": "79a9840366d811125ef552740d770fb31d6c38e3066e0ba263b1b52e25f67bc9",
+    "DevOrbit_AgentTeams本地运行验证.pdf": "14737146a1c3772668a5b5c000620192248c2302e80d845079284bf9b92b877f",
+    "DevOrbit_威胁模型.pdf": "4c458e86b71d29633d8edb042317eabd45ae0a2f095e54bc6fa68792dd7df08c",
+    "DevOrbit_证据索引.pdf": "c3d640fb1f5f67edcdb7a042185cadd34bc9e246ac92d68a425dcb45b714b528",
+    "DevOrbit_对照与消融评测.pdf": "e671b916de3bf69e8396839af947121722645fad758e0ea13e9fd0b8494dfc5d",
+    "DevOrbit_对抗安全评测.pdf": "c5e2125212b60e565719a50c9ade5d1aab9afecbb6b78b7f49fc9727790e65d6",
+    "DevOrbit_公开基准复现试点.pdf": "9dec18637705646245c040bbb10fb1762875b4dd864742f3387bb05bc6a2271f"
   },
   "videoReviewBoundary": "Both video digests are locked to visually reviewed silent recordings. Each file contains H.264 video and no audio stream. The explainer was sampled at product definition, pain, concrete case, browser workflow, evidence boundary and closing frames. Any video change requires a new pixel-level review.",
   "cloudBoundary": "The official cloud Skill is source-locked and packaged for Intake/RCA. The default Demo does not claim a cloud-account invocation.",
@@ -59,12 +59,17 @@
       "detail": ""
     },
     {
-      "label": "PDF V1.0.0 cover and evidence",
+      "label": "PDF V1.0.2 cover and evidence",
       "ok": true,
       "detail": ""
     },
     {
-      "label": "PDF mandatory sections",
+      "label": "PDF 12-page main plus appendix",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "PDF honest evidence boundary",
       "ok": true,
       "detail": ""
     },
@@ -79,7 +84,12 @@
       "detail": ""
     },
     {
-      "label": "PPTX V1.0.0 cover and evidence",
+      "label": "PPTX V1.0.2 structure and evidence",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "PPTX removes invalid MTTR and DB claims",
       "ok": true,
       "detail": ""
     },
@@ -106,7 +116,7 @@
     {
       "label": "video reviewed digest unchanged",
       "ok": true,
-      "detail": "e55914a513f3dac2"
+      "detail": "8b4dfedb39b2ab76"
     },
     {
       "label": "video metadata compliance",
@@ -180,6 +190,11 @@
     },
     {
       "label": "supporting PDF DevOrbit_公开基准复现试点.pdf",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "supporting PDF DevOrbit_决赛验收与答辩手册.pdf",
       "ok": true,
       "detail": ""
     },
@@ -634,6 +649,31 @@
       "detail": ""
     },
     {
+      "label": "code ZIP reports/agentteams-autonomous-probe.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP scripts/agentteams-autonomous-probe.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP reports/skill-upgrade-rollback.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP scripts/skill-upgrade-drill.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP src/reasoning/evidence-reasoner.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code ZIP src/evaluation/exact-edit-transaction.js",
       "ok": true,
       "detail": ""
@@ -654,7 +694,22 @@
       "detail": ""
     },
     {
+      "label": "code ZIP excludes live state snapshots",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code ZIP version",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP strict AgentTeams autonomy boundary",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code ZIP Skill PATCH upgrade and rollback",
       "ok": true,
       "detail": ""
     },
@@ -1084,6 +1139,16 @@
       "detail": ""
     },
     {
+      "label": "code compliance docs/技术方案.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan docs/技术方案.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance docs/第三方依赖与合规清单.md",
       "ok": true,
       "detail": ""
@@ -1174,6 +1239,16 @@
       "detail": ""
     },
     {
+      "label": "code compliance docs/决赛验收与答辩手册.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan docs/决赛验收与答辩手册.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance docs/复赛冲刺路线图.md",
       "ok": true,
       "detail": ""
@@ -1250,6 +1325,16 @@
     },
     {
       "label": "code secret-scan docs/Agent-Identity清单.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance docs/快速验收.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan docs/快速验收.md",
       "ok": true,
       "detail": ""
     },
@@ -1670,6 +1755,16 @@
     },
     {
       "label": "code secret-scan scripts/native-platform-smoke.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance scripts/prepare-agentteams-runtime.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/prepare-agentteams-runtime.mjs",
       "ok": true,
       "detail": ""
     },
@@ -2244,6 +2339,16 @@
       "detail": ""
     },
     {
+      "label": "code compliance scripts/skill-upgrade-drill.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan scripts/skill-upgrade-drill.mjs",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance scripts/validate-public-model-pilot-v11.mjs",
       "ok": true,
       "detail": ""
@@ -2364,6 +2469,16 @@
       "detail": ""
     },
     {
+      "label": "code compliance src/evidence-reasoner.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/evidence-reasoner.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance src/platform-adapters.test.js",
       "ok": true,
       "detail": ""
@@ -2474,6 +2589,16 @@
       "detail": ""
     },
     {
+      "label": "code compliance src/runtime/run-archive.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/runtime/run-archive.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance src/runtime/case-state.js",
       "ok": true,
       "detail": ""
@@ -2490,6 +2615,16 @@
     },
     {
       "label": "code secret-scan src/runtime/digest.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/runtime/run-archive.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/runtime/run-archive.js",
       "ok": true,
       "detail": ""
     },
@@ -2524,6 +2659,16 @@
       "detail": ""
     },
     {
+      "label": "code compliance src/reasoning/evidence-reasoner.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/reasoning/evidence-reasoner.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance src/fixture-migration.test.js",
       "ok": true,
       "detail": ""
@@ -2544,12 +2689,32 @@
       "detail": ""
     },
     {
+      "label": "code compliance src/knowledge/file-episode-store.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/knowledge/file-episode-store.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance src/knowledge/episode-store.test.js",
       "ok": true,
       "detail": ""
     },
     {
       "label": "code secret-scan src/knowledge/episode-store.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance src/knowledge/file-episode-store.test.js",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan src/knowledge/file-episode-store.test.js",
       "ok": true,
       "detail": ""
     },
@@ -5484,6 +5649,96 @@
       "detail": ""
     },
     {
+      "label": "code compliance reports/runs/archive/CASE-6B735AEB.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/runs/archive/CASE-6B735AEB.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/runs/archive/CASE-E30E3764.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/runs/archive/CASE-E30E3764.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/runs/archive/CASE-792DC7EA.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/runs/archive/CASE-792DC7EA.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/runs/archive/CASE-8325EC60.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/runs/archive/CASE-8325EC60.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/runs/archive/CASE-AF17BE34.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/runs/archive/CASE-AF17BE34.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/runs/archive/CASE-2C7137F8.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/runs/archive/CASE-2C7137F8.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/runs/archive/CASE-1A4E834C.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/runs/archive/CASE-1A4E834C.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/runs/archive/CASE-57BABFE3.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/runs/archive/CASE-57BABFE3.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/runs/archive/CASE-C6E7DD6F.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/runs/archive/CASE-C6E7DD6F.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance reports/runs/happy-path.json",
       "ok": true,
       "detail": ""
@@ -5564,6 +5819,16 @@
       "detail": ""
     },
     {
+      "label": "code compliance reports/runtime-knowledge.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/runtime-knowledge.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance reports/benchmark-autopsy.md",
       "ok": true,
       "detail": ""
@@ -5574,12 +5839,32 @@
       "detail": ""
     },
     {
+      "label": "code compliance reports/agentteams-autonomous-probe.r2-partial.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/agentteams-autonomous-probe.r2-partial.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "label": "code compliance reports/public-model-pilot.json",
       "ok": true,
       "detail": ""
     },
     {
       "label": "code secret-scan reports/public-model-pilot.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code compliance reports/skill-upgrade-rollback.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "code secret-scan reports/skill-upgrade-rollback.json",
       "ok": true,
       "detail": ""
     },
@@ -7204,17 +7489,22 @@
       "detail": ""
     },
     {
-      "label": "total ZIP DevOrbit_复赛方案.pdf",
+      "label": "total ZIP DevOrbit_决赛方案.pdf",
       "ok": true,
       "detail": ""
     },
     {
-      "label": "total ZIP DevOrbit_复赛方案.pptx",
+      "label": "total ZIP DevOrbit_决赛方案.pptx",
       "ok": true,
       "detail": ""
     },
     {
-      "label": "total ZIP DevOrbit_复赛可执行代码包.zip",
+      "label": "total ZIP DevOrbit_决赛可执行代码包.zip",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP DevOrbit_决赛验收与答辩手册.pdf",
       "ok": true,
       "detail": ""
     },
@@ -7325,6 +7615,21 @@
     },
     {
       "label": "total ZIP agentteams-runtime-report.schema.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP agentteams-autonomous-probe.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP skill-upgrade-rollback.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total ZIP db-branch.json",
       "ok": true,
       "detail": ""
     },
@@ -7620,6 +7925,16 @@
     },
     {
       "label": "total secret-scan 公开基准复现试点.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total compliance 决赛验收与答辩手册.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "total secret-scan 决赛验收与答辩手册.md",
       "ok": true,
       "detail": ""
     },

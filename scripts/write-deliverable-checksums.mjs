@@ -3,9 +3,10 @@ import { readFile, writeFile } from 'node:fs/promises';
 
 const dir = new URL('../deliverables/', import.meta.url);
 const names = [
-  'DevOrbit_复赛方案.pdf',
-  'DevOrbit_复赛方案.pptx',
-  'DevOrbit_复赛可执行代码包.zip',
+  'DevOrbit_决赛方案.pdf',
+  'DevOrbit_决赛方案.pptx',
+  'DevOrbit_决赛可执行代码包.zip',
+  'DevOrbit_决赛验收与答辩手册.pdf',
   'DevOrbit_演示视频.mp4',
   'DevOrbit_演示视频封面.png',
   'DevOrbit_产品界面.png',

@@ -48,6 +48,7 @@
       "identity": "Name: RCA Worker\nSpecialization: evidence-grounded root cause analysis",
       "mcpServers": [
         { "name": "observability", "url": "https://devorbit.example/mcp", "transport": "http" },
+        { "name": "repository", "url": "https://devorbit.example/mcp", "transport": "http" },
         { "name": "knowledge", "url": "https://devorbit.example/mcp", "transport": "http" }
       ]
     }

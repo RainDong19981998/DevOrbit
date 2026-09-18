@@ -1,11 +1,11 @@
 # 提交发布审计
 
-- 结果：1536/1536 checks passed
+- 结果：1599/1599 checks passed
 - 作品简介：474/500 字符
-- PDF：18 页 V1.0.0；含初赛反馈标红对比、场景闭环图、风险边界声明、可复制性说明四项必含内容
+- PDF：18 页 V1.0.2；前 12 页主讲，后 6 页附录；已撤下无效 MTTR 对比与未实测数据库主张
 - 视频：演示片 H.264 1280×800、129 秒 tour 导览模式（烧录中文字幕、无音轨，≤8 分钟门禁；含 Agent 协作/Skill 调用证据/异常处理演示三要素）；另有语音讲解版（CosyVoice v3-flash 旁白混音，供路演使用，不参与提交门禁）；讲解片 V0.9.5+ 移除（初赛轮产物）
 - 基础工程证据：Agent×Tool 策略、9/9 对抗安全、三维消融、OTLP JSON 导出均已纳入总包
-- V1.0.0 工程证据：113/113 单测；状态持久化与重启恢复（崩溃后审批续跑同 case/trace）；Skill 版本溯源（版本+摘要进 trace，8 Skill 注册表）；第二类场景迁移（结算→库存，机制序列完全一致）；可靠性故障演练 6/6；上下文治理（租户硬过滤/陈旧阻断/TTL）
+- V1.0.2 工程证据：RCA/Patch 移除 profile.rootCause/profile.fix；AT 严格探针按七 Worker sender 与 MCP 归属验收；Skill PATCH 升级/回退实跑；数据库 measured=false 诚实披露
 - V0.9.6 工程证据：glm 第二轮闭环 3/30（0%→10%）、可应用率 56%、RCA Top-3 73.3%；single-agent 0/30；三维消融（管道/模型/架构）；失败知识自沉淀 42 条 negative Episode；GitLab 真实自愈 e2e 17/17；Docker 灰度 8/8
 - 公开调优边界：Run 1–11 全留痕；Run 7 旧门禁通过后由兼容性反例推翻；Run 11 增强门禁拒绝残余，39/39 失败证据校验
 - 独立验证边界：跨仓 pydicom 单次运行在重复 exact-edit 契约处终止，按负例披露；26/26 证据校验；正式 benchmark 仍为 not_run / 0 cases
@@ -13,19 +13,19 @@
 
 | Artifact | SHA-256 |
 |---|---|
-| DevOrbit_复赛方案.pdf | `d9347184b0c2aa723e738ac7bb5fec996247f24a7104c28b911a6ca6ea26e9dd` |
-| DevOrbit_复赛方案.pptx | `4112c8fdef1833b344451ae121e2c94a2a5dbb6eba2ce4d042baef8ed462f905` |
-| DevOrbit_复赛可执行代码包.zip | `7ae0991176c591811f697426754ea8cecccc031e710a83e1a7c9107829be0713` |
-| DevOrbit_演示视频.mp4 | `e55914a513f3dac224d9cf2debe093deb06e25e097bb45b9ef45782211bec238` |
-| DevOrbit_演示视频封面.png | `79f400aca4fddb8233ca83b48140e35cb76024c5b8ba8b49af7612f945b574f9` |
-| DevOrbit_产品界面.png | `e3bac38e854e8866cf6227acefb52f04cdfb879f4d2ed02b1ed19d7c17d0d9ae` |
-| DevOrbit_初赛讲解视频_无配音版.mp4 | `absent` |
-| DevOrbit_AgentTeams本地运行验证.pdf | `f76a8ea7f11848ba74a88edbbff920ae1ff0e0182de8d237aa94612ea5074134` |
-| DevOrbit_威胁模型.pdf | `666b62d02976ca7114ee166c601d8af749d41e03a6876c97f1adf57c72b7f1e9` |
-| DevOrbit_证据索引.pdf | `ed78a1ca09feeace8b8626d23c975c97245eaed99039b3a7997f0548d1bda9c9` |
-| DevOrbit_对照与消融评测.pdf | `a4ff5348cb71a3783c57a03a66e2a2a40b6cbede8ea169a71987d7cde0d3e88a` |
-| DevOrbit_对抗安全评测.pdf | `9d6114910d54c12f094156889391933c7dbc855fa0ae727f7d03e42e49a1ea25` |
-| DevOrbit_公开基准复现试点.pdf | `c0440cc4c79357b22e99af84cb9a00b10f5341550cafb86f52bdcd9d057fdd33` |
+| DevOrbit_决赛方案.pdf | `4adeb94b30f5e1983181f56f950ef854f9c340480f89088bfbc8ea34c3d43a7c` |
+| DevOrbit_决赛方案.pptx | `b79749fe3c411bc22234a57fdd2f1ee54e125f21475f96f66946bac845fc2d52` |
+| DevOrbit_决赛可执行代码包.zip | `be6370bbc7bc86f99a8224e1785bed667d2aa828591ac0ed63725f08dc040335` |
+| DevOrbit_决赛验收与答辩手册.pdf | `370872601a10f0afa84c7b9a8895f64b5f8ccc0b7102a96d746ddc6885f48d7c` |
+| DevOrbit_演示视频.mp4 | `8b4dfedb39b2ab76af599afb0779052654158b4e33a334b7ac9e1fec21703d8b` |
+| DevOrbit_演示视频封面.png | `95cc268c22d05d2360bc67a7235d78cd6c887abd220210c516e7a8ca067ae5bb` |
+| DevOrbit_产品界面.png | `79a9840366d811125ef552740d770fb31d6c38e3066e0ba263b1b52e25f67bc9` |
+| DevOrbit_AgentTeams本地运行验证.pdf | `14737146a1c3772668a5b5c000620192248c2302e80d845079284bf9b92b877f` |
+| DevOrbit_威胁模型.pdf | `4c458e86b71d29633d8edb042317eabd45ae0a2f095e54bc6fa68792dd7df08c` |
+| DevOrbit_证据索引.pdf | `c3d640fb1f5f67edcdb7a042185cadd34bc9e246ac92d68a425dcb45b714b528` |
+| DevOrbit_对照与消融评测.pdf | `e671b916de3bf69e8396839af947121722645fad758e0ea13e9fd0b8494dfc5d` |
+| DevOrbit_对抗安全评测.pdf | `c5e2125212b60e565719a50c9ade5d1aab9afecbb6b78b7f49fc9727790e65d6` |
+| DevOrbit_公开基准复现试点.pdf | `9dec18637705646245c040bbb10fb1762875b4dd864742f3387bb05bc6a2271f` |
 
 | Check | Result | Detail |
 |---|---|---|
@@ -36,16 +36,18 @@
 | PDF submission date | PASS |  |
 | PDF product positioning | PASS |  |
 | PDF official Skill evidence | PASS |  |
-| PDF V1.0.0 cover and evidence | PASS |  |
-| PDF mandatory sections | PASS |  |
+| PDF V1.0.2 cover and evidence | PASS |  |
+| PDF 12-page main plus appendix | PASS |  |
+| PDF honest evidence boundary | PASS |  |
 | PDF compliance | PASS |  |
 | PPTX official Skill evidence | PASS |  |
-| PPTX V1.0.0 cover and evidence | PASS |  |
+| PPTX V1.0.2 structure and evidence | PASS |  |
+| PPTX removes invalid MTTR and DB claims | PASS |  |
 | PPTX compliance | PASS |  |
 | video format | PASS |  |
 | video has no audio stream | PASS |  |
 | video duration | PASS | 129.000000s |
-| video reviewed digest unchanged | PASS | e55914a513f3dac2 |
+| video reviewed digest unchanged | PASS | 8b4dfedb39b2ab76 |
 | video metadata compliance | PASS |  |
 | explainer video format | PASS |  |
 | explainer has no audio stream | PASS |  |
@@ -61,6 +63,7 @@
 | supporting PDF DevOrbit_对照与消融评测.pdf | PASS |  |
 | supporting PDF DevOrbit_对抗安全评测.pdf | PASS |  |
 | supporting PDF DevOrbit_公开基准复现试点.pdf | PASS |  |
+| supporting PDF DevOrbit_决赛验收与答辩手册.pdf | PASS |  |
 | code ZIP README.md | PASS |  |
 | code ZIP LICENSE | PASS |  |
 | code ZIP package.json | PASS |  |
@@ -151,11 +154,19 @@
 | code ZIP reports/independent-model-pilot-preflight-001.json | PASS |  |
 | code ZIP scripts/run-independent-model-pilot.mjs | PASS |  |
 | code ZIP scripts/validate-independent-model-pilot.mjs | PASS |  |
+| code ZIP reports/agentteams-autonomous-probe.json | PASS |  |
+| code ZIP scripts/agentteams-autonomous-probe.mjs | PASS |  |
+| code ZIP reports/skill-upgrade-rollback.json | PASS |  |
+| code ZIP scripts/skill-upgrade-drill.mjs | PASS |  |
+| code ZIP src/reasoning/evidence-reasoner.js | PASS |  |
 | code ZIP src/evaluation/exact-edit-transaction.js | PASS |  |
 | code ZIP src/evaluation/exact-edit-transaction.test.js | PASS |  |
 | code ZIP scripts/release-audit.mjs | PASS |  |
 | code ZIP cache free | PASS |  |
+| code ZIP excludes live state snapshots | PASS |  |
 | code ZIP version | PASS |  |
+| code ZIP strict AgentTeams autonomy boundary | PASS |  |
+| code ZIP Skill PATCH upgrade and rollback | PASS |  |
 | code ZIP official AgentTeams local runtime | PASS |  |
 | code ZIP AgentTeams honest boundary | PASS |  |
 | code ZIP AgentTeams report credential scan | PASS |  |
@@ -241,6 +252,8 @@
 | code secret-scan docs/工具与云产品清单.md | PASS |  |
 | code compliance docs/参赛方案.md | PASS |  |
 | code secret-scan docs/参赛方案.md | PASS |  |
+| code compliance docs/技术方案.md | PASS |  |
+| code secret-scan docs/技术方案.md | PASS |  |
 | code compliance docs/第三方依赖与合规清单.md | PASS |  |
 | code secret-scan docs/第三方依赖与合规清单.md | PASS |  |
 | code compliance docs/威胁模型.md | PASS |  |
@@ -259,6 +272,8 @@
 | code secret-scan docs/reference/初赛评委反馈.txt | PASS |  |
 | code compliance docs/reference/goal.txt | PASS |  |
 | code secret-scan docs/reference/goal.txt | PASS |  |
+| code compliance docs/决赛验收与答辩手册.md | PASS |  |
+| code secret-scan docs/决赛验收与答辩手册.md | PASS |  |
 | code compliance docs/复赛冲刺路线图.md | PASS |  |
 | code secret-scan docs/复赛冲刺路线图.md | PASS |  |
 | code compliance docs/评委90秒验收.md | PASS |  |
@@ -275,6 +290,8 @@
 | code secret-scan docs/Skill清单.md | PASS |  |
 | code compliance docs/Agent-Identity清单.md | PASS |  |
 | code secret-scan docs/Agent-Identity清单.md | PASS |  |
+| code compliance docs/快速验收.md | PASS |  |
+| code secret-scan docs/快速验收.md | PASS |  |
 | code compliance docs/演示脚本.md | PASS |  |
 | code secret-scan docs/演示脚本.md | PASS |  |
 | code compliance schemas/public-benchmark.schema.json | PASS |  |
@@ -359,6 +376,8 @@
 | code secret-scan scripts/evaluate.mjs | PASS |  |
 | code compliance scripts/native-platform-smoke.mjs | PASS |  |
 | code secret-scan scripts/native-platform-smoke.mjs | PASS |  |
+| code compliance scripts/prepare-agentteams-runtime.mjs | PASS |  |
+| code secret-scan scripts/prepare-agentteams-runtime.mjs | PASS |  |
 | code compliance scripts/build_total_bundle.mjs | PASS |  |
 | code secret-scan scripts/build_total_bundle.mjs | PASS |  |
 | code compliance scripts/ablation-mechanism.mjs | PASS |  |
@@ -473,6 +492,8 @@
 | code secret-scan scripts/benchmark-knowledge.mjs | PASS |  |
 | code compliance scripts/validate-public-pilot.mjs | PASS |  |
 | code secret-scan scripts/validate-public-pilot.mjs | PASS |  |
+| code compliance scripts/skill-upgrade-drill.mjs | PASS |  |
+| code secret-scan scripts/skill-upgrade-drill.mjs | PASS |  |
 | code compliance scripts/validate-public-model-pilot-v11.mjs | PASS |  |
 | code secret-scan scripts/validate-public-model-pilot-v11.mjs | PASS |  |
 | code compliance src/adapters/http.js | PASS |  |
@@ -497,6 +518,8 @@
 | code secret-scan src/orchestrator.test.js | PASS |  |
 | code compliance src/adapter-http.test.js | PASS |  |
 | code secret-scan src/adapter-http.test.js | PASS |  |
+| code compliance src/evidence-reasoner.test.js | PASS |  |
+| code secret-scan src/evidence-reasoner.test.js | PASS |  |
 | code compliance src/platform-adapters.test.js | PASS |  |
 | code secret-scan src/platform-adapters.test.js | PASS |  |
 | code compliance src/agents/learning-agent.js | PASS |  |
@@ -519,22 +542,32 @@
 | code secret-scan src/runtime/state-store.js | PASS |  |
 | code compliance src/runtime/test-runner.js | PASS |  |
 | code secret-scan src/runtime/test-runner.js | PASS |  |
+| code compliance src/runtime/run-archive.test.js | PASS |  |
+| code secret-scan src/runtime/run-archive.test.js | PASS |  |
 | code compliance src/runtime/case-state.js | PASS |  |
 | code secret-scan src/runtime/case-state.js | PASS |  |
 | code compliance src/runtime/digest.js | PASS |  |
 | code secret-scan src/runtime/digest.js | PASS |  |
+| code compliance src/runtime/run-archive.js | PASS |  |
+| code secret-scan src/runtime/run-archive.js | PASS |  |
 | code compliance src/runtime/trace.js | PASS |  |
 | code secret-scan src/runtime/trace.js | PASS |  |
 | code compliance src/runtime/manager.js | PASS |  |
 | code secret-scan src/runtime/manager.js | PASS |  |
 | code compliance src/runtime/state-store.test.js | PASS |  |
 | code secret-scan src/runtime/state-store.test.js | PASS |  |
+| code compliance src/reasoning/evidence-reasoner.js | PASS |  |
+| code secret-scan src/reasoning/evidence-reasoner.js | PASS |  |
 | code compliance src/fixture-migration.test.js | PASS |  |
 | code secret-scan src/fixture-migration.test.js | PASS |  |
 | code compliance src/adapters.js | PASS |  |
 | code secret-scan src/adapters.js | PASS |  |
+| code compliance src/knowledge/file-episode-store.js | PASS |  |
+| code secret-scan src/knowledge/file-episode-store.js | PASS |  |
 | code compliance src/knowledge/episode-store.test.js | PASS |  |
 | code secret-scan src/knowledge/episode-store.test.js | PASS |  |
+| code compliance src/knowledge/file-episode-store.test.js | PASS |  |
+| code secret-scan src/knowledge/file-episode-store.test.js | PASS |  |
 | code compliance src/knowledge/store.js | PASS |  |
 | code secret-scan src/knowledge/store.js | PASS |  |
 | code compliance src/knowledge/hybrid-store.js | PASS |  |
@@ -1121,6 +1154,24 @@
 | code secret-scan reports/native-platform-smoke.json | PASS |  |
 | code compliance reports/runs/test-failure.json | PASS |  |
 | code secret-scan reports/runs/test-failure.json | PASS |  |
+| code compliance reports/runs/archive/CASE-6B735AEB.json | PASS |  |
+| code secret-scan reports/runs/archive/CASE-6B735AEB.json | PASS |  |
+| code compliance reports/runs/archive/CASE-E30E3764.json | PASS |  |
+| code secret-scan reports/runs/archive/CASE-E30E3764.json | PASS |  |
+| code compliance reports/runs/archive/CASE-792DC7EA.json | PASS |  |
+| code secret-scan reports/runs/archive/CASE-792DC7EA.json | PASS |  |
+| code compliance reports/runs/archive/CASE-8325EC60.json | PASS |  |
+| code secret-scan reports/runs/archive/CASE-8325EC60.json | PASS |  |
+| code compliance reports/runs/archive/CASE-AF17BE34.json | PASS |  |
+| code secret-scan reports/runs/archive/CASE-AF17BE34.json | PASS |  |
+| code compliance reports/runs/archive/CASE-2C7137F8.json | PASS |  |
+| code secret-scan reports/runs/archive/CASE-2C7137F8.json | PASS |  |
+| code compliance reports/runs/archive/CASE-1A4E834C.json | PASS |  |
+| code secret-scan reports/runs/archive/CASE-1A4E834C.json | PASS |  |
+| code compliance reports/runs/archive/CASE-57BABFE3.json | PASS |  |
+| code secret-scan reports/runs/archive/CASE-57BABFE3.json | PASS |  |
+| code compliance reports/runs/archive/CASE-C6E7DD6F.json | PASS |  |
+| code secret-scan reports/runs/archive/CASE-C6E7DD6F.json | PASS |  |
 | code compliance reports/runs/happy-path.json | PASS |  |
 | code secret-scan reports/runs/happy-path.json | PASS |  |
 | code compliance reports/runs/canary-regression.json | PASS |  |
@@ -1137,10 +1188,16 @@
 | code secret-scan reports/rag-evaluation.md | PASS |  |
 | code compliance reports/evaluation.md | PASS |  |
 | code secret-scan reports/evaluation.md | PASS |  |
+| code compliance reports/runtime-knowledge.json | PASS |  |
+| code secret-scan reports/runtime-knowledge.json | PASS |  |
 | code compliance reports/benchmark-autopsy.md | PASS |  |
 | code secret-scan reports/benchmark-autopsy.md | PASS |  |
+| code compliance reports/agentteams-autonomous-probe.r2-partial.json | PASS |  |
+| code secret-scan reports/agentteams-autonomous-probe.r2-partial.json | PASS |  |
 | code compliance reports/public-model-pilot.json | PASS |  |
 | code secret-scan reports/public-model-pilot.json | PASS |  |
+| code compliance reports/skill-upgrade-rollback.json | PASS |  |
+| code secret-scan reports/skill-upgrade-rollback.json | PASS |  |
 | code compliance reports/agentteams-runtime-v3.json | PASS |  |
 | code secret-scan reports/agentteams-runtime-v3.json | PASS |  |
 | code compliance reports/gitlab-e2e.json | PASS |  |
@@ -1465,9 +1522,10 @@
 | code secret-scan third_party/aliyun/README.md | PASS |  |
 | code compliance docker-compose.observability.yml | PASS |  |
 | code secret-scan docker-compose.observability.yml | PASS |  |
-| total ZIP DevOrbit_复赛方案.pdf | PASS |  |
-| total ZIP DevOrbit_复赛方案.pptx | PASS |  |
-| total ZIP DevOrbit_复赛可执行代码包.zip | PASS |  |
+| total ZIP DevOrbit_决赛方案.pdf | PASS |  |
+| total ZIP DevOrbit_决赛方案.pptx | PASS |  |
+| total ZIP DevOrbit_决赛可执行代码包.zip | PASS |  |
+| total ZIP DevOrbit_决赛验收与答辩手册.pdf | PASS |  |
 | total ZIP DevOrbit_演示视频.mp4 | PASS |  |
 | total ZIP DevOrbit_演示视频封面.png | PASS |  |
 | total ZIP DevOrbit_产品界面.png | PASS |  |
@@ -1490,6 +1548,9 @@
 | total ZIP agentteams-runtime-case.manifest.json | PASS |  |
 | total ZIP agentteams-runtime-case.schema.json | PASS |  |
 | total ZIP agentteams-runtime-report.schema.json | PASS |  |
+| total ZIP agentteams-autonomous-probe.json | PASS |  |
+| total ZIP skill-upgrade-rollback.json | PASS |  |
+| total ZIP db-branch.json | PASS |  |
 | total ZIP public-benchmark.manifest.json | PASS |  |
 | total ZIP public-benchmark.json | PASS |  |
 | total ZIP public-benchmark.md | PASS |  |
@@ -1549,6 +1610,8 @@
 | total secret-scan 公开基准协议.md | PASS |  |
 | total compliance 公开基准复现试点.md | PASS |  |
 | total secret-scan 公开基准复现试点.md | PASS |  |
+| total compliance 决赛验收与答辩手册.md | PASS |  |
+| total secret-scan 决赛验收与答辩手册.md | PASS |  |
 | total compliance 原生平台连接器.md | PASS |  |
 | total secret-scan 原生平台连接器.md | PASS |  |
 | total compliance 威胁模型.md | PASS |  |

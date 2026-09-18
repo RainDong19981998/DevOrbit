@@ -32,18 +32,19 @@ check('intro length', introBody.length <= 500, `${introBody.length}/500 chars`);
 check('intro required claims', introBody.includes('7 个自定义 Skill') && introBody.includes('官方日志查询 Skill'));
 check('intro compliance', !hasForbidden(introBody));
 
-const pdfPath = fileURLToPath(new URL('DevOrbit_复赛方案.pdf', deliverables));
+const pdfPath = fileURLToPath(new URL('DevOrbit_决赛方案.pdf', deliverables));
 const pdfInfo = command('pdfinfo', [pdfPath]);
 const pdfText = command('pdftotext', ['-layout', pdfPath, '-']);
 check('PDF page count', /^Pages:\s+18$/m.test(pdfInfo));
-check('PDF submission date', pdfText.includes('2026') && pdfText.includes('8') && pdfText.includes('31'));
+check('PDF submission date', pdfText.includes('2026') && pdfText.includes('9') && pdfText.includes('17'));
 check('PDF product positioning', pdfText.includes('缺陷') && pdfText.includes('Agent') && pdfText.includes('闭环'));
 check('PDF official Skill evidence', pdfText.includes('Skill') && pdfText.includes('AgentTeams'));
-check('PDF V1.0.0 cover and evidence', pdfText.includes('V1.0.0') && pdfText.includes('113/113') && pdfText.includes('AgentTeams') && pdfText.includes('SWE-bench'));
-check('PDF mandatory sections', pdfText.includes('初赛反馈') && pdfText.includes('场景闭环') && pdfText.includes('风险边界') && pdfText.includes('可复制'));
+check('PDF V1.0.2 cover and evidence', pdfText.includes('V1.0.2') && pdfText.includes('AgentTeams') && pdfText.includes('Skill'));
+check('PDF 12-page main plus appendix', pdfText.includes('MAIN 01-12') && pdfText.includes('APPENDIX') && pdfText.includes('附录 A') && pdfText.includes('附录 F'));
+check('PDF honest evidence boundary', pdfText.includes('measured=false') && pdfText.includes('NOT MEASURED') && !pdfText.includes('3250s → 14.8s') && !pdfText.includes('PostgreSQL 16 真实隔离'));
 check('PDF compliance', !hasForbidden(pdfText));
 
-const pptxPath = fileURLToPath(new URL('DevOrbit_复赛方案.pptx', deliverables));
+const pptxPath = fileURLToPath(new URL('DevOrbit_决赛方案.pptx', deliverables));
 const pptxText = archiveEntries(pptxPath)
   .filter(entry => entry.startsWith('ppt/') && entry.endsWith('.xml'))
   .map(entry => archiveFile(pptxPath, entry, 'utf8'))
@@ -51,7 +52,8 @@ const pptxText = archiveEntries(pptxPath)
   .replace(/<[^>]+>/g, ' ')
   .replace(/&gt;/g, '>').replace(/&lt;/g, '<').replace(/&amp;/g, '&');
 check('PPTX official Skill evidence', pptxText.includes('Skill') && pptxText.includes('AgentTeams'));
-check('PPTX V1.0.0 cover and evidence', pptxText.includes('V1.0.0') && pptxText.includes('edit-based') && pptxText.includes('SWE-bench') && pptxText.includes('113'));
+check('PPTX V1.0.2 structure and evidence', pptxText.includes('V1.0.2') && pptxText.includes('MAIN 01-12') && pptxText.includes('APPENDIX') && pptxText.includes('Skill'));
+check('PPTX removes invalid MTTR and DB claims', !pptxText.includes('3250s → 14.8s') && !pptxText.includes('PostgreSQL 16 真实隔离'));
 check('PPTX compliance', !hasForbidden(pptxText));
 
 const videoPath = fileURLToPath(new URL('DevOrbit_演示视频.mp4', deliverables));
@@ -62,7 +64,7 @@ const stream = videoProbe.streams?.find(item => item.codec_type === 'video') || 
 check('video format', stream.codec_name === 'h264' && stream.width === 1280 && stream.height === 800 && stream.pix_fmt === 'yuv420p');
 check('video has no audio stream', !videoProbe.streams?.some(item => item.codec_type === 'audio'));
 check('video duration', Math.abs(Number(videoProbe.format?.duration) - 129) < 0.05, `${videoProbe.format?.duration}s`);
-check('video reviewed digest unchanged', videoDigest === 'e55914a513f3dac224d9cf2debe093deb06e25e097bb45b9ef45782211bec238', videoDigest.slice(0, 16));
+check('video reviewed digest unchanged', videoDigest === '8b4dfedb39b2ab76af599afb0779052654158b4e33a334b7ac9e1fec21703d8b', videoDigest.slice(0, 16));
 const videoMetadata = command('ffprobe', ['-v', 'error', '-show_entries', 'format_tags:stream_tags', '-of', 'json', videoPath]);
 check('video metadata compliance', !hasForbidden(videoMetadata));
 const explainerPath = fileURLToPath(new URL('DevOrbit_初赛讲解视频_无配音版.mp4', deliverables));
@@ -89,6 +91,7 @@ for (const [name, evidence] of [
   ['DevOrbit_对照与消融评测.pdf', 'Wilson'],
   ['DevOrbit_对抗安全评测.pdf', '9/9'],
   ['DevOrbit_公开基准复现试点.pdf', '公开基准复现试点']
+  ,['DevOrbit_决赛验收与答辩手册.pdf', '决赛验收与答辩手册']
 ]) {
   const path = fileURLToPath(new URL(name, deliverables));
   const info = command('pdfinfo', [path]);
@@ -96,7 +99,7 @@ for (const [name, evidence] of [
   check(`supporting PDF ${name}`, /^Pages:\s+[1-9]\d*$/m.test(info) && text.includes(evidence));
 }
 
-const codeZipPath = fileURLToPath(new URL('DevOrbit_复赛可执行代码包.zip', deliverables));
+const codeZipPath = fileURLToPath(new URL('DevOrbit_决赛可执行代码包.zip', deliverables));
 command('unzip', ['-tq', codeZipPath]);
 const codeEntries = archiveEntries(codeZipPath);
 for (const required of [
@@ -131,12 +134,21 @@ for (const required of [
   'evaluation/independent-model-pilot/pydicom__pydicom-965/evidence/baseline-target.log', 'evaluation/independent-model-pilot/pydicom__pydicom-965/evidence/contract-rejection.json',
   'reports/independent-model-pilot.json', 'reports/independent-model-pilot-preflight-001.json',
   'scripts/run-independent-model-pilot.mjs', 'scripts/validate-independent-model-pilot.mjs',
+  'reports/agentteams-autonomous-probe.json', 'scripts/agentteams-autonomous-probe.mjs',
+  'reports/skill-upgrade-rollback.json', 'scripts/skill-upgrade-drill.mjs', 'src/reasoning/evidence-reasoner.js',
   'src/evaluation/exact-edit-transaction.js', 'src/evaluation/exact-edit-transaction.test.js',
   'scripts/release-audit.mjs'
 ]) check(`code ZIP ${required}`, codeEntries.includes(required));
 check('code ZIP cache free', !codeEntries.some(entry => entry.includes('__pycache__') || entry.endsWith('.pyc')));
+check('code ZIP excludes live state snapshots', !codeEntries.some(entry => entry.startsWith('reports/runs/state/')));
 const codePackage = JSON.parse(archiveFile(codeZipPath, 'package.json', 'utf8'));
-check('code ZIP version', codePackage.version === '1.0.0' && codePackage.scripts?.['validate-agentteams-runtime'] && codePackage.scripts?.['native-platform-smoke'] && codePackage.scripts?.['native-runner-smoke'] && codePackage.scripts?.['reconcile-idempotency'] && codePackage.scripts?.['validate-public-model-pilot-v11'] && codePackage.scripts?.['validate-independent-model-pilot'] && codePackage.scripts?.['model-provider-smoke'] && codePackage.scripts?.['gitlab-e2e'] && codePackage.scripts?.['public-benchmark'] && codePackage.scripts?.['canary-docker'] && codePackage.scripts?.['model-ablation'] && codePackage.scripts?.['benchmark-knowledge']);
+check('code ZIP version', codePackage.version === '1.0.2' && codePackage.scripts?.['skill-upgrade-drill'] && codePackage.scripts?.['validate-agentteams-runtime'] && codePackage.scripts?.['native-platform-smoke'] && codePackage.scripts?.['native-runner-smoke'] && codePackage.scripts?.['reconcile-idempotency'] && codePackage.scripts?.['validate-public-model-pilot-v11'] && codePackage.scripts?.['validate-independent-model-pilot'] && codePackage.scripts?.['model-provider-smoke'] && codePackage.scripts?.['gitlab-e2e'] && codePackage.scripts?.['public-benchmark'] && codePackage.scripts?.['canary-docker'] && codePackage.scripts?.['model-ablation'] && codePackage.scripts?.['benchmark-knowledge']);
+const autonomyProbe = JSON.parse(archiveFile(codeZipPath, 'reports/agentteams-autonomous-probe.json', 'utf8'));
+check('code ZIP strict AgentTeams autonomy boundary', autonomyProbe.status === 'blocked'
+  ? autonomyProbe.summary?.newMcpAuditEntries === 0 && autonomyProbe.boundary?.includes('not evidence')
+  : autonomyProbe.status === 'passed' && autonomyProbe.evidence?.workerCoverage?.length === 7 && autonomyProbe.evidence.workerCoverage.every(item => item.matrixEvents > 0 && item.mcpAuditEntries > 0));
+const skillDrill = JSON.parse(archiveFile(codeZipPath, 'reports/skill-upgrade-rollback.json', 'utf8'));
+check('code ZIP Skill PATCH upgrade and rollback', skillDrill.status === 'passed' && skillDrill.transition === '1.0.0 -> 1.0.1 -> 1.0.0' && skillDrill.checks?.digestChanged && skillDrill.checks?.rollbackDigestRestored);
 const agentTeamsRuntime = JSON.parse(archiveFile(codeZipPath, 'reports/agentteams-runtime.json', 'utf8'));
 const agentTeamsRuntimeText = JSON.stringify(agentTeamsRuntime);
 check('code ZIP official AgentTeams local runtime', agentTeamsRuntime.status === 'passed'
@@ -268,16 +280,17 @@ for (const entry of codeEntries.filter(entry => /\.(md|html|css|js|mjs|json|ya?m
   check(`code secret-scan ${entry}`, !hasSecret(text));
 }
 
-const totalZipPath = fileURLToPath(new URL('DevOrbit_复赛提交总包.zip', deliverables));
+const totalZipPath = fileURLToPath(new URL('DevOrbit_决赛提交总包.zip', deliverables));
 if (!existsSync(totalZipPath)) { check('total ZIP not yet generated', false, 'total submission bundle not yet built'); } else {
 command('unzip', ['-tq', totalZipPath]);
 const totalEntries = archiveEntries(totalZipPath);
 for (const required of [
-  'DevOrbit_复赛方案.pdf', 'DevOrbit_复赛方案.pptx', 'DevOrbit_复赛可执行代码包.zip',
+  'DevOrbit_决赛方案.pdf', 'DevOrbit_决赛方案.pptx', 'DevOrbit_决赛可执行代码包.zip', 'DevOrbit_决赛验收与答辩手册.pdf',
   'DevOrbit_演示视频.mp4', 'DevOrbit_演示视频封面.png', 'DevOrbit_产品界面.png', '作品简介.md', '官网提交粘贴稿.md',
   '提交清单.md', '评委90秒验收.md', '第三方依赖与合规清单.md', '演示脚本.md', 'AgentTeams本地运行验证.md',
   '威胁模型.md', '证据索引.md', 'Adapter生产契约.md', 'agentteams-contract.md', 'benchmark.md', 'security-evaluation.md',
   'container-smoke.json', 'http-adapter.openapi.json', 'agentteams-runtime.json', 'agentteams-runtime-case.manifest.json', 'agentteams-runtime-case.schema.json', 'agentteams-runtime-report.schema.json',
+  'agentteams-autonomous-probe.json', 'skill-upgrade-rollback.json', 'db-branch.json',
   'public-benchmark.manifest.json', 'public-benchmark.json', 'public-benchmark.md', 'public-benchmark.schema.json', 'public-benchmark-results.schema.json', 'public-benchmark-report.schema.json', '公开基准协议.md',
   'public-benchmark-pilot.manifest.json', 'public-benchmark-pilot.schema.json', '公开基准复现试点.md', 'public-benchmark-pilot.json',
   'public-model-pilot-v11.manifest.json', 'public-model-pilot-v11.schema.json', 'public-model-pilot-v11.json',
@@ -287,7 +300,7 @@ for (const required of [
   'DevOrbit_Skill清单.pdf', 'DevOrbit_工具与云产品清单.pdf', 'DevOrbit_威胁模型.pdf', 'DevOrbit_证据索引.pdf',
   'DevOrbit_对照与消融评测.pdf', 'DevOrbit_对抗安全评测.pdf', 'DevOrbit_公开基准复现试点.pdf'
 ]) check(`total ZIP ${required}`, totalEntries.includes(required));
-check('total ZIP embeds current code ZIP', sha256(archiveFile(totalZipPath, 'DevOrbit_复赛可执行代码包.zip')) === sha256(await readFile(codeZipPath)));
+check('total ZIP embeds current code ZIP', sha256(archiveFile(totalZipPath, 'DevOrbit_决赛可执行代码包.zip')) === sha256(await readFile(codeZipPath)));
 try {
 const totalPublicModel = JSON.parse(archiveFile(totalZipPath, 'public-model-pilot-v11.json', 'utf8'));
 check('total ZIP public model terminal evidence', totalPublicModel.runId === 'run-011'
@@ -312,7 +325,7 @@ for (const entry of totalEntries.filter(entry => /\.(md|txt)$/.test(entry))) {
 }
 }
 
-const artifacts = ['DevOrbit_复赛方案.pdf', 'DevOrbit_复赛方案.pptx', 'DevOrbit_复赛可执行代码包.zip', 'DevOrbit_演示视频.mp4', 'DevOrbit_演示视频封面.png', 'DevOrbit_产品界面.png', 'DevOrbit_初赛讲解视频_无配音版.mp4', 'DevOrbit_AgentTeams本地运行验证.pdf', 'DevOrbit_威胁模型.pdf', 'DevOrbit_证据索引.pdf', 'DevOrbit_对照与消融评测.pdf', 'DevOrbit_对抗安全评测.pdf', 'DevOrbit_公开基准复现试点.pdf'];
+const artifacts = ['DevOrbit_决赛方案.pdf', 'DevOrbit_决赛方案.pptx', 'DevOrbit_决赛可执行代码包.zip', 'DevOrbit_决赛验收与答辩手册.pdf', 'DevOrbit_演示视频.mp4', 'DevOrbit_演示视频封面.png', 'DevOrbit_产品界面.png', 'DevOrbit_AgentTeams本地运行验证.pdf', 'DevOrbit_威胁模型.pdf', 'DevOrbit_证据索引.pdf', 'DevOrbit_对照与消融评测.pdf', 'DevOrbit_对抗安全评测.pdf', 'DevOrbit_公开基准复现试点.pdf'];
 const digests = {};
 for (const name of artifacts) {
   try { digests[name] = sha256(await readFile(new URL(name, deliverables))); } catch { digests[name] = 'absent'; }
@@ -330,10 +343,10 @@ const markdown = [
   '# 提交发布审计', '',
   `- 结果：${report.summary.passed}/${report.summary.checks} checks passed`,
   `- 作品简介：${introBody.length}/500 字符`,
-  `- PDF：18 页 V1.0.0；含初赛反馈标红对比、场景闭环图、风险边界声明、可复制性说明四项必含内容`,
+  `- PDF：18 页 V1.0.2；前 12 页主讲，后 6 页附录；已撤下无效 MTTR 对比与未实测数据库主张`,
   `- 视频：演示片 H.264 1280×800、129 秒 tour 导览模式（烧录中文字幕、无音轨，≤8 分钟门禁；含 Agent 协作/Skill 调用证据/异常处理演示三要素）；另有语音讲解版（CosyVoice v3-flash 旁白混音，供路演使用，不参与提交门禁）；讲解片 V0.9.5+ 移除（初赛轮产物）`,
   `- 基础工程证据：Agent×Tool 策略、9/9 对抗安全、三维消融、OTLP JSON 导出均已纳入总包`,
-  `- V1.0.0 工程证据：113/113 单测；状态持久化与重启恢复（崩溃后审批续跑同 case/trace）；Skill 版本溯源（版本+摘要进 trace，8 Skill 注册表）；第二类场景迁移（结算→库存，机制序列完全一致）；可靠性故障演练 6/6；上下文治理（租户硬过滤/陈旧阻断/TTL）`,
+  `- V1.0.2 工程证据：RCA/Patch 移除 profile.rootCause/profile.fix；AT 严格探针按七 Worker sender 与 MCP 归属验收；Skill PATCH 升级/回退实跑；数据库 measured=false 诚实披露`,
   `- V0.9.6 工程证据：glm 第二轮闭环 3/30（0%→10%）、可应用率 56%、RCA Top-3 73.3%；single-agent 0/30；三维消融（管道/模型/架构）；失败知识自沉淀 42 条 negative Episode；GitLab 真实自愈 e2e 17/17；Docker 灰度 8/8`,
   `- 公开调优边界：Run 1–11 全留痕；Run 7 旧门禁通过后由兼容性反例推翻；Run 11 增强门禁拒绝残余，39/39 失败证据校验`,
   `- 独立验证边界：跨仓 pydicom 单次运行在重复 exact-edit 契约处终止，按负例披露；26/26 证据校验；正式 benchmark 仍为 not_run / 0 cases`,

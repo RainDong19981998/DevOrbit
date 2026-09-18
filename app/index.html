@@ -12,7 +12,7 @@
   <header class="topbar">
     <a class="brand" href="#"><span class="mark">D/O</span><span>DevOrbit</span></a>
     <nav><a href="#workspace">闭环驾驶舱</a><a href="#artifacts">执行证据</a><a href="#skills">Skill 资产</a><a href="#evidence">验证结果</a></nav>
-    <div class="runtime"><span class="dot"></span>AgentTeams Runtime · Local</div>
+    <div class="runtime"><span class="dot"></span><span id="runtime-mode">正在识别执行模式</span></div>
   </header>
 
   <main>
@@ -36,9 +36,9 @@
       </div>
       <div class="score-card">
         <p>当前案例</p>
-        <h2>支付下单链路异常</h2>
-        <div class="severity">S2 <span>错误率 7.4%</span></div>
-        <dl><div><dt>输入</dt><dd>5 类异构信号</dd></div><div><dt>协同</dt><dd>7 个职能 Agent</dd></div><div><dt>门禁</dt><dd>L2 · 灰度 + 审批</dd></div><div><dt>目标</dt><dd>端到端闭环</dd></div></dl>
+        <h2 id="case-summary">支付下单链路异常</h2>
+        <div class="severity" id="case-severity">S2 <span>错误率 7.4%</span></div>
+        <dl><div><dt>输入</dt><dd id="case-signal-count">5 类异构信号</dd></div><div><dt>协同</dt><dd>7 个职能 Agent</dd></div><div><dt>门禁</dt><dd>L2 · 灰度 + 审批</dd></div><div><dt>目标</dt><dd>端到端闭环</dd></div></dl>
       </div>
     </section>
 
@@ -46,10 +46,12 @@
       <div class="section-title"><div><p class="eyebrow">LIVE WORKSPACE</p><h2>闭环驾驶舱</h2></div><div id="run-state" class="run-state idle"><span></span>等待运行</div></div>
       <div class="task-input">
         <div><p>CASE INPUT</p><h3>研发任务输入</h3></div>
+        <label><span>案例上下文</span><select id="case-fixture"><option value="checkout">支付 / 幂等异常</option><option value="inventory">库存 / 并发超卖</option></select></label>
         <label><span>问题标题</span><input id="incident-title" value="支付页提交后持续转圈，订单偶发重复创建"></label>
-        <label><span>目标仓库</span><input id="incident-repository" value="checkout-service"></label>
+        <label><span>目标仓库</span><input id="incident-repository" value="checkout-service" readonly></label>
         <label><span>目标分支</span><input id="incident-branch" value="release/2026.08"></label>
-        <div class="input-boundary"><b>LOCAL FIXTURE</b><span>接口契约可切换 GitHub / Jenkins / Argo</span></div>
+        <div class="input-boundary"><b id="execution-boundary">LOCAL FIXTURE</b><span id="execution-boundary-detail">本地样例仓真实测试；外部平台共用同一契约</span></div>
+        <div class="acceptance-lock" aria-label="本次运行的固定验收条件"><div><b>验收条件已锁定</b><span>运行开始后不可由 Agent 降低</span></div><ul><li>业务断言一致</li><li>必选测试全绿</li><li>RCA ≥ 0.80</li><li>回滚点存在</li><li>L2 人工审批</li></ul></div>
       </div>
       <div class="pipeline" id="pipeline">
         <article data-stage="0"><b>01</b><span>信号归并</span><small>Intake</small></article>
@@ -62,7 +64,7 @@
       </div>
 
       <div class="dashboard-grid">
-        <article class="panel signals"><header><div><p>INPUT STREAM</p><h3>多源信号</h3></div><span>5 条</span></header><div id="signals"><p class="empty">运行后加载案例输入</p></div></article>
+        <article class="panel signals"><header><div><p>INPUT STREAM</p><h3>多源信号</h3></div><span id="signal-count">5 条</span></header><div id="signals"><p class="empty">运行后加载案例输入</p></div></article>
         <article class="panel trace"><header><div><p>AGENT TRACE</p><h3>协同轨迹</h3></div><span id="trace-count">0 / --</span></header><div id="trace"><p class="empty">Agent 执行轨迹将在这里实时出现</p></div></article>
         <article class="panel finding"><header><div><p>EVIDENCE RCA</p><h3>根因与影响面</h3></div><span class="confidence" id="confidence">--</span></header><div id="finding"><p class="empty">等待证据分析</p></div></article>
         <article class="panel release"><header><div><p>CONTROLLED RELEASE</p><h3>修复与发布门禁</h3></div><span class="rework-badge" id="rework-badge"></span><span class="lock">🔒 审批保护</span></header><div id="release"><p class="empty">等待修复方案</p></div></article>
@@ -81,6 +83,12 @@
         </header>
         <div id="artifact-view" class="artifact-view"><p class="empty">运行案例后可检查补丁、测试、工具调用和审计引用</p></div>
       </section>
+
+      <section id="governance" class="governance-console">
+        <header><div><p>RUN GOVERNANCE</p><h3>运行治理与恢复</h3></div><button id="refresh-governance" class="chain-btn" title="刷新运行状态">刷新</button></header>
+        <div class="governance-status" id="governance-status"><p class="empty">正在读取部署与持久化状态</p></div>
+        <div class="governance-list" id="governance-list"><p class="empty">暂无归档运行</p></div>
+      </section>
     </section>
 
     <section id="skills" class="assets">
@@ -98,7 +106,7 @@
       <div id="benchmark-board" class="benchmark-board"><p class="empty">加载基准数据…（需先运行 npm run public-benchmark 与 npm run model-ablation）</p></div>
     </section>
   </main>
-  <footer><span>DevOrbit v0.9.6 · 2026年8月28日</span><span>AgentTeams Runtime + Skill + MCP 2025-06-18 / 2025-11-25 + Episode + DB Branch + Hash Chain</span></footer>
+  <footer><span>DevOrbit v1.0.2 · 2026年9月17日</span><span>AgentTeams Runtime + Skill + MCP 2025-06-18 / 2025-11-25 + Episode + DB Branch + Hash Chain</span></footer>
   <script src="/app/tour-timeline.js"></script>
   <script type="module" src="/app/app.js"></script>
 </body>

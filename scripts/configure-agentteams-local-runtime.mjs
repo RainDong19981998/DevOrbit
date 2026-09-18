@@ -93,7 +93,7 @@ const policy = JSON.stringify({ default_effect: 'allow', client_overrides: [], t
 const clientsByWorker = {
   'intake-worker': ['issue', 'observability'],
   'impact-worker': ['repository'],
-  'rca-worker': ['observability', 'knowledge'],
+  'rca-worker': ['observability', 'repository', 'knowledge'],
   'patch-worker': ['repository', 'ci'],
   'verify-worker': ['ci'],
   'release-worker': ['release'],

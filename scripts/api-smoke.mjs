@@ -21,6 +21,10 @@ try {
   const demoPage = await fetch(`${base}/?demo=happy-path`);
   const demoHtml = await demoPage.text();
   if (!demoPage.ok || !demoPage.headers.get('content-type')?.includes('text/html') || !demoHtml.includes('DevOrbit')) throw new Error('query-string root page failed');
+  const checkoutCase = await request('/api/case?fixture=checkout');
+  const inventoryCase = await request('/api/case?fixture=inventory');
+  if (checkoutCase.repository !== 'checkout-service' || checkoutCase.signals.length !== 5) throw new Error('checkout fixture contract failed');
+  if (inventoryCase.repository !== 'inventory-service' || inventoryCase.signals.length !== 6 || !inventoryCase.signals.some(signal => signal.source === '数据库')) throw new Error('inventory fixture contract failed');
   const pending = await request('/api/runs', { scenario: 'happy-path' });
   if (pending.state.status !== 'approval_pending' || pending.tests.passed !== 4 || pending.plan.baselineTests.failed !== 3) throw new Error('pending run contract failed');
   const approved = await request(`/api/runs/${pending.state.caseId}/approval`, { decision: 'approved' });
@@ -29,7 +33,7 @@ try {
   if (testFailure.tests.gate !== 'failed' || testFailure.release !== null) throw new Error('test failure gate failed');
   const report = await request('/reports/evaluation.json');
   if (report.summary.passed !== 7 || report.summary.safetyCorrect !== 5) throw new Error('evaluation report endpoint failed');
-  console.log('PASS API smoke: session resume, real tests, safety gate, evaluation report');
+  console.log('PASS API smoke: dual fixtures, session resume, real tests, safety gate, evaluation report');
 } finally {
   server.kill('SIGTERM');
 }

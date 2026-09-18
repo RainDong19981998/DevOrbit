@@ -3,8 +3,8 @@
 - 官方版本：v1.2.2
 - Commit：`849182af8e017168a5a200a87b1062142caf462d`
 - 资源：8 Worker，1 Team
-- 结果：140/140 checks passed
-- Resource digest：`373955b277ea84a7`
+- 结果：141/141 checks passed
+- Resource digest：`e9d113dd14d33a81`
 
 | Check | Result | Detail |
 |---|---|---|
@@ -50,6 +50,7 @@
 | rca-worker custom skill not duplicated | PASS |  |
 | rca-worker package uploaded separately | PASS |  |
 | rca-worker MCP observability | PASS |  |
+| rca-worker MCP repository | PASS |  |
 | rca-worker MCP knowledge | PASS |  |
 | patch-worker model | PASS |  |
 | patch-worker runtime | PASS |  |

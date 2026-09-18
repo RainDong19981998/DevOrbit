@@ -1,0 +1,46 @@
+{
+  "schema": "devorbit.skill-upgrade-drill/v1",
+  "generatedAt": "2026-09-17T07:53:15.537Z",
+  "traceId": "TRACE-SKILL-9fb4ca75-832a-4644-b9e7-aac966c03198",
+  "skill": "evidence-rca",
+  "transition": "1.0.0 -> 1.0.1 -> 1.0.0",
+  "isolation": "temporary registry; canonical production skill is read-only during this drill",
+  "events": [
+    {
+      "stage": "baseline-active",
+      "at": "2026-09-17T07:53:15.535Z",
+      "version": "1.0.0",
+      "digest": "sha256:b2603bc3ec0513699e345ea489b2cb7761f253775ab500acf702b11aeb558b42",
+      "registryValid": true,
+      "goldenCheckPassed": true
+    },
+    {
+      "stage": "patch-activated",
+      "at": "2026-09-17T07:53:15.536Z",
+      "version": "1.0.1",
+      "digest": "sha256:759a9eaf5b70b3986c76ce9dfbfa611160a52e06801c2795932557a8ab83e5ef",
+      "registryValid": true,
+      "goldenCheckPassed": true
+    },
+    {
+      "stage": "rollback-activated",
+      "at": "2026-09-17T07:53:15.537Z",
+      "version": "1.0.0",
+      "digest": "sha256:b2603bc3ec0513699e345ea489b2cb7761f253775ab500acf702b11aeb558b42",
+      "registryValid": true,
+      "goldenCheckPassed": true
+    }
+  ],
+  "checks": {
+    "baselineVersion": true,
+    "patchVersion": true,
+    "digestChanged": true,
+    "patchValidated": true,
+    "rollbackVersion": true,
+    "rollbackDigestRestored": true,
+    "rollbackValidated": true,
+    "canonicalSkillUntouched": true
+  },
+  "status": "passed",
+  "boundary": "This is a real local registry activation and rollback drill with digest and contract validation. It is not a production AgentTeams rollout."
+}

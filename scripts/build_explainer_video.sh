@@ -30,7 +30,7 @@ captions=(
 mkdir -p "$tmp/pages" "$tmp/segments"
 for page in 1 2 3 4 5 13 14 15 16 17 18; do
   pdftoppm -f "$page" -l "$page" -singlefile -png -r 120 \
-    "$root/deliverables/DevOrbit_复赛方案.pdf" "$tmp/pages/page-$page" >/dev/null
+    "$root/deliverables/DevOrbit_决赛方案.pdf" "$tmp/pages/page-$page" >/dev/null
 done
 
 for index in "${!pages[@]}"; do

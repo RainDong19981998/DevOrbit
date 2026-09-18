@@ -1,5 +1,29 @@
 # DevOrbit 版本迭代记录
 
+## V1.0.2（2026年9月18日）— 真实自主执行证据 + 运行时断链修复 + 数据库试验协议
+
+### 新增
+
+- **官方 AgentTeams 自主探针通过**（`CASE-AUTO-INVENTORY-20260918-R4`，status=passed）：七个精确 Worker 在同一任务房间各自发言（422 条消息）并调用自有 MCP（69 条审计、同一 Case/Trace、7/7 Worker），Leader 自主分诊→建项目房间→规划 7 节点 DAG→逐任务验收→交付终态（169 条消息）；探针加入任务房间作为只读观察者（`reports/agentteams-autonomous-probe.json`）
+- **身份代理**（`src/agentteams-identity-proxy.js` + `scripts/prepare-agentteams-runtime.mjs`）：Worker MCP 调用经独有 Bearer 注入 `x-devorbit-agent`/`x-case-id`/`x-trace-id`，实现同 Case/Trace 审计归属；凭据缺失时探针报告 `blocked`
+- **MCP 会话 TTL 12h**（`src/mcp/http-transport.js` + `server.js`）：消除 30 分钟会话过期导致的 Worker 生命周期死亡；`DEVORBIT_MCP_FIXTURE=inventory` 支持库存域 MCP 信号
+- **探针工程化**：任务房间归属统计（从 Leader 移交消息提取项目房间）、admin 观察邀请、resume 续收模式（断点续收集历史消息与审计）、auto-nudge（检测派发后自动 `m.mentions` 触发 Worker）
+- **db-branch-smoke 真实 PostgreSQL 16 实现**：50k 行基线、双隔离 Schema（branch_index vs branch_rewrite）、7 次 `EXPLAIN (ANALYZE, BUFFERS, FORMAT JSON)`、业务结果哈希一致性优先于性能比较、外键验证与分支销毁；本地 Docker 代理不可达时报告 `skipped`/`measured=false`，待 PolarDB 环境复跑
+- **经验持久化**：`FileEpisodeStore`（`reports/runtime-knowledge.json`）跨应用重启保留成功/失败假设与可信状态；`FileRunArchive`（`reports/runs/archive/`）终态归档支持 `GET /api/runs/{caseId}` 反查
+- **Skill PATCH 升级回退实跑**：`scripts/skill-upgrade-drill.mjs` 在隔离注册表完成 1.0.0→1.0.1→1.0.0，保存版本、digest、Trace 与前后验证结果（`reports/skill-upgrade-rollback.json`）
+
+### 变更
+
+- RCA/Patch 不再读取 `profile.rootCause/profile.fix`，从当前源码、现场信号与失败测试反馈推导诊断和最小编辑
+- `server.js` 新增 `GET /api/runs/{caseId}`（live/restored/archive 三来源反查）、`GET /api/knowledge`（跨重启经验查询）、`GET /api/skills/registry`（Skill 版本治理）
+- `npm test` 115 → 118（+3 身份代理/经验持久化/终态归档）
+
+### 验证
+
+- `npm test` 118/118 PASS
+- 官方 AgentTeams 自主探针 `CASE-AUTO-INVENTORY-20260918-R4` status=passed（7/7 Worker、69 条同 Case/Trace 审计、Leader 交付终态）
+- 重启恢复、终态归档、知识跨重启持久化、Skill 升级回退、Hash 链篡改检测全部保留
+
 ## V1.0.0（2026年8月31日）— 持久化恢复 + Skill 溯源 + 场景迁移 + 故障演练
 
 ### 新增

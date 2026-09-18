@@ -1,15 +1,15 @@
 # DevOrbit — 多 Agent 研发闭环平台
 
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.0.0-green.svg)](https://github.com/RainDong19981998/DevOrbit/releases/tag/v1.0.0)
-[![Tests](https://img.shields.io/badge/tests-113%2F113-brightgreen.svg)](#验证与诚实边界)
+[![Version](https://img.shields.io/badge/version-1.0.2-green.svg)](https://github.com/RainDong19981998/DevOrbit/releases/tag/v1.0.2)
+[![Tests](https://img.shields.io/badge/tests-118%2F118-brightgreen.svg)](#验证与诚实边界)
 [![Node](https://img.shields.io/badge/node-%3E%3D20-339933.svg)]()
 
-> 当前版本 V1.0.0 · Apache-2.0 · 仅依赖 Node.js 标准库，无第三方 npm 包
+> 当前版本 V1.0.2 · Apache-2.0 · 仅依赖 Node.js 标准库，无第三方 npm 包
 
 DevOrbit 是一套自动处理线上缺陷的多 Agent 研发平台。用户提交问题、仓库和分支，系统读取 Issue、日志与代码，完成根因定位、补丁生成和独立测试；发布前等待负责人确认，最终交付代码 Diff、测试报告、审批/灰度记录和复盘知识卡。
 
-V1.0.0 重点强化工程落地与可验证性。**状态持久化与重启恢复**——Case State 与证据链快照原子落盘，进程崩溃后自动恢复审批挂起会话并续跑（同 case/trace，证据链连续校验）。**Skill 版本溯源**——8 个 Skill 全部 SemVer + sha256 摘要注册，每条 trace 记录 skillVersion/skillDigest，任一结果可定位到产生它的 Skill 版本。**第二类场景迁移**——结算支付域到库存域（秒杀超卖）机制零改动复制：两域 Worker×Skill 序列、状态机路径、MCP 工具集完全一致，均 3 失败→4 通过→promoted 闭环。**可靠性故障演练** 7/7（返工熔断/模型 429 重试/500 fail-closed/网络超时重试/工具错误审计/DB 门禁/端点不可达）。**上下文治理**——租户硬过滤、陈旧版本召回阻断、会话 TTL 与快照保留策略显性化。113/113 单测、63/63 validate、1536/1536 release-audit。
+V1.0.2 重点收紧决赛证据边界。RCA 与 Patch 不再读取 `profile.rootCause/profile.fix`，而是从当前源码、现场信号与失败测试反馈推导诊断和最小编辑。官方 AgentTeams 自主探针已通过 `CASE-AUTO-INVENTORY-20260918-R4`：七个精确 Worker 在同一任务房间各自发言并调用自有 MCP（69 条审计、同一 Case/Trace），Leader 完成分诊、DAG 派发、逐任务验收与交付终态；凭据缺失时探针报告为 `blocked`。Skill PATCH 升级与回退已在隔离注册表实跑，保存版本、digest、Trace 与前后验证结果。当前 `reports/db-branch.json` 为 `measured=false`（本地 Docker 代理不可达拉取 PostgreSQL 镜像），不主张 PolarDB 真实实测；脚本已实现 50k 行基线、双隔离 Schema、7 次 `EXPLAIN ANALYZE` 与业务哈希一致性比对，待决赛环境复跑。状态恢复、终态归档和知识跨重启持久化继续保留。
 
 V0.9.6 第四轮：edit-based 补丁引擎重构（模型输出 SEARCH/REPLACE 块，工具侧应用+模糊匹配，根除 V0.8 模型直出 diff 的 0% 应用率硬伤）。RCA 引导目标文件内容注入。失败知识自沉淀闭环（42 条 negative Episode 自动生成→第二轮按仓库召回警示）。三维消融：管道（diff-based V0.8 0% vs edit-based V0.9.6）、模型（glm / deepseek-v4-flash / 本地 qwen3:8b）、架构（devorbit vs single-agent），同冻结 30 案例 SWE-bench dev test split。glm 第二轮（含知识回放）闭环率 0%→10%（3/30，PYDICOM-1413/SQLFLUFF-2907/SQLFLUFF-4753 均为 devorbit 闭环，single-agent 0/30），补丁可应用率 0%→56%，RCA Top-3 73.3%。deepseek edit-based 同样 3/30 闭环。驾驶舱新增基准大盘页。
 
@@ -34,6 +34,8 @@ npm start
 curl -s -X POST http://localhost:4173/api/run \
   -H 'content-type: application/json' -d '{}'
 ```
+
+决赛现场的主案例、异常恢复、数据库实测口径和答辩证据入口见 [`docs/决赛验收与答辩手册.md`](docs/决赛验收与答辩手册.md)。驾驶舱“运行治理与恢复”会保留终态证据归档；`GET /api/runs/{caseId}` 可从交付结果反查同一 Case/Trace 下的 Agent、Skill、工具、测试与审批记录，`GET /api/knowledge` 可核验跨重启的 Episode。
 
 完整验证矩阵：
 
@@ -135,7 +137,7 @@ src/agents/                7 个独立职能 Worker（含动态补证与返工�
 src/runtime/               Team Leader、共享状态、状态快照存储与重启恢复、Trace、测试执行器与 patch↔verify 自愈循环
 src/security/              审批策略、工具门禁、司法级 Hash 证据链与篡改检测
 src/adapters/              DB Branch Provider（隔离分支多假设并行验证）、HTTP/平台适配器
-src/adapters/db-branch.js  InMemoryDbBranchProvider + PolarDB 适配层占位
+src/adapters/db-branch.js  内存契约 Provider + PostgreSQL/PolarDB 接入边界
 src/fixture-profiles.js    域 profile（服务拓扑/根因假设/修复模板/发布版本）
 src/skills-registry.js     Skill 注册表（version + SKILL.md sha256 digest）
 docker-compose.db.yml      PostgreSQL 16 容器（数据库分支验证环境）
@@ -188,7 +190,7 @@ MCP_URL=https://gateway.example.com/devorbit/mcp npm run deploy-agentteams
 
 ## 验证与诚实边界
 
-`npm test` 验证独立 Worker 协作、真实样例仓补丁/测试、同 Case 审批续跑、低置信停止、测试失败阻断与熔断、灰度回滚、动态补证升级、自愈闭环 Red→Red→Green、Episode 硬过滤与负面召回、DB Branch 全流程与安全门禁、Hash 链生成与篡改检测、edit-based 补丁引擎精确/模糊匹配、**状态快照原子写入/损坏隔离/重启恢复审批续跑**、**库存域场景迁移机制一致性**、**租户串扰防护与陈旧上下文阻断**，目前 113/113 通过。`npm run evaluate` 执行 7 个 Golden Cases，7/7 通过，5/5 安全分支正确，Worker 证据覆盖率 100%。`npm run evaluate-rag` 验证 4/4 词法与混合检索 Top-1 命中。`npm run evaluate-security` 验证 9 个对抗安全案例。`npm run verify-evidence-chain` 独立校验运行报告的 Hash 链完整性。`npm run db-branch-smoke` 在 Docker PostgreSQL 上验证数据库分支多假设并行验证全流程。`npm run scenario-migration` 生成结算→库存跨域迁移证据（机制序列一致性 + 双域闭环）。`npm run fault-drill` 执行 7 类可靠性故障注入演练。`npm run write-skills-registry` 生成 8 Skill 版本/摘要/Worker 绑定注册表。这些指标验证工作流和策略行为，不代表生产业务收益；正式公开基准冻结后统一报告 Top-3 根因命中率、Patch 可编译率和人工介入率。
+`npm test` 验证 Worker 协作、样例仓补丁/测试、同 Case 审批续跑、低置信停止、测试失败阻断与熔断、灰度回滚、动态补证、自愈闭环、Episode 治理、知识跨重启持久化、终态归档、DB Branch 安全门禁、Hash 链、状态恢复、场景迁移和上下文隔离。`npm run skill-upgrade-drill` 实跑 Skill `1.0.0 → 1.0.1 → 1.0.0`。`npm run db-branch-smoke` 仅在报告 `measured=true` 时才可引用为真实数据库实测；当前 `measured=false`。其他证据命令见 `docs/快速验收.md`。
 
 `npm run capture-runs` 生成 4 份可回放运行报告；`npm run api-smoke` 从独立端口启动服务并验证会话续跑、真实测试、安全门禁和评测报告 API。AgentTeams 契约证据见 [`reports/agentteams-contract.md`](reports/agentteams-contract.md)。
 
@@ -202,7 +204,7 @@ MCP_URL=https://gateway.example.com/devorbit/mcp npm run deploy-agentteams
 
 ## 开放与依赖披露
 
-- 公开仓库：[`github.com/RainDong19981998/DevOrbit`](https://github.com/RainDong19981998/DevOrbit)（Apache-2.0，tag `v1.0.0`）。
+- 公开仓库：[`github.com/RainDong19981998/DevOrbit`](https://github.com/RainDong19981998/DevOrbit)（Apache-2.0，tag `v1.0.2`）。
 - 已开源：Agent/Skill 模板、Schema、适配器 SDK、演示案例和评测脚本。
 - 社区治理：[`CONTRIBUTING.md`](CONTRIBUTING.md)（贡献指南）、[`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)（行为准则）、`.github/ISSUE_TEMPLATE/`（Issue 模板）。
 - 默认无密钥 Demo 仅依赖 Node.js 标准库；无商业 API、无外部 npm 包。

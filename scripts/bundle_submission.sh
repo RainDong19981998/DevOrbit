@@ -8,16 +8,16 @@ npm run build-supporting-pdfs
 npm run bundle
 npm run write-checksums
 
-out='deliverables/DevOrbit_复赛提交总包.zip'
+out='deliverables/DevOrbit_决赛提交总包.zip'
 rm -f "$out"
 zip -qj "$out" \
-  deliverables/DevOrbit_复赛方案.pdf \
-  deliverables/DevOrbit_复赛方案.pptx \
-  deliverables/DevOrbit_复赛可执行代码包.zip \
+  deliverables/DevOrbit_决赛方案.pdf \
+  deliverables/DevOrbit_决赛方案.pptx \
+  deliverables/DevOrbit_决赛可执行代码包.zip \
+  deliverables/DevOrbit_决赛验收与答辩手册.pdf \
   deliverables/DevOrbit_演示视频.mp4 \
   deliverables/DevOrbit_演示视频封面.png \
   deliverables/DevOrbit_产品界面.png \
-  deliverables/DevOrbit_初赛讲解视频_无配音版.mp4 \
   deliverables/DevOrbit_AgentTeams本地运行验证.pdf \
   deliverables/DevOrbit_Agent-Identity清单.pdf \
   deliverables/DevOrbit_Skill清单.pdf \
@@ -34,6 +34,7 @@ zip -qj "$out" \
   docs/评委90秒验收.md \
   docs/第三方依赖与合规清单.md \
   docs/演示脚本.md \
+  docs/决赛验收与答辩手册.md \
   docs/AgentTeams本地运行验证.md \
   docs/威胁模型.md \
   docs/证据索引.md \

@@ -11,7 +11,7 @@ npm run release-audit || true
 
 # 总包可能需要刷新 release-audit 报告，重新打包
 npm run build-total-bundle
-unzip -tq deliverables/DevOrbit_复赛提交总包.zip
+unzip -tq deliverables/DevOrbit_决赛提交总包.zip
 npm run compliance
 
 echo 'PASS finalized submission bundle with release audit'

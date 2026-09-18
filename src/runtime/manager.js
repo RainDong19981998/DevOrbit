@@ -17,7 +17,7 @@ import { EvidenceChain } from '../security/evidence-chain.js';
 const fixturePath = fileURLToPath(new URL('../../fixtures/checkout-service', import.meta.url));
 
 export class DeliveryManager {
-  constructor({ incident, scenario = 'happy-path', approvalState = 'approved', knowledgeStore, controls = {}, providers = {}, releaseVersion = process.env.DEVORBIT_RELEASE_VERSION || null, stateStore = null, fixturePath: managerFixturePath = fixturePath } = {}) {
+  constructor({ incident, scenario = 'happy-path', approvalState = 'approved', knowledgeStore, controls = {}, providers = {}, releaseVersion = process.env.DEVORBIT_RELEASE_VERSION || null, stateStore = null, runArchive = null, fixturePath: managerFixturePath = fixturePath } = {}) {
     this.state = createCaseState(incident, scenario);
     this.knowledgeStore = knowledgeStore || new EpisodeStore();
     this.workspaceRegistry = new Map();
@@ -29,6 +29,7 @@ export class DeliveryManager {
     this.context = { approvalState, approvalReceipt: null, controls, releaseVersion, fixturePath: managerFixturePath, profile, repositoryRevision: `sha256:${digest(`${profile.repository}@broken-v1`)}`, mcpServer: this.toolServer, restoredFrom: null };
     this.evidenceChain = new EvidenceChain();
     this.stateStore = stateStore;
+    this.runArchive = runArchive;
   }
 
   async persist() {
@@ -52,15 +53,16 @@ export class DeliveryManager {
 
   async complete(result) {
     await this.persist();
+    if (this.runArchive) await this.runArchive.save(result);
     return result;
   }
 
-  static restore(snapshot, { knowledgeStore, providers = {}, stateStore = null } = {}) {
+  static restore(snapshot, { knowledgeStore, providers = {}, stateStore = null, runArchive = null } = {}) {
     const state = snapshot?.state;
     if (!state?.case_id) throw new Error('state snapshot is missing case_id');
     if (state.state !== 'approval_pending') throw new Error(`only approval_pending snapshots can be restored: ${state.state}`);
     assertCaseState(state);
-    const manager = new DeliveryManager({ incident: state.incident, scenario: state.scenario, approvalState: 'pending', knowledgeStore, providers, stateStore, fixturePath: fixturePathForRepository(state.incident.repository) });
+    const manager = new DeliveryManager({ incident: state.incident, scenario: state.scenario, approvalState: 'pending', knowledgeStore, providers, stateStore, runArchive, fixturePath: fixturePathForRepository(state.incident.repository) });
     manager.state = state;
     manager.evidenceChain = EvidenceChain.fromSnapshot(snapshot.evidenceChain);
     manager.context.restoredFrom = { savedAt: snapshot.savedAt || null, schema: snapshot.schema || null, resumedAfterRestart: true };

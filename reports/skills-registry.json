@@ -1,7 +1,7 @@
 {
   "schema": "devorbit.skills-registry/v1",
-  "version": "0.9.6",
-  "generatedAt": "2026-08-29T11:27:52.626Z",
+  "version": "1.0.2",
+  "generatedAt": "2026-09-17T07:53:15.330Z",
   "summary": {
     "skills": 8,
     "custom": 7,

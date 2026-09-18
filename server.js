@@ -6,10 +6,13 @@ import { fileURLToPath } from 'node:url';
 import { runPipeline, getDemoCase, getCaseForFixture } from './src/orchestrator.js';
 import { DeliveryManager } from './src/runtime/manager.js';
 import { FileCaseStateStore } from './src/runtime/state-store.js';
+import { FileRunArchive } from './src/runtime/run-archive.js';
 import { fixturePathForRepository } from './src/fixture-profiles.js';
 import { skills } from './src/skills.js';
+import { skillsRegistry } from './src/skills-registry.js';
 import { adapters } from './src/adapters.js';
 import { EpisodeStore } from './src/knowledge/episode-store.js';
+import { FileEpisodeStore } from './src/knowledge/file-episode-store.js';
 import { McpToolServer } from './src/mcp/tool-server.js';
 import { createTools } from './src/mcp/tools.js';
 import { createStreamableHttpHandler } from './src/mcp/http-transport.js';
@@ -35,7 +38,8 @@ const securityHeaders = {
 const publicReports = new Set(['/reports/evaluation.json', '/reports/security-evaluation.json', '/reports/public-benchmark.json', '/reports/model-ablation.json']);
 const sessions = new Map();
 const stateStore = new FileCaseStateStore(resolve(root, 'reports', 'runs', 'state'));
-const runtimeKnowledgeStore = new EpisodeStore();
+const runArchive = new FileRunArchive(resolve(root, 'reports', 'runs', 'archive'));
+const runtimeKnowledgeStore = new FileEpisodeStore(resolve(root, 'reports', 'runtime-knowledge.json'));
 const mcpApprovalAuthority = new ApprovalAuthority();
 const nativePlatformProviders = createNativePlatformProvidersFromEnv();
 const externalProviders = nativePlatformProviders || createHttpProvidersFromEnv();
@@ -45,8 +49,10 @@ if (!loopbackHost && !controlToken) throw new Error('DEVORBIT_CONTROL_TOKEN is r
 if (externalProviders && !outboundToken) throw new Error('an outbound adapter or platform token is required when external providers are enabled');
 if (externalProviders && !controlToken) throw new Error('DEVORBIT_CONTROL_TOKEN is required when external adapters are enabled');
 if (externalProviders && controlToken === outboundToken) throw new Error('control-plane and outbound provider tokens must be different');
-const mcpServer = new McpToolServer({ tools: createTools({ fixturePath: toPath(new URL('./fixtures/checkout-service', import.meta.url)), workspaceRegistry: new Map(), knowledgeStore: new EpisodeStore(), signals: getDemoCase().signals, providers: externalProviders || {} }), policy: new ToolPolicy({ approvalAuthority: mcpApprovalAuthority }) });
-const handleMcp = createStreamableHttpHandler(mcpServer, { maxBodyBytes });
+const mcpFixture = process.env.DEVORBIT_MCP_FIXTURE === 'inventory' ? 'inventory' : 'checkout';
+const mcpIncident = getCaseForFixture(mcpFixture);
+const mcpServer = new McpToolServer({ tools: createTools({ fixturePath: fixturePathForRepository(mcpIncident.repository), workspaceRegistry: new Map(), knowledgeStore: new EpisodeStore(), signals: mcpIncident.signals, providers: externalProviders || {} }), policy: new ToolPolicy({ approvalAuthority: mcpApprovalAuthority }) });
+const handleMcp = createStreamableHttpHandler(mcpServer, { maxBodyBytes, sessionTtlMs: Number(process.env.DEVORBIT_MCP_SESSION_TTL_MS || 12 * 60 * 60 * 1000) });
 
 function authorized(req) {
   if (!controlToken) return true;
@@ -101,7 +107,7 @@ async function restorePersistedSessions() {
     const snapshot = await stateStore.load(summary.caseId);
     if (!snapshot) continue;
     try {
-      const manager = DeliveryManager.restore(snapshot, { knowledgeStore: runtimeKnowledgeStore, providers: externalProviders || {}, stateStore });
+      const manager = DeliveryManager.restore(snapshot, { knowledgeStore: runtimeKnowledgeStore, providers: externalProviders || {}, stateStore, runArchive });
       sessions.set(summary.caseId, { manager, createdAt: Date.now(), restored: true });
       restored.push(summary.caseId);
     } catch {
@@ -122,7 +128,7 @@ const server = http.createServer(async (req, res) => {
       if (!authorized(req)) return unauthorized(res);
       return await handleMcp(req, res);
     }
-    if (req.method === 'GET' && req.url === '/api/health') return json(res, 200, { status: 'ok', version: DEVORBIT_VERSION, environment: process.env.DEVORBIT_ENVIRONMENT || 'local', mcpProtocol: MCP_PROTOCOL_VERSION, mcpProtocols: MCP_PROTOCOL_VERSIONS, externalAdapters: Boolean(externalProviders), providerMode: nativePlatformProviders ? 'github-jenkins-argo' : externalProviders ? 'http-spi' : 'fixture', authRequired: Boolean(controlToken), statePersistence: 'file-snapshot', restoredSessions });
+    if (req.method === 'GET' && req.url === '/api/health') return json(res, 200, { status: 'ok', version: DEVORBIT_VERSION, environment: process.env.DEVORBIT_ENVIRONMENT || 'local', mcpFixture, mcpProtocol: MCP_PROTOCOL_VERSION, mcpProtocols: MCP_PROTOCOL_VERSIONS, externalAdapters: Boolean(externalProviders), providerMode: nativePlatformProviders ? 'github-jenkins-argo' : externalProviders ? 'http-spi' : 'fixture', authRequired: Boolean(controlToken), statePersistence: 'file-snapshot+run-archive', knowledgePersistence: 'file-episode-store', restoredSessions });
     if (req.method === 'GET' && req.url.startsWith('/api/mcp/audit')) {
       if (!authorized(req)) return unauthorized(res);
       const auditUrl = new URL(req.url, 'http://localhost');
@@ -130,8 +136,12 @@ const server = http.createServer(async (req, res) => {
       if (!Number.isInteger(after) || after < 0 || after > mcpServer.audit.length) return json(res, 400, { error: 'after must be an audit offset within the current log' });
       return json(res, 200, { protocolVersions: MCP_PROTOCOL_VERSIONS, total: mcpServer.audit.length, after, audit: mcpServer.audit.slice(after) });
     }
-    if (req.method === 'GET' && req.url === '/api/case') return json(res, 200, getDemoCase());
-    if (req.method === 'GET' && req.url === '/api/meta') return json(res, 200, { skills, adapters, scenarios: ['happy-path', 'dynamic-resampling', 'self-healing', 'low-confidence', 'test-failure', 'canary-regression'], fixtures: ['checkout', 'inventory'] });
+    if (req.method === 'GET' && (req.url === '/api/case' || req.url.startsWith('/api/case?'))) {
+      const caseUrl = new URL(req.url, 'http://localhost');
+      return json(res, 200, getCaseForFixture(caseUrl.searchParams.get('fixture')));
+    }
+    if (req.method === 'GET' && req.url === '/api/meta') return json(res, 200, { skills, skillRegistry: skillsRegistry(), adapters, scenarios: ['happy-path', 'dynamic-resampling', 'self-healing', 'low-confidence', 'test-failure', 'canary-regression'], fixtures: ['checkout', 'inventory'] });
+    if (req.method === 'GET' && req.url === '/api/skills/registry') return json(res, 200, { version: DEVORBIT_VERSION, skills: skillsRegistry(), rollback: { policy: 'retain previous ZIP and SKILL.md digest; activate by version label', supported: true } });
     if (req.method === 'POST' && req.url === '/api/runs') {
       if (!authorized(req)) return unauthorized(res);
       await cleanupExpiredSessions();
@@ -139,7 +149,7 @@ const server = http.createServer(async (req, res) => {
       const { scenario = 'happy-path', signals, fixture, ...incidentOverrides } = input;
       const baseCase = getCaseForFixture(fixture);
       const incident = { ...baseCase, ...incidentOverrides, signals: signals || baseCase.signals };
-      const manager = new DeliveryManager({ incident, scenario, approvalState: 'pending', knowledgeStore: runtimeKnowledgeStore, providers: externalProviders || {}, stateStore, fixturePath: fixturePathForRepository(incident.repository) });
+      const manager = new DeliveryManager({ incident, scenario, approvalState: 'pending', knowledgeStore: runtimeKnowledgeStore, providers: externalProviders || {}, stateStore, runArchive, fixturePath: fixturePathForRepository(incident.repository) });
       let result;
       try {
         result = await manager.run();
@@ -167,7 +177,23 @@ const server = http.createServer(async (req, res) => {
         createdAt: new Date(session.createdAt).toISOString()
       }));
       const snapshots = await stateStore.list();
-      return json(res, 200, { sessions: pending, snapshots });
+      const archived = await runArchive.list();
+      return json(res, 200, { sessions: pending, snapshots, archived });
+    }
+    const runDetailMatch = req.url.match(/^\/api\/runs\/([^/]+)$/);
+    if (req.method === 'GET' && runDetailMatch) {
+      if (!authorized(req)) return unauthorized(res);
+      const caseId = decodeURIComponent(runDetailMatch[1]);
+      const live = sessions.get(caseId);
+      if (live) return json(res, 200, { source: live.restored ? 'restored-session' : 'live-session', result: live.manager.result() });
+      let archived;
+      try { archived = await runArchive.load(caseId); } catch { return json(res, 400, { error: 'invalid case id' }); }
+      if (!archived) return json(res, 404, { error: 'run not found' });
+      return json(res, 200, { source: 'archive', archivedAt: archived.archivedAt, result: archived.result });
+    }
+    if (req.method === 'GET' && req.url === '/api/knowledge') {
+      if (!authorized(req)) return unauthorized(res);
+      return json(res, 200, { total: runtimeKnowledgeStore.cards.length, episodes: runtimeKnowledgeStore.cards });
     }
     const approvalMatch = req.url.match(/^\/api\/runs\/([^/]+)\/approval$/);
     if (req.method === 'POST' && approvalMatch) {

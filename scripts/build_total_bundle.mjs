@@ -6,8 +6,8 @@ import { join } from 'node:path';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const deliverables = join(root, 'deliverables');
 const tmpDir = '/tmp/zhanlu/total-bundle';
-const totalZip = join(deliverables, 'DevOrbit_复赛提交总包.zip');
-const codeZip = join(deliverables, 'DevOrbit_复赛可执行代码包.zip');
+const totalZip = join(deliverables, 'DevOrbit_决赛提交总包.zip');
+const codeZip = join(deliverables, 'DevOrbit_决赛可执行代码包.zip');
 
 rmSync(tmpDir, { recursive: true, force: true });
 mkdirSync(tmpDir, { recursive: true });
@@ -20,6 +20,7 @@ const fromCodeZip = [
   ['评委90秒验收.md', 'docs/评委90秒验收.md'],
   ['第三方依赖与合规清单.md', 'docs/第三方依赖与合规清单.md'],
   ['演示脚本.md', 'docs/演示脚本.md'],
+  ['决赛验收与答辩手册.md', 'docs/决赛验收与答辩手册.md'],
   ['AgentTeams本地运行验证.md', 'docs/AgentTeams本地运行验证.md'],
   ['威胁模型.md', 'docs/威胁模型.md'],
   ['证据索引.md', 'docs/证据索引.md'],
@@ -32,6 +33,9 @@ const fromCodeZip = [
   ['security-evaluation.md', 'reports/security-evaluation.md'],
   ['container-smoke.json', 'reports/container-smoke.json'],
   ['agentteams-runtime.json', 'reports/agentteams-runtime.json'],
+  ['agentteams-autonomous-probe.json', 'reports/agentteams-autonomous-probe.json'],
+  ['skill-upgrade-rollback.json', 'reports/skill-upgrade-rollback.json'],
+  ['db-branch.json', 'reports/db-branch.json'],
   ['public-benchmark.json', 'reports/public-benchmark.json'],
   ['public-benchmark.md', 'reports/public-benchmark.md'],
   ['public-benchmark-pilot.json', 'reports/public-benchmark-pilot.json'],
@@ -87,7 +91,7 @@ for (const [destName, srcPath] of fromCodeZip) {
 // 从 deliverables 复制所有文件
 for (const file of readdirSync(deliverables)) {
   const src = join(deliverables, file);
-  if (existsSync(src) && file !== 'DevOrbit_复赛提交总包.zip') {
+  if (existsSync(src) && file !== 'DevOrbit_决赛提交总包.zip') {
     try { copyFileSync(src, join(tmpDir, file)); } catch { /* 跳过目录 */ }
   }
 }

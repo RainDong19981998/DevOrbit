@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-29T11:09:57.443Z",
+  "generatedAt": "2026-09-17T07:53:15.132Z",
   "source": {
     "repository": "https://github.com/agentscope-ai/AgentTeams",
     "version": "v1.2.2",
@@ -7,12 +7,12 @@
     "license": "Apache-2.0",
     "releasedAt": "2026-08-08T09:14:14Z"
   },
-  "resourceDigest": "373955b277ea84a75130636114942fcc3b36b76fcb23aae57f2d6115458624d0",
+  "resourceDigest": "e9d113dd14d33a819189a6eef990ee3da69db73208af92995fb27bd1e128d3eb",
   "summary": {
     "workers": 8,
     "teams": 1,
-    "checks": 140,
-    "passed": 140,
+    "checks": 141,
+    "passed": 141,
     "failed": 0
   },
   "checks": [
@@ -223,6 +223,11 @@
     },
     {
       "label": "rca-worker MCP observability",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "label": "rca-worker MCP repository",
       "ok": true,
       "detail": ""
     },

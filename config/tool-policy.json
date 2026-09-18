@@ -4,7 +4,7 @@
   "rules": {
     "issue.fetch_signals": { "risk": "L0", "agents": ["intake-worker"] },
     "observability.fetch_signals": { "risk": "L0", "agents": ["intake-worker", "rca-worker"] },
-    "repository.read_file": { "risk": "L0", "agents": ["impact-worker", "patch-worker"] },
+    "repository.read_file": { "risk": "L0", "agents": ["impact-worker", "rca-worker", "patch-worker"] },
     "repository.create_workspace": { "risk": "L1", "agents": ["patch-worker"] },
     "repository.write_file": { "risk": "L1", "agents": ["patch-worker"] },
     "repository.dispose_workspace": { "risk": "L1", "agents": ["devorbit-lead"] },

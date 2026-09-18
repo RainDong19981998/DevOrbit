@@ -20,76 +20,56 @@ ORANGE = 0xF06A3A
 LINE = 0xD6D9CF
 RED = 0xC0392B
 
-# 18 页：P1 封面 · P2 初赛反馈调整点（标红对比）· P3 场景闭环图 · P4-5 架构与风险边界 ·
-# P6-11 复杂 Case 主线 · P12-14 数据与知识资产 · P15 对比 · P16 路线图 · P17 可复制性 · P18 结尾
+# 18 页：前 12 页主讲，后 6 页附录。
 slides = [
-    # P1 封面
     ('DevOrbit', '自动处理线上缺陷的多 Agent 研发平台',
      '输入 Issue、日志与代码仓；输出根因、代码补丁、测试报告、发布决策和可审计证据链。',
-      'GOAI Agent Infra · 复赛方案 V1.0.0 · 2026年8月31日'),
-    # P2 初赛反馈调整点（标红对比）
-    ('初赛反馈的具体调整点', '逐条回应评审反馈；红色为本版本（V0.9.6 → V1.0.0）新增或强化。',
-     '反馈：多 Agent 协同证据不足\n→ AgentTeams v1.2.2 官方本地实跑 18/18\n→ 动态补证回边 + 返工回边（非固定顺序）\n\n反馈：效果缺少外部有效性\n→ 30 案例 SWE-bench dev 冻结基准\n→ 三维消融（管道/模型/架构）全披露',
-     '反馈：工程可信度与安全边界\n→ GitLab CE 真实自愈 e2e 17/17\n→ Docker 灰度 + SLO 回滚 8/8 · 9/9 对抗安全'),
-    # P3 场景闭环图
-    ('场景闭环：谁在用、痛在哪、得到什么', '目标用户、现实流程、价值收益与输入输出链路。',
-     '值班研发：在 Issue/日志/指标间对时\n开发与测试：重新确认影响、修复和回归\n发布负责人：重新核对审批、灰度与回滚\n\n真实失败代价\n误修：表象信号误导修错服务\n漏检：证据分散在多系统难对齐\n返工：失败补丁反复重做\n生产中断：MTTR 人工基线 3250 秒',
-     '输入 → 输出链路\n5 类异构信号（反馈/Issue/日志/指标/变更）\n→ 规范化案例 → 带证据引用的根因\n→ 最小补丁 + Red→Green 独立验证\n→ 签名审批 → 10% 灰度 → 知识卡\n\n量化收益（仿真基线，标注口径）\nMTTR 3250s → 14.8s · 误发布率 0\n人工介入点 1/9 阶段（仅 L2 发布审批）'),
-    # P4 架构
-    ('七个职能 Agent，一条会"回头"的状态机', 'Intake · Impact · RCA · Patch · Verify · Release · Learn —— 直线推进之外，状态机带两条自主回边。',
-     '主线\nreceived → triaged → diagnosed → planned → verified\n→ approval_pending → canary → confirmed → learned',
-     '补证回边\ntriaged ↔ evidence_gathering（置信度不足，≤2 轮熔断）\n\n返工回边\nplanned → diagnosed（测试失败带日志返工，≤3 次熔断）'),
-    # P5 风险边界声明
-    ('风险边界声明：高风险操作的审批、回滚与审计', '策略门禁由确定性代码执行，不由模型绕过。',
-     '分级与审批\nL0 只读 · L1 沙箱 · L2 签名审批+灰度 · L3 只出方案\nManager 签发 Case/Action/时效受限的 HMAC 回执\nRelease Worker 只能消费，MCP 服务端二次验签\n审批拒绝/超时 → 链路安全停止',
-     '回滚与审计\n灰度错误率 Δ>1% / p95 Δ>20% / 业务退化 → 确定性回滚\n司法级证据链：incident → 信号 → git SHA → patch → 测试\n→ HMAC 审批 → 灰度指标 → Episode，链式 sha256\nnpm run verify-evidence-chain 独立复核\n9/9 对抗案例 fail closed · 人工与 Agent 操作统一审计'),
-    # P6 Case 开场：表象误导
+      'GOAI 2026 Agent Infra 决赛 · V1.0.2 · 2026年9月18日'),
+    ('决赛版只回答三个问题', '真实 Worker 是否执行、结论是否来自证据、系统是否可持续恢复。',
+     '① 官方 AT：R4 七 Worker 各自发言并调用自有 MCP\n   （422 条消息 + 69 条审计，同一 Case/Trace）\n② 主案例：RCA/Patch 不再读取预置 rootCause/fix\n③ 企业运行：审批、状态、知识可恢复',
+     '当前边界\nAgentTeams R4 探针 passed（非预置库存案例）\nPolarDB 实测：协议已就绪，待账号环境复跑\nSkill PATCH：升级与回退已实跑并留 digest/Trace'),
+    ('研发事故的真正困难', '团队缺的不是再一个聊天窗口，而是可复核的任务推进与异常处理。',
+     '值班研发：对齐 Issue、日志、指标和代码\n开发与测试：确认影响、修改与回归\n发布负责人：核对审批、灰度和回滚\n\n常见失败\n证据不足仍下结论 · 生成与验证同源\n中断后重复执行 · 失败经验随进程消失',
+     'DevOrbit 的职责\n让 Worker 自己加载 Skill、调用最小权限 MCP\n让 Leader 按中间证据补证或返工\n让固定控制面只守 Schema、测试、权限与审批\n让每个结果可反查 Case / Trace / Skill / Tool / Approval'),
+    ('三类职责，不能混在一起', '模型判断、固定门禁和人工决定各自有清晰边界。',
+     '模型与 Worker\n理解陌生 Issue · 生成竞争假设\n选择工具补证 · 提议最小修改\n读取失败日志后二次生成',
+     '确定性控制面\n身份与最小权限 · 输入输出 Schema\n独立测试与证据完整性 · 幂等恢复\n\n人工决定\nL2 发布批准、拒绝或要求补证'),
+    ('安全门禁：高风险动作不能靠模型自证', '审批、测试、回滚和审计由确定性代码执行。',
+     '执行前\nWorker×Tool allowlist · Schema 校验\n隔离工作区 · 写操作幂等键\nL2 签名审批绑定 Case / Action / 时效',
+     '执行后\n独立 Verify Worker 判定 Red→Green\n10% 灰度触发 SLO 回滚\nHash 链绑定代码、测试、审批与发布结果'),
     ('一个会"骗人"的支付事故', '用户反馈："10:15 后支付页一直转圈，刷新后出现两笔订单。"',
      '10:15  网关 502 率抬升\n10:15  POST /orders p95 420ms → 2.8s\n10:15  IdempotencyStore timeout 日志\n10:02  一条配置变更记录尚未被注意到',
      '表象指向"下游网关故障"——\n如果系统只信第一层证据，\n就会去修一个根本没坏的东西。'),
-    # P7 主线 1：动态补证
-    ('证据不够，自主去采', 'RCA 首因置信度 0.58，低于 0.80 门禁——系统不再停止，也不再硬猜。',
+    ('证据不够，Worker 自主去采', 'RCA 读取现场信号与当前源码后生成竞争假设；不消费 profile.rootCause。',
      '0.58', '→ 0.91'),
-    # P8 主线 2：自愈闭环
-    ('补丁失败，自己再修一次', 'Patch↔Verify 闭环博弈：失败日志回传，带反馈二次生成。',
+    ('补丁失败，带证据再修一次', 'Patch 从源码与失败断言推导编辑；不消费 profile.fix。',
      'RED', 'GREEN'),
-    # P9 主线 3：DB Branch
-    ('数据库事故：隔离分支上并行验证假设', '涉及 Schema 变更与慢 SQL 的缺陷，从脱敏基线一键拉出多个隔离数据分支。',
+    ('数据库分支试验：协议已就绪，实测待凭据', '候选应在相同数据与负载下先验业务一致性，再比较执行计划与性能。',
      'BRANCH-A', 'BRANCH-B'),
-    # P10 主线 4：负面方案召回
-    ('系统记得"什么不能做"', 'Incident Episode 不只召回成功方案，还召回历史失败修法。',
-     '负面证据注入\nEP-005：曾将连接池 80 → 200 试图缓解超时\n结果下游 Redis 集群 OOM，级联崩溃\n本次 RCA 报告自动生成警示：\n"调大连接池方案已自动规避"',
-     'Episode 结构\n表象症状 + 服务拓扑依赖 + 竞争假设\n+ 根因证据链 + 正反补丁 + 回滚指标\n检索先硬过滤：租户→服务→环境\ngit revision → 配置版本\n杜绝不同版本相同报错的误召回'),
-    # P11 主线 5：灰度与回滚
-    ('上线之后仍在被验证', '10% 灰度 + SLO 违约检测，退化即确定性回滚。',
-     '灰度门禁\n错误率 Δ>1% / p95 Δ>20% / 业务指标退化\n→ 自动回滚，不等待模型再次判断',
-     '观察窗口与知识准入\n修复后不立刻入库：15 分钟指标观察\n+ 业务断言 + 复盘确认通过\n→ Episode 才从 pending 转 active 进入默认召回\n回滚/复发 → 转 negative 立即可召回作警示'),
-    # P12 Benchmark 数据
-    ('公开基准：从 0% 到可验证闭环', '同冻结 30 案例 SWE-bench dev test split，edit-based 补丁引擎 + 三维消融。',
-     '闭环率 0% → 10%（3/30 devorbit）\n补丁可应用率 0% → 56%\nsingle-agent 同模型同预算 0/30 闭环\n失败样本全披露，95% Wilson 区间',
-     '三维消融\n管道：diff-based V0.8 0% vs edit-based V0.9.6\n模型：glm / deepseek-v4-flash / qwen3:8b\n架构：devorbit 10% vs single-agent 0%\n失败知识自沉淀：42 条 negative Episode\n第二轮按仓库召回警示注入 patch 提示'),
-    # P13 Episode 知识资产
-    ('把每次事故变成企业级诊断资产', '从"本地词法匹配"到结构化 Incident Episode 知识图谱。',
-     '结构化 Episode\n症状 + 拓扑 + 竞争假设 + 证据链\n+ 正反补丁 + 观察窗口 + 最终业务结果\n跨班次、跨服务可检索复用',
-     '准入生命周期\n写入即 pending（不进默认召回）\n观察窗口 + 复盘通过 → active\n复发/回滚 → negative（立即警示）\n接手人不再重梳全部日志'),
-    # P14 验证证据矩阵
-    ('每一项能力，都有可复核的证据', '所有数字可通过仓库内命令独立重放。',
-      '113/113 单元测试 · 63/63 validate 校验\n7/7 Golden Cases · 5/5 安全分支\n9/9 对抗安全案例（Hash 篡改/DB 隔离/恶意 Migration）\n18/18 AgentTeams 运行时 · 141/141 契约',
-      '14 个 MCP 工具全审计 · Skill 版本+摘要溯源\n重启恢复：崩溃后审批续跑同 case/trace 闭环\n场景迁移：结算→库存 机制序列完全一致\n可靠性故障演练 7/7 · GitLab 真实自愈 e2e 17/17\nDocker 灰度回滚 8/8 · 3/30 公开基准闭环'),
-    # P15 对比
-    ('为什么不是单 Agent，也不是固定工作流', '复杂研发任务需要职责隔离、独立验证和动态停止条件。',
+    ('审批后重启，继续而不是重做', '状态、证据链和幂等键一起恢复，避免重复写入与重复发布。',
+     '中断前\napproval_pending 快照原子落盘\n保存 Case / Trace / Evidence Chain / Approval\n终态结果进入运行归档',
+     '重启后\n校验快照与证据链 → 恢复同一 Case / Trace\n外部写操作按幂等键对账\n批准后从待处理节点继续验收'),
+    ('经验资产必须带适用边界', '成功和失败假设都持久化，并按项目、版本与可信状态过滤。',
+     'Episode 保存\n事故、候选补丁、验证报告、失败原因\nSchema / 代码版本 / 审批依据 / 证据引用\npending → active；回滚或复发 → negative',
+     '当前实现\n本地持久化已验证跨应用重启保留\nPolarDB PostgreSQL 迁移待账号环境实跑\n过期版本结论默认阻断，不直接复用'),
+    ('决赛结论：已验证与待完成分开', '价值来自可复核边界，不来自无法成立的耗时对比。',
+     '已验证', '待完成'),
+    ('附录 A｜七 Worker 与权限边界', '主讲只讲职责边界；完整角色清单放在附录。',
+     'Intake：Issue / Observability\nImpact：Repository read\nRCA：Observability / Knowledge\nPatch：Repository write / CI',
+     'Verify：CI（独立于 Patch）\nRelease：Approval / Canary / Rollback\nLearning：Knowledge write\nLeader：委派与终态，不代替 Worker 调工具'),
+    ('附录 B｜测试与安全矩阵', '所有门禁均可从报告和命令独立复核。',
+     '单元测试 · validate · Golden Cases\nHash 链篡改检测 · 恶意 Migration 阻断\n租户隔离 · 路径逃逸 · 凭据扫描',
+     '审批拒绝/过期 fail closed\n最大补证与返工次数熔断\n灰度 SLO 退化自动回滚\n外部写入幂等与恢复对账'),
+    ('附录 C｜公开基准与对照边界', '基准数据留在附录；主讲不再用失败尝试耗时推导 MTTR 收益。',
      '单 Agent\n上下文集中、权限过宽\n生成与验证同源偏差\n\n固定工作流\n可控但难处理证据冲突\n低置信只能停机等待',
      'DevOrbit\nLeader 动态委派与补证决策\nWorker 单职能 + 最小权限\nVerify 独立于 Patch\n失败带反馈自主返工\n策略门禁不由模型绕过'),
-    # P16 路线图与诚实边界
-    ('把已验证与尚未验证分开', '可信度来自证据边界，而不是把仿真指标包装成生产收益。',
-      '已验证\nV1.0.0：状态持久化与重启恢复 · Skill 版本溯源\n第二类场景迁移（结算→库存）闭环\n可靠性故障演练 7/7 · 上下文治理显性化\nV0.9.6：edit-based 补丁引擎 · 闭环率 0%→10%\n三维消融 · GitLab 真实自愈 e2e 17/17\nAgentTeams 运行时 18/18 · Chaos 故障注入',
-     '诚实边界\nAgentTeams 为官方软件本地实跑，非生产集群\nDB Branch 为本地 PostgreSQL 等价语义\n生产路径为 PolarDB Agentic Database Branch\nMTTR 基线为 3 例仿真计时，标注区间\n迁移场景为团队构造仿真，非生产数据'),
-    # P17 可复制性
-    ('可复制性：跨域迁移已实测', '从结算支付域到库存域，机制零改动复制，闭环一次跑通。',
-     'case-lifecycle 状态机与熔断策略\n7 Worker 边界 + Manager 委派\n7 个版本化 Skill（版本+摘要进 trace）\n门禁/审批/证据链/幂等/隔离工作区',
-     '迁移时替换\nfixture 仓库（含真实失败测试）\n分层信号池（surface 表象 / deep 深层）\n业务断言与修复模板 · 知识域 Episode\n\n实测：两域 Worker×Skill 序列、状态路径、\nMCP 工具集完全一致；均 3 失败→4 通过→promoted'),
-    # P18 结尾
-    ('让每个研发团队，都有一支可验证的交付小队', 'DevOrbit 不替代专家判断，而是把判断所需的证据、动作边界和结果验证组织起来。',
+    ('附录 D｜部署与数据库迁移边界', '开发分支试验与生产状态持久化是两条独立验收线。',
+     '当前已验证\n内存 DB Branch 契约与安全门禁\n本地状态/知识持久化及重启恢复\nPostgreSQL smoke 未成功时保持 measured=false',
+     '账号到位后\nPolarDB Agentic Database 独立分支对比\n生产 PolarDB PostgreSQL 迁移检查\n权限、备份恢复、监控、状态幂等联验'),
+    ('附录 E｜Skill PATCH 升级与回退', 'evidence-rca 在隔离注册表完成真实版本切换。',
+     '升级\n1.0.0 → 1.0.1\nfrontmatter / registry 契约通过\n代表性 RCA golden check 通过\ndigest 发生变化',
+     '回退\n1.0.1 → 1.0.0\n回退后 golden check 通过\n最终 digest 与基线完全一致\n同一 Trace 写入 reports/skill-upgrade-rollback.json'),
+    ('附录 F｜现场验收入口', '先看事实，再看演示；任何 blocked 项都不算通过。',
      '', ''),
 ]
 
@@ -171,7 +151,8 @@ def build(desktop):
         fg = WHITE if dark else INK
         accent = LIME if dark else GREEN
         muted = 0xB8C9C2 if dark else MUTED
-        add_text(doc, page, f'{index + 1:02d} / {len(slides)}   DEVORBIT', 2000, 1150, 10000, 500, 10, accent, True, 'Liberation Mono')
+        section = 'MAIN 01-12' if index < 12 else 'APPENDIX'
+        add_text(doc, page, f'{index + 1:02d} / {len(slides)}   {section}   DEVORBIT', 2000, 1150, 14000, 500, 10, accent, True, 'Liberation Mono')
         title_size = 40 if index == 0 else (30 if index in (6, 7, 8, 11) else 27)
         add_text(doc, page, data[0], 2000, 2400, 30000, 2100, title_size, fg, True)
         subtitle_size = 24 if index == 0 else 15
@@ -188,16 +169,12 @@ def build(desktop):
                 add_rect(doc, page, chip_x, 11800, 3000, 900, 0x1E3942, 0x31505A)
                 add_text(doc, page, chip, chip_x + 300, 12050, 2600, 360, 9, LIME, True, 'Liberation Mono')
         elif index == 1:
-            # P2 初赛反馈调整点：左列反馈→调整，右列 V1.0.0 新增（标红）
             add_rect(doc, page, 2000, 7000, 14200, 8800, WHITE, LINE)
-            add_text(doc, page, '初赛反馈 → 调整', 2700, 7550, 8000, 500, 12, MUTED, True)
+            add_text(doc, page, '决赛验收重点', 2700, 7550, 8000, 500, 12, MUTED, True)
             add_text(doc, page, data[2], 2700, 8300, 12700, 6800, 12, INK, False)
-            add_rect(doc, page, 17000, 7000, 14800, 4200, WHITE, RED)
-            add_text(doc, page, 'V1.0.0 新增（标红）', 17700, 7550, 8000, 500, 12, RED, True)
-            add_text(doc, page, '① 状态持久化与重启恢复：进程崩溃后\n审批挂起案例自动恢复续跑（同 case/trace）\n② Skill 版本溯源：每次运行记录版本+摘要', 17700, 8300, 13400, 2600, 11, RED, True)
-            add_rect(doc, page, 17000, 11500, 14800, 4300, WHITE, RED)
-            add_text(doc, page, 'V1.0.0 新增（标红）续', 17700, 12050, 8000, 500, 12, RED, True)
-            add_text(doc, page, '③ 第二类场景迁移：结算→库存，机制零改动\n④ 可靠性故障演练 7/7（429/500/超时/工具错误/\nDB 门禁/端点不可达/熔断）\n⑤ 上下文治理：租户硬过滤、陈旧阻断、TTL', 17700, 12800, 13400, 2800, 11, RED, True)
+            add_rect(doc, page, 17000, 7000, 14800, 8800, WHITE, RED)
+            add_text(doc, page, 'V1.0.2 事实边界', 17700, 7550, 8000, 500, 12, RED, True)
+            add_text(doc, page, data[3], 17700, 8300, 13400, 6800, 12, INK, False)
         elif index == 2:
             # P3 场景闭环图：左=用户与痛点，右=链路与收益
             add_rect(doc, page, 2000, 7000, 14200, 8800, WHITE, LINE)
@@ -207,28 +184,20 @@ def build(desktop):
             add_text(doc, page, '价值收益 · 输入输出链路', 17700, 7550, 10000, 500, 12, GREEN, True)
             add_text(doc, page, data[3], 17700, 8300, 13400, 7000, 12, INK, False)
         elif index == 3:
-            # P4 架构：7 Agent 卡片 + 状态机回边
             agents = (
-                ('01', 'Intake', '归并'), ('02', 'Impact', '影响'), ('03', 'RCA', '诊断'),
-                ('04', 'Patch', '修复'), ('05', 'Verify', '验证'), ('06', 'Release', '发布'), ('07', 'Learn', '沉淀'),
+                ('01', 'Worker / 模型', '分析 · 补证 · 提议修改'),
+                ('02', '固定控制面', '权限 · Schema · 测试 · 幂等'),
+                ('03', '人工负责人', 'L2 批准 · 拒绝 · 要求补证'),
             )
             for agent_index, (number, name, role) in enumerate(agents):
-                x = 2000 + agent_index * 4300
-                add_rect(doc, page, x, 7000, 3800, 3000, WHITE, LINE)
+                x = 2000 + agent_index * 10100
+                add_rect(doc, page, x, 7000, 9300, 3600, WHITE, LINE)
                 add_text(doc, page, number, x + 350, 7300, 1200, 350, 8, GREEN, True, 'Liberation Mono')
-                add_text(doc, page, name, x + 350, 8000, 3000, 600, 15, INK, True, 'Liberation Mono')
-                add_text(doc, page, role, x + 350, 9000, 3000, 500, 11, GREEN, True)
-                if agent_index < 6:
-                    add_text(doc, page, '→', x + 3850, 8400, 450, 450, 13, MUTED, True)
-            add_rect(doc, page, 2000, 10600, 29600, 2500, 0xE7EBDD, LINE)
-            add_text(doc, page, '主线', 2600, 11150, 2600, 450, 10, GREEN, True)
-            add_text(doc, page, 'received → triaged → diagnosed → planned → verified → approval_pending → canary → confirmed → learned', 5200, 11100, 25000, 500, 10, INK, True, 'Liberation Mono')
-            add_rect(doc, page, 2000, 13400, 14300, 2300, WHITE, GREEN)
-            add_text(doc, page, '↺ 补证回边  triaged ↔ evidence_gathering', 2700, 13950, 13000, 500, 11, GREEN, True)
-            add_text(doc, page, '置信度 < 0.80 时自主生成补证计划，反向拉取深层 Trace；≤2 轮，不足则熔断 needs_human', 2700, 14700, 12800, 800, 9, MUTED, False)
-            add_rect(doc, page, 17500, 13400, 14300, 2300, WHITE, ORANGE)
-            add_text(doc, page, '↺ 返工回边  planned → diagnosed', 18200, 13950, 13000, 500, 11, ORANGE, True)
-            add_text(doc, page, '测试失败带日志回传 Patch Worker 二次生成；≤3 次尝试，超限熔断降级', 18200, 14700, 12800, 800, 9, MUTED, False)
+                add_text(doc, page, name, x + 350, 8000, 8000, 600, 15, INK, True)
+                add_text(doc, page, role, x + 350, 9000, 8200, 800, 11, GREEN, True)
+            add_rect(doc, page, 2000, 11600, 29600, 3600, 0xE7EBDD, LINE)
+            add_text(doc, page, '不可越界原则', 2700, 12200, 5000, 500, 12, GREEN, True)
+            add_text(doc, page, '模型不能批准自己的发布；Patch 不能判定自己的补丁通过；Leader 不能代替 Worker 制造工具审计；\n凭据缺失或证据不完整时，系统必须 blocked / needs_human，而不是生成成功记录。', 2700, 13100, 27800, 1500, 13, INK, True)
         elif index == 5:
             # P6 Case 开场：左侧信号时间线 + 右侧陷阱警示
             add_rect(doc, page, 2000, 7000, 14200, 8800, WHITE, LINE)
@@ -276,27 +245,26 @@ def build(desktop):
         elif index == 8:
             # P9 DB Branch：双分支对比 + 择优
             add_rect(doc, page, 2000, 7300, 14200, 6000, WHITE, GREEN)
-            add_text(doc, page, 'BRANCH-A · 索引优化方案', 2700, 7800, 9000, 600, 15, GREEN, True)
-            add_text(doc, page, '重放事故流量：报错消失\n外键约束完好 · 无锁等待\n事务耗时正常', 2700, 8700, 12700, 2500, 12, INK, False)
+            add_text(doc, page, 'BRANCH-A · 索引候选', 2700, 7800, 9000, 600, 15, GREEN, True)
+            add_text(doc, page, '待 PolarDB 账号环境执行\n先校验业务结果一致性\n再保存真实执行计划与负载数据', 2700, 8700, 12700, 2500, 12, INK, False)
             add_rect(doc, page, 2700, 11800, 5000, 800, GREEN, GREEN)
-            add_text(doc, page, '择优合并 → L2 审批', 2950, 12030, 4700, 400, 10, WHITE, True, 'Liberation Mono')
+            add_text(doc, page, 'NOT MEASURED', 2950, 12030, 4700, 400, 10, WHITE, True, 'Liberation Mono')
             add_rect(doc, page, 17500, 7300, 14200, 6000, WHITE, ORANGE)
-            add_text(doc, page, 'BRANCH-B · 分页改写方案', 18200, 7800, 9000, 600, 15, ORANGE, True)
-            add_text(doc, page, '重放事故流量：报错消失\n但并发锁等待超限\n事务耗时劣化', 18200, 8700, 12700, 2500, 12, INK, False)
+            add_text(doc, page, 'BRANCH-B · 查询改写候选', 18200, 7800, 9000, 600, 15, ORANGE, True)
+            add_text(doc, page, '待相同快照与负载对照\n看似合理的方案必须接受淘汰\n不得用估算指标替代真实计划', 18200, 8700, 12700, 2500, 12, INK, False)
             add_rect(doc, page, 18200, 11800, 5000, 800, ORANGE, ORANGE)
-            add_text(doc, page, '自动淘汰 · 零污染销毁', 18450, 12030, 4700, 400, 10, WHITE, True, 'Liberation Mono')
-            add_text(doc, page, '同一脱敏基线并行比对，失败试验不相互污染，Branch 数据不进入生产；本地 PostgreSQL 等价语义验证，生产路径为 PolarDB Agentic Database Branch。', 2050, 14300, 29500, 1400, 12, MUTED, False)
+            add_text(doc, page, 'POLARDB PENDING', 18450, 12030, 4700, 400, 10, WHITE, True, 'Liberation Mono')
+            add_text(doc, page, '事实边界：reports/db-branch.json 当前 measured=false；本页仅说明验收协议，不主张 PostgreSQL 或 PolarDB 真实性能实测。', 2050, 14300, 29500, 1400, 12, MUTED, False)
         elif index == 11:
-            # P12 Benchmark：大数字对比（闭环口径）
-            add_text(doc, page, '10%', 3000, 7400, 11000, 3000, 66, LIME, True, 'Liberation Mono')
-            add_text(doc, page, 'DevOrbit 闭环率（3/30）', 3300, 10800, 8000, 500, 11, 0xB8C9C2, False)
-            add_text(doc, page, 'vs', 12800, 8300, 2500, 1200, 26, 0xB8C9C2, True)
-            add_text(doc, page, '0%', 17800, 7400, 11000, 3000, 66, 0x8FA8A0, True, 'Liberation Mono')
-            add_text(doc, page, '单 Agent · 同模型同预算（0/30）', 18100, 10800, 8000, 500, 11, 0xB8C9C2, False)
+            add_text(doc, page, 'PASS', 3000, 7400, 11000, 3000, 56, LIME, True, 'Liberation Mono')
+            add_text(doc, page, '七 Worker 自主 AT · 控制面 · 恢复 · Skill 回退', 3300, 10800, 9000, 500, 11, 0xB8C9C2, False)
+            add_text(doc, page, '/', 13800, 8300, 1200, 1200, 26, 0xB8C9C2, True)
+            add_text(doc, page, 'PENDING', 16800, 7400, 14000, 3000, 48, 0x8FA8A0, True, 'Liberation Mono')
+            add_text(doc, page, 'PolarDB 实测（待账号环境复跑）', 17100, 10800, 11000, 500, 11, 0xB8C9C2, False)
             metrics = (
-                ('3250s → 14.8s', 'MTTR（3 例仿真计时基线，标注区间）'),
-                ('0', '误发布率 · fail-closed 门禁'),
-                ('9/9', '对抗安全案例全部阻断'),
+                ('7 / 7', 'R4 探针：精确 Worker sender + 各自非零 MCP 审计'),
+                ('69', '同一 Case/Trace 的 MCP 审计条数'),
+                ('measured=false', '数据库真实性边界（协议已就绪）'),
             )
             for m_index, (value, label) in enumerate(metrics):
                 x = 2000 + m_index * 10100
@@ -304,11 +272,10 @@ def build(desktop):
                 add_text(doc, page, value, x + 600, 13150, 8200, 900, 24, LIME, True, 'Liberation Mono')
                 add_text(doc, page, label, x + 600, 14450, 8200, 1000, 10, 0xB8C9C2, False)
         elif index == 14:
-            # P15 三栏对比
             cols = (
-                ('单 Agent', '上下文集中、权限过宽\n生成与验证同源偏差', 0xE7EBDD, INK),
-                ('固定工作流', '可控但难处理证据冲突\n低置信只能停机等待', 0xE7EBDD, INK),
-                ('DevOrbit', 'Leader 动态委派与补证决策\nWorker 最小权限 · 独立验证\n失败带反馈自主返工\n策略门禁不由模型绕过', GREEN, WHITE),
+                ('冻结数据集', 'SWE-bench dev 30 案例\n选择规则与 manifest 固化\n失败样本全部披露', 0xE7EBDD, INK),
+                ('对照结果', 'DevOrbit 闭环 3/30\nsingle-agent 同模型预算 0/30\n仅描述该冻结样本', 0xE7EBDD, INK),
+                ('禁止外推', '不是生产修复率\n不是独立 test split 排名\n失败尝试耗时不是成功 MTTR\n不用于宣称团队提效倍数', GREEN, WHITE),
             )
             for c_index, (heading, detail, fill, fg_c) in enumerate(cols):
                 x = 2000 + c_index * 10100
@@ -318,30 +285,30 @@ def build(desktop):
         elif index == 16:
             # P17 可复制性：左=不变机制，右=替换项+实测结果
             add_rect(doc, page, 2000, 7000, 14200, 8800, WHITE, GREEN)
-            add_text(doc, page, '保持不变（机制零改动）', 2700, 7550, 10000, 500, 12, GREEN, True)
+            add_text(doc, page, 'PATCH 升级', 2700, 7550, 10000, 500, 12, GREEN, True)
             add_text(doc, page, data[2], 2700, 8300, 12700, 6800, 13, INK, False)
             add_rect(doc, page, 17000, 7000, 14800, 8800, 0xE7EBDD, LINE)
-            add_text(doc, page, '迁移时替换 · 实测结果', 17700, 7550, 10000, 500, 12, MUTED, True)
+            add_text(doc, page, '回退验证', 17700, 7550, 10000, 500, 12, MUTED, True)
             add_text(doc, page, data[3], 17700, 8300, 13400, 6800, 13, INK, False)
         elif index == 17:
-            # P18 结尾
+            # P18 附录验收入口
             add_rect(doc, page, 2000, 7600, 29800, 5300, 0x1E3942, 0x31505A)
-            values = (('01', '有依据', '根因绑定现场与历史引用'), ('02', '有边界', '最小权限、审批与回滚'), ('03', '可验证', '独立测试、灰度与司法级审计'))
+            values = (('01', '主链路', 'npm test && npm run validate'), ('02', 'Skill 回退', 'npm run skill-upgrade-drill'), ('03', '事实边界', '检查 AT probe 与 DB status'))
             for value_index, (number, heading, detail) in enumerate(values):
                 x = 2700 + value_index * 9700
                 add_text(doc, page, number, x, 8250, 1200, 400, 9, LIME, True, 'Liberation Mono')
                 add_text(doc, page, heading, x, 9000, 7600, 800, 23, WHITE, True)
                 add_text(doc, page, detail, x, 10400, 7600, 900, 11, 0xB8C9C2, False)
-            add_text(doc, page, 'GOAI Agent Infra 复赛 · V1.0.0 · 2026年8月31日', 2050, 14400, 18000, 500, 11, LIME, True)
+            add_text(doc, page, 'GOAI 2026 Agent Infra 决赛 · V1.0.2 · 主讲 12 页 + 附录 6 页', 2050, 14400, 22000, 500, 11, LIME, True)
         else:
             # 默认双栏：P5 风险边界、P10 负面召回、P11 灰度、P13 Episode、P14 证据矩阵、P16 路线图
             small = index in (10, 13, 15)
             two_col(doc, page, data[2], data[3], dark, small)
 
-        add_text(doc, page, 'AgentTeams · Skill · MCP · RAG · Evidence-first · 2026-08-31', 2000, 17800, 23500, 350, 9, muted, False, 'Liberation Mono')
+        add_text(doc, page, 'AgentTeams · Skill · MCP · RAG · Evidence-first · 2026-09-18', 2000, 17800, 23500, 350, 9, muted, False, 'Liberation Mono')
         add_text(doc, page, str(index + 1), 30500, 17800, 1400, 350, 9, muted, False, 'Liberation Mono')
-    pptx = uno.systemPathToFileUrl(os.path.join(OUT, 'DevOrbit_复赛方案.pptx'))
-    pdf = uno.systemPathToFileUrl(os.path.join(OUT, 'DevOrbit_复赛方案.pdf'))
+    pptx = uno.systemPathToFileUrl(os.path.join(OUT, 'DevOrbit_决赛方案.pptx'))
+    pdf = uno.systemPathToFileUrl(os.path.join(OUT, 'DevOrbit_决赛方案.pdf'))
     doc.storeAsURL(pptx, (prop('FilterName', 'Impress MS PowerPoint 2007 XML'), prop('Overwrite', True)))
     doc.storeToURL(pdf, (prop('FilterName', 'impress_pdf_Export'), prop('Overwrite', True)))
     doc.close(True)

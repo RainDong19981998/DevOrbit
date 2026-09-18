@@ -1,20 +1,18 @@
 import { mergeArtifact, transition } from '../runtime/case-state.js';
 import { recordTrace } from '../runtime/trace.js';
+import { diagnoseFromEvidence } from '../reasoning/evidence-reasoner.js';
 
 const MAX_RESAMPLING_ROUNDS = 2;
 const CONFIDENCE_THRESHOLD = 0.8;
 
-function buildCauses(round, topHistory, scenario, profile) {
+function buildCauses(round, topHistory, scenario, evidence) {
   if (scenario === 'dynamic-resampling' && round === 0) {
     return [
       { rank: 1, statement: '网关 502 可能是下游超时导致，需进一步确认根因服务。', score: 0.58, evidence: ['LOG-10A', 'METRIC-55', topHistory?.citation].filter(Boolean) },
       { rank: 2, statement: '订单接口 p95 飙升，疑似下游存储瓶颈。', score: 0.45, evidence: ['METRIC-55'] }
     ];
   }
-  return [
-    { rank: 1, statement: profile.rootCause.statement, score: scenario === 'low-confidence' ? 0.62 : 0.91, evidence: scenario === 'low-confidence' ? [profile.rootCause.evidence[1]] : [...profile.rootCause.evidence, topHistory?.citation].filter(Boolean) },
-    ...profile.rootCause.runnerUp.map((cause, index) => ({ rank: index + 2, statement: cause.statement, score: cause.score, evidence: cause.evidence }))
-  ];
+  return diagnoseFromEvidence({ ...evidence, scenario, historyCitation: topHistory?.citation }).causes;
 }
 
 export const rcaAgent = {
@@ -32,6 +30,11 @@ export const rcaAgent = {
     let historical = [];
     let retrieval = null;
     let warnings = [];
+    const sourceEvidence = [];
+    for (const path of context.profile.sourceFiles) {
+      const result = await context.mcp.callTool('repository.read_file', { path });
+      sourceEvidence.push({ path, content: result.data.content, digest: result.data.digest, mcpCall: result.call });
+    }
 
     while (true) {
       const queryText = `${state.incident.title} ${state.incident.signals.map(signal => signal.text).join(' ')}`;
@@ -45,7 +48,7 @@ export const rcaAgent = {
       warnings = retrieval?.data.warnings || [];
       const topHistory = historical[0];
 
-      causes = buildCauses(round, topHistory, state.scenario, context.profile);
+      causes = buildCauses(round, topHistory, state.scenario, { signals: state.incident.signals, files: sourceEvidence });
       const topScore = causes[0].score;
 
       if (topScore >= CONFIDENCE_THRESHOLD || round >= maxRounds || !resample) {
@@ -84,6 +87,7 @@ export const rcaAgent = {
       warnings,
       resampling: { rounds: round, maxRounds, trace: resamplingTrace, finalConfidence: topScore, escalated: resample && round >= maxRounds && topScore < CONFIDENCE_THRESHOLD },
       retrieval: { query: state.incident.title, results: historical, topScore: topHistory?.score || 0, cited: Boolean(topHistory), mcpCall: retrieval?.call || null }
+      ,reasoning: { driver: 'local-evidence-reasoner', deterministicFallback: true, sourceDigests: sourceEvidence.map(file => file.digest), mcpCalls: sourceEvidence.map(file => file.mcpCall) }
     };
     mergeArtifact(state, 'rca', rca);
     transition(state, blocked ? 'needs_human' : 'diagnosed', blocked ? `root cause confidence ${topScore.toFixed(2)} below threshold ${CONFIDENCE_THRESHOLD}` : `${ragEnabled ? `RAG 命中 ${topHistory?.id || '无'}，` : '未启用历史检索，'}${round > 0 ? `经 ${round} 轮动态补证后` : ''}现场证据置信度 ${topScore.toFixed(2)}。`);

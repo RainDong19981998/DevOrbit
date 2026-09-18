@@ -53,7 +53,7 @@ function authenticate(request, identities) {
   return identities.find(item => timingSafeEqual(candidate, item.digest))?.agent || null;
 }
 
-function upstreamHeaders(request, upstream, agent) {
+function upstreamHeaders(request, upstream, agent, context = {}) {
   const headers = {};
   for (const [name, value] of Object.entries(request.headers)) {
     const lower = name.toLowerCase();
@@ -62,12 +62,17 @@ function upstreamHeaders(request, upstream, agent) {
   }
   headers.host = upstream.host;
   headers['x-devorbit-agent'] = agent;
+  if (context.caseId) headers['x-case-id'] = context.caseId;
+  if (context.traceId) headers['x-trace-id'] = context.traceId;
   return headers;
 }
 
 export function createAgentTeamsIdentityProxy({ config, upstreamUrl, requestTimeoutMs = 30_000 }) {
   const identities = parseIdentityMap(config);
   const upstream = new URL(upstreamUrl || config.upstream || 'http://127.0.0.1:4173');
+  const context = config.context || {};
+  if (context.caseId && !/^CASE-[A-Z0-9-]+$/.test(context.caseId)) throw new Error('identity proxy caseId is invalid');
+  if (context.traceId && !/^TRACE-[A-Z0-9-]+$/.test(context.traceId)) throw new Error('identity proxy traceId is invalid');
   if (upstream.protocol !== 'http:') throw new Error('identity proxy upstream must use http');
 
   return http.createServer((request, response) => {
@@ -93,7 +98,7 @@ export function createAgentTeamsIdentityProxy({ config, upstreamUrl, requestTime
       port: upstream.port,
       method: request.method,
       path: `${upstream.pathname.replace(/\/$/, '')}${requestUrl.pathname}${requestUrl.search}`,
-      headers: upstreamHeaders(request, upstream, agent),
+      headers: upstreamHeaders(request, upstream, agent, context),
       timeout: requestTimeoutMs
     }, proxyResponse => {
       const headers = {};
