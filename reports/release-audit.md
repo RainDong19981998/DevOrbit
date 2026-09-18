@@ -13,9 +13,9 @@
 
 | Artifact | SHA-256 |
 |---|---|
-| DevOrbit_决赛方案.pdf | `4adeb94b30f5e1983181f56f950ef854f9c340480f89088bfbc8ea34c3d43a7c` |
-| DevOrbit_决赛方案.pptx | `b79749fe3c411bc22234a57fdd2f1ee54e125f21475f96f66946bac845fc2d52` |
-| DevOrbit_决赛可执行代码包.zip | `be6370bbc7bc86f99a8224e1785bed667d2aa828591ac0ed63725f08dc040335` |
+| DevOrbit_决赛方案.pdf | `a7f5b945f482abb1134821185fe0499378a6619a19d77ba637f38945ad5d9911` |
+| DevOrbit_决赛方案.pptx | `202d00612b7809f30c900cba7632a11e08e4213addc8099869b6e6fd2d1a483b` |
+| DevOrbit_决赛可执行代码包.zip | `9fb05849fa2877ba7597ac11b9123b1dcfc1ad8fe6b3484d749995b356677a58` |
 | DevOrbit_决赛验收与答辩手册.pdf | `370872601a10f0afa84c7b9a8895f64b5f8ccc0b7102a96d746ddc6885f48d7c` |
 | DevOrbit_演示视频.mp4 | `8b4dfedb39b2ab76af599afb0779052654158b4e33a334b7ac9e1fec21703d8b` |
 | DevOrbit_演示视频封面.png | `95cc268c22d05d2360bc67a7235d78cd6c887abd220210c516e7a8ca067ae5bb` |

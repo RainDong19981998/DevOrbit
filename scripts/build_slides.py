@@ -37,13 +37,13 @@ slides = [
     ('安全门禁：高风险动作不能靠模型自证', '审批、测试、回滚和审计由确定性代码执行。',
      '执行前\nWorker×Tool allowlist · Schema 校验\n隔离工作区 · 写操作幂等键\nL2 签名审批绑定 Case / Action / 时效',
      '执行后\n独立 Verify Worker 判定 Red→Green\n10% 灰度触发 SLO 回滚\nHash 链绑定代码、测试、审批与发布结果'),
-    ('一个会"骗人"的支付事故', '用户反馈："10:15 后支付页一直转圈，刷新后出现两笔订单。"',
-     '10:15  网关 502 率抬升\n10:15  POST /orders p95 420ms → 2.8s\n10:15  IdempotencyStore timeout 日志\n10:02  一条配置变更记录尚未被注意到',
-     '表象指向"下游网关故障"——\n如果系统只信第一层证据，\n就会去修一个根本没坏的东西。'),
-    ('证据不够，Worker 自主去采', 'RCA 读取现场信号与当前源码后生成竞争假设；不消费 profile.rootCause。',
-     '0.58', '→ 0.91'),
-    ('补丁失败，带证据再修一次', 'Patch 从源码与失败断言推导编辑；不消费 profile.fix。',
-     'RED', 'GREEN'),
+    ('一个会"骗人"的库存事故（R4 实拍）', '用户反馈："秒杀下单成功后被取消，提示库存不足。"（FB-2210 / ISSUE-832）',
+     '14:05  库存扣减 API 成功率 99.9%（METRIC-61）\n14:05  缓存 DECR 正常 qps=310（LOG-20A）\n14:06  stock_ledger 出现负库存（DB-77）\n13:40  变更记录：移除乐观锁条件（CHG-501）',
+     '表象指向"库存不足"——\n但真实根因是 13:40 的变更移除了乐观锁。\n只信第一层证据就会去修一个没坏的东西。'),
+    ('证据不够，Worker 自主去采（R4 实拍）', 'intake 拉取 7 条信号聚 4 簇；rca 独立证伪假设；不消费预置 rootCause。',
+     '7 条信号', '→ 4 簇根因候选'),
+    ('补丁验证与人工门禁（R4 实拍）', 'patch 最小修改 → verify 独立测试门禁 → release 诚实停在 needs_human。',
+     '10 次 MCP 调用', 'needs_human'),
     ('数据库分支试验：协议已就绪，实测待凭据', '候选应在相同数据与负载下先验业务一致性，再比较执行计划与性能。',
      'BRANCH-A', 'BRANCH-B'),
     ('审批后重启，继续而不是重做', '状态、证据链和幂等键一起恢复，避免重复写入与重复发布。',
@@ -207,17 +207,17 @@ def build(desktop):
             add_text(doc, page, '表象陷阱', 17700, 7550, 8000, 500, 12, ORANGE, True)
             add_text(doc, page, data[3], 17700, 8300, 13400, 6800, 15, INK, True)
         elif index == 6:
-            # P7 动态补证：超大置信度数字 + 步骤流
-            add_text(doc, page, '0.58', 3000, 7400, 9000, 3000, 66, ORANGE, True, 'Liberation Mono')
-            add_text(doc, page, '首轮置信度 < 0.80 门禁', 3300, 10800, 8000, 500, 11, MUTED, False)
+            # P7 动态补证：R4 真实信号聚合数据
+            add_text(doc, page, '7 条', 3000, 7400, 9000, 3000, 66, ORANGE, True, 'Liberation Mono')
+            add_text(doc, page, 'intake 拉取去重信号（R4 实拍）', 3300, 10800, 8000, 500, 11, MUTED, False)
             add_text(doc, page, '→', 12800, 7900, 2500, 1500, 40, GREEN, True)
-            add_text(doc, page, '0.91', 15800, 7400, 9000, 3000, 66, GREEN, True, 'Liberation Mono')
-            add_text(doc, page, '补证后晋级，根因确认', 16100, 10800, 8000, 500, 11, MUTED, False)
+            add_text(doc, page, '4 簇', 15800, 7400, 9000, 3000, 66, GREEN, True, 'Liberation Mono')
+            add_text(doc, page, '聚合根因候选（跨粒度去重）', 16100, 10800, 8000, 500, 11, MUTED, False)
             steps = (
-                ('01', '生成补证计划', '假设 → 缺失证据清单\n服务/时间窗/TraceID'),
-                ('02', '反向拉取深层证据', '配置变更 CHG-402\n连接池水位 Trace-771\n链路 Trace-772'),
-                ('03', '合并重评分', '0.91 ≥ 0.80，晋级\n仍不足则进入第 2 轮'),
-                ('04', '熔断兜底', '≤2 轮仍不达标\n→ needs_human 人工介入'),
+                ('01', 'intake 信号归并', 'FB-2210 / ISSUE-832\nLOG-20A / METRIC-61\nCHG-501 / DB-77'),
+                ('02', 'impact 影响面', '40 次 repository.read_file\n定位受影响模块与接口'),
+                ('03', 'rca 独立证伪', '8 次 MCP 调用\n读代码 + 搜知识库\n生成竞争假设'),
+                ('04', '诚实标注缺失', '重试策略/重复扣减计数\n回滚状态/缓存一致性'),
             )
             for step_index, (number, heading, detail) in enumerate(steps):
                 x = 2000 + step_index * 7600
@@ -226,11 +226,11 @@ def build(desktop):
                 add_text(doc, page, heading, x + 500, 13500, 5900, 600, 13, INK, True)
                 add_text(doc, page, detail, x + 500, 14400, 5900, 1500, 9, MUTED, False)
         elif index == 7:
-            # P8 自愈闭环：RED → RED → GREEN 三状态块
+            # P8 R4 真实执行链路：patch→verify→release
             states = (
-                ('PATCH #1', '只恢复连接池\n遗漏幂等保护', ORANGE, 'RED · 3 项失败'),
-                ('分析失败日志', '失败输出回传\nPatch Worker 读日志定位遗漏', MUTED, '带反馈二次生成'),
-                ('PATCH #2', '补全幂等逻辑\n重复请求返回 409+原订单', GREEN, 'GREEN · 4/4 通过'),
+                ('PATCH', 'patch 最小修改\n10 次 MCP 调用\n含 create_workspace\nread_file/write_file', GREEN, 'tests executed'),
+                ('VERIFY', 'verify 独立门禁\n5 次 MCP 调用\nci.run_tests\nrepository.read_file', GREEN, 'gate checked'),
+                ('RELEASE', 'release 诚实停住\nrelease.canary 调用\n无审批 → needs_human\n不绕过人工门禁', ORANGE, 'needs_human'),
             )
             for s_index, (heading, detail, color, badge) in enumerate(states):
                 x = 2000 + s_index * 10300
@@ -241,7 +241,7 @@ def build(desktop):
                 add_text(doc, page, badge, x + 850, 11330, 4200, 400, 10, WHITE, True, 'Liberation Mono')
                 if s_index < 2:
                     add_text(doc, page, '→', x + 9550, 9400, 700, 700, 22, GREEN, True)
-            add_text(doc, page, '最大 3 次尝试，超限熔断降级 needs_human · 失败样本同样进入证据链，不掩盖', 2050, 14000, 29000, 700, 14, GREEN, True)
+            add_text(doc, page, 'R4 实拍：七 Worker 自主执行 · 69 条 MCP 审计 · 同一 Case/Trace · Leader 交付终态', 2050, 14000, 29000, 700, 14, GREEN, True)
         elif index == 8:
             # P9 DB Branch：双分支对比 + 择优
             add_rect(doc, page, 2000, 7300, 14200, 6000, WHITE, GREEN)
