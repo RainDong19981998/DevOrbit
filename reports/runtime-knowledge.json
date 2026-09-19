@@ -1369,5 +1369,100 @@
     "createdAt": "2026-09-18T15:11:06.543Z",
     "id": "EP-4C9833CD",
     "citation": "knowledge://EP-4C9833CD"
+  },
+  {
+    "episodeId": "EP-981037BC",
+    "title": "支付页提交后持续转圈，订单偶发重复创建",
+    "summary": "连接池容量与排队超时配置过低，同时订单创建路径未检查已存在的幂等键，超时重试会放大延迟并重复创建订单。",
+    "pattern": "连接池容量与排队超时配置过低，同时订单创建路径未检查已存在的幂等键，超时重试会放大延迟并重复创建订单。",
+    "tags": [
+      "checkout",
+      "redis",
+      "idempotency",
+      "happy-path"
+    ],
+    "evidence": [
+      "repo://src/order.js",
+      "repo://src/redisPool.js",
+      "ISSUE-771",
+      "LOG-10A",
+      "METRIC-55",
+      "CHG-402",
+      "knowledge://EP-001"
+    ],
+    "tenant": "acme-commerce",
+    "service": "checkout-service",
+    "environment": "production",
+    "gitRevision": "a1b2c3d4",
+    "configRevision": "release/2026.08",
+    "topology": [
+      {
+        "from": "checkout-web",
+        "to": "checkout-service",
+        "type": "http"
+      },
+      {
+        "from": "checkout-service",
+        "to": "idempotency-store",
+        "type": "redis"
+      }
+    ],
+    "hypotheses": [
+      {
+        "statement": "连接池容量与排队超时配置过低，同时订单创建路径未检查已存在的幂等键，超时重试会放大延迟并重复创建订单。",
+        "verdict": "confirmed",
+        "evidence": [
+          "repo://src/order.js",
+          "repo://src/redisPool.js",
+          "ISSUE-771",
+          "LOG-10A",
+          "METRIC-55",
+          "CHG-402",
+          "knowledge://EP-001"
+        ]
+      },
+      {
+        "statement": "网关 502 更像下游存储排队超时的结果，而不是首因。",
+        "verdict": "rejected",
+        "evidence": [
+          "ISSUE-771"
+        ]
+      }
+    ],
+    "evidenceChain": [
+      "ci://sha256:f2465ef8bd946a6a",
+      "mcp://ci.run_tests",
+      "state://CASE-981037BC/verified",
+      "policy://L2",
+      "state://CASE-981037BC/approval_pending",
+      "approval://APR-981037BC",
+      "rollout://checkout-service@2026.08.12-rc3",
+      "metric://error-rate/0.3",
+      "mcp://release.canary",
+      "state://CASE-981037BC/confirmed"
+    ],
+    "patches": [
+      {
+        "digest": "sha256:4e3a1ee547b42bb4",
+        "outcome": "success",
+        "notes": "在创建订单前复用幂等键对应的原订单；将连接池容量恢复到 80，排队超时下限设为 800ms"
+      }
+    ],
+    "negativeLessons": [],
+    "observation": {
+      "windowMinutes": 15,
+      "businessAssertions": true,
+      "metricsVerdict": "healthy",
+      "errorRateAfter": 0.3,
+      "p95After": 460,
+      "reviewedBy": "sre-oncall",
+      "recovered": true,
+      "rollbackReason": null
+    },
+    "confidence": "high",
+    "recallStatus": "pending",
+    "createdAt": "2026-09-19T14:48:31.320Z",
+    "id": "EP-981037BC",
+    "citation": "knowledge://EP-981037BC"
   }
 ]
