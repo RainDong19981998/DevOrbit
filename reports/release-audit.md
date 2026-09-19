@@ -1,6 +1,6 @@
 # 提交发布审计
 
-- 结果：1605/1605 checks passed
+- 结果：1607/1607 checks passed
 - 作品简介：474/500 字符
 - PDF：18 页 V1.1.0；前 12 页主讲，后 6 页附录；已撤下无效 MTTR 对比与未实测数据库主张
 - 视频：演示片 H.264 1280×800、129 秒 tour 导览模式（烧录中文字幕、无音轨，≤8 分钟门禁；含 Agent 协作/Skill 调用证据/异常处理演示三要素）；另有语音讲解版（CosyVoice v3-flash 旁白混音，供路演使用，不参与提交门禁）；讲解片 V0.9.5+ 移除（初赛轮产物）
@@ -13,19 +13,19 @@
 
 | Artifact | SHA-256 |
 |---|---|
-| DevOrbit_决赛方案.pdf | `215319ea0b9007b75554d58fca6542becdb73dfd3f1143dd8210585eb4893f2e` |
-| DevOrbit_决赛方案.pptx | `6bdc4fb60b82fb816b896b4f5bc7e2b39d1d688bf6070d7d9e528e81c7c9cf37` |
-| DevOrbit_决赛可执行代码包.zip | `5548a565070da7a4ab7d751517308e4f50b5ecf95bd1e61189db9ff0fb9dddd7` |
-| DevOrbit_决赛验收与答辩手册.pdf | `370872601a10f0afa84c7b9a8895f64b5f8ccc0b7102a96d746ddc6885f48d7c` |
+| DevOrbit_决赛方案.pdf | `07e51e852531ab492e2bc1077df0bb8672b722a66513e33917b4853af8364117` |
+| DevOrbit_决赛方案.pptx | `53a7ef623973c1358632cd3042ba6023e1de6ddf82a667c84f7fa7192f51c45b` |
+| DevOrbit_决赛可执行代码包.zip | `7c2d2121aed4ef3557d3f32414fb295919f2ddb9ba109643aa4368f8cd44c78d` |
+| DevOrbit_决赛验收与答辩手册.pdf | `d4fda3528e0901d0d7ae2dc9a6a08d71a384555e42fdf0a093ee4be51fe35aa9` |
 | DevOrbit_演示视频.mp4 | `ea6ae96379ff0889cb60a1568baccc32297b52a72951128e2cd9d6b64bdc8aef` |
 | DevOrbit_演示视频封面.png | `18d09682a68947ae206aceb9276e319cafbe376a184b9c29d219cc16cd10a3c0` |
 | DevOrbit_产品界面.png | `839d5ca7f618b297a3f5f84fa524173c3848dbdcbe9c6174daac36c15b99257c` |
-| DevOrbit_AgentTeams本地运行验证.pdf | `14737146a1c3772668a5b5c000620192248c2302e80d845079284bf9b92b877f` |
-| DevOrbit_威胁模型.pdf | `4c458e86b71d29633d8edb042317eabd45ae0a2f095e54bc6fa68792dd7df08c` |
-| DevOrbit_证据索引.pdf | `c3d640fb1f5f67edcdb7a042185cadd34bc9e246ac92d68a425dcb45b714b528` |
-| DevOrbit_对照与消融评测.pdf | `e671b916de3bf69e8396839af947121722645fad758e0ea13e9fd0b8494dfc5d` |
-| DevOrbit_对抗安全评测.pdf | `c5e2125212b60e565719a50c9ade5d1aab9afecbb6b78b7f49fc9727790e65d6` |
-| DevOrbit_公开基准复现试点.pdf | `9dec18637705646245c040bbb10fb1762875b4dd864742f3387bb05bc6a2271f` |
+| DevOrbit_AgentTeams本地运行验证.pdf | `ee4b20f0a5412ee499599a1de9106219d4a248e97afdefabe6262138e9f34f53` |
+| DevOrbit_威胁模型.pdf | `90a96345c3dd11f82614291c0057ca8c2a9ce9e96444890f1aed9a21ef4df50f` |
+| DevOrbit_证据索引.pdf | `bb040578e79b767629e24aca8cbea91f5758ceb1906e8498958bdf759ae5fe17` |
+| DevOrbit_对照与消融评测.pdf | `584977f1266bfd9ea72d08f85f4d5d5562ec1ea053a6fcd7acfc154afc197e88` |
+| DevOrbit_对抗安全评测.pdf | `9b392a7a4cefe39beec198138d7da8a65f8a60f948c698e2e74bccbff05b48b7` |
+| DevOrbit_公开基准复现试点.pdf | `c78cbf3b2be004d3a36762efb0c8634b23103dab709224c55d0544e8079526cd` |
 
 | Check | Result | Detail |
 |---|---|---|
@@ -1164,6 +1164,8 @@
 | code secret-scan reports/runs/archive/CASE-48DA0C0E.json | PASS |  |
 | code compliance reports/runs/archive/CASE-792DC7EA.json | PASS |  |
 | code secret-scan reports/runs/archive/CASE-792DC7EA.json | PASS |  |
+| code compliance reports/runs/archive/CASE-981037BC.json | PASS |  |
+| code secret-scan reports/runs/archive/CASE-981037BC.json | PASS |  |
 | code compliance reports/runs/archive/CASE-8325EC60.json | PASS |  |
 | code secret-scan reports/runs/archive/CASE-8325EC60.json | PASS |  |
 | code compliance reports/runs/archive/CASE-AF17BE34.json | PASS |  |

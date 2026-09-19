@@ -173,7 +173,7 @@ def build(desktop):
             add_text(doc, page, '决赛验收重点', 2700, 7550, 8000, 500, 12, MUTED, True)
             add_text(doc, page, data[2], 2700, 8300, 12700, 6800, 12, INK, False)
             add_rect(doc, page, 17000, 7000, 14800, 8800, WHITE, RED)
-            add_text(doc, page, 'V1.0.2 事实边界', 17700, 7550, 8000, 500, 12, RED, True)
+            add_text(doc, page, 'V1.1.0 事实边界', 17700, 7550, 8000, 500, 12, RED, True)
             add_text(doc, page, data[3], 17700, 8300, 13400, 6800, 12, INK, False)
         elif index == 2:
             # P3 场景闭环图：左=用户与痛点，右=链路与收益
@@ -299,7 +299,7 @@ def build(desktop):
                 add_text(doc, page, number, x, 8250, 1200, 400, 9, LIME, True, 'Liberation Mono')
                 add_text(doc, page, heading, x, 9000, 7600, 800, 23, WHITE, True)
                 add_text(doc, page, detail, x, 10400, 7600, 900, 11, 0xB8C9C2, False)
-            add_text(doc, page, 'GOAI 2026 Agent Infra 决赛 · V1.0.2 · 主讲 12 页 + 附录 6 页', 2050, 14400, 22000, 500, 11, LIME, True)
+            add_text(doc, page, 'GOAI 2026 Agent Infra 决赛 · V1.1.0 · 主讲 12 页 + 附录 6 页', 2050, 14400, 22000, 500, 11, LIME, True)
         else:
             # 默认双栏：P5 风险边界、P10 负面召回、P11 灰度、P13 Episode、P14 证据矩阵、P16 路线图
             small = index in (10, 13, 15)
