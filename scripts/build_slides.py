@@ -20,7 +20,7 @@ ORANGE = 0xF06A3A
 LINE = 0xD6D9CF
 RED = 0xC0392B
 
-# 18 页：前 12 页主讲，后 6 页附录。
+# 19 页：前 13 页主讲，后 6 页附录。
 slides = [
     ('DevOrbit', '自动处理线上缺陷的多 Agent 研发平台',
      '输入 Issue、日志与代码仓；输出根因、代码补丁、测试报告、发布决策和可审计证据链。',
@@ -44,6 +44,8 @@ slides = [
      '7 条信号', '→ 4 簇根因候选'),
     ('补丁验证与人工门禁（R4 实拍）', 'patch 最小修改 → verify 独立测试门禁 → release 诚实停在 needs_human。',
      '10 次 MCP 调用', 'needs_human'),
+    ('失败也不停摆：补证回边自动触发', '首轮置信度不足时，系统不硬猜也不停机——自主补证后再评分。',
+     '0.45', '→ 0.92'),
     ('数据库分支试验：协议已就绪，实测待凭据', '候选应在相同数据与负载下先验业务一致性，再比较执行计划与性能。',
      'BRANCH-A', 'BRANCH-B'),
     ('审批后重启，继续而不是重做', '状态、证据链和幂等键一起恢复，避免重复写入与重复发布。',
@@ -151,7 +153,7 @@ def build(desktop):
         fg = WHITE if dark else INK
         accent = LIME if dark else GREEN
         muted = 0xB8C9C2 if dark else MUTED
-        section = 'MAIN 01-12' if index < 12 else 'APPENDIX'
+        section = 'MAIN 01-13' if index < 13 else 'APPENDIX'
         add_text(doc, page, f'{index + 1:02d} / {len(slides)}   {section}   DEVORBIT', 2000, 1150, 14000, 500, 10, accent, True, 'Liberation Mono')
         title_size = 40 if index == 0 else (30 if index in (6, 7, 8, 11) else 27)
         add_text(doc, page, data[0], 2000, 2400, 30000, 2100, title_size, fg, True)
@@ -215,7 +217,7 @@ def build(desktop):
             add_text(doc, page, '聚合根因候选（跨粒度去重）', 16100, 10800, 8000, 500, 11, MUTED, False)
             steps = (
                 ('01', 'intake 信号归并', 'FB-2210 / ISSUE-832\nLOG-20A / METRIC-61\nCHG-501 / DB-77'),
-                ('02', 'impact 影响面', '40 次 repository.read_file\n定位受影响模块与接口'),
+                ('02', 'impact 影响面', '多轮代码阅读\n定位受影响模块与接口'),
                 ('03', 'rca 独立证伪', '8 次 MCP 调用\n读代码 + 搜知识库\n生成竞争假设'),
                 ('04', '诚实标注缺失', '重试策略/重复扣减计数\n回滚状态/缓存一致性'),
             )
@@ -243,19 +245,38 @@ def build(desktop):
                     add_text(doc, page, '→', x + 9550, 9400, 700, 700, 22, GREEN, True)
             add_text(doc, page, 'R4 实拍：七 Worker 自主执行 · 69 条 MCP 审计 · 同一 Case/Trace · Leader 交付终态', 2050, 14000, 29000, 700, 14, GREEN, True)
         elif index == 8:
+            # P8.5 失败→返工：补证回边自动触发
+            add_text(doc, page, '0.45', 3000, 7400, 9000, 3000, 66, ORANGE, True, 'Liberation Mono')
+            add_text(doc, page, '首轮置信度 < 0.80 门禁', 3300, 10800, 8000, 500, 11, MUTED, False)
+            add_text(doc, page, '→', 12800, 7900, 2500, 1500, 40, GREEN, True)
+            add_text(doc, page, '0.92', 15800, 7400, 9000, 3000, 66, GREEN, True, 'Liberation Mono')
+            add_text(doc, page, '补证后晋级，根因确认', 16100, 10800, 8000, 500, 11, MUTED, False)
+            steps = (
+                ('01', '生成补证计划', '假设 → 缺失证据清单\n服务/时间窗/TraceID'),
+                ('02', '反向拉取深层证据', '配置变更 / 连接池水位\n链路 Trace / 日志'),
+                ('03', '合并重评分', '0.92 ≥ 0.80，晋级\n仍不足则进入第 2 轮'),
+                ('04', '熔断兜底', '≤2 轮仍不达标\n→ needs_human 人工介入'),
+            )
+            for step_index, (number, heading, detail) in enumerate(steps):
+                x = 2000 + step_index * 7600
+                add_rect(doc, page, x, 12400, 7000, 3900, WHITE, LINE)
+                add_text(doc, page, number, x + 500, 12800, 1200, 400, 9, GREEN, True, 'Liberation Mono')
+                add_text(doc, page, heading, x + 500, 13500, 5900, 600, 13, INK, True)
+                add_text(doc, page, detail, x + 500, 14400, 5900, 1500, 9, MUTED, False)
+        elif index == 9:
             # P9 DB Branch：双分支对比 + 择优
             add_rect(doc, page, 2000, 7300, 14200, 6000, WHITE, GREEN)
             add_text(doc, page, 'BRANCH-A · 索引候选', 2700, 7800, 9000, 600, 15, GREEN, True)
             add_text(doc, page, '待 PolarDB 账号环境执行\n先校验业务结果一致性\n再保存真实执行计划与负载数据', 2700, 8700, 12700, 2500, 12, INK, False)
-            add_rect(doc, page, 2700, 11800, 5000, 800, GREEN, GREEN)
-            add_text(doc, page, 'NOT MEASURED', 2950, 12030, 4700, 400, 10, WHITE, True, 'Liberation Mono')
+            add_rect(doc, page, 2700, 11800, 5000, 500, GREEN, GREEN)
+            add_text(doc, page, '协议就绪 · 待复跑', 2950, 11900, 4700, 350, 9, WHITE, True, 'Liberation Mono')
             add_rect(doc, page, 17500, 7300, 14200, 6000, WHITE, ORANGE)
             add_text(doc, page, 'BRANCH-B · 查询改写候选', 18200, 7800, 9000, 600, 15, ORANGE, True)
             add_text(doc, page, '待相同快照与负载对照\n看似合理的方案必须接受淘汰\n不得用估算指标替代真实计划', 18200, 8700, 12700, 2500, 12, INK, False)
-            add_rect(doc, page, 18200, 11800, 5000, 800, ORANGE, ORANGE)
-            add_text(doc, page, 'POLARDB PENDING', 18450, 12030, 4700, 400, 10, WHITE, True, 'Liberation Mono')
+            add_rect(doc, page, 18200, 11800, 5000, 500, ORANGE, ORANGE)
+            add_text(doc, page, '待账号环境', 18450, 11900, 4700, 350, 9, WHITE, True, 'Liberation Mono')
             add_text(doc, page, '事实边界：reports/db-branch.json 当前 measured=false；本页仅说明验收协议，不主张 PostgreSQL 或 PolarDB 真实性能实测。', 2050, 14300, 29500, 1400, 12, MUTED, False)
-        elif index == 11:
+        elif index == 12:
             add_text(doc, page, 'PASS', 3000, 7400, 11000, 3000, 56, LIME, True, 'Liberation Mono')
             add_text(doc, page, '七 Worker 自主 AT · 控制面 · 恢复 · Skill 回退', 3300, 10800, 9000, 500, 11, 0xB8C9C2, False)
             add_text(doc, page, '/', 13800, 8300, 1200, 1200, 26, 0xB8C9C2, True)
@@ -264,14 +285,14 @@ def build(desktop):
             metrics = (
                 ('7 / 7', 'R4 探针：精确 Worker sender + 各自非零 MCP 审计'),
                 ('69', '同一 Case/Trace 的 MCP 审计条数'),
-                ('measured=false', '数据库真实性边界（协议已就绪）'),
+                ('~27 min', 'intake 2m → impact 3m → rca 13m → patch 3m → verify 2m → release 2m → learning 2m'),
             )
             for m_index, (value, label) in enumerate(metrics):
                 x = 2000 + m_index * 10100
                 add_rect(doc, page, x, 12600, 9300, 3400, 0x1E3942, 0x31505A)
                 add_text(doc, page, value, x + 600, 13150, 8200, 900, 24, LIME, True, 'Liberation Mono')
                 add_text(doc, page, label, x + 600, 14450, 8200, 1000, 10, 0xB8C9C2, False)
-        elif index == 14:
+        elif index == 15:
             cols = (
                 ('冻结数据集', 'SWE-bench dev 30 案例\n选择规则与 manifest 固化\n失败样本全部披露', 0xE7EBDD, INK),
                 ('对照结果', 'DevOrbit 闭环 3/30\nsingle-agent 同模型预算 0/30\n仅描述该冻结样本', 0xE7EBDD, INK),
@@ -282,7 +303,7 @@ def build(desktop):
                 add_rect(doc, page, x, 7400, 9300, 5600, fill, LINE)
                 add_text(doc, page, heading, x + 600, 7900, 8000, 700, 18, GREEN if fill != GREEN else LIME, True)
                 add_text(doc, page, detail, x + 600, 9000, 8000, 3400, 12, fg_c if fill != GREEN else WHITE, False)
-        elif index == 16:
+        elif index == 17:
             # P17 可复制性：左=不变机制，右=替换项+实测结果
             add_rect(doc, page, 2000, 7000, 14200, 8800, WHITE, GREEN)
             add_text(doc, page, 'PATCH 升级', 2700, 7550, 10000, 500, 12, GREEN, True)
@@ -290,7 +311,7 @@ def build(desktop):
             add_rect(doc, page, 17000, 7000, 14800, 8800, 0xE7EBDD, LINE)
             add_text(doc, page, '回退验证', 17700, 7550, 10000, 500, 12, MUTED, True)
             add_text(doc, page, data[3], 17700, 8300, 13400, 6800, 13, INK, False)
-        elif index == 17:
+        elif index == 18:
             # P18 附录验收入口
             add_rect(doc, page, 2000, 7600, 29800, 5300, 0x1E3942, 0x31505A)
             values = (('01', '主链路', 'npm test && npm run validate'), ('02', 'Skill 回退', 'npm run skill-upgrade-drill'), ('03', '事实边界', '检查 AT probe 与 DB status'))
@@ -299,7 +320,7 @@ def build(desktop):
                 add_text(doc, page, number, x, 8250, 1200, 400, 9, LIME, True, 'Liberation Mono')
                 add_text(doc, page, heading, x, 9000, 7600, 800, 23, WHITE, True)
                 add_text(doc, page, detail, x, 10400, 7600, 900, 11, 0xB8C9C2, False)
-            add_text(doc, page, 'GOAI 2026 Agent Infra 决赛 · V1.1.0 · 主讲 12 页 + 附录 6 页', 2050, 14400, 22000, 500, 11, LIME, True)
+            add_text(doc, page, 'GOAI 2026 Agent Infra 决赛 · V1.1.0 · 主讲 13 页 + 附录 6 页', 2050, 14400, 22000, 500, 11, LIME, True)
         else:
             # 默认双栏：P5 风险边界、P10 负面召回、P11 灰度、P13 Episode、P14 证据矩阵、P16 路线图
             small = index in (10, 13, 15)

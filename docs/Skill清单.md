@@ -13,7 +13,7 @@
 
 七个自定义 Skill 的结构化结果均包含 `status / data / evidence_refs / error / retryable / trace_id`。版本发布遵循语义化版本；Golden Cases 评测不过门禁则禁止升级，运行时可按标签回滚上一版。官方 Skill 的门户原包摘要为 `04baaf21ed9f7fad...`，分发快照摘要为 `0ac29b58e60a10ca...`；核心 `SKILL.md` 未修改，唯一移除路径与原因见 `config/aliyun-official-skill.contract.json` 和 `third_party/aliyun/README.md`。
 
-## Skill 生命周期治理（V1.0.0）
+## Skill 生命周期治理（V1.1.0）
 
 | 环节 | 机制 | 证据 |
 |---|---|---|

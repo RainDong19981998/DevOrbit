@@ -1,7 +1,7 @@
 # 提交发布审计
 
-- 结果：1607/1607 checks passed
-- 作品简介：474/500 字符
+- 结果：1603/1607 checks passed
+- 作品简介：473/500 字符
 - PDF：18 页 V1.1.0；前 12 页主讲，后 6 页附录；已撤下无效 MTTR 对比与未实测数据库主张
 - 视频：演示片 H.264 1280×800、129 秒 tour 导览模式（烧录中文字幕、无音轨，≤8 分钟门禁；含 Agent 协作/Skill 调用证据/异常处理演示三要素）；另有语音讲解版（CosyVoice v3-flash 旁白混音，供路演使用，不参与提交门禁）；讲解片 V0.9.5+ 移除（初赛轮产物）
 - 基础工程证据：Agent×Tool 策略、9/9 对抗安全、三维消融、OTLP JSON 导出均已纳入总包
@@ -13,35 +13,35 @@
 
 | Artifact | SHA-256 |
 |---|---|
-| DevOrbit_决赛方案.pdf | `07e51e852531ab492e2bc1077df0bb8672b722a66513e33917b4853af8364117` |
-| DevOrbit_决赛方案.pptx | `53a7ef623973c1358632cd3042ba6023e1de6ddf82a667c84f7fa7192f51c45b` |
-| DevOrbit_决赛可执行代码包.zip | `7c2d2121aed4ef3557d3f32414fb295919f2ddb9ba109643aa4368f8cd44c78d` |
-| DevOrbit_决赛验收与答辩手册.pdf | `d4fda3528e0901d0d7ae2dc9a6a08d71a384555e42fdf0a093ee4be51fe35aa9` |
+| DevOrbit_决赛方案.pdf | `744703d48aeaea149f4fa82b49bf057a60737eb4847695cddbd0054eb8bc655d` |
+| DevOrbit_决赛方案.pptx | `eb16dffc94516fd10ccc68c4731b7bb51f16fb4a5d1c72e2b8964235c2522b0d` |
+| DevOrbit_决赛可执行代码包.zip | `d4e57a7138e1254234635dbe9495102b4e2af357a042dc489c7109316e3aa22a` |
+| DevOrbit_决赛验收与答辩手册.pdf | `0bf33ff1849a439edc9eff3ab9aaac72fc5e1bf97e3a377cf4a6204136ad9c80` |
 | DevOrbit_演示视频.mp4 | `ea6ae96379ff0889cb60a1568baccc32297b52a72951128e2cd9d6b64bdc8aef` |
 | DevOrbit_演示视频封面.png | `18d09682a68947ae206aceb9276e319cafbe376a184b9c29d219cc16cd10a3c0` |
 | DevOrbit_产品界面.png | `839d5ca7f618b297a3f5f84fa524173c3848dbdcbe9c6174daac36c15b99257c` |
-| DevOrbit_AgentTeams本地运行验证.pdf | `ee4b20f0a5412ee499599a1de9106219d4a248e97afdefabe6262138e9f34f53` |
-| DevOrbit_威胁模型.pdf | `90a96345c3dd11f82614291c0057ca8c2a9ce9e96444890f1aed9a21ef4df50f` |
-| DevOrbit_证据索引.pdf | `bb040578e79b767629e24aca8cbea91f5758ceb1906e8498958bdf759ae5fe17` |
-| DevOrbit_对照与消融评测.pdf | `584977f1266bfd9ea72d08f85f4d5d5562ec1ea053a6fcd7acfc154afc197e88` |
-| DevOrbit_对抗安全评测.pdf | `9b392a7a4cefe39beec198138d7da8a65f8a60f948c698e2e74bccbff05b48b7` |
-| DevOrbit_公开基准复现试点.pdf | `c78cbf3b2be004d3a36762efb0c8634b23103dab709224c55d0544e8079526cd` |
+| DevOrbit_AgentTeams本地运行验证.pdf | `21f3fe83d52357c4c029f9106bff03bb6696f5f8e1ce38ff85a2aa75037cf810` |
+| DevOrbit_威胁模型.pdf | `617d1bc72495b31520b9b9b31da2385acc9dda94bd19174b6c35daa8c5d954f2` |
+| DevOrbit_证据索引.pdf | `329c08f883369c77913fe0f987d6cb00e153ebfad49bc8bc15a29a809fe6dc97` |
+| DevOrbit_对照与消融评测.pdf | `ec3596ece6d7b444f2ff2030c1e8369cec36e5520c30f09389eae8bc27be823b` |
+| DevOrbit_对抗安全评测.pdf | `5bac7f58b62bb87ddd3ce6c9232adf91df8fd006a0104fffe0a2e04e1360feb9` |
+| DevOrbit_公开基准复现试点.pdf | `d197c62615aa0ae44511e6baffe51c70fe7c88582b12ab35694680654c7501d2` |
 
 | Check | Result | Detail |
 |---|---|---|
-| intro length | PASS | 474/500 chars |
+| intro length | PASS | 473/500 chars |
 | intro required claims | PASS |  |
 | intro compliance | PASS |  |
-| PDF page count | PASS |  |
+| PDF page count | FAIL |  |
 | PDF submission date | PASS |  |
 | PDF product positioning | PASS |  |
 | PDF official Skill evidence | PASS |  |
 | PDF V1.1.0 cover and evidence | PASS |  |
-| PDF 12-page main plus appendix | PASS |  |
-| PDF honest evidence boundary | PASS |  |
+| PDF 12-page main plus appendix | FAIL |  |
+| PDF honest evidence boundary | FAIL |  |
 | PDF compliance | PASS |  |
 | PPTX official Skill evidence | PASS |  |
-| PPTX V1.1.0 structure and evidence | PASS |  |
+| PPTX V1.1.0 structure and evidence | FAIL |  |
 | PPTX removes invalid MTTR and DB claims | PASS |  |
 | PPTX compliance | PASS |  |
 | video format | PASS |  |
